@@ -108,7 +108,7 @@ namespace ti_render {
 			memcpy(m_data, data, sizeof(char) * m_width * m_height * 3);
 			break;
 		case color_format::RGBA8B:
-			memcpy(m_data, data, sizeof(char) * m_width * m_height * 3);
+			memcpy(m_data, data, sizeof(char) * m_width * m_height * 4);
 			break;
 		case color_format::R16F:
 			memcpy(m_data, data, sizeof(float) * m_width * m_height * 1);

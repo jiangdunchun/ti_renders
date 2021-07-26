@@ -63,6 +63,8 @@ namespace ti_render {
 	}
 
 	void scene::dispose(object* obj) {
+		if (!obj) return;
+
 		if (obj->m_parent) {
 			for (vector<object*>::iterator iter = obj->m_parent->m_children.begin();
 				iter != obj->m_parent->m_children.end();
