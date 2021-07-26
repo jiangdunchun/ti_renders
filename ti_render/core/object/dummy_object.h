@@ -16,6 +16,8 @@ namespace ti_render {
 		dummy_object();
 		~dummy_object();
 
+		void tranverse_children(std::vector<object*>& buffer);
+
 	public:
 		const std::vector<object*>& get_children(void) const {
 			return m_children;

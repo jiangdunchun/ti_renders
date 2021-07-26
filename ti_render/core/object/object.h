@@ -25,6 +25,7 @@ namespace ti_render {
 	friend class dummy_object;
 
 	private:
+		unsigned int m_id;
 		dummy_object* m_parent;
 
 	protected:
@@ -40,8 +41,11 @@ namespace ti_render {
 		virtual ~object();
 
 	public:
-		const object_type& get_type(void) const{
+		const object_type& get_type(void) const {
 			return m_type;
+		}
+		const unsigned int& get_id(void) const {
+			return m_id;
 		}
 		const dummy_object* get_parent(void) const;
 		void set_parent(dummy_object* parent);

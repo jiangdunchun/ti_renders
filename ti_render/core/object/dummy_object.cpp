@@ -14,4 +14,14 @@ namespace ti_render {
 			delete *iter;
 		}
 	}
+	void dummy_object::tranverse_children(std::vector<object*>& buffer) {
+		for (vector<object*>::iterator iter = m_children.begin();
+			iter != m_children.end();
+			++iter) {
+			buffer.push_back(*iter);
+			if ((*iter)->get_type() == object_type::DUMMY_OBJECT) {
+				(dynamic_cast<dummy_object*>(*iter))->tranverse_children(buffer);
+			}
+		}
+	}
 }

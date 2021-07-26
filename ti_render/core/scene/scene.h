@@ -19,8 +19,11 @@ namespace ti_render {
 		void set_id(object* obj, unsigned int id = 0);
 
 	protected:
+		unsigned int m_root_id = 0;
 		dummy_object* m_root;
+		unsigned int m_camera_id = 0;
 		camera_object* m_camera;
+		unsigned int m_sky_id = 0;
 		sky_object* m_sky = nullptr;
 
 	public:
