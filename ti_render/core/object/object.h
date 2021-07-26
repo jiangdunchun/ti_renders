@@ -11,10 +11,10 @@ namespace ti_render {
 	enum class object_type {
 		DUMMY_OBJECT,
 		CAMERA_OBJECT,
+		SKY_OBJECT,
 		POINT_LIGHT,
 		ENVIRONMENT_LIGHT,
 		PARALLEL_LIGHT,
-		SKY_OBJECT,
 		MESH_OBJECT
 	};
 

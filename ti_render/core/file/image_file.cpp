@@ -17,7 +17,7 @@ namespace ti_render {
 		stbi_set_flip_vertically_on_load(true);
 
 		function<void*(char const*, int*, int*, int*, int)> image_loader = nullptr;
-		switch (format) {
+		switch (m_format) {
 		case color_format::R8B:
 		case color_format::RGB8B:
 		case color_format::RGBA8B:
@@ -33,7 +33,7 @@ namespace ti_render {
 		}
 
 		int req_component = 0;
-		switch (format) {
+		switch (m_format) {
 		case color_format::R8B:
 		case color_format::R16F:
 			req_component = 1;
@@ -64,8 +64,31 @@ namespace ti_render {
 	}
 
 	image_file::image_file(
-		const void* data,
-		color_format format) : m_data(const_cast<void*>(data)), m_format(format) {
+		unsigned int width,
+		unsigned int height,
+		color_format format) : m_width(width), m_height(height), m_format(format) {
+		switch (m_format) {
+		case color_format::R8B:
+			m_data = new char[m_width * m_height * 1];
+			break;
+		case color_format::RGB8B:
+			m_data = new char[m_width * m_height * 3];
+			break;
+		case color_format::RGBA8B:
+			m_data = new char[m_width * m_height * 4];
+			break;
+		case color_format::R16F:
+			m_data = new float[m_width * m_height * 1];
+			break;
+		case color_format::RGB16F:
+			m_data = new float[m_width * m_height * 3];
+			break;
+		case color_format::RGBA16F:
+			m_data = new float[m_width * m_height * 4];
+			break;
+		default:
+			break;
+		}
 	}
 
 	image_file::~image_file() {
@@ -74,5 +97,30 @@ namespace ti_render {
 
 	void image_file::save(const std::string& path) const {
 		throw "not impl!";
+	}
+
+	void image_file::set_data(const void* data) {
+		switch (m_format) {
+		case color_format::R8B:
+			memcpy(m_data, data, sizeof(char) * m_width * m_height * 1);
+			break;
+		case color_format::RGB8B:
+			memcpy(m_data, data, sizeof(char) * m_width * m_height * 3);
+			break;
+		case color_format::RGBA8B:
+			memcpy(m_data, data, sizeof(char) * m_width * m_height * 3);
+			break;
+		case color_format::R16F:
+			memcpy(m_data, data, sizeof(float) * m_width * m_height * 1);
+			break;
+		case color_format::RGB16F:
+			memcpy(m_data, data, sizeof(float) * m_width * m_height * 3);
+			break;
+		case color_format::RGBA16F:
+			memcpy(m_data, data, sizeof(float) * m_width * m_height * 4);
+			break;
+		default:
+			break;
+		}
 	}
 }

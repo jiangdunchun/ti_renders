@@ -16,7 +16,7 @@ namespace ti_render {
 
 	public:
 		image_file(const std::string& path, color_format format);
-		image_file(const void* data, color_format format);
+		image_file(unsigned int width, unsigned int height, color_format format);
 		~image_file();
 
 		void save(const std::string& path) const;
@@ -29,7 +29,8 @@ namespace ti_render {
 		const color_format& get_color_format(void) {
 			return m_format;
 		}
-		const void* get_raw_data(void) {
+		void set_data(const void* data);
+		const void* get_data(void) {
 			return m_data;
 		}
 	};

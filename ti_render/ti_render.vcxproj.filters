@@ -111,6 +111,9 @@
     <ClInclude Include="core\object\light_object.h">
       <Filter>core\object</Filter>
     </ClInclude>
+    <ClInclude Include="common\tr_algorithm.h">
+      <Filter>common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="third_party\glad\glad.c">
@@ -175,6 +178,9 @@
     </ClCompile>
     <ClCompile Include="core\object\light_object.cpp">
       <Filter>core\object</Filter>
+    </ClCompile>
+    <ClCompile Include="common\tr_algorithm.cpp">
+      <Filter>common</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

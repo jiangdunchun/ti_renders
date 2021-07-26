@@ -24,7 +24,7 @@ namespace ti_render {
 			nullptr);
 
 		if (mipmap) {
-			m_mipmap_layer_max = log2(max(m_width, m_height));
+			m_mipmap_layer_max = unsigned int(log2(max(m_width, m_height)));
 			glGenerateMipmap(GL_TEXTURE_2D);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 		}

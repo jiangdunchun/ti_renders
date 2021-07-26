@@ -16,6 +16,17 @@ namespace ti_render {
 		glm::vec3 min;
 		glm::vec3 max;
 	};
+
+	struct ray {
+		glm::vec3 origin;
+		glm::vec3 direction;
+	};
+
+	struct triangle {
+		vertex* p0;
+		vertex* p1;
+		vertex* p2;
+	};
 }
 
 #endif // !__TR_STRUCT_H__

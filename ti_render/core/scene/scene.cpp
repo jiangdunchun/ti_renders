@@ -5,6 +5,7 @@
 using namespace std;
 
 namespace ti_render {
+	// 0-16 are reserved
 	unsigned int scene::generate_id(void) {
 		unsigned int id = rand() % 0xfffffff0;
 		while (find_object(id)) {
@@ -35,7 +36,6 @@ namespace ti_render {
 		m_camera = new camera_object(45.0f, 1.0f);
 		m_camera->set_parent(m_root);
 		set_id(m_root, m_camera_id);
-
 	}
 
 	scene::~scene() {
@@ -64,8 +64,7 @@ namespace ti_render {
 
 	void scene::dispose(object* obj) {
 		if (obj->m_parent) {
-			for (
-				vector<object*>::iterator iter = obj->m_parent->m_children.begin();
+			for (vector<object*>::iterator iter = obj->m_parent->m_children.begin();
 				iter != obj->m_parent->m_children.end();
 				++iter) {
 				obj->m_parent->m_children.erase(iter);

@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="common\i_logger.h" />
     <ClInclude Include="common\logger_management.h" />
+    <ClInclude Include="common\tr_algorithm.h" />
     <ClInclude Include="common\tr_enum.h" />
     <ClInclude Include="common\tr_struct.h" />
     <ClInclude Include="core\file\image_file.h" />
@@ -48,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="common\logger_management.cpp" />
+    <ClCompile Include="common\tr_algorithm.cpp" />
     <ClCompile Include="core\file\image_file.cpp" />
     <ClCompile Include="core\file\material_file.cpp" />
     <ClCompile Include="core\file\mesh_file.cpp" />
