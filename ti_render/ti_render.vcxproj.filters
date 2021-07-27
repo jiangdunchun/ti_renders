@@ -31,6 +31,9 @@
     <Filter Include="core\scene">
       <UniqueIdentifier>{0d62bba8-7cd6-4a33-ae43-860c36082584}</UniqueIdentifier>
     </Filter>
+    <Filter Include="core\material">
+      <UniqueIdentifier>{33f41d7b-8fb9-4a74-a98e-71d7661f9ad4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common\tr_enum.h">
@@ -114,6 +117,18 @@
     <ClInclude Include="common\tr_algorithm.h">
       <Filter>common</Filter>
     </ClInclude>
+    <ClInclude Include="common\tr_string_parser.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="core\material\material_common.h">
+      <Filter>core\material</Filter>
+    </ClInclude>
+    <ClInclude Include="core\material\material.h">
+      <Filter>core\material</Filter>
+    </ClInclude>
+    <ClInclude Include="core\material\material_factory.h">
+      <Filter>core\material</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="third_party\glad\glad.c">
@@ -181,6 +196,15 @@
     </ClCompile>
     <ClCompile Include="common\tr_algorithm.cpp">
       <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="common\tr_string_parser.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="core\material\material.cpp">
+      <Filter>core\material</Filter>
+    </ClCompile>
+    <ClCompile Include="core\material\material_factory.cpp">
+      <Filter>core\material</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

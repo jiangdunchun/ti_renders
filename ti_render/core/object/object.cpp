@@ -50,7 +50,7 @@ namespace ti_render {
 		vec3 position; 
 		vec3 rotation; 
 		vec3 scale;
-		decompose_mat4(w_transform, position, rotation, scale);
+		tr_algorithm::decompose_mat4(w_transform, position, rotation, scale);
 
 		return position;
 	}
@@ -59,7 +59,7 @@ namespace ti_render {
 		vec3 position;
 		vec3 rotation;
 		vec3 scale;
-		decompose_mat4(w_transform, position, rotation, scale);
+		tr_algorithm::decompose_mat4(w_transform, position, rotation, scale);
 
 		return rotation;
 	}
@@ -68,7 +68,7 @@ namespace ti_render {
 		vec3 position;
 		vec3 rotation;
 		vec3 scale;
-		decompose_mat4(w_transform, position, rotation, scale);
+		tr_algorithm::decompose_mat4(w_transform, position, rotation, scale);
 
 		return scale;
 	}

@@ -100,6 +100,8 @@ namespace ti_render {
 	}
 
 	void image_file::set_data(const void* data) {
+		if (!m_data) delete[] m_data;
+
 		switch (m_format) {
 		case color_format::R8B:
 			memcpy(m_data, data, sizeof(char) * m_width * m_height * 1);

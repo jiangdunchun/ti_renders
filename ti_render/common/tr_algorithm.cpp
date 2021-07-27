@@ -8,7 +8,7 @@ using namespace glm;
 #define PI 3.1415926
 
 namespace ti_render {
-	void decompose_mat4(
+	void tr_algorithm::decompose_mat4(
 		const mat4& tansform,
 		vec3& position,
 		vec3& rotation,
@@ -40,7 +40,7 @@ namespace ti_render {
 		rotation = float(180.0f / PI) * rotation;
 	}
 
-	bool is_contain_in_AABB(
+	bool tr_algorithm::is_contain_in_AABB(
 		vec3 point,
 		AABB AABB_o,
 		mat4 AABB_o_trans) {
@@ -56,7 +56,7 @@ namespace ti_render {
 		return true;
 	}
 
-	bool is_intersect_with_AABB(
+	bool tr_algorithm::is_intersect_with_AABB(
 		ray ray,
 		AABB AABB,
 		mat4 AABB_trans) {

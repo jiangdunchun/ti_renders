@@ -23,11 +23,15 @@
     <ClInclude Include="common\logger_management.h" />
     <ClInclude Include="common\tr_algorithm.h" />
     <ClInclude Include="common\tr_enum.h" />
+    <ClInclude Include="common\tr_string_parser.h" />
     <ClInclude Include="common\tr_struct.h" />
     <ClInclude Include="core\file\image_file.h" />
     <ClInclude Include="core\file\material_file.h" />
     <ClInclude Include="core\file\mesh_file.h" />
     <ClInclude Include="core\file\shader_file.h" />
+    <ClInclude Include="core\material\material.h" />
+    <ClInclude Include="core\material\material_common.h" />
+    <ClInclude Include="core\material\material_factory.h" />
     <ClInclude Include="core\object\camera_object.h" />
     <ClInclude Include="core\object\dummy_object.h" />
     <ClInclude Include="core\object\light_object.h" />
@@ -50,10 +54,13 @@
   <ItemGroup>
     <ClCompile Include="common\logger_management.cpp" />
     <ClCompile Include="common\tr_algorithm.cpp" />
+    <ClCompile Include="common\tr_string_parser.cpp" />
     <ClCompile Include="core\file\image_file.cpp" />
     <ClCompile Include="core\file\material_file.cpp" />
     <ClCompile Include="core\file\mesh_file.cpp" />
     <ClCompile Include="core\file\shader_file.cpp" />
+    <ClCompile Include="core\material\material.cpp" />
+    <ClCompile Include="core\material\material_factory.cpp" />
     <ClCompile Include="core\object\camera_object.cpp" />
     <ClCompile Include="core\object\dummy_object.cpp" />
     <ClCompile Include="core\object\light_object.cpp" />
