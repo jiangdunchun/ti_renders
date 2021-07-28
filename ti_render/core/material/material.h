@@ -37,6 +37,12 @@ namespace ti_render {
 		void compile(material_file* m_file);
 
 	public:
+		const material_type& get_type(void) const {
+			return m_type;
+		}
+		const light_model& get_light_model(void) const {
+			return m_light_model;
+		}
 		void bind(void);
 		void set_value_temporary(const material_parameter& parameter, void* value);
 		void set_value_permanent(const material_parameter& parameter, void* value);

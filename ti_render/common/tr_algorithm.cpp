@@ -42,15 +42,15 @@ namespace ti_render {
 
 	bool tr_algorithm::is_contain_in_AABB(
 		vec3 point,
-		AABB AABB_o,
-		mat4 AABB_o_trans) {
-		mat4 inverse_trans = inverse(AABB_o_trans);
+		AABB aabb_o,
+		mat4 aabb_o_trans) {
+		mat4 inverse_trans = inverse(aabb_o_trans);
 		point = vec3(inverse_trans * (vec4(point, 1.0f)));
 
-		vec3 delta_min = point - AABB_o.min;
+		vec3 delta_min = point - aabb_o.min;
 		if (delta_min.x < 0 || delta_min.y < 0 || delta_min.z < 0) return false;
 
-		vec3 delta_max = AABB_o.max - point;
+		vec3 delta_max = aabb_o.max - point;
 		if (delta_max.x < 0 || delta_max.y < 0 || delta_max.z < 0) return false;
 
 		return true;
@@ -58,15 +58,15 @@ namespace ti_render {
 
 	bool tr_algorithm::is_intersect_with_AABB(
 		ray ray,
-		AABB AABB,
-		mat4 AABB_trans) {
-		mat4 inverse_trans = inverse(AABB_trans);
+		AABB aabb,
+		mat4 aabb_trans) {
+		mat4 inverse_trans = inverse(aabb_trans);
 
 		ray.origin = vec3(inverse_trans * (vec4(ray.origin, 1.0f)));
 		ray.direction = vec3(inverse_trans * (vec4(ray.direction, 0.0f)));
 
-		vec3 d_min = (AABB.min - ray.origin) / ray.direction;
-		vec3 d_max = (AABB.max - ray.origin) / ray.direction;
+		vec3 d_min = (aabb.min - ray.origin) / ray.direction;
+		vec3 d_max = (aabb.max - ray.origin) / ray.direction;
 
 		vec3 d_front = glm::min(d_min, d_max);
 		vec3 d_back = glm::max(d_min, d_max);

@@ -73,7 +73,7 @@ namespace ti_render {
 				if (get<1>(iter->second) == 0) {
 					delete shader_ptr;
 				}
-				sm_texture_2d_pool.erase(iter->first);
+				sm_shader_pool.erase(iter->first);
 				break;
 			}
 		}
@@ -223,6 +223,9 @@ namespace ti_render {
 				if (m_file) {
 					string value_str = m_file->get_value(iter->name);
 					create_val_ptr(value_ptr, iter->type, value_str);
+				}
+				else {
+					create_val_ptr(value_ptr, iter->type, iter->default_value);
 				}
 
 				m_parameter_buffer[iter->name] = make_tuple(iter->type, value_ptr);

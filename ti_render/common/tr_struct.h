@@ -2,6 +2,7 @@
 #define __TR_STRUCT_H__
 
 #include <glm/glm.hpp>
+#include <vector>
 
 namespace ti_render {
 	struct vertex {
@@ -15,6 +16,12 @@ namespace ti_render {
 	struct AABB {
 		glm::vec3 min;
 		glm::vec3 max;
+	};
+
+	struct face {
+		std::vector<vertex> vertices;
+		std::vector<unsigned int> indices;
+		AABB aabb;
 	};
 
 	struct ray {

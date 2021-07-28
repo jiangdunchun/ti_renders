@@ -31,6 +31,7 @@ namespace ti_render {
 	struct material_parameter {
 		std::string name;
 		value_type type;
+		std::string default_value;
 	};
 }
 

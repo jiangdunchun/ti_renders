@@ -10,28 +10,20 @@
 namespace ti_render {
 	class mesh_file {
 	private:
-		std::vector<vertex> m_vertices;
-		std::vector<unsigned int> m_indices;
-		AABB m_AABB;
+		std::vector<face> m_faces;
+		AABB m_aabb;
 
 	public:
 		mesh_file(const std::string& path);
-		mesh_file(
-			const std::vector<vertex>& vertices,
-			const std::vector<unsigned int>& indices,
-			glm::vec3 AABB_min = glm::vec3(0.0f, 0.0f, 0.0f),
-			glm::vec3 AABB_max = glm::vec3(0.0f, 0.0f, 0.0f));
+		mesh_file(std::vector<face> faces, AABB aabb);
 		~mesh_file();
 
-		void save(const std::string& path) const;
-		const std::vector<vertex>& get_vertices(void) const {
-			return this->m_vertices;
+		void save(const std::string& path);
+		const std::vector<face>& get_faces(void) const {
+			return m_faces;
 		}
-		const std::vector<unsigned int>& get_indices(void) const {
-			return this->m_indices;
-		}
-		const AABB& get_AABB(void) const {
-			return this->m_AABB;
+		const AABB& get_aabb(void) const {
+			return this->m_aabb;
 		}
 	};
 }

@@ -7,6 +7,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ti_render.test", "ti_render
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ti_render", "ti_render\ti_render.vcxproj", "{1F6688A1-A2A3-4ECB-B064-15682117C541}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "toolkit", "toolkit", "{CDA5201A-A1D3-4C4D-B94A-2F3BC077D6E5}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mesh_exporter", "toolkit\mesh_exporter\mesh_exporter.vcxproj", "{1D3D23E0-D185-4CE7-9DC8-8B1802FA74B8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -31,9 +35,20 @@ Global
 		{1F6688A1-A2A3-4ECB-B064-15682117C541}.Release|x64.Build.0 = Release|x64
 		{1F6688A1-A2A3-4ECB-B064-15682117C541}.Release|x86.ActiveCfg = Release|Win32
 		{1F6688A1-A2A3-4ECB-B064-15682117C541}.Release|x86.Build.0 = Release|Win32
+		{1D3D23E0-D185-4CE7-9DC8-8B1802FA74B8}.Debug|x64.ActiveCfg = Debug|x64
+		{1D3D23E0-D185-4CE7-9DC8-8B1802FA74B8}.Debug|x64.Build.0 = Debug|x64
+		{1D3D23E0-D185-4CE7-9DC8-8B1802FA74B8}.Debug|x86.ActiveCfg = Debug|Win32
+		{1D3D23E0-D185-4CE7-9DC8-8B1802FA74B8}.Debug|x86.Build.0 = Debug|Win32
+		{1D3D23E0-D185-4CE7-9DC8-8B1802FA74B8}.Release|x64.ActiveCfg = Release|x64
+		{1D3D23E0-D185-4CE7-9DC8-8B1802FA74B8}.Release|x64.Build.0 = Release|x64
+		{1D3D23E0-D185-4CE7-9DC8-8B1802FA74B8}.Release|x86.ActiveCfg = Release|Win32
+		{1D3D23E0-D185-4CE7-9DC8-8B1802FA74B8}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{1D3D23E0-D185-4CE7-9DC8-8B1802FA74B8} = {CDA5201A-A1D3-4C4D-B94A-2F3BC077D6E5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A3BBF731-0C82-4C8D-9D80-470B50507CB6}
