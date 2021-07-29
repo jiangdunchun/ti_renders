@@ -11,8 +11,8 @@ namespace ti_render {
 	class material_file {
 	private:
 		std::string m_format;
-		std::vector<std::string> _parameters;
-		std::vector<std::string> _values;
+		std::vector<std::string> m_parameters;
+		std::vector<std::string> m_values;
 
 	public:
 		material_file(const std::string& path);
@@ -24,21 +24,10 @@ namespace ti_render {
 			return this->m_format;
 		}
 		const std::vector<std::string>& get_parameters(void) const {
-			return this->_parameters;
+			return this->m_parameters;
 		}
-		const std::string& get_value(const std::string& parameter) const {
-			for (unsigned int i = 0; i < this->_parameters.size(); i++) {
-				if (parameter == this->_parameters[i]) return this->_values[i];
-			}
-		}
-		void set_value(const std::string& parameter, const std::string& value) {
-			for (unsigned int i = 0; i < this->_parameters.size(); i++) {
-				if (parameter == this->_parameters[i]) {
-					this->_values[i] = value;
-					return;
-				}
-			}
-		}
+		const std::string& get_value(const std::string& parameter) const;
+		void set_value(const std::string& parameter, const std::string& value);
 	};
 }
 
