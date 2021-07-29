@@ -10,7 +10,7 @@
 
 namespace ti_render {
 	class material {
-	friend class material_foctory;
+	friend class material_factory;
 
 	private:
 		static texture_2d* sm_nill_texture_2d;
@@ -35,6 +35,8 @@ namespace ti_render {
 		std::vector<material_parameter> m_parameters;
 
 		void compile(material_file* m_file);
+
+		virtual ~material();
 
 	public:
 		const material_type& get_type(void) const {

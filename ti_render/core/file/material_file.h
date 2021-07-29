@@ -10,7 +10,7 @@
 namespace ti_render {
 	class material_file {
 	private:
-		std::string m_format;
+		std::string m_type;
 		std::vector<std::string> m_parameters;
 		std::vector<std::string> m_values;
 
@@ -21,7 +21,7 @@ namespace ti_render {
 
 		void save(const std::string& path) const;
 		const std::string& get_type(void) const {
-			return this->m_format;
+			return this->m_type;
 		}
 		const std::vector<std::string>& get_parameters(void) const {
 			return this->m_parameters;

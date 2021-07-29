@@ -241,6 +241,18 @@ namespace ti_render {
 		m_shader = create_shader(m_shader_path);
 	}
 
+	material::~material() {
+		if (m_shader != nullptr) dispose_shader(m_shader);
+
+		for (map<string, tuple<value_type, void*>>::iterator iter = m_parameter_buffer.begin();
+			iter != m_parameter_buffer.end();
+			++iter) {
+			value_type p_type = get<0>(iter->second);
+			void* p_value = get<1>(iter->second);
+			delete_val_ptr(p_value, p_type);
+		}
+	}
+
 	void material::bind(void) {
 		m_shader->use();
 

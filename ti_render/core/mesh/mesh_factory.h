@@ -12,7 +12,6 @@ namespace ti_render {
 		static std::map<std::string, std::tuple<mesh*, unsigned int>> sm_mesh_pool;
 	public:
 		static mesh* create_mesh(const std::string& path);
-		static mesh* create_mesh(const std::vector<face>& faces, const AABB& aabb);
 		static void dispose_mesh(mesh* mesh_ptr);
 	};
 }

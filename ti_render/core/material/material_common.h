@@ -9,6 +9,15 @@ namespace ti_render {
 		METALLIC_ROUGHNESS = 0,
 	};
 
+	class materiral_type_helper {
+	private:
+		static std::string enum_str[];
+
+	public:
+		static std::string to_string(material_type type);
+		static material_type to_type(std::string type_str);
+	};
+
 	enum class value_type {
 		NILL = -1,
 		INT = 0,

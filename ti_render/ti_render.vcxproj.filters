@@ -138,6 +138,9 @@
     <ClInclude Include="core\mesh\mesh_factory.h">
       <Filter>core\mesh</Filter>
     </ClInclude>
+    <ClInclude Include="core\material\metallic_roughness_material.h">
+      <Filter>core\material</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="third_party\glad\glad.c">
@@ -220,6 +223,9 @@
     </ClCompile>
     <ClCompile Include="core\mesh\mesh_factory.cpp">
       <Filter>core\mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="core\material\material_common.cpp">
+      <Filter>core\material</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -24,7 +24,7 @@ namespace ti_render {
 			Document::AllocatorType allocator;
 
 			if (!m_json.Parse(mat_str.c_str()).HasParseError()) {
-				m_format = m_json[MATERIAL_TYPE_ELEM].GetString();
+				m_type = m_json[MATERIAL_TYPE_ELEM].GetString();
 
 				Value& parameters = m_json[MATERIAL_PARAMETERS_ELEM];
 				Value::MemberIterator iter = parameters.MemberBegin();
@@ -49,7 +49,7 @@ namespace ti_render {
 	}
 
 	material_file::material_file(const string& type, const vector<string>& parameters) {
-		m_format = type;
+		m_type = type;
 		m_parameters = parameters;
 		m_values.resize(parameters.size(), "");
 	}
@@ -61,7 +61,7 @@ namespace ti_render {
 		Document mat_doc(kObjectType);
 
 		Value type_json(kStringType);
-		type_json.SetString(m_format.c_str(), mat_doc.GetAllocator());
+		type_json.SetString(m_type.c_str(), mat_doc.GetAllocator());
 		mat_doc.AddMember(MATERIAL_TYPE_ELEM, type_json, mat_doc.GetAllocator());
 
 		Value parameters_json(kObjectType);
