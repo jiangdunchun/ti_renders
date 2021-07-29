@@ -56,6 +56,8 @@ face process_mesh(aiMesh* ai_mesh) {
     vector<unsigned int> indices;
     AABB aabb = { vec3(FLT_MAX, FLT_MAX, FLT_MAX), vec3(FLT_MIN, FLT_MIN, FLT_MIN)};
 
+    if (ai_mesh->mNumUVComponents[0] != 2) return { vertices, indices, aabb };
+
     for (unsigned int i = 0; i < ai_mesh->mNumVertices; ++i) {
         vec3 position = vec3(ai_mesh->mVertices[i].x, ai_mesh->mVertices[i].y, ai_mesh->mVertices[i].z);
         vec2 uv = vec2(ai_mesh->mTextureCoords[0][i].x, ai_mesh->mTextureCoords[0][i].y);
@@ -86,7 +88,8 @@ void process_node(aiNode* node_ptr, const vector<aiMesh*>& mesh_buffer, const st
     AABB aabb = { vec3(FLT_MAX, FLT_MAX, FLT_MAX), vec3(FLT_MIN, FLT_MIN, FLT_MIN) };
 
     for (unsigned int i = 0; i < node_ptr->mNumMeshes; ++i) {
-        faces.push_back(process_mesh(mesh_buffer[node_ptr->mMeshes[i]]));
+        face n_face = process_mesh(mesh_buffer[node_ptr->mMeshes[i]]);
+        if (n_face.vertices.size() != 0) faces.push_back(n_face);
     }
     
     for (unsigned int i = 0; i < faces.size(); ++i) {
@@ -107,7 +110,7 @@ void process_node(aiNode* node_ptr, const vector<aiMesh*>& mesh_buffer, const st
 }
 
 int main(unsigned int argc, char** argv) {
-    if (argc < 1) std::cout << "Error: missing *.obj path" << std::endl;
+    if (argc < 1) std::cout << "Error: missing model path" << std::endl;
 
     for (int i = 1; i < argc; i++) {
         std::string obj_path = argv[i];
@@ -115,7 +118,7 @@ int main(unsigned int argc, char** argv) {
         std::string obj_name = get_obj_name(obj_path);
 
         Assimp::Importer importer;
-        const aiScene* scene = importer.ReadFile(obj_path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
+        const aiScene* scene = importer.ReadFile(obj_path, aiProcessPreset_TargetRealtime_MaxQuality);
 
         if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
             std::cout << "Error: " << importer.GetErrorString() << std::endl;

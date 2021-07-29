@@ -20,31 +20,22 @@ namespace ti_render {
             file.read((char*)&faces_num, sizeof(unsigned int));
 
             for (unsigned int i = 0; i < faces_num; i++) {
-                vector<vertex> vertices;
-                vector<unsigned int> indices;
-                AABB f_aabb;
-
                 unsigned int vertices_num;
                 file.read((char*)&vertices_num, sizeof(unsigned int));
-                for (unsigned int i = 0; i < vertices_num; i++) {
-                    vertex now_vertex;
-                    file.read((char*)&now_vertex, sizeof(vertex));
-                    vertices.push_back(now_vertex);
-                }
+                vector<vertex> vertices(vertices_num);
+                file.read((char*)&vertices[0], sizeof(vertex) * vertices_num);
+
                 unsigned int indices_num;
                 file.read((char*)&indices_num, sizeof(unsigned int));
-                for (unsigned int i = 0; i < indices_num; i++) {
-                    unsigned int index;
-                    file.read((char*)&index, sizeof(unsigned int));
-                    indices.push_back(index);
-                }
-                file.read((char*)&f_aabb.min.x, sizeof(vec3));
-                file.read((char*)&f_aabb.max.x, sizeof(vec3));
+                vector<unsigned int> indices(indices_num);
+                file.read((char*)&indices[0], sizeof(unsigned int) * indices_num);
+
+                AABB f_aabb;
+                file.read((char*)&f_aabb, sizeof(AABB));
 
                 faces.push_back({ vertices , indices, f_aabb });
             }
-            file.read((char*)&aabb.min.x, sizeof(vec3));
-            file.read((char*)&aabb.max.x, sizeof(vec3));
+            file.read((char*)&aabb, sizeof(AABB));
 
             file.close();
         }
@@ -75,18 +66,16 @@ namespace ti_render {
             iter != m_faces.end();
             ++iter) {
             unsigned int vertices_num = iter->vertices.size();
-            mesh_stream.write((char*)&(vertices_num), sizeof(unsigned int));
-            mesh_stream.write((char*)&(iter->vertices[0]), sizeof(vertex) * vertices_num);
+            mesh_stream.write((char*)&vertices_num, sizeof(unsigned int));
+            mesh_stream.write((char*)&iter->vertices[0], sizeof(vertex) * vertices_num);
 
             unsigned int indices_num = iter->indices.size();
-            mesh_stream.write((char*)&(indices_num), sizeof(unsigned int));
-            mesh_stream.write((char*)&(iter->indices[0]), sizeof(unsigned int) * indices_num);
+            mesh_stream.write((char*)&indices_num, sizeof(unsigned int));
+            mesh_stream.write((char*)&iter->indices[0], sizeof(unsigned int) * indices_num);
 
-            mesh_stream.write((char*)&iter->aabb.min.x, sizeof(float) * 3);
-            mesh_stream.write((char*)&iter->aabb.max.x, sizeof(float) * 3);
+            mesh_stream.write((char*)&iter->aabb, sizeof(AABB));
         }
-        mesh_stream.write((char*)&m_aabb.min.x, sizeof(float) * 3);
-        mesh_stream.write((char*)&m_aabb.max.x, sizeof(float) * 3);
+        mesh_stream.write((char*)&m_aabb, sizeof(AABB));
 
         mesh_stream.close();
     }

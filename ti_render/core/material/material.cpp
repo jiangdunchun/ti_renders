@@ -32,6 +32,11 @@ namespace ti_render {
 	}
 
 	void material::dispose_texture_2d(texture_2d* texture_ptr) {
+		if (texture_ptr == sm_nill_texture_2d) {
+			texture_ptr = nullptr;
+			return;
+		}
+
 		for (map<string, tuple<texture_2d*, unsigned int>>::iterator iter = sm_texture_2d_pool.begin();
 			iter != sm_texture_2d_pool.end();
 			++iter) {
