@@ -34,6 +34,9 @@
     <Filter Include="core\material">
       <UniqueIdentifier>{33f41d7b-8fb9-4a74-a98e-71d7661f9ad4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="core\mesh">
+      <UniqueIdentifier>{827a4fac-0cb2-4bdd-a5c3-f2e0551e69cd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common\tr_enum.h">
@@ -129,6 +132,12 @@
     <ClInclude Include="core\material\material_factory.h">
       <Filter>core\material</Filter>
     </ClInclude>
+    <ClInclude Include="core\mesh\mesh.h">
+      <Filter>core\mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="core\mesh\mesh_factory.h">
+      <Filter>core\mesh</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="third_party\glad\glad.c">
@@ -205,6 +214,12 @@
     </ClCompile>
     <ClCompile Include="core\material\material_factory.cpp">
       <Filter>core\material</Filter>
+    </ClCompile>
+    <ClCompile Include="core\mesh\mesh.cpp">
+      <Filter>core\mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="core\mesh\mesh_factory.cpp">
+      <Filter>core\mesh</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

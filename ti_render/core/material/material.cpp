@@ -21,7 +21,7 @@ namespace ti_render {
 			if (i_file.get_width() == 0 || i_file.get_height() == 0) return sm_nill_texture_2d;
 
 			texture_2d* texture_2d_ptr = new texture_2d(i_file.get_width(), i_file.get_height(), color_format::RGB8B);
-			texture_2d_ptr->push_data(i_file.get_color_format(), const_cast<void*>(i_file.get_data()));
+			texture_2d_ptr->push_data(i_file.get_color_format(), i_file.get_data());
 			sm_texture_2d_pool[md5] = make_tuple(texture_2d_ptr, 1);
 			return texture_2d_ptr;
 		}

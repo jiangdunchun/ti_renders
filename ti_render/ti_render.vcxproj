@@ -32,6 +32,8 @@
     <ClInclude Include="core\material\material.h" />
     <ClInclude Include="core\material\material_common.h" />
     <ClInclude Include="core\material\material_factory.h" />
+    <ClInclude Include="core\mesh\mesh.h" />
+    <ClInclude Include="core\mesh\mesh_factory.h" />
     <ClInclude Include="core\object\camera_object.h" />
     <ClInclude Include="core\object\dummy_object.h" />
     <ClInclude Include="core\object\light_object.h" />
@@ -61,6 +63,8 @@
     <ClCompile Include="core\file\shader_file.cpp" />
     <ClCompile Include="core\material\material.cpp" />
     <ClCompile Include="core\material\material_factory.cpp" />
+    <ClCompile Include="core\mesh\mesh.cpp" />
+    <ClCompile Include="core\mesh\mesh_factory.cpp" />
     <ClCompile Include="core\object\camera_object.cpp" />
     <ClCompile Include="core\object\dummy_object.cpp" />
     <ClCompile Include="core\object\light_object.cpp" />

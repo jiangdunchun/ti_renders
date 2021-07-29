@@ -8,7 +8,7 @@ namespace ti_render {
 	sky_object::sky_object(const std::string& sky_hdr) {
 		image_file sky_hdr_image(sky_hdr, color_format::RGBA16F);
 		m_sky_hdr = new gl3plus_texture_2d(sky_hdr_image.get_width(), sky_hdr_image.get_height(), color_format::RGBA16F);
-		m_sky_hdr->push_data(sky_hdr_image.get_color_format(), const_cast<void*>(sky_hdr_image.get_data()));
+		m_sky_hdr->push_data(sky_hdr_image.get_color_format(), sky_hdr_image.get_data());
 	}
 
 	sky_object::~sky_object() {

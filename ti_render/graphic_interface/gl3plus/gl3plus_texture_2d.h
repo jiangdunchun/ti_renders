@@ -23,7 +23,7 @@ namespace ti_render {
 			bool mipmap = false);
 		~gl3plus_texture_2d();
 
-		void push_data(color_format format, void* data, unsigned int mipmap_layer = 0);
+		void push_data(color_format format, const void* data, unsigned int mipmap_layer = 0);
 		const unsigned int& get_mipmap_layer_max(void) const {
 			return m_mipmap_layer_max;
 		}

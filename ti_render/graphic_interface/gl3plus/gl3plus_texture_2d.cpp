@@ -43,7 +43,7 @@ namespace ti_render {
 
 	void gl3plus_texture_2d::push_data(
 		color_format format,
-		void* data, 
+		const void* data, 
 		unsigned int mipmap_layer) {
 		if (mipmap_layer > m_mipmap_layer_max) return;
 
