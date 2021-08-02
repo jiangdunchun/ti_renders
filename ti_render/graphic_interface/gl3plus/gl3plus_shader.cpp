@@ -1,10 +1,13 @@
 #include "gl3plus_shader.h"
 
+using namespace std;
+using namespace glm;
+
 namespace ti_render {
     inline void check_compile_errors(
         GLuint id,
-        const std::string& type,
-        const std::string& code) {
+        const string& type,
+        const string& code) {
         GLint success;
         GLchar info_log[1024];
 
@@ -22,9 +25,9 @@ namespace ti_render {
 
     inline void check_link_errors(
         GLuint id, 
-        const std::string& v_code, 
-        const std::string& f_code,
-        const std::string& g_code = "") {
+        const string& v_code, 
+        const string& f_code,
+        const string& g_code = "") {
         GLint success;
         GLchar info_log[1024];
 
@@ -46,9 +49,9 @@ namespace ti_render {
 	unsigned int gl3plus_shader::sm_texture_index = 0;
 
     gl3plus_shader::gl3plus_shader(
-        const std::string& vertex_code, 
-        const std::string& fragment_code, 
-        const std::string& geometry_code) {
+        const string& vertex_code, 
+        const string& fragment_code, 
+        const string& geometry_code) {
         unsigned int v_id;
         const char* v_code = vertex_code.c_str();
         v_id = glCreateShader(GL_VERTEX_SHADER);
@@ -101,50 +104,50 @@ namespace ti_render {
         gl3plus_shader::sm_texture_index = 0;
     }
 
-    void gl3plus_shader::set_bool(const std::string& name, const bool value) const {
+    void gl3plus_shader::set_bool(const string& name, const bool value) const {
         glUniform1i(glGetUniformLocation(m_id, name.c_str()), (int)value);
     }
 
-    void gl3plus_shader::set_int(const std::string& name, const int value) const {
+    void gl3plus_shader::set_int(const string& name, const int value) const {
         glUniform1i(glGetUniformLocation(m_id, name.c_str()), value);
     }
 
-    void gl3plus_shader::set_float(const std::string& name, const float value) const {
+    void gl3plus_shader::set_float(const string& name, const float value) const {
         glUniform1f(glGetUniformLocation(m_id, name.c_str()), value);
     }
 
-    void gl3plus_shader::set_vec2(const std::string& name, const glm::vec2& value) const {
+    void gl3plus_shader::set_vec2(const string& name, const vec2& value) const {
         glUniform2fv(glGetUniformLocation(m_id, name.c_str()), 1, &value[0]);
     }
 
-    void gl3plus_shader::set_vec3(const std::string& name, const glm::vec3& value) const {
+    void gl3plus_shader::set_vec3(const string& name, const vec3& value) const {
         glUniform3fv(glGetUniformLocation(m_id, name.c_str()), 1, &value[0]);
     }
 
-    void gl3plus_shader::set_vec4(const std::string& name, const glm::vec4& value) const {
+    void gl3plus_shader::set_vec4(const string& name, const vec4& value) const {
         glUniform4fv(glGetUniformLocation(m_id, name.c_str()), 1, &value[0]);
     }
 
-    void gl3plus_shader::set_mat2(const std::string& name, const glm::mat2& value) const {
+    void gl3plus_shader::set_mat2(const string& name, const mat2& value) const {
         glUniformMatrix2fv(glGetUniformLocation(m_id, name.c_str()), 1, GL_FALSE, &value[0][0]);
     }
 
-    void gl3plus_shader::set_mat3(const std::string& name, const glm::mat3& value) const {
+    void gl3plus_shader::set_mat3(const string& name, const mat3& value) const {
         glUniformMatrix3fv(glGetUniformLocation(m_id, name.c_str()), 1, GL_FALSE, &value[0][0]);
     }
 
-    void gl3plus_shader::set_mat4(const std::string& name, const glm::mat4& value) const {
+    void gl3plus_shader::set_mat4(const string& name, const mat4& value) const {
         glUniformMatrix4fv(glGetUniformLocation(m_id, name.c_str()), 1, GL_FALSE, &value[0][0]);
     }
 
-    void gl3plus_shader::set_texture_2d(const std::string& name, const gl3plus_texture_2d* value) const {
+    void gl3plus_shader::set_texture_2d(const string& name, const gl3plus_texture_2d* value) const {
         glActiveTexture(GL_TEXTURE0 + sm_texture_index);
         set_int(name.c_str(), sm_texture_index);
         glBindTexture(GL_TEXTURE_2D, value->m_id);
         sm_texture_index++;
     }
 
-    void gl3plus_shader::set_texture_cube(const std::string& name, const gl3plus_texture_cube* value) const {
+    void gl3plus_shader::set_texture_cube(const string& name, const gl3plus_texture_cube* value) const {
         glActiveTexture(GL_TEXTURE0 + sm_texture_index);
         set_int(name.c_str(), sm_texture_index);
         glBindTexture(GL_TEXTURE_CUBE_MAP, value->m_id);

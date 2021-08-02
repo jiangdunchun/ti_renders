@@ -21,10 +21,10 @@ namespace ti_render {
 
 		void save(const std::string& path) const;
 		const std::string& get_type(void) const {
-			return this->m_type;
+			return m_type;
 		}
 		const std::vector<std::string>& get_parameters(void) const {
-			return this->m_parameters;
+			return m_parameters;
 		}
 		const std::string& get_value(const std::string& parameter) const;
 		void set_value(const std::string& parameter, const std::string& value);

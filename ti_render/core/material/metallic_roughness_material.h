@@ -9,10 +9,10 @@ namespace ti_render {
 
 	private:
 		metallic_roughness_material() {
-			this->m_type = material_type::METALLIC_ROUGHNESS;
-			this->m_light_model = light_model::PBR;
-			this->m_shader_path = "./shaders/pbr.shader";
-			this->m_parameters = {
+			m_type = material_type::METALLIC_ROUGHNESS;
+			m_light_model = light_model::PBR;
+			m_shader_path = "./shaders/pbr.shader";
+			m_parameters = {
 				{"uBase_color_val", value_type::VEC3, "0.5f, 0.5f, 0.5f"},
 				{"uBase_color_map", value_type::TEXTURE2D},
 				{"uNormal_map", value_type::TEXTURE2D},

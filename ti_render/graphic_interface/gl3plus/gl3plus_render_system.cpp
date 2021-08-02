@@ -1,6 +1,7 @@
 #include "gl3plus_render_system.h"
 
 using namespace std;
+using namespace glm;
 
 namespace ti_render {
 	bool gl3plus_render_system::init(unsigned int width, unsigned int height, const string& name) {
@@ -29,7 +30,7 @@ namespace ti_render {
 		return !glfwWindowShouldClose(m_window);
 	}
 
-	void gl3plus_render_system::set_clear_color(const glm::vec4& color) {
+	void gl3plus_render_system::set_clear_color(const vec4& color) {
 		glClearColor(color.r, color.g, color.b, color.a);
 	}
 

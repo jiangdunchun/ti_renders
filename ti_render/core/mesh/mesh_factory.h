@@ -11,8 +11,8 @@ namespace ti_render {
 	private:
 		static std::map<std::string, std::tuple<mesh*, unsigned int>> sm_mesh_pool;
 	public:
-		static mesh* create_mesh(const std::string& path);
-		static void dispose_mesh(mesh* mesh_ptr);
+		static mesh* create(const std::string& path);
+		static void dispose(mesh* mesh_ptr);
 	};
 }
 

@@ -6,6 +6,8 @@
 #include "../object/dummy_object.h"
 #include "../object/camera_object.h"
 #include "../object/sky_object.h"
+#include "../object/mesh_object.h"
+#include "../object/point_light_object.h"
 
 namespace ti_render {
 	class scene {
@@ -38,6 +40,8 @@ namespace ti_render {
 		}
 		void set_sky_hdr(const std::string& sky_hdr);
 		dummy_object* create_dummy(void);
+		mesh_object* create_mesh(const std::string& mesh_path);
+		point_light_object* create_point_light(const glm::vec3& intensity);
 		void dispose(object* obj);
 	};
 }

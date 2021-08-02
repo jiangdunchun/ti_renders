@@ -38,6 +38,7 @@
     <ClInclude Include="core\object\camera_object.h" />
     <ClInclude Include="core\object\dummy_object.h" />
     <ClInclude Include="core\object\light_object.h" />
+    <ClInclude Include="core\object\mesh_object.h" />
     <ClInclude Include="core\object\object.h" />
     <ClInclude Include="core\object\point_light_object.h" />
     <ClInclude Include="core\object\sky_object.h" />
@@ -70,6 +71,7 @@
     <ClCompile Include="core\object\camera_object.cpp" />
     <ClCompile Include="core\object\dummy_object.cpp" />
     <ClCompile Include="core\object\light_object.cpp" />
+    <ClCompile Include="core\object\mesh_object.cpp" />
     <ClCompile Include="core\object\object.cpp" />
     <ClCompile Include="core\object\point_light_object.cpp" />
     <ClCompile Include="core\object\sky_object.cpp" />

@@ -23,7 +23,7 @@ namespace ti_render {
 			return m_faces;
 		}
 		const AABB& get_aabb(void) const {
-			return this->m_aabb;
+			return m_aabb;
 		}
 	};
 }

@@ -23,16 +23,16 @@ namespace ti_render {
 
 	public:
 		float& get_zoom(void) {
-			return this->m_zoom;
+			return m_zoom;
 		}
 		float& get_aspect(void) {
-			return this->m_aspect;
+			return m_aspect;
 		}
 		float& get_near(void) {
-			return this->m_near;
+			return m_near;
 		}
 		float& get_far(void) {
-			return this->m_far;
+			return m_far;
 		}
 		glm::vec3 get_direction(void) const;
 		glm::vec3 get_up(void) const;

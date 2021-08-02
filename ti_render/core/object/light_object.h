@@ -8,11 +8,11 @@ namespace ti_render {
 	protected:
 		glm::vec3 m_intensity;
 
-		light_object(glm::vec3 intensity);
+		light_object(const glm::vec3& intensity);
 		virtual ~light_object() {}
 	public:
 		glm::vec3& get_intensity(void) {
-			return this->m_intensity;
+			return m_intensity;
 		}
 	};
 }

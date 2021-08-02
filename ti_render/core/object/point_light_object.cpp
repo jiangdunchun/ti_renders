@@ -5,7 +5,7 @@ using namespace std;
 
 namespace ti_render {
 	point_light_object::point_light_object(
-		glm::vec3 intensity,
+		const vec3& intensity,
 		float radius,
 		float bias,
 		unsigned int shadow_map_size) : light_object(intensity), m_radius(radius), m_bias(bias), m_shadow_map_size(shadow_map_size) {

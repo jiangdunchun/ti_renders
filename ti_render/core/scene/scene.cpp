@@ -3,6 +3,7 @@
 #include <time.h>
 
 using namespace std;
+using namespace glm;
 
 namespace ti_render {
 	// 0-16 are reserved
@@ -42,7 +43,7 @@ namespace ti_render {
 		dispose(m_root);
 	}
 
-	void scene::set_sky_hdr(const std::string& sky_hdr) {
+	void scene::set_sky_hdr(const string& sky_hdr) {
 		const dummy_object* parent = m_root;
 		if (m_sky) {
 			parent = m_sky->get_parent();
@@ -56,10 +57,24 @@ namespace ti_render {
 	}
 
 	dummy_object* scene::create_dummy(void) {
-		dummy_object* n_obj = new dummy_object();
-		n_obj->set_parent(m_root);
-		set_id(n_obj);
-		return n_obj;
+		dummy_object* d_obj = new dummy_object();
+		d_obj->set_parent(m_root);
+		set_id(d_obj);
+		return d_obj;
+	}
+
+	mesh_object* scene::create_mesh(const string& mesh_path) {
+		mesh_object* m_obj = new mesh_object(mesh_path);
+		m_obj->set_parent(m_root);
+		set_id(m_obj);
+		return m_obj;
+	}
+
+	point_light_object* scene::create_point_light(const vec3& intensity) {
+		point_light_object* pl_obj = new point_light_object(intensity);
+		pl_obj->set_parent(m_root);
+		set_id(pl_obj);
+		return pl_obj;
 	}
 
 	void scene::dispose(object* obj) {
@@ -84,7 +99,7 @@ namespace ti_render {
 			++iter) {
 			m_id_pool.erase((*iter)->get_id());
 		}
-
 		delete obj;
+		obj = nullptr;
 	}
 }

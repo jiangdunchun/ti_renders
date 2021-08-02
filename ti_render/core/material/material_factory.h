@@ -8,9 +8,9 @@ namespace ti_render {
 	private:
 		static std::map<std::string, std::tuple<material*, unsigned int>> sm_material_pool;
 	public:
-		static material* create_material(const std::string& path);
-		static material* create_material(material_type m_type);
-		static void dispose_material(material* material_ptr);
+		static material* create(const std::string& path);
+		static material* create(material_type m_type);
+		static void dispose(material* material_ptr);
 	};
 }
 

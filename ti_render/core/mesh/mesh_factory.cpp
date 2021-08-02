@@ -8,7 +8,7 @@ using namespace std;
 namespace ti_render {
 	map<string, tuple<mesh*, unsigned int>> mesh_factory::sm_mesh_pool = {};
 
-	mesh* mesh_factory::create_mesh(const string& path) {
+	mesh* mesh_factory::create(const string& path) {
 		string md5 = MD5(path).toStr();
 		map<string, tuple<mesh*, unsigned int>>::iterator iter = sm_mesh_pool.find(md5);
 		if (iter == sm_mesh_pool.end()) {
@@ -23,7 +23,7 @@ namespace ti_render {
 		}
 	}
 
-	void mesh_factory::dispose_mesh(mesh* mesh_ptr) {
+	void mesh_factory::dispose(mesh* mesh_ptr) {
 		for (map<string, tuple<mesh*, unsigned int>>::iterator iter = sm_mesh_pool.begin();
 			iter != sm_mesh_pool.end();
 			++iter) {

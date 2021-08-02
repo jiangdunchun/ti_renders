@@ -8,7 +8,7 @@ using namespace std;
 namespace ti_render {
 	map<string, tuple<material*, unsigned int>> material_factory::sm_material_pool = {};
 
-	material* material_factory::create_material(const string& path) {
+	material* material_factory::create(const string& path) {
 		string md5 = MD5(path).toStr();
 		map<string, tuple<material*, unsigned int>>::iterator iter = sm_material_pool.find(md5);
 		if (iter == sm_material_pool.end()) {
@@ -33,7 +33,7 @@ namespace ti_render {
 		}
 	}
 
-	material* material_factory::create_material(material_type m_type) {
+	material* material_factory::create(material_type m_type) {
 		material* material_ptr = nullptr;
 		switch (m_type) {
 		case ti_render::material_type::METALLIC_ROUGHNESS:
@@ -46,7 +46,7 @@ namespace ti_render {
 		return material_ptr;
 	}
 
-	void material_factory::dispose_material(material* material_ptr) {
+	void material_factory::dispose(material* material_ptr) {
 		for (map<string, tuple<material*, unsigned int>>::iterator iter = sm_material_pool.begin();
 			iter != sm_material_pool.end();
 			++iter) {

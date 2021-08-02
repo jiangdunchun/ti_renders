@@ -16,21 +16,21 @@ namespace ti_render {
 		gl3plus_frame_buffer* m_frame_buffer;
 
 		point_light_object(
-			glm::vec3 intensity, 
-			float radius,
+			const glm::vec3& intensity, 
+			float radius = 10.0f,
 			float bias = 0.05f,
 			unsigned int shadow_map_size = 2048);
 		~point_light_object();
 
 	public:
 		float& get_radius(void) {
-			return this->m_radius;
+			return m_radius;
 		}
 		float& get_bias() {
-			return this->m_bias;
+			return m_bias;
 		}
 		unsigned int get_shadow_map_size(void) {
-			return this->m_shadow_map_size;
+			return m_shadow_map_size;
 		}
 		void set_shadow_map_size(unsigned int size);
 	};
