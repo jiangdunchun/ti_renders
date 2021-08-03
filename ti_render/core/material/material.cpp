@@ -43,9 +43,9 @@ namespace ti_render {
 			if (texture_ptr == get<0>(iter->second)) {
 				get<1>(iter->second)--;
 				if (get<1>(iter->second) == 0) {
+					sm_texture_2d_pool.erase(iter->first);
 					delete texture_ptr;
 				}
-				sm_texture_2d_pool.erase(iter->first);
 				break;
 			}
 		}
@@ -76,9 +76,9 @@ namespace ti_render {
 			if (shader_ptr == get<0>(iter->second)) {
 				get<1>(iter->second)--;
 				if (get<1>(iter->second) == 0) {
+					sm_shader_pool.erase(iter->first);
 					delete shader_ptr;
 				}
-				sm_shader_pool.erase(iter->first);
 				break;
 			}
 		}

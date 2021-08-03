@@ -53,10 +53,10 @@ namespace ti_render {
 			if (material_ptr == get<0>(iter->second)) {
 				get<1>(iter->second)--;
 				if (get<1>(iter->second) == 0) {
+					sm_material_pool.erase(iter->first);
 					delete material_ptr;
 					material_ptr = nullptr;
 				}
-				sm_material_pool.erase(iter->first);
 				break;
 			}
 		}

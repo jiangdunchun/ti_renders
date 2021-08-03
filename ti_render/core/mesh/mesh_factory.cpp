@@ -30,10 +30,10 @@ namespace ti_render {
 			if (mesh_ptr == get<0>(iter->second)) {
 				get<1>(iter->second)--;
 				if (get<1>(iter->second) == 0) {
+					sm_mesh_pool.erase(iter->first);
 					delete mesh_ptr;
 					mesh_ptr = nullptr;
 				}
-				sm_mesh_pool.erase(iter->first);
 				break;
 			}
 		}
