@@ -4,21 +4,18 @@ using namespace std;
 
 namespace ti_render {
 	gl3plus_frame_buffer::gl3plus_frame_buffer(
-		unsigned width,
-		unsigned height) : m_width(width), m_height(height) {
+		unsigned int width,
+		unsigned int height,
+		gl3plus_ds_render_buffer* ds_rbo) : m_width(width), m_height(height) {
 		glGenFramebuffers(1, &m_id);
 		glBindFramebuffer(GL_FRAMEBUFFER, m_id);
 
-		glGenRenderbuffers(1, &m_ds_RBO);
-		glBindRenderbuffer(GL_RENDERBUFFER, m_ds_RBO);
-		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);
-		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_ds_RBO);
+		if (ds_rbo) glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, ds_rbo->m_id);
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
 
 	gl3plus_frame_buffer::~gl3plus_frame_buffer() {
-		glDeleteRenderbuffers(1, &m_ds_RBO);
 		glDeleteFramebuffers(1, &m_id);
 	}
 
@@ -107,6 +104,7 @@ namespace ti_render {
 	}
 
 	void gl3plus_frame_buffer::bind(void) const {
+		glViewport(0, 0, m_width, m_height);
 		glBindFramebuffer(GL_FRAMEBUFFER, m_id);
 	}
 

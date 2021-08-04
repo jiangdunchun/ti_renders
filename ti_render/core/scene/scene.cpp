@@ -65,6 +65,8 @@ namespace ti_render {
 
 	mesh_object* scene::create_mesh(const string& mesh_path) {
 		mesh_object* m_obj = new mesh_object(mesh_path);
+		m_mesh_objects.push_back(m_obj);
+
 		m_obj->set_parent(m_root);
 		set_id(m_obj);
 		return m_obj;

@@ -3,6 +3,7 @@
 
 #ifdef GL3PLUS
 #include "gl3plus/gl3plus_render_system.h"
+#include "gl3plus/gl3plus_ds_render_buffer.h"
 #include "gl3plus/gl3plus_frame_buffer.h"
 #include "gl3plus/gl3plus_vertex_buffer.h"
 #include "gl3plus/gl3plus_texture_2d.h"
@@ -13,6 +14,7 @@
 namespace ti_render {
 #ifdef GL3PLUS
 	typedef gl3plus_render_system			render_system;
+	typedef gl3plus_ds_render_buffer		ds_render_buffer;
 	typedef gl3plus_frame_buffer			frame_buffer;
 	typedef gl3plus_vertex_buffer			vertex_buffer;
 	typedef gl3plus_texture_2d				texture_2d;

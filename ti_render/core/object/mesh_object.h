@@ -10,6 +10,7 @@
 namespace ti_render {
 	class mesh_object : public object {
 		friend class scene;
+		friend class pre_pass;
 
 	private:
 		mesh* m_mesh;
@@ -19,8 +20,8 @@ namespace ti_render {
 		~mesh_object();
 
 	public:
-		void set_material(const std::string& material_path, unsigned int face);
-		void set_material(material* material_ptr, unsigned int face);
+		void set_material(const std::string& material_path, unsigned int surface);
+		void set_material(material* material_ptr, unsigned int surface);
 	};
 }
 

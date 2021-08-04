@@ -11,7 +11,7 @@ namespace ti_render {
     mesh_file::mesh_file(const string& path) {
         ifstream file;
 
-        vector<face> faces;
+        vector<surface> faces;
         AABB aabb;
         try {
             file.open(path, ios::binary);
@@ -49,7 +49,7 @@ namespace ti_render {
     }
 
     mesh_file::mesh_file(
-        vector<face> faces,
+        vector<surface> faces,
         AABB aabb): m_faces(faces) , m_aabb(aabb) {
         // @TODO: check the aabb 
     }
@@ -62,7 +62,7 @@ namespace ti_render {
 
         unsigned int faces_num =m_faces.size();
         mesh_stream.write((char*)&(faces_num), sizeof(unsigned int));
-        for (vector<face>::iterator iter = m_faces.begin();
+        for (vector<surface>::iterator iter = m_faces.begin();
             iter != m_faces.end();
             ++iter) {
             unsigned int vertices_num = iter->vertices.size();

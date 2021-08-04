@@ -37,6 +37,9 @@
     <Filter Include="core\mesh">
       <UniqueIdentifier>{827a4fac-0cb2-4bdd-a5c3-f2e0551e69cd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="core\pass">
+      <UniqueIdentifier>{21731846-f55b-4e12-a092-a550c17a67d7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common\tr_enum.h">
@@ -144,6 +147,18 @@
     <ClInclude Include="core\object\mesh_object.h">
       <Filter>core\object</Filter>
     </ClInclude>
+    <ClInclude Include="graphic_interface\gl3plus\gl3plus_ds_render_buffer.h">
+      <Filter>graphic_interface\gl3plus</Filter>
+    </ClInclude>
+    <ClInclude Include="render.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="core\pass\pre_pass.h">
+      <Filter>core\pass</Filter>
+    </ClInclude>
+    <ClInclude Include="core\pass\pass_management.h">
+      <Filter>core\pass</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="third_party\glad\glad.c">
@@ -232,6 +247,18 @@
     </ClCompile>
     <ClCompile Include="core\object\mesh_object.cpp">
       <Filter>core\object</Filter>
+    </ClCompile>
+    <ClCompile Include="graphic_interface\gl3plus\gl3plus_ds_render_buffer.cpp">
+      <Filter>graphic_interface\gl3plus</Filter>
+    </ClCompile>
+    <ClCompile Include="render.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core\pass\pre_pass.cpp">
+      <Filter>core\pass</Filter>
+    </ClCompile>
+    <ClCompile Include="core\pass\pass_management.cpp">
+      <Filter>core\pass</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

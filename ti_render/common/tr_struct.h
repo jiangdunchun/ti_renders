@@ -18,7 +18,7 @@ namespace ti_render {
 		glm::vec3 max;
 	};
 
-	struct face {
+	struct surface {
 		std::vector<vertex> vertices;
 		std::vector<unsigned int> indices;
 		AABB aabb;

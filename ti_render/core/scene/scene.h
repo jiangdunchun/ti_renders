@@ -12,6 +12,7 @@
 namespace ti_render {
 	class scene {
 	friend class object;
+	friend class pass_management;
 
 	private:
 		std::map<unsigned int, object*> m_id_pool;
@@ -27,6 +28,7 @@ namespace ti_render {
 		camera_object* m_camera;
 		unsigned int m_sky_id = 0;
 		sky_object* m_sky = nullptr;
+		std::vector<mesh_object*> m_mesh_objects;
 
 	public:
 		scene();
@@ -35,7 +37,7 @@ namespace ti_render {
 		const dummy_object* get_root(void) const {
 			return m_root;
 		}
-		const camera_object* get_camera(void) const {
+		camera_object* get_camera(void) const {
 			return m_camera;
 		}
 		void set_sky_hdr(const std::string& sky_hdr);

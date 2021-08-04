@@ -3,8 +3,8 @@
 using namespace std;
 
 namespace ti_render {
-	mesh::mesh(const vector<face>& faces, const AABB& aabb) : m_aabb(aabb) {
-		for (vector<face>::const_iterator iter = faces.begin();
+	mesh::mesh(const vector<surface>& faces, const AABB& aabb) : m_aabb(aabb) {
+		for (vector<surface>::const_iterator iter = faces.begin();
 			iter != faces.end();
 			++iter) {
 			m_aabb_buffer.push_back(iter->aabb);
@@ -22,12 +22,12 @@ namespace ti_render {
 		}
 	}
 
-	unsigned int mesh::get_face_num(void) const {
+	unsigned int mesh::get_surface_num(void) const {
 		return m_vbo_buffer.size();
 	}
 
-	const AABB& mesh::get_face_aabb(unsigned int face) const{
-		return m_aabb_buffer[face];
+	const AABB& mesh::get_surface_aabb(unsigned int surface) const{
+		return m_aabb_buffer[surface];
 	}
 }
 

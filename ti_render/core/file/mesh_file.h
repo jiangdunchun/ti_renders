@@ -10,16 +10,16 @@
 namespace ti_render {
 	class mesh_file {
 	private:
-		std::vector<face> m_faces;
+		std::vector<surface> m_faces;
 		AABB m_aabb;
 
 	public:
 		mesh_file(const std::string& path);
-		mesh_file(std::vector<face> faces, AABB aabb);
+		mesh_file(std::vector<surface> faces, AABB aabb);
 		~mesh_file();
 
 		void save(const std::string& path);
-		const std::vector<face>& get_faces(void) const {
+		const std::vector<surface>& get_faces(void) const {
 			return m_faces;
 		}
 		const AABB& get_aabb(void) const {

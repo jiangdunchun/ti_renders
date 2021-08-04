@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "gl3plus_common.h"
+#include "gl3plus_ds_render_buffer.h"
 #include "gl3plus_texture_2d.h"
 #include "gl3plus_texture_cube.h"
 
@@ -12,11 +13,10 @@ namespace ti_render {
 		unsigned int m_width;
 		unsigned int m_height;
 		GLuint m_id;
-		GLuint m_ds_RBO;
 		std::vector<GLuint> m_attachments;
 
 	public:
-		gl3plus_frame_buffer(unsigned width, unsigned height);
+		gl3plus_frame_buffer(unsigned int width, unsigned int height, gl3plus_ds_render_buffer* ds_rbo = nullptr);
 		~gl3plus_frame_buffer();
 		void attach_color_buffer(unsigned int attachment, gl3plus_texture_2d* texture, unsigned int mipmap_layer = 0);
 		void attach_color_buffer(unsigned int attachment, gl3plus_texture_cube* texture, cubemap_face face, unsigned int mipmap_layer = 0);
