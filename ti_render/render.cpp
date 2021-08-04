@@ -6,6 +6,8 @@ using namespace std;
 
 namespace ti_render {
 	scene* render::m_scene = nullptr;
+	render_system* render::m_render_system = nullptr;
+	pass_management* render::m_pass_management = nullptr;
 	float render::m_tick = 0.0f;
 	vector<void(*)(void)> render::m_pre_update_funcs = {};
 	vector<void(*)(void)> render::m_post_update_funcs = {};
@@ -67,7 +69,7 @@ namespace ti_render {
 	}
 
 	void render::init(unsigned int width, unsigned int height, const string& name) {
-		m_render_system = new gl3plus_render_system();
+		m_render_system = new render_system();
 		m_render_system->init(width, height, name);
 
 		m_pass_management = new pass_management(width, height);

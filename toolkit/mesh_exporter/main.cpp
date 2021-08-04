@@ -51,7 +51,7 @@ std::string get_obj_name(const std::string& path) {
     return name;
 }
 
-face process_mesh(aiMesh* ai_mesh) {
+surface process_mesh(aiMesh* ai_mesh) {
     vector<vertex> vertices;
     vector<unsigned int> indices;
     AABB aabb = { vec3(FLT_MAX, FLT_MAX, FLT_MAX), vec3(FLT_MIN, FLT_MIN, FLT_MIN)};
@@ -84,11 +84,11 @@ face process_mesh(aiMesh* ai_mesh) {
 }
 
 void process_node(aiNode* node_ptr, const vector<aiMesh*>& mesh_buffer, const string& fold) {
-    vector<face> faces;
+    vector<surface> faces;
     AABB aabb = { vec3(FLT_MAX, FLT_MAX, FLT_MAX), vec3(FLT_MIN, FLT_MIN, FLT_MIN) };
 
     for (unsigned int i = 0; i < node_ptr->mNumMeshes; ++i) {
-        face n_face = process_mesh(mesh_buffer[node_ptr->mMeshes[i]]);
+        surface n_face = process_mesh(mesh_buffer[node_ptr->mMeshes[i]]);
         if (n_face.vertices.size() != 0) faces.push_back(n_face);
     }
     

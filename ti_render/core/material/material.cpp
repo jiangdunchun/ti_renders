@@ -9,7 +9,7 @@ using namespace std;
 using namespace glm;
 
 namespace ti_render {
-	texture_2d* material::sm_nill_texture_2d = new texture_2d(0, 0, color_format::RGB8B);
+	texture_2d* material::sm_nill_texture_2d = nullptr;
 	map<string, tuple<texture_2d*, unsigned int>> material::sm_texture_2d_pool = {};
 	map<string, tuple<shader*, unsigned int>> material::sm_shader_pool = {};
 
@@ -18,7 +18,11 @@ namespace ti_render {
 		map<string, tuple<texture_2d*, unsigned int>>::iterator iter = sm_texture_2d_pool.find(md5);
 		if (iter == sm_texture_2d_pool.end()) {
 			image_file i_file(path, color_format::RGB8B);
-			if (i_file.get_width() == 0 || i_file.get_height() == 0) return sm_nill_texture_2d;
+			if (i_file.get_width() == 0 || i_file.get_height() == 0) {
+				if (!sm_nill_texture_2d) sm_nill_texture_2d = new texture_2d(0, 0, color_format::RGB8B);
+
+				return sm_nill_texture_2d;
+			}
 
 			texture_2d* texture_2d_ptr = new texture_2d(i_file.get_width(), i_file.get_height(), color_format::RGB8B);
 			texture_2d_ptr->push_data(i_file.get_color_format(), i_file.get_data());

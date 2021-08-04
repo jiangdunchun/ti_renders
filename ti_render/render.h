@@ -21,6 +21,9 @@ namespace ti_render {
 		static scene* get_scene(void) {
 			return m_scene;
 		}
+		static void set_scene(scene* scene_ptr) {
+			 m_scene = scene_ptr;
+		}
 		static float get_tick(void) {
 			return m_tick;
 		}
