@@ -14,7 +14,7 @@ namespace ti_render {
 			delete *iter;
 		}
 	}
-	void dummy_object::tranverse_children(std::vector<object*>& buffer) {
+	void dummy_object::tranverse_children(vector<object*>& buffer) {
 		for (vector<object*>::iterator iter = m_children.begin();
 			iter != m_children.end();
 			++iter) {

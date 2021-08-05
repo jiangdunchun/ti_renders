@@ -28,7 +28,7 @@ namespace ti_render {
 		delete m_frame_buffer;
 	}
 
-	void geometry_pass::rend(render_system* render_system, camera_object* camera, std::vector<mesh_object*> meshes) {
+	void geometry_pass::rend(render_system* render_system, camera_object* camera, vector<mesh_object*> meshes) {
 		m_frame_buffer->bind();
 		render_system->set_clear_color(vec4(0.0f, 0.0f, 0.0f, 0.0f));
 		render_system->enable(graphic_capability::DEPTH_TEST);

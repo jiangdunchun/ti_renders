@@ -96,7 +96,7 @@ namespace ti_render {
 		stbi_image_free(m_data);
 	}
 
-	void image_file::save(const std::string& path) const {
+	void image_file::save(const string& path) const {
 		throw "not impl!";
 	}
 

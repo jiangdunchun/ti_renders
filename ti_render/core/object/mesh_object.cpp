@@ -19,7 +19,7 @@ namespace ti_render {
 		}
 	}
 
-	void mesh_object::set_material(const std::string& material_path, unsigned int surface) {
+	void mesh_object::set_material(const string& material_path, unsigned int surface) {
 		material* material_ptr = material_factory::create(material_path);
 		set_material(material_ptr, surface);
 	}

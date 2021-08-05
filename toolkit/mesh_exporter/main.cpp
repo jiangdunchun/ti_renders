@@ -20,8 +20,8 @@ using namespace glm;
 #define TEXTUREs_DOC                        "textures"
 #define MESH_FILE_EXTENTION                 ".mesh"
 
-std::string get_obj_dir(const std::string& path) {
-    std::string dir = path;
+string get_obj_dir(const string& path) {
+    string dir = path;
     for (int i = dir.size() - 1; i > 0; i--) {
         if (dir[i] == '/' || dir[i] == '\\') {
             dir = dir.substr(0, i);
@@ -32,8 +32,8 @@ std::string get_obj_dir(const std::string& path) {
     return dir;
 }
 
-std::string get_obj_name(const std::string& path) {
-    std::string name = path;
+string get_obj_name(const string& path) {
+    string name = path;
     for (int i = name.size() - 1; i > 0; i--) {
         if (name[i] == '/' || name[i] == '\\') {
             name = name.substr(i + 1, name.length() - i - 1);
@@ -110,27 +110,27 @@ void process_node(aiNode* node_ptr, const vector<aiMesh*>& mesh_buffer, const st
 }
 
 int main(unsigned int argc, char** argv) {
-    if (argc < 1) std::cout << "Error: missing model path" << std::endl;
+    if (argc < 1) cout << "Error: missing model path" << endl;
 
     for (int i = 1; i < argc; i++) {
-        std::string obj_path = argv[i];
-        std::string obj_dir = get_obj_dir(obj_path);
-        std::string obj_name = get_obj_name(obj_path);
+        string obj_path = argv[i];
+        string obj_dir = get_obj_dir(obj_path);
+        string obj_name = get_obj_name(obj_path);
 
         Assimp::Importer importer;
         const aiScene* scene = importer.ReadFile(obj_path, aiProcessPreset_TargetRealtime_MaxQuality);
 
         if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
-            std::cout << "Error: " << importer.GetErrorString() << std::endl;
+            cout << "Error: " << importer.GetErrorString() << endl;
             return 0;
         }
 
-        std::string scene_dir = obj_dir + "/" + obj_name;
+        string scene_dir = obj_dir + "/" + obj_name;
         if (_access(scene_dir.c_str(), 0) != 0) _mkdir(scene_dir.c_str());
 
-        std::string meshes_dir = scene_dir + "/" + MESHES_DOC;
+        string meshes_dir = scene_dir + "/" + MESHES_DOC;
         if (_access(meshes_dir.c_str(), 0) != 0) _mkdir(meshes_dir.c_str());
-        std::vector<std::string> mesh_names;
+        vector<string> mesh_names;
 
         vector<aiMesh*> mesh_buffer;
         for (unsigned int i = 0; i < scene->mNumMeshes; ++i) {

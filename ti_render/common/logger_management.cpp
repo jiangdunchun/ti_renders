@@ -3,7 +3,7 @@
 using namespace std;
 
 namespace ti_render {
-	std::vector<i_logger*> logger_management::sm_logger_pool = {};
+	vector<i_logger*> logger_management::sm_logger_pool = {};
 
 	void logger_management::attach_logger(i_logger* logger) {
 		for (vector<i_logger*>::iterator iter = sm_logger_pool.begin();
@@ -25,7 +25,7 @@ namespace ti_render {
 		}
 	}
 
-	void logger_management::log(log_tag tag, std::string msg) {
+	void logger_management::log(log_tag tag, string msg) {
 		for (vector<i_logger*>::iterator iter = sm_logger_pool.begin();
 			iter != sm_logger_pool.end();
 			++iter) {

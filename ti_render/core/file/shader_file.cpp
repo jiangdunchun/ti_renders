@@ -60,15 +60,15 @@ namespace ti_render {
 	}
 
     shader_file::shader_file(
-        const std::string& vertex_code, 
-        const std::string& fragment_code,
-        const std::string& geometry_code) : m_vertex_code(vertex_code), m_fragment_code(fragment_code), m_geometry_code(geometry_code) {
+        const string& vertex_code, 
+        const string& fragment_code,
+        const string& geometry_code) : m_vertex_code(vertex_code), m_fragment_code(fragment_code), m_geometry_code(geometry_code) {
     }
 
 	shader_file::~shader_file() {
 	}
 
-    void shader_file::save(const std::string& path) const {
+    void shader_file::save(const string& path) const {
         throw "not impl!";
     }
 }

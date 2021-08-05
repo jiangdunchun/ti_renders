@@ -1,9 +1,11 @@
 #include "gl3plus_vertex_buffer.h"
 
+using namespace std;
+
 namespace ti_render {
 	gl3plus_vertex_buffer::gl3plus_vertex_buffer(
-		const std::vector<vertex>& vertices, 
-		const std::vector<unsigned int>& indices){
+		const vector<vertex>& vertices, 
+		const vector<unsigned int>& indices){
         glGenVertexArrays(1, &m_VAO);
         glBindVertexArray(m_VAO);
 
