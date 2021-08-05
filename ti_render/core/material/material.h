@@ -11,6 +11,7 @@
 namespace ti_render {
 	class material {
 	friend class material_factory;
+	friend class geometry_pass;
 
 	private:
 		static texture_2d* sm_nill_texture_2d;

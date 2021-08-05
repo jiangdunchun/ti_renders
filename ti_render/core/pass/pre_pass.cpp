@@ -37,6 +37,9 @@ namespace ti_render {
 		camera_object* camera,
 		vector<mesh_object*>& meshes) {
 		m_frame_buffer->bind();
+		render_system->set_clear_color(vec4(0.0f, 0.0f, 0.0f, 0.0f));
+		render_system->enable(graphic_capability::DEPTH_TEST);
+		render_system->set_depth_func(depth_func::LESS);
 		render_system->clear_frame_buffer(frame_buffer_type::COLOR | frame_buffer_type::DEPTH | frame_buffer_type::STENCIL);
 
 		m_shader->use();

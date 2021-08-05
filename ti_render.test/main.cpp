@@ -3,6 +3,7 @@
 #include "console_logger.hpp"
 
 using namespace ti_render;
+using namespace glm;
 
 int main(int, char**) {
 	console_logger c_logger;
@@ -11,7 +12,9 @@ int main(int, char**) {
 	render::init(800, 600, "ti render");
 
 	scene scene;
-	scene.create_mesh("./mesh/StarSparrow.mesh");
+
+	mesh_object* StarSparrow = scene.create_mesh("./mesh/StarSparrow.mesh");
+	StarSparrow->set_local_position(vec3(0.0f, 0.0f, -10.0f));
 
 	render::set_scene(&scene);
 

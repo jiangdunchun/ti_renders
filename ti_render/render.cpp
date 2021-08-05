@@ -77,7 +77,7 @@ namespace ti_render {
 
 	void render::run(void) {
 		clock_t start, end;
-		while (m_render_system->get_active()) {
+		while (m_render_system->is_active()) {
 			start = clock();
 			invoke_pre_update_funcs();
 			m_render_system->pre_rend_one_frame();

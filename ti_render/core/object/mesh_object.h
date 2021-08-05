@@ -11,6 +11,7 @@ namespace ti_render {
 	class mesh_object : public object {
 		friend class scene;
 		friend class pre_pass;
+		friend class geometry_pass;
 
 	private:
 		mesh* m_mesh;

@@ -13,11 +13,13 @@ namespace ti_render {
 	public:
 		bool init(unsigned int width, unsigned int height, const std::string& name);
 		void shutdown(void);
-		bool get_active(void);
+		bool is_active(void);
 		void set_clear_color(const glm::vec4& color);
 		void set_resolution(unsigned int width, unsigned int height);
 		void clear_frame_buffer(char mask);
-		void set_depth_test_enabled(bool enabled);
+		void enable(graphic_capability capability);
+		void disable(graphic_capability capability);
+		void set_depth_func(depth_func func);
 		void pre_rend_one_frame(void);
 		void post_rend_one_frame(void);
 	};

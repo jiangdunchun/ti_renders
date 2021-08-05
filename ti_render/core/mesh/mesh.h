@@ -8,6 +8,7 @@ namespace ti_render {
 	class mesh {
 	friend class mesh_factory;
 	friend class pre_pass;
+	friend class geometry_pass;
 
 	private:
 		std::vector<vertex_buffer*> m_vbo_buffer;

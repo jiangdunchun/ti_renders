@@ -4,6 +4,8 @@ using namespace std;
 
 namespace ti_render {
 	mesh_object::mesh_object(const string& mesh_path) {
+		m_type = object_type::MESH_OBJECT;
+
 		m_mesh = mesh_factory::create(mesh_path);
 		m_materials.resize(m_mesh->get_surface_num(), nullptr);
 	}

@@ -8,7 +8,7 @@ using namespace glm;
 namespace ti_render {
 	// 0-16 are reserved
 	unsigned int scene::generate_id(void) {
-		unsigned int id = rand() % 0xfffffff0;
+		unsigned int id = rand() & 0xfffffff0;
 		while (find_object(id)) {
 			return generate_id();
 		}
@@ -36,7 +36,7 @@ namespace ti_render {
 
 		m_camera = new camera_object(45.0f, 1.0f);
 		m_camera->set_parent(m_root);
-		set_id(m_root, m_camera_id);
+		set_id(m_camera, m_camera_id);
 	}
 
 	scene::~scene() {

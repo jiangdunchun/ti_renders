@@ -159,6 +159,9 @@
     <ClInclude Include="core\pass\pass_management.h">
       <Filter>core\pass</Filter>
     </ClInclude>
+    <ClInclude Include="core\pass\geometry_pass.h">
+      <Filter>core\pass</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="third_party\glad\glad.c">
@@ -258,6 +261,9 @@
       <Filter>core\pass</Filter>
     </ClCompile>
     <ClCompile Include="core\pass\pass_management.cpp">
+      <Filter>core\pass</Filter>
+    </ClCompile>
+    <ClCompile Include="core\pass\geometry_pass.cpp">
       <Filter>core\pass</Filter>
     </ClCompile>
   </ItemGroup>

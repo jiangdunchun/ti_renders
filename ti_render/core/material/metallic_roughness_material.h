@@ -11,7 +11,7 @@ namespace ti_render {
 		metallic_roughness_material() {
 			m_type = material_type::METALLIC_ROUGHNESS;
 			m_light_model = light_model::PBR;
-			m_shader_path = "./shaders/pbr.shader";
+			m_shader_path = "./shaders/metallic_roughness_material.shader";
 			m_parameters = {
 				{"uBase_color_val", value_type::VEC3, "0.5f, 0.5f, 0.5f"},
 				{"uBase_color_map", value_type::TEXTURE2D},
@@ -21,7 +21,8 @@ namespace ti_render {
 				{"uRoughness_val", value_type::FLOAT, "0.0f"},
 				{"uRoughness_map", value_type::TEXTURE2D},
 				{"uDisplacement_map", value_type::TEXTURE2D},
-				{"uAo_map", value_type::TEXTURE2D}
+				{"uAo_map", value_type::TEXTURE2D},
+				{"uEmissive_map", value_type::TEXTURE2D}
 			};
 		}
 	};

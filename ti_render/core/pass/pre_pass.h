@@ -24,6 +24,9 @@ namespace ti_render {
 	public:
 		pre_pass(unsigned int width, unsigned int height);
 		~pre_pass();
+		ds_render_buffer* get_ds_render_buffer(void) const {
+			return m_ds_render_buffer;
+		}
 		void rend(render_system* render_system, camera_object* camera, std::vector<mesh_object*>& meshes);
 	};
 }

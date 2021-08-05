@@ -24,9 +24,9 @@ namespace ti_render {
 	protected:
 		unsigned int m_root_id = 0;
 		dummy_object* m_root;
-		unsigned int m_camera_id = 0;
+		unsigned int m_camera_id = 1;
 		camera_object* m_camera;
-		unsigned int m_sky_id = 0;
+		unsigned int m_sky_id = 2;
 		sky_object* m_sky = nullptr;
 		std::vector<mesh_object*> m_mesh_objects;
 

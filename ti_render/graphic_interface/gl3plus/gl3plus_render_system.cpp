@@ -26,7 +26,7 @@ namespace ti_render {
 		glfwTerminate();
 	}
 
-	bool gl3plus_render_system::get_active(void){
+	bool gl3plus_render_system::is_active(void){
 		return !glfwWindowShouldClose(m_window);
 	}
 
@@ -42,9 +42,16 @@ namespace ti_render {
 		glClear(map_frame_buffer(mask));
 	}
 
-	void gl3plus_render_system::set_depth_test_enabled(bool enabled) {
-		if (enabled) glEnable(GL_DEPTH_TEST);
-		else glDisable(GL_DEPTH_TEST);
+	void gl3plus_render_system::enable(graphic_capability capability) {
+		glEnable(map_graphic_capability(capability));
+	}
+
+	void gl3plus_render_system::disable(graphic_capability capability) {
+		glDisable(map_graphic_capability(capability));
+	}
+
+	void gl3plus_render_system::set_depth_func(depth_func func) {
+		glDepthFunc(map_depth_func(func));
 	}
 
 	void gl3plus_render_system::pre_rend_one_frame(void) {

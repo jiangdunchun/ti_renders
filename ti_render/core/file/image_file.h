@@ -15,7 +15,7 @@ namespace ti_render {
 		void* m_data = nullptr;
 
 	public:
-		image_file(const std::string& path, color_format format);
+		image_file(const std::string& path, color_format format, bool flip_y = false);
 		image_file(unsigned int width, unsigned int height, color_format format);
 		~image_file();
 

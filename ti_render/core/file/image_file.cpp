@@ -13,8 +13,9 @@ using namespace std;
 namespace ti_render {
 	image_file::image_file(
 		const string& path,
-		color_format format) : m_format(format) {
-		stbi_set_flip_vertically_on_load(true);
+		color_format format,
+		bool flip_y) : m_format(format) {
+		stbi_set_flip_vertically_on_load(flip_y);
 
 		function<void*(char const*, int*, int*, int*, int)> image_loader = nullptr;
 		switch (m_format) {
