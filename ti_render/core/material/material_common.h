@@ -28,8 +28,7 @@ namespace ti_render {
 		MAT2,
 		MAT3,
 		MAT4,
-		TEXTURE2D,
-		TEXTURECUBE
+		TEXTURE2D
 	};
 
 	enum class light_model {

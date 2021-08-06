@@ -1,7 +1,7 @@
 #include "mesh_factory.h"
 
-#include "../../third_party/md5/md5.cpp"
-#include "../file/mesh_file.cpp"
+#include "../../third_party/md5/md5.h"
+#include "../file/mesh_file.h"
 
 using namespace std;
 

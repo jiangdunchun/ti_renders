@@ -42,12 +42,20 @@ namespace ti_render {
 		glClear(map_frame_buffer(mask));
 	}
 
-	void gl3plus_render_system::enable(graphic_capability capability) {
-		glEnable(map_graphic_capability(capability));
+	void gl3plus_render_system::set(graphic_capability capability, bool state) {
+		if (state) glEnable(map_graphic_capability(capability));
+		else glDisable(map_graphic_capability(capability));
 	}
 
-	void gl3plus_render_system::disable(graphic_capability capability) {
-		glDisable(map_graphic_capability(capability));
+	void gl3plus_render_system::set(graphic_func func, bool state) {
+		GLboolean gl_state = state ? GL_TRUE : GL_FALSE;
+		switch (func) {
+		case ti_render::graphic_func::DEPTH_MASK:
+			glDepthMask(gl_state);
+			break;
+		default:
+			break;
+		}
 	}
 
 	void gl3plus_render_system::set_depth_func(depth_func func) {

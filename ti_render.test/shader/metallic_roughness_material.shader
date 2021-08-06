@@ -76,7 +76,7 @@ bool is_sample2d_null(sampler2D texture) {
 void main() {
     fPosition = fs_in.frag_position;
 
-    if (is_sample2d_null(uBase_color_map)) fBase_color = uBase_color_val;
+    if (is_sample2d_null(uBase_color_map)) fBase_color = vec4(uBase_color_val, 1.0f);
     else fBase_color = vec4(pow(texture(uBase_color_map, fs_in.tex_coord).rgb, vec3(2.2f)), 1.0f);
 
     if (is_sample2d_null(uNormal_map)) fNormal = fs_in.normal;

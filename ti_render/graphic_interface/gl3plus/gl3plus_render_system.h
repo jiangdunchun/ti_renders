@@ -17,8 +17,8 @@ namespace ti_render {
 		void set_clear_color(const glm::vec4& color);
 		void set_resolution(unsigned int width, unsigned int height);
 		void clear_frame_buffer(char mask);
-		void enable(graphic_capability capability);
-		void disable(graphic_capability capability);
+		void set(graphic_capability capability, bool state);
+		void set(graphic_func capability, bool state);
 		void set_depth_func(depth_func func);
 		void pre_rend_one_frame(void);
 		void post_rend_one_frame(void);

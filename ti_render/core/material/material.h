@@ -26,8 +26,8 @@ namespace ti_render {
 		shader* create_shader(const std::string& path);
 		void dispose_shader(shader* shader_ptr);
 		void delete_val_ptr(void*& ptr, value_type p_type);
-		void create_val_ptr(void*& ptr, value_type p_type, void* val_ptr);
 		void create_val_ptr(void*& ptr, value_type p_type, std::string val_str);
+		void bind_data(void);
 
 	protected:
 		material_type m_type;
@@ -46,9 +46,7 @@ namespace ti_render {
 		const light_model& get_light_model(void) const {
 			return m_light_model;
 		}
-		void bind(void);
-		void set_value_temporary(const material_parameter& parameter, void* value);
-		void set_value_permanent(const material_parameter& parameter, void* value);
+		void set_value(const material_parameter& parameter, const std::string& value);
 	};
 }
 

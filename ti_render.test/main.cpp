@@ -14,7 +14,9 @@ int main(int, char**) {
 	scene scene;
 
 	mesh_object* StarSparrow = scene.create_mesh("./mesh/StarSparrow.mesh");
+	StarSparrow->set_material(material_factory::create(material_type::METALLIC_ROUGHNESS), 0);
 	StarSparrow->set_local_position(vec3(0.0f, 0.0f, -10.0f));
+
 
 	render::set_scene(&scene);
 

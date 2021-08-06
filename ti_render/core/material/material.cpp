@@ -122,55 +122,8 @@ namespace ti_render {
 		case value_type::TEXTURE2D:
 			dispose_texture_2d((texture_2d*)ptr);
 			break;
-		case value_type::TEXTURECUBE:
-			throw "not impl!";
-			break;
 		}
 		ptr = nullptr;
-	}
-
-	void material::create_val_ptr(void*& ptr, value_type p_type, void* val_ptr) {
-		delete_val_ptr(ptr, p_type);
-
-		switch (p_type) {
-		case value_type::NILL:
-			break;
-		case value_type::INT:
-			ptr = new int();
-			*(int*)ptr = *(int*)val_ptr;
-			break;
-		case value_type::FLOAT:
-			ptr = new float();
-			*(float*)ptr = *(float*)val_ptr;
-			break;
-		case value_type::VEC2:
-			ptr = new vec2();
-			*(vec2*)ptr = *(vec2*)val_ptr;
-			break;
-		case value_type::VEC3:
-			ptr = new vec3();
-			*(vec3*)ptr = *(vec3*)val_ptr;
-			break;
-		case value_type::VEC4:
-			ptr = new vec4();
-			*(vec4*)ptr = *(vec4*)val_ptr;
-			break;
-		case value_type::MAT2:
-			ptr = new mat2();
-			*(mat2*)ptr = *(mat2*)val_ptr;
-			break;
-		case value_type::MAT3:
-			ptr = new mat3();
-			*(mat3*)ptr = *(mat3*)val_ptr;
-			break;
-		case value_type::MAT4:
-			ptr = new mat4();
-			*(mat4*)ptr = *(mat4*)val_ptr;
-			break;
-		default:
-			ptr = val_ptr;
-			break;
-		}
 	}
 
 	void material::create_val_ptr(void*& ptr, value_type p_type, string val_str) {
@@ -214,9 +167,48 @@ namespace ti_render {
 		case value_type::TEXTURE2D:
 			ptr = create_texture_2d(val_str);
 			break;
-		case value_type::TEXTURECUBE:
-			throw "not impl!";
-			break;
+		}
+	}
+
+	void material::bind_data(void) {
+		for (map<string, tuple<value_type, void*>>::iterator iter = m_parameter_buffer.begin();
+			iter != m_parameter_buffer.end();
+			++iter){
+			string p_name = iter->first;
+			value_type p_type = get<0>(iter->second);
+			void* p_value = get<1>(iter->second);
+
+			switch (p_type) {
+			case value_type::NILL:
+				break;
+			case value_type::INT:
+				m_shader->set_int(p_name, *(int*)p_value);
+				break;
+			case value_type::FLOAT:
+				m_shader->set_float(p_name, *(float*)p_value);
+				break;
+			case value_type::VEC2:
+				m_shader->set_vec2(p_name, *(vec2*)p_value);
+				break;
+			case value_type::VEC3:
+				m_shader->set_vec3(p_name, *(vec3*)p_value);
+				break;
+			case value_type::VEC4:
+				m_shader->set_vec4(p_name, *(vec4*)p_value);
+				break;
+			case value_type::MAT2:
+				m_shader->set_mat2(p_name, *(mat2*)p_value);
+				break;
+			case value_type::MAT3:
+				m_shader->set_mat3(p_name, *(mat3*)p_value);
+				break;
+			case value_type::MAT4:
+				m_shader->set_mat4(p_name, *(mat4*)p_value);
+				break;
+			case value_type::TEXTURE2D:
+				m_shader->set_texture_2d(p_name, *(gl3plus_texture_2d*)p_value);
+				break;
+			}
 		}
 	}
 
@@ -257,64 +249,7 @@ namespace ti_render {
 		}
 	}
 
-	void material::bind(void) {
-		m_shader->use();
-
-		for (map<string, tuple<value_type, void*>>::iterator iter = m_parameter_buffer.begin();
-			iter != m_parameter_buffer.end();
-			++iter) {
-			string p_name = iter->first;
-			value_type p_type = get<0>(iter->second);
-			void* p_value = get<1>(iter->second);
-
-			set_value_temporary({ p_name , p_type }, p_value);
-		}
-	}
-
-	void material::set_value_temporary(const material_parameter& parameter, void* value) {
-		if (!value) return;
-
-		string p_name = parameter.name;
-		value_type p_type = parameter.type;
-		void* p_value = value;
-
-		switch (p_type) {
-		case value_type::NILL:
-			break;
-		case value_type::INT:
-			m_shader->set_int(p_name, *(int*)p_value);
-			break;
-		case value_type::FLOAT:
-			m_shader->set_float(p_name, *(float*)p_value);
-			break;
-		case value_type::VEC2:
-			m_shader->set_vec2(p_name, *(vec2*)p_value);
-			break;
-		case value_type::VEC3:
-			m_shader->set_vec3(p_name, *(vec3*)p_value);
-			break;
-		case value_type::VEC4:
-			m_shader->set_vec4(p_name, *(vec4*)p_value);
-			break;
-		case value_type::MAT2:
-			m_shader->set_mat2(p_name, *(mat2*)p_value);
-			break;
-		case value_type::MAT3:
-			m_shader->set_mat3(p_name, *(mat3*)p_value);
-			break;
-		case value_type::MAT4:
-			m_shader->set_mat4(p_name, *(mat4*)p_value);
-			break;
-		case value_type::TEXTURE2D:
-			m_shader->set_texture_2d(p_name, (gl3plus_texture_2d*)p_value);
-			break;
-		case value_type::TEXTURECUBE:
-			m_shader->set_texture_cube(p_name, (gl3plus_texture_cube*)p_value);
-			break;
-		}
-	}
-
-	void material::set_value_permanent(const material_parameter& parameter, void* value) {
+	void material::set_value(const material_parameter& parameter, const string& value) {
 		map<string, tuple<value_type, void*>>::iterator p_iter = m_parameter_buffer.find(parameter.name);
 		if (p_iter != m_parameter_buffer.end() && get<0>(p_iter->second) == parameter.type) {
 			create_val_ptr(get<1>(p_iter->second), get<0>(p_iter->second), value);

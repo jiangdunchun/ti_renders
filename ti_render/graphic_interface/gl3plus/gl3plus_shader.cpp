@@ -140,17 +140,17 @@ namespace ti_render {
         glUniformMatrix4fv(glGetUniformLocation(m_id, name.c_str()), 1, GL_FALSE, &value[0][0]);
     }
 
-    void gl3plus_shader::set_texture_2d(const string& name, const gl3plus_texture_2d* value) const {
+    void gl3plus_shader::set_texture_2d(const string& name, const gl3plus_texture_2d& value) const {
         glActiveTexture(GL_TEXTURE0 + sm_texture_index);
         set_int(name.c_str(), sm_texture_index);
-        glBindTexture(GL_TEXTURE_2D, value->m_id);
+        glBindTexture(GL_TEXTURE_2D, value.m_id);
         sm_texture_index++;
     }
 
-    void gl3plus_shader::set_texture_cube(const string& name, const gl3plus_texture_cube* value) const {
+    void gl3plus_shader::set_texture_cube(const string& name, const gl3plus_texture_cube& value) const {
         glActiveTexture(GL_TEXTURE0 + sm_texture_index);
         set_int(name.c_str(), sm_texture_index);
-        glBindTexture(GL_TEXTURE_CUBE_MAP, value->m_id);
+        glBindTexture(GL_TEXTURE_CUBE_MAP, value.m_id);
         sm_texture_index++;
     }
 }

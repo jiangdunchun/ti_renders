@@ -27,8 +27,8 @@ namespace ti_render {
         void set_mat2(const std::string& name, const glm::mat2& value) const;
         void set_mat3(const std::string& name, const glm::mat3& value) const;
         void set_mat4(const std::string& name, const glm::mat4& value) const;
-        void set_texture_2d(const std::string& name, const gl3plus_texture_2d* value) const;
-        void set_texture_cube(const std::string& name, const gl3plus_texture_cube* value) const;
+        void set_texture_2d(const std::string& name, const gl3plus_texture_2d& value) const;
+        void set_texture_cube(const std::string& name, const gl3plus_texture_cube& value) const;
 	};
 }
 

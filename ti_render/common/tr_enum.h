@@ -26,11 +26,15 @@ namespace ti_render {
 		STENCIL = 1 << 2
 	};
 
-	enum graphic_capability {
-		DEPTH_TEST
+	enum class graphic_capability {
+		DEPTH_TEST,
 	};
 
-	enum depth_func {
+	enum class graphic_func {
+		DEPTH_MASK,
+	};
+
+	enum class depth_func {
 		ALWAYS,
 		NEVER,
 		LESS,

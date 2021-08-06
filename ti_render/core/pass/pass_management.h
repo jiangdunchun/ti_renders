@@ -4,11 +4,13 @@
 #include "../scene/scene.h"
 
 #include "pre_pass.h"
+#include "geometry_pass.h"
 
 namespace ti_render {
 	class pass_management {
 	private:
 		pre_pass* m_pre_pass;
+		geometry_pass* m_geomtry_pass;
 
 	public:
 		pass_management(unsigned int width, unsigned int height);
