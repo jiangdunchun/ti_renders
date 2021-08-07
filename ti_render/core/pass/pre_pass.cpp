@@ -33,15 +33,15 @@ namespace ti_render {
 	}
 
 	void pre_pass::rend(
-		render_system* render_system,
+		render_system* render,
 		camera_object* camera,
 		vector<mesh_object*>& meshes) {
 		m_frame_buffer->bind();
-		render_system->set_clear_color(vec4(0.0f, 0.0f, 0.0f, 0.0f));
-		render_system->set(graphic_capability::DEPTH_TEST, true);
-		render_system->set(graphic_func::DEPTH_MASK, false);
-		render_system->set_depth_func(depth_func::LESS);
-		render_system->clear_frame_buffer(frame_buffer_type::COLOR | frame_buffer_type::DEPTH | frame_buffer_type::STENCIL);
+		render->set_clear_color(vec4(0.0f, 0.0f, 0.0f, 0.0f));
+		render->set(graphic_capability::DEPTH_TEST, true);
+		render->set(graphic_func::DEPTH_MASK, false);
+		render->set_depth_func(depth_func::LESS);
+		render->clear_frame_buffer(frame_buffer_type::COLOR | frame_buffer_type::DEPTH | frame_buffer_type::STENCIL);
 
 		m_shader->use();
 		m_shader->set_mat4("uProjection", camera->get_projection());
@@ -51,6 +51,7 @@ namespace ti_render {
 			++m_iter) {
 			m_shader->set_mat4("uModel", (*m_iter)->get_world_transform());
 			m_shader->set_vec4("uColor", get_color((*m_iter)->get_id()));
+
 			for (vector<vertex_buffer*>::iterator vbo_iter = (*m_iter)->m_mesh->m_vbo_buffer.begin();
 				vbo_iter != (*m_iter)->m_mesh->m_vbo_buffer.end();
 				++vbo_iter) {

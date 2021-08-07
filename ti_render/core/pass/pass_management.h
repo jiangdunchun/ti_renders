@@ -5,12 +5,14 @@
 
 #include "pre_pass.h"
 #include "geometry_pass.h"
+#include "sky_pass.h"
 
 namespace ti_render {
 	class pass_management {
 	private:
 		pre_pass* m_pre_pass;
 		geometry_pass* m_geomtry_pass;
+		//sky_pass* m_sky_pass;
 
 	public:
 		pass_management(unsigned int width, unsigned int height);

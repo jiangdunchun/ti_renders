@@ -33,7 +33,7 @@ namespace ti_render {
 		texture_2d* get_emissive(void) {
 			return this->m_emissive;
 		}
-		void rend(render_system* render_system, camera_object* camera, std::vector<mesh_object*> meshes);
+		void rend(render_system* render, camera_object* camera, std::vector<mesh_object*> meshes);
 	};
 }
 

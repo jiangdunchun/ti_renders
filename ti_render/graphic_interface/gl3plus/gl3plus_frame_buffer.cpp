@@ -10,12 +10,18 @@ namespace ti_render {
 		glGenFramebuffers(1, &m_id);
 		glBindFramebuffer(GL_FRAMEBUFFER, m_id);
 
-		if (ds_rbo) glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, ds_rbo->m_id);
+		if (!ds_rbo) {
+			m_ds_rbo = new gl3plus_ds_render_buffer(width, height);
+			ds_rbo = m_ds_rbo;
+		}
+		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, ds_rbo->m_id);
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
 
 	gl3plus_frame_buffer::~gl3plus_frame_buffer() {
+		if (m_ds_rbo) delete m_ds_rbo;
+
 		glDeleteFramebuffers(1, &m_id);
 	}
 

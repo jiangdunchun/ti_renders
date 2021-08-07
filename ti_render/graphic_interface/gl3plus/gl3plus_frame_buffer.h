@@ -14,6 +14,7 @@ namespace ti_render {
 		unsigned int m_height;
 		GLuint m_id;
 		std::vector<GLuint> m_attachments;
+		gl3plus_ds_render_buffer* m_ds_rbo;
 
 	public:
 		gl3plus_frame_buffer(unsigned int width, unsigned int height, gl3plus_ds_render_buffer* ds_rbo = nullptr);

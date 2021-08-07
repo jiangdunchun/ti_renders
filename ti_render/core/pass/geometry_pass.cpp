@@ -28,12 +28,12 @@ namespace ti_render {
 		delete m_frame_buffer;
 	}
 
-	void geometry_pass::rend(render_system* render_system, camera_object* camera, vector<mesh_object*> meshes) {
+	void geometry_pass::rend(render_system* render, camera_object* camera, vector<mesh_object*> meshes) {
 		m_frame_buffer->bind();
-		render_system->set_clear_color(vec4(0.0f, 0.0f, 0.0f, 0.0f));
-		render_system->set(graphic_capability::DEPTH_TEST, true);
-		render_system->set_depth_func(depth_func::LEQUAL);
-		render_system->clear_frame_buffer(frame_buffer_type::COLOR);
+		render->set_clear_color(vec4(0.0f, 0.0f, 0.0f, 0.0f));
+		render->set(graphic_capability::DEPTH_TEST, true);
+		render->set_depth_func(depth_func::LEQUAL);
+		render->clear_frame_buffer(frame_buffer_type::COLOR);
 		
 		for (vector<mesh_object*>::iterator m_iter = meshes.begin();
 			m_iter != meshes.end();
@@ -47,6 +47,7 @@ namespace ti_render {
 					mat->m_shader->set_mat4("uModel", (*m_iter)->get_world_transform());
 					mat->m_shader->set_int("uView", (int)mat->get_light_model());
 					mat->bind_data();
+
 					(*m_iter)->m_mesh->m_vbo_buffer[i]->draw();
 				}
 			}

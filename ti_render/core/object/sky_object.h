@@ -9,10 +9,11 @@
 namespace ti_render {
 	class sky_object : public object {
 		friend class scene;
+		friend class sky_pass;
 
 	private:
-		texture_2d* m_sky_hdr;
-		texture_cube* m_sky_cube = nullptr;
+		texture_2d* m_hdr;
+		texture_cube* m_environment_cube = nullptr;
 		texture_cube* m_diffuse_cube = nullptr;
 		texture_cube* m_specular_cube = nullptr;
 

@@ -27,7 +27,7 @@ namespace ti_render {
 		ds_render_buffer* get_ds_render_buffer(void) const {
 			return m_ds_render_buffer;
 		}
-		void rend(render_system* render_system, camera_object* camera, std::vector<mesh_object*>& meshes);
+		void rend(render_system* render, camera_object* camera, std::vector<mesh_object*>& meshes);
 	};
 }
 

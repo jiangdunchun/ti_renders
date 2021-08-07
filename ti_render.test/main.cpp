@@ -17,6 +17,7 @@ int main(int, char**) {
 	StarSparrow->set_material(material_factory::create(material_type::METALLIC_ROUGHNESS), 0);
 	StarSparrow->set_local_position(vec3(0.0f, 0.0f, -10.0f));
 
+	//scene.set_sky_hdr("./texture/Alexs_Apt_2k.hdr");
 
 	render::set_scene(&scene);
 
