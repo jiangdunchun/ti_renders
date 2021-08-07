@@ -9,12 +9,12 @@
 namespace ti_render {
 	class sky_pass {
 	private:
-		const std::string m_hdr2cube_shader_path = "./shader/hdr2cube_sky_pass.shader";
+		const std::string m_hdr2env_shader_path = "./shader/hdr2env_sky_pass.shader";
 		const std::string m_env2diffuse_shader_path = "./shader/env2diffuse_sky_pass.shader";
 		const std::string m_env2specular_shader_path = "./shader/env2specular_sky_pass.shader";
 		const std::string m_env2background_shader_path = "./shader/env2background_sky_pass.shader";
 
-		shader* m_hdr2cube_shader;
+		shader* m_hdr2env_shader;
 		shader* m_env2diffuse_shader;
 		shader* m_env2specular_shader;
 		shader* m_env2background_shader;

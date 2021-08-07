@@ -32,10 +32,6 @@ namespace ti_render {
         glEnableVertexAttribArray(4);
         glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(vertex), (void*)offsetof(vertex, bi_tangent));
 
-        glBindVertexArray(0);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-
         m_triangle_num = indices.size() / 3;
 	}
 
@@ -48,7 +44,6 @@ namespace ti_render {
     void gl3plus_vertex_buffer::draw(void) const {
         glBindVertexArray(m_VAO);
         glDrawElements(GL_TRIANGLES, m_triangle_num * 3, GL_UNSIGNED_INT, 0);
-        glBindVertexArray(0);
     }
 }
 

@@ -34,7 +34,6 @@ namespace ti_render {
 		}
 		
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
 	gl3plus_texture_2d::~gl3plus_texture_2d() {
@@ -62,8 +61,6 @@ namespace ti_render {
 			map_color_format(format),
 			map_color_data_type(format),
 			data);
-
-		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
 	unsigned int gl3plus_texture_2d::get_width(unsigned int mipmap_layer) const {

@@ -74,6 +74,8 @@ namespace ti_render {
 
 	point_light_object* scene::create_point_light(const vec3& intensity) {
 		point_light_object* pl_obj = new point_light_object(intensity);
+		m_light_objects.push_back(pl_obj);
+
 		pl_obj->set_parent(m_root);
 		set_id(pl_obj);
 		return pl_obj;

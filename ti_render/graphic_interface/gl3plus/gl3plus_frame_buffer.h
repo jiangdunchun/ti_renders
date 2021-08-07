@@ -23,7 +23,6 @@ namespace ti_render {
 		void attach_color_buffer(unsigned int attachment, gl3plus_texture_cube* texture, cubemap_face face, unsigned int mipmap_layer = 0);
 		void detach_color_buffer(unsigned int attachment);
 		void bind(void) const;
-		void unbind(void) const;
 	};
 }
 

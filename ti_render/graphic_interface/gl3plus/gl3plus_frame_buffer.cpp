@@ -15,8 +15,6 @@ namespace ti_render {
 			ds_rbo = m_ds_rbo;
 		}
 		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, ds_rbo->m_id);
-
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
 
 	gl3plus_frame_buffer::~gl3plus_frame_buffer() {
@@ -51,7 +49,6 @@ namespace ti_render {
 			m_attachments.push_back(GL_COLOR_ATTACHMENT0 + attachment);
 			glDrawBuffers(m_attachments.size(), &m_attachments[0]);
 		}
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
 
 	void gl3plus_frame_buffer::attach_color_buffer(
@@ -81,7 +78,6 @@ namespace ti_render {
 			m_attachments.push_back(GL_COLOR_ATTACHMENT0 + attachment);
 			glDrawBuffers(m_attachments.size(), &m_attachments[0]);
 		}
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
 
 	void gl3plus_frame_buffer::detach_color_buffer(unsigned int attachment) {
@@ -105,17 +101,12 @@ namespace ti_render {
 				0,
 				0);
 			glDrawBuffers(m_attachments.size(), &m_attachments[0]);
-			glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		}
 	}
 
 	void gl3plus_frame_buffer::bind(void) const {
-		glViewport(0, 0, m_width, m_height);
 		glBindFramebuffer(GL_FRAMEBUFFER, m_id);
-	}
-
-	void gl3plus_frame_buffer::unbind(void) const {
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		glViewport(0, 0, m_width, m_height);
 	}
 }
 

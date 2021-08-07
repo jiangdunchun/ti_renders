@@ -45,6 +45,7 @@
     <ClInclude Include="core\pass\geometry_pass.h" />
     <ClInclude Include="core\pass\pass_management.h" />
     <ClInclude Include="core\pass\pre_pass.h" />
+    <ClInclude Include="core\pass\shadow_map_pass.h" />
     <ClInclude Include="core\pass\sky_pass.h" />
     <ClInclude Include="core\scene\scene.h" />
     <ClInclude Include="render.h" />
@@ -84,6 +85,7 @@
     <ClCompile Include="core\pass\geometry_pass.cpp" />
     <ClCompile Include="core\pass\pass_management.cpp" />
     <ClCompile Include="core\pass\pre_pass.cpp" />
+    <ClCompile Include="core\pass\shadow_map_pass.cpp" />
     <ClCompile Include="core\pass\sky_pass.cpp" />
     <ClCompile Include="core\scene\scene.cpp" />
     <ClCompile Include="render.cpp" />

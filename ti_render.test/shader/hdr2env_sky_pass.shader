@@ -26,7 +26,7 @@ in VS_OUT {
 
 uniform sampler2D uHDR;
 
-layout(location = 0) out vec4 fColor;
+layout(location = 0) out vec3 fEnv;
 
 const vec2 invAtan = vec2(0.1591, 0.3183);
 
@@ -39,8 +39,5 @@ vec2 SampleSphericalMap(vec3 v) {
 
 void main() {
     vec2 uv = SampleSphericalMap(normalize(fs_in.position));
-    vec3 color = texture(uHDR, uv).rgb;
-    color = color / (color + vec3(1.0));
-    color = pow(color, vec3(1.0 / 2.2));
-    fColor = vec4(color, 1.0f);
+    fEnv = texture(uHDR, uv).rgb;
 }

@@ -5,7 +5,7 @@ using namespace glm;
 
 namespace ti_render {
     void sky_pass::rend_environment(render_system* render, texture_2d* hdr, texture_cube*& environment) {
-        unsigned int resolution = hdr->get_height() / 2;
+        unsigned int resolution = hdr->get_width() / 2;
         environment = new texture_cube(resolution, resolution, color_format::RGB16F);
         frame_buffer fbo(resolution, resolution);
 
@@ -15,17 +15,16 @@ namespace ti_render {
         render->set(graphic_func::DEPTH_MASK, true);
         render->set_depth_func(depth_func::LESS);
 
-        m_hdr2cube_shader->use();
-        m_hdr2cube_shader->set_mat4("uProjection", m_projection);
-        m_hdr2cube_shader->set_texture_2d("uHDR", *hdr);
+        m_hdr2env_shader->use();
+        m_hdr2env_shader->set_mat4("uProjection", m_projection);
+        m_hdr2env_shader->set_texture_2d("uHDR", *hdr);
         for (unsigned int i = 0; i < m_cube_views.size(); ++i) {
-            m_hdr2cube_shader->set_mat4("uView", m_cube_views[i]);
-            fbo.attach_color_buffer(0, environment, cubemap_face(int(cubemap_face::NEGATIVE_X) + i));
+            m_hdr2env_shader->set_mat4("uView", m_cube_views[i]);
+            fbo.attach_color_buffer(0, environment, cubemap_face(int(cubemap_face::POSITIVE_X) + i));
             render->clear_frame_buffer(frame_buffer_type::COLOR | frame_buffer_type::DEPTH | frame_buffer_type::STENCIL);
 
             m_cube_mesh->draw();
         }
-        fbo.unbind();
     }
 
     void sky_pass::rend_diffuse(render_system* render, texture_cube* environment, texture_cube*& diffuse) {
@@ -39,17 +38,16 @@ namespace ti_render {
         render->set(graphic_func::DEPTH_MASK, true);
         render->set_depth_func(depth_func::LESS);
 
-        m_hdr2cube_shader->use();
-        m_hdr2cube_shader->set_mat4("uProjection", m_projection);
-        m_hdr2cube_shader->set_texture_cube("uEnvironment", *environment);
+        m_hdr2env_shader->use();
+        m_hdr2env_shader->set_mat4("uProjection", m_projection);
+        m_hdr2env_shader->set_texture_cube("uEnvironment", *environment);
         for (unsigned int i = 0; i < m_cube_views.size(); ++i) {
-            m_hdr2cube_shader->set_mat4("uView", m_cube_views[i]);
+            m_hdr2env_shader->set_mat4("uView", m_cube_views[i]);
             fbo.attach_color_buffer(0, diffuse, cubemap_face(int(cubemap_face::NEGATIVE_X) + i));
             render->clear_frame_buffer(frame_buffer_type::COLOR | frame_buffer_type::DEPTH | frame_buffer_type::STENCIL);
 
             m_cube_mesh->draw();
         }
-        fbo.unbind();
     }
 
     void sky_pass::rend_specular(render_system* render, texture_cube* environment, texture_cube*& specular) {
@@ -74,19 +72,18 @@ namespace ti_render {
             render->set(graphic_func::DEPTH_MASK, true);
             render->set_depth_func(depth_func::LESS);
             for (unsigned int i = 0; i < m_cube_views.size(); ++i) {
-                m_hdr2cube_shader->set_mat4("uView", m_cube_views[i]);
+                m_hdr2env_shader->set_mat4("uView", m_cube_views[i]);
                 fbo.attach_color_buffer(0, specular, cubemap_face(int(cubemap_face::NEGATIVE_X) + i), level);
                 render->clear_frame_buffer(frame_buffer_type::COLOR | frame_buffer_type::DEPTH | frame_buffer_type::STENCIL);
 
                 m_cube_mesh->draw();
             }
-            fbo.unbind();
         }
     }
 
     sky_pass::sky_pass(unsigned int width, unsigned int height) {
-        shader_file hdr2cube_file(m_hdr2cube_shader_path);
-        m_hdr2cube_shader = new shader(hdr2cube_file.get_vertex_code(), hdr2cube_file.get_fragment_code());
+        shader_file hdr2cube_file(m_hdr2env_shader_path);
+        m_hdr2env_shader = new shader(hdr2cube_file.get_vertex_code(), hdr2cube_file.get_fragment_code());
 
         shader_file env2diffuse_file(m_env2diffuse_shader_path);
         m_env2diffuse_shader = new shader(env2diffuse_file.get_vertex_code(), env2diffuse_file.get_fragment_code());
@@ -168,7 +165,7 @@ namespace ti_render {
 	}
 
 	sky_pass::~sky_pass() {
-		delete m_hdr2cube_shader;
+		delete m_hdr2env_shader;
 		delete m_env2diffuse_shader;
 		delete m_env2specular_shader;
         delete m_backgroud;
@@ -179,17 +176,17 @@ namespace ti_render {
 	void sky_pass::rend(render_system* render, camera_object* camera, sky_object* sky) {
         if (sky == nullptr) return;
 
-        //if (sky->m_hdr && !sky->m_environment_cube) {
+        if (sky->m_hdr && !sky->m_environment_cube) {
             rend_environment(render, sky->m_hdr, sky->m_environment_cube);
-        //}
+        }
 
-        //if (!sky->m_diffuse_cube) {
+        if (!sky->m_diffuse_cube) {
             rend_diffuse(render, sky->m_environment_cube, sky->m_diffuse_cube);
-        //}
+        }
 
-        //if (!sky->m_specular_cube) {
+        if (!sky->m_specular_cube) {
             rend_specular(render, sky->m_environment_cube, sky->m_specular_cube);
-        //}
+        }
 
         m_backgroud_frame_buffer->bind();
         render->set_clear_color(vec4(0.0f, 0.0f, 0.0f, 0.0f));
@@ -210,8 +207,6 @@ namespace ti_render {
         m_env2background_shader->set_texture_cube("uEnvironment", *(sky->m_environment_cube));
 
         m_cube_mesh->draw();
-
-        m_backgroud_frame_buffer->unbind();
 	}
 }
 

@@ -34,7 +34,6 @@ namespace ti_render {
 		}
 
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 	}
 
 	gl3plus_texture_cube::~gl3plus_texture_cube() {
@@ -63,8 +62,6 @@ namespace ti_render {
 			map_color_format(format),
 			map_color_data_type(format),
 			data);
-
-		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
 	unsigned int gl3plus_texture_cube::get_width(unsigned int mipmap_layer) const {

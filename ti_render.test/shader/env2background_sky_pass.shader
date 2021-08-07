@@ -24,10 +24,10 @@ in VS_OUT{
     vec3 tex_coord;
 } fs_in;
 
-uniform samplerCube uSky;
+uniform samplerCube uEnvironment;
 
-layout(location = 0) out vec3 fColor;
+layout(location = 0) out vec3 fBackgroud;
 
 void main() {
-    fColor = texture(uSky, fs_in.tex_coord).rgb;
+    fBackgroud = texture(uEnvironment, fs_in.tex_coord).rgb;
 }

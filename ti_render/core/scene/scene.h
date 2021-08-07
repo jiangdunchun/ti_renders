@@ -29,6 +29,7 @@ namespace ti_render {
 		unsigned int m_sky_id = 2;
 		sky_object* m_sky = nullptr;
 		std::vector<mesh_object*> m_mesh_objects;
+		std::vector<light_object*> m_light_objects;
 
 	public:
 		scene();

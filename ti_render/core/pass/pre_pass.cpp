@@ -39,7 +39,7 @@ namespace ti_render {
 		m_frame_buffer->bind();
 		render->set_clear_color(vec4(0.0f, 0.0f, 0.0f, 0.0f));
 		render->set(graphic_capability::DEPTH_TEST, true);
-		render->set(graphic_func::DEPTH_MASK, false);
+		render->set(graphic_func::DEPTH_MASK, true);
 		render->set_depth_func(depth_func::LESS);
 		render->clear_frame_buffer(frame_buffer_type::COLOR | frame_buffer_type::DEPTH | frame_buffer_type::STENCIL);
 
@@ -50,7 +50,7 @@ namespace ti_render {
 			m_iter != meshes.end();
 			++m_iter) {
 			m_shader->set_mat4("uModel", (*m_iter)->get_world_transform());
-			m_shader->set_vec4("uColor", get_color((*m_iter)->get_id()));
+			m_shader->set_vec4("uID", get_color((*m_iter)->get_id()));
 
 			for (vector<vertex_buffer*>::iterator vbo_iter = (*m_iter)->m_mesh->m_vbo_buffer.begin();
 				vbo_iter != (*m_iter)->m_mesh->m_vbo_buffer.end();
@@ -58,7 +58,5 @@ namespace ti_render {
 				(*vbo_iter)->draw();
 			}
 		}
-
-		m_frame_buffer->unbind();
 	}
 }

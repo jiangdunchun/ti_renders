@@ -16,10 +16,10 @@ void main() {
 
 #__FRAGMENT_SHADER__
 #version 330 core
-uniform vec4 uColor;
+uniform vec4 uID;
 
-layout(location = 0) out vec4 fColor;
+layout(location = 0) out vec4 fID;
 
 void main() {
-    fColor = uColor;
+    fID = uID;
 }

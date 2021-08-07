@@ -8,6 +8,7 @@
 namespace ti_render {
 	class geometry_pass {
 	private:
+		bool m_pre_z;
 		texture_2d* m_position;
 		texture_2d* m_base_color;
 		texture_2d* m_normal;
@@ -16,7 +17,7 @@ namespace ti_render {
 		frame_buffer* m_frame_buffer;
 
 	public:
-		geometry_pass(unsigned int width, unsigned int height, ds_render_buffer* dbo);
+		geometry_pass(unsigned int width, unsigned int height, ds_render_buffer* dbo = nullptr);
 		~geometry_pass();
 		texture_2d* get_position(void) {
 			return this->m_position;

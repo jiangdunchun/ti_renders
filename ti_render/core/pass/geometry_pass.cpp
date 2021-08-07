@@ -5,6 +5,7 @@ using namespace glm;
 
 namespace ti_render {
 	geometry_pass::geometry_pass(unsigned int width, unsigned int height, ds_render_buffer* dbo) {
+		m_pre_z = dbo ? true : false;
 		m_position = new gl3plus_texture_2d(width, height, color_format::RGB16F);
 		m_base_color = new gl3plus_texture_2d(width, height, color_format::RGBA16F);
 		m_normal = new gl3plus_texture_2d(width, height, color_format::RGB16F);
@@ -32,8 +33,17 @@ namespace ti_render {
 		m_frame_buffer->bind();
 		render->set_clear_color(vec4(0.0f, 0.0f, 0.0f, 0.0f));
 		render->set(graphic_capability::DEPTH_TEST, true);
-		render->set_depth_func(depth_func::LEQUAL);
-		render->clear_frame_buffer(frame_buffer_type::COLOR);
+		if (m_pre_z) {
+			render->set(graphic_func::DEPTH_MASK, false);
+			render->set_depth_func(depth_func::LEQUAL);
+			render->clear_frame_buffer(frame_buffer_type::COLOR);
+		}
+		else {
+			render->set(graphic_func::DEPTH_MASK, true);
+			render->set_depth_func(depth_func::LESS);
+			render->clear_frame_buffer(frame_buffer_type::COLOR | frame_buffer_type::DEPTH | frame_buffer_type::STENCIL);
+		}
+		
 		
 		for (vector<mesh_object*>::iterator m_iter = meshes.begin();
 			m_iter != meshes.end();
@@ -52,7 +62,5 @@ namespace ti_render {
 				}
 			}
 		}
-
-		m_frame_buffer->unbind();
 	}
 }
