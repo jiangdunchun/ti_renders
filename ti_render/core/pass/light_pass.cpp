@@ -55,7 +55,7 @@ namespace ti_render {
 		render_system* render,
 		camera_object* camera,
 		sky_object* sky,
-		std::vector<light_object*> lights) {
+		vector<light_object*> lights) {
 		m_frame_buffer->bind();
 		render->set_clear_color(vec4(0.0f, 0.0f, 0.0f, 0.0f));
 		render->set(graphic_capability::DEPTH_TEST, true);

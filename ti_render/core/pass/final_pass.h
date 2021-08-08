@@ -9,6 +9,8 @@ namespace ti_render {
 	private:
 		const std::string m_shader_path = "./shader/final_pass.shader";
 
+		unsigned int m_width;
+		unsigned int m_height;
 		shader* m_shader;
 		texture_2d* m_color_in;
 		texture_2d* m_background_in;
@@ -16,7 +18,12 @@ namespace ti_render {
 		vertex_buffer* m_mesh;
 
 	public:
-		final_pass(texture_2d* color, texture_2d* background, texture_2d* emissive);
+		final_pass(
+			unsigned int width,
+			unsigned int height, 
+			texture_2d* color,
+			texture_2d* background,
+			texture_2d* emissive);
 		~final_pass();
 		void rend(render_system* render);
 	};

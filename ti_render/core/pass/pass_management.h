@@ -8,6 +8,8 @@
 #include "sky_pass.h"
 #include "shadowmap_pass.h"
 #include "emissive_pass.h"
+#include "light_pass.h"
+#include "final_pass.h"
 
 namespace ti_render {
 	class pass_management {
@@ -17,6 +19,8 @@ namespace ti_render {
 		sky_pass* m_sky_pass;
 		shadowmap_pass* m_shadowmap_pass;
 		emissive_pass* m_emissive_pass;
+		light_pass* m_light_pass;
+		final_pass* m_final_pass;
 
 	public:
 		pass_management(unsigned int width, unsigned int height);

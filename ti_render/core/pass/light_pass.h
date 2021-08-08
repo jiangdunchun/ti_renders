@@ -31,7 +31,7 @@ namespace ti_render {
 			texture_2d* normal,
 			texture_2d* material);
 		~light_pass();
-		texture_2d* get_color_texture(void) {
+		texture_2d* get_color(void) {
 			return m_color;
 		}
 		void rend(

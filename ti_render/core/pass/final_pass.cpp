@@ -7,9 +7,11 @@ using namespace glm;
 
 namespace ti_render {
 	final_pass::final_pass(
+		unsigned int width,
+		unsigned int height,
 		texture_2d* color,
 		texture_2d* background,
-		texture_2d* emissive) {
+		texture_2d* emissive) : m_width(width), m_height(height) {
 		shader_file s_file(m_shader_path);
 		m_shader = new shader(s_file.get_vertex_code(), s_file.get_fragment_code());
 
@@ -37,6 +39,7 @@ namespace ti_render {
 
 	void final_pass::rend(render_system* render) {
 		render->rend_to_screen();
+		render->set_resolution(m_width, m_height);
 		render->set_clear_color(vec4(0.0f, 0.0f, 0.0f, 0.0f));
 		render->set(graphic_capability::DEPTH_TEST, true);
 		render->set(graphic_func::DEPTH_MASK, true);

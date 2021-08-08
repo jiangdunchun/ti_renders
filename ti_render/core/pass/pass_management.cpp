@@ -9,6 +9,21 @@ namespace ti_render {
 		m_sky_pass = new sky_pass(width, height);
 		m_shadowmap_pass = new shadowmap_pass();
 		m_emissive_pass = new emissive_pass(width, height, m_geomtry_pass->get_emissive());
+		m_light_pass = new light_pass(
+			width, 
+			height,
+			m_geomtry_pass->get_position(),
+			m_geomtry_pass->get_base_color(),
+			m_geomtry_pass->get_normal(),
+			m_geomtry_pass->get_material()
+		);
+		m_final_pass = new final_pass(
+			width,
+			height,
+			m_light_pass->get_color(),
+			m_sky_pass->get_backgroud(),
+			m_emissive_pass->get_emissive()
+		);
 	}
 
 	pass_management::~pass_management() {
@@ -17,6 +32,8 @@ namespace ti_render {
 		delete m_sky_pass;
 		delete m_shadowmap_pass;
 		delete m_emissive_pass;
+		delete m_light_pass;
+		delete m_final_pass;
 	}
 
 	void pass_management::rend(render_system* render, scene* scene) {
@@ -30,5 +47,7 @@ namespace ti_render {
 		m_sky_pass->rend(render, camera, sky);
 		m_shadowmap_pass->rend(render, lights, meshes);
 		m_emissive_pass->rend(render);
+		m_light_pass->rend(render, camera, sky, lights);
+		m_final_pass->rend(render);
 	}
 }
