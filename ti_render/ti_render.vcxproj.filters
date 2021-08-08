@@ -165,7 +165,16 @@
     <ClInclude Include="core\pass\sky_pass.h">
       <Filter>core\pass</Filter>
     </ClInclude>
-    <ClInclude Include="core\pass\shadow_map_pass.h">
+    <ClInclude Include="core\pass\shadowmap_pass.h">
+      <Filter>core\pass</Filter>
+    </ClInclude>
+    <ClInclude Include="core\pass\emissive_pass.h">
+      <Filter>core\pass</Filter>
+    </ClInclude>
+    <ClInclude Include="core\pass\final_pass.h">
+      <Filter>core\pass</Filter>
+    </ClInclude>
+    <ClInclude Include="core\pass\light_pass.h">
       <Filter>core\pass</Filter>
     </ClInclude>
   </ItemGroup>
@@ -275,7 +284,16 @@
     <ClCompile Include="core\pass\sky_pass.cpp">
       <Filter>core\pass</Filter>
     </ClCompile>
-    <ClCompile Include="core\pass\shadow_map_pass.cpp">
+    <ClCompile Include="core\pass\shadowmap_pass.cpp">
+      <Filter>core\pass</Filter>
+    </ClCompile>
+    <ClCompile Include="core\pass\emissive_pass.cpp">
+      <Filter>core\pass</Filter>
+    </ClCompile>
+    <ClCompile Include="core\pass\final_pass.cpp">
+      <Filter>core\pass</Filter>
+    </ClCompile>
+    <ClCompile Include="core\pass\light_pass.cpp">
       <Filter>core\pass</Filter>
     </ClCompile>
   </ItemGroup>

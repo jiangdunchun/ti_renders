@@ -12,6 +12,7 @@ namespace ti_render {
 		friend class scene;
 		friend class pre_pass;
 		friend class geometry_pass;
+		friend class shadowmap_pass;
 
 	private:
 		mesh* m_mesh;

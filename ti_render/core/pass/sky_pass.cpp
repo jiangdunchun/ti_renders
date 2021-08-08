@@ -1,5 +1,7 @@
 #include "sky_pass.h"
 
+#include "../file/shader_file.h"
+
 using namespace std;
 using namespace glm;
 
@@ -43,7 +45,7 @@ namespace ti_render {
         m_hdr2env_shader->set_texture_cube("uEnvironment", *environment);
         for (unsigned int i = 0; i < m_cube_views.size(); ++i) {
             m_hdr2env_shader->set_mat4("uView", m_cube_views[i]);
-            fbo.attach_color_buffer(0, diffuse, cubemap_face(int(cubemap_face::NEGATIVE_X) + i));
+            fbo.attach_color_buffer(0, diffuse, cubemap_face(int(cubemap_face::POSITIVE_X) + i));
             render->clear_frame_buffer(frame_buffer_type::COLOR | frame_buffer_type::DEPTH | frame_buffer_type::STENCIL);
 
             m_cube_mesh->draw();
@@ -73,7 +75,7 @@ namespace ti_render {
             render->set_depth_func(depth_func::LESS);
             for (unsigned int i = 0; i < m_cube_views.size(); ++i) {
                 m_hdr2env_shader->set_mat4("uView", m_cube_views[i]);
-                fbo.attach_color_buffer(0, specular, cubemap_face(int(cubemap_face::NEGATIVE_X) + i), level);
+                fbo.attach_color_buffer(0, specular, cubemap_face(int(cubemap_face::POSITIVE_X) + i), level);
                 render->clear_frame_buffer(frame_buffer_type::COLOR | frame_buffer_type::DEPTH | frame_buffer_type::STENCIL);
 
                 m_cube_mesh->draw();

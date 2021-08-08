@@ -14,6 +14,7 @@ namespace ti_render {
 		bool init(unsigned int width, unsigned int height, const std::string& name);
 		void shutdown(void);
 		bool is_active(void);
+		void rend_to_screen(void);
 		void set_clear_color(const glm::vec4& color);
 		void set_resolution(unsigned int width, unsigned int height);
 		void clear_frame_buffer(char mask);

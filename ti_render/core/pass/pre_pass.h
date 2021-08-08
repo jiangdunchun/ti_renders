@@ -4,7 +4,6 @@
 #include <vector>
 #include <string>
 
-#include "../file/shader_file.h"
 #include "../object/camera_object.h"
 #include "../object/mesh_object.h"
 #include "../../graphic_interface/graphic_interface.h"
@@ -15,7 +14,7 @@ namespace ti_render {
 		const std::string m_shader_path = "./shader/pre_pass.shader";
 
 		shader* m_shader;
-		texture_2d* m_id_texture;
+		texture_2d* m_id;
 		ds_render_buffer* m_ds_render_buffer;
 		frame_buffer* m_frame_buffer;
 

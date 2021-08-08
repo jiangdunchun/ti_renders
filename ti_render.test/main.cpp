@@ -17,6 +17,9 @@ int main(int, char**) {
 	StarSparrow->set_material(material_factory::create(material_type::METALLIC_ROUGHNESS), 0);
 	StarSparrow->set_local_position(vec3(0.0f, 0.0f, -10.0f));
 
+	point_light_object* point_light = scene.create_point_light(vec3(10.0f, 10.0f, 10.0f));
+	point_light->set_local_position(vec3(0.0f, 2.0f, -10.0f));
+
 	scene.set_sky_hdr("./texture/Alexs_Apt_2k.hdr");
 
 	scene.get_camera()->set_local_rotation(vec3(0.0f, 15.0f, 0.0f));

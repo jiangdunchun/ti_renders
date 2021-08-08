@@ -1,7 +1,6 @@
 #ifndef __SKY_PASS_H__
 #define __SKY_PASS_H__
 
-#include "../file/shader_file.h"
 #include "../object/sky_object.h"
 #include "../object/camera_object.h"
 #include "../../graphic_interface/graphic_interface.h"
@@ -27,9 +26,7 @@ namespace ti_render {
 		std::vector<glm::mat4> m_cube_views;
 
 		void rend_environment(render_system* render, texture_2d* hdr, texture_cube*& environment);
-
 		void rend_diffuse(render_system* render, texture_cube* environment, texture_cube*& diffuse);
-
 		void rend_specular(render_system* render, texture_cube* environment, texture_cube*& specular);
 
 	public:

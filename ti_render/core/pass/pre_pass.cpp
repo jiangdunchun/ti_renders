@@ -1,5 +1,7 @@
 #include "pre_pass.h"
 
+#include "../file/shader_file.h"
+
 using namespace std;
 using namespace glm;
 
@@ -19,15 +21,15 @@ namespace ti_render {
 	pre_pass::pre_pass(unsigned int width, unsigned int height) {
 		shader_file s_file(m_shader_path);
 		m_shader = new shader(s_file.get_vertex_code(), s_file.get_fragment_code());
-		m_id_texture = new texture_2d(width, height, color_format::RGBA8B);
+		m_id = new texture_2d(width, height, color_format::RGBA8B);
 		m_ds_render_buffer = new ds_render_buffer(width, height);
 		m_frame_buffer = new frame_buffer(width, height, m_ds_render_buffer);
-		m_frame_buffer->attach_color_buffer(0, m_id_texture);
+		m_frame_buffer->attach_color_buffer(0, m_id);
 	}
 
 	pre_pass::~pre_pass() {
 		delete m_shader;
-		delete m_id_texture;
+		delete m_id;
 		delete m_ds_render_buffer;
 		delete m_frame_buffer;
 	}

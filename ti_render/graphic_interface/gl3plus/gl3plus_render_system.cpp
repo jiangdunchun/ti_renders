@@ -30,6 +30,10 @@ namespace ti_render {
 		return !glfwWindowShouldClose(m_window);
 	}
 
+	void gl3plus_render_system::rend_to_screen(void) {
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	}
+
 	void gl3plus_render_system::set_clear_color(const vec4& color) {
 		glClearColor(color.r, color.g, color.b, color.a);
 	}
