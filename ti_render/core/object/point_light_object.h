@@ -8,6 +8,7 @@ namespace ti_render {
 	class point_light_object : public light_object {
 		friend class scene;
 		friend class shadowmap_pass;
+		friend class light_pass;
 
 	private:
 		float m_radius;

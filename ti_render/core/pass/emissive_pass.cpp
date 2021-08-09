@@ -52,6 +52,7 @@ namespace ti_render {
 		m_shader->use();
 		m_shader->set_texture_2d("uEmissive", *m_emissive_in);
 		m_shader->set_int("uHorizontal", is_horizontal);
+		m_mesh->draw();
 
 		is_horizontal = 0;
 		m_frame_buffer->attach_color_buffer(0, m_emissive_v);
@@ -59,14 +60,16 @@ namespace ti_render {
 		m_shader->use();
 		m_shader->set_texture_2d("uEmissive", *m_emissive_h);
 		m_shader->set_int("uHorizontal", is_horizontal);
+		m_mesh->draw();
 
-		for (unsigned int i = 0; i < 5; i++) {
+		for (unsigned int i = 0; i < 1; i++) {
 			is_horizontal = 1;
 			m_frame_buffer->attach_color_buffer(0, m_emissive_h);
 			render->clear_frame_buffer(frame_buffer_type::COLOR | frame_buffer_type::DEPTH | frame_buffer_type::STENCIL);
 			m_shader->use();
 			m_shader->set_texture_2d("uEmissive", *m_emissive_v);
 			m_shader->set_int("uHorizontal", is_horizontal);
+			m_mesh->draw();
 
 			is_horizontal = 0;
 			m_frame_buffer->attach_color_buffer(0, m_emissive_v);
@@ -74,6 +77,7 @@ namespace ti_render {
 			m_shader->use();
 			m_shader->set_texture_2d("uEmissive", *m_emissive_h);
 			m_shader->set_int("uHorizontal", is_horizontal);
+			m_mesh->draw();
 		}
 	}
 }

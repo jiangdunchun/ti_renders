@@ -34,7 +34,7 @@ namespace ti_render {
 		m_root = new dummy_object();
 		set_id(m_root, m_root_id);
 
-		m_camera = new camera_object(45.0f, 1.0f);
+		m_camera = new camera_object(90.0f, 1.0f);
 		m_camera->set_parent(m_root);
 		set_id(m_camera, m_camera_id);
 	}

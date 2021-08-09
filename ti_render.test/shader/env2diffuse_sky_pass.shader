@@ -24,12 +24,20 @@ in VS_OUT {
     vec3 position;
 } fs_in;
 
-uniform samplerCube uEnvironment;
+uniform sampler2D uEnvironment;
 
 layout(location = 0) out vec3 fDiffuse;
 
 const float PI = 3.14159265359f;
 const float SAMPLE_STEP = 0.025f;
+const vec2 INV_ATAN = vec2(0.1591, 0.3183);
+
+vec2 SampleSphericalMap(vec3 v) {
+    vec2 uv = vec2(atan(v.z, v.x), asin(v.y));
+    uv *= INV_ATAN;
+    uv += 0.5;
+    return uv;
+}
 
 void main() {
     vec3 normal = normalize(fs_in.position);
@@ -43,7 +51,8 @@ void main() {
         for (float theta = 0.0; theta < 0.5f * PI; theta += SAMPLE_STEP) {
             vec3 tangent = vec3(sin(theta) * cos(phi), sin(theta) * sin(phi), cos(theta));
             vec3 direction = tangent.x * right + tangent.y * up + tangent.z * normal;
-            irradiance += texture(uEnvironment, direction).rgb * cos(theta) * sin(theta);
+            vec2 uv = SampleSphericalMap(normalize(direction));
+            irradiance += texture(uEnvironment, uv).rgb * cos(theta) * sin(theta);
             sample_index++;
         }
     }

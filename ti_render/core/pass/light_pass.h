@@ -10,7 +10,7 @@ namespace ti_render {
 	class light_pass {
 	private:
 		const std::string m_shader_path = "./shader/light_pass.shader";
-		const std::string m_lut_path = "./textures/GGX_E_IS_LUT.png";
+		const std::string m_lut_path = "./texture/GGX_E_IS_LUT.png";
 
 		shader* m_shader;
 		texture_2d* m_lut;

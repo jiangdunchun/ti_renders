@@ -47,6 +47,9 @@ namespace ti_render {
 		render->clear_frame_buffer(frame_buffer_type::COLOR | frame_buffer_type::DEPTH | frame_buffer_type::STENCIL);
 
 		m_shader->use();
-
+		m_shader->set_texture_2d("uColor", *m_color_in);
+		m_shader->set_texture_2d("uBackground", *m_background_in);
+		m_shader->set_texture_2d("uEmissive", *m_emissive_in);
+		m_mesh->draw();
 	}
 }

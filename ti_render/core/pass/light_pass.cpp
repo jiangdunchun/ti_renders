@@ -2,6 +2,7 @@
 
 #include "../file/shader_file.h"
 #include "../file/image_file.h"
+#include "../object/point_light_object.h"
 
 using namespace glm;
 using namespace std;
@@ -56,6 +57,13 @@ namespace ti_render {
 		camera_object* camera,
 		sky_object* sky,
 		vector<light_object*> lights) {
+		vector<point_light_object*> point_lights;
+		for (vector<light_object*>::iterator iter = lights.begin();
+			iter != lights.end();
+			++iter) {
+			if ((*iter)->get_type() == object_type::POINT_LIGHT) point_lights.push_back(static_cast<point_light_object*>(*iter));
+		}
+
 		m_frame_buffer->bind();
 		render->set_clear_color(vec4(0.0f, 0.0f, 0.0f, 0.0f));
 		render->set(graphic_capability::DEPTH_TEST, true);
@@ -64,6 +72,24 @@ namespace ti_render {
 		render->clear_frame_buffer(frame_buffer_type::COLOR | frame_buffer_type::DEPTH | frame_buffer_type::STENCIL);
 
 		m_shader->use();
+		m_shader->set_texture_2d("uPosition", *m_position_in);
+		m_shader->set_texture_2d("uBase_color", *m_base_color_in);
+		m_shader->set_texture_2d("uNormal", *m_normal_in);
+		m_shader->set_texture_2d("uMaterial", *m_material_in);
+		m_shader->set_vec3("uView", camera->get_world_position());
+		m_shader->set_texture_cube("uDiffuse", *(sky->m_diffuse_cube));
+		m_shader->set_texture_cube("uSpecular", *(sky->m_specular_cube));
+		m_shader->set_texture_2d("uLUT", *m_lut);
+		m_shader->set_int("uPoint_lights_num", point_lights.size());
+		for (unsigned int i = 0; i < point_lights.size(); i++) {
+			string light_name = "uPoint_lights[" + to_string(i) + "]";
+			m_shader->set_vec3(light_name + ".position", point_lights[i]->get_world_position());
+			m_shader->set_vec3(light_name + ".intensity", point_lights[i]->get_intensity());
+			m_shader->set_texture_cube(light_name + ".shadow_map", *(point_lights[i]->m_shadow_map));
+			m_shader->set_float(light_name + ".bias", point_lights[i]->get_bias());
+			m_shader->set_float(light_name + ".radius", point_lights[i]->get_radius());
+		}
 
+		m_mesh->draw();
 	}
 }

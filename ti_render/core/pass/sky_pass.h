@@ -8,12 +8,10 @@
 namespace ti_render {
 	class sky_pass {
 	private:
-		const std::string m_hdr2env_shader_path = "./shader/hdr2env_sky_pass.shader";
 		const std::string m_env2diffuse_shader_path = "./shader/env2diffuse_sky_pass.shader";
 		const std::string m_env2specular_shader_path = "./shader/env2specular_sky_pass.shader";
 		const std::string m_env2background_shader_path = "./shader/env2background_sky_pass.shader";
 
-		shader* m_hdr2env_shader;
 		shader* m_env2diffuse_shader;
 		shader* m_env2specular_shader;
 		shader* m_env2background_shader;
@@ -25,9 +23,8 @@ namespace ti_render {
 		glm::mat4 m_projection;
 		std::vector<glm::mat4> m_cube_views;
 
-		void rend_environment(render_system* render, texture_2d* hdr, texture_cube*& environment);
-		void rend_diffuse(render_system* render, texture_cube* environment, texture_cube*& diffuse);
-		void rend_specular(render_system* render, texture_cube* environment, texture_cube*& specular);
+		void rend_diffuse(render_system* render, texture_2d* environment, texture_cube*& diffuse);
+		void rend_specular(render_system* render, texture_2d* environment, texture_cube*& specular);
 
 	public:
 		sky_pass(unsigned int width, unsigned int height);

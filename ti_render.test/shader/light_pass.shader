@@ -27,26 +27,32 @@ uniform sampler2D uBase_color;
 uniform sampler2D uNormal;
 uniform sampler2D uMaterial;
 
-uniform vec3 uView_position;
+uniform vec3 uView;
 
-struct Point_Light {
+uniform samplerCube uDiffuse;
+uniform samplerCube uSpecular;
+uniform sampler2D uLUT;
+
+const int LIGHTS_MAX = 1;
+
+struct POINT_LIGHT {
     vec3 position;
     vec3 intensity;
     samplerCube shadow_map;
     float bias;
     float radius;
 };
-const int LIGHTS_MAX = 1;
-uniform int uSpot_lights_num;
-uniform Point_Light uSpot_lights[LIGHTS_MAX];
-
-uniform samplerCube uDiffuse;
-uniform samplerCube uSpecular;
-uniform sampler2D uLUT;
+uniform int uPoint_lights_num;
+uniform POINT_LIGHT uPoint_lights[LIGHTS_MAX];
 
 layout(location = 0) out vec4 fColor;
 
 const float PI = 3.14159265359f;
+
+const float MAX_REFLECTION_LOD = 4.0;
+
+const float LIGHT_MODEL_SINGLE_COLOR = 1.0f;
+const float LIGHT_MODEL_PBR = 2.0f;
 
 float DistributionGGX(vec3 N, vec3 H, float roughness) {
     float a = roughness * roughness;
@@ -89,94 +95,66 @@ vec3 fresnelSchlickRoughness(float cosTheta, vec3 F0, float roughness) {
 }
 
 void main() {
+    float light_model = texture(uMaterial, fs_in.tex_coord).a;
+    float alpha = texture(uBase_color, fs_in.tex_coord).a;
     vec3 base_color = texture(uBase_color, fs_in.tex_coord).rgb;
     vec3 position = texture(uPosition, fs_in.tex_coord).rgb;
-    vec3 normal = texture(uNormal, fs_in.tex_coord).rgb;
+    vec3 N = texture(uNormal, fs_in.tex_coord).rgb;
     float metallic = texture(uMaterial, fs_in.tex_coord).r;
     float roughness = texture(uMaterial, fs_in.tex_coord).g;
     float ao = texture(uMaterial, fs_in.tex_coord).b;
-    
-    vec3 view_dir = normalize(uView_position - position);
 
-    vec3 F0 = vec3(0.04f);
-    F0 = mix(F0, base_color, metallic);
 
-    vec3 light = vec3(0.0f);
-    for (int i = 0; i < uSpot_lights_num; i++) {
-        vec3 light_dir = normalize(uSpot_lights[i].position - position);
-        float light_dis = length(uSpot_lights[i].position - position);
-        
-        if (texture(uSpot_lights[i].shadow_map, -1.0f * light_dir).r + uSpot_lights[i].bias > light_dis) {
-            vec3 light_color = uSpot_lights[i].intensity;
-            vec3 half_dir = normalize(view_dir + light_dir);
-            float light_radiens = (uSpot_lights[i].radius - light_dis) / uSpot_lights[i].radius;
+    // light model pbr
+    if (light_model - LIGHT_MODEL_PBR < 0.001f) {
+        vec3 V = normalize(uView - position);
 
-            float NDF = DistributionGGX(normal, half_dir, roughness);
-            float G = GeometrySmith(normal, view_dir, light_dir, roughness);
-            vec3 F = fresnelSchlick(max(dot(half_dir, view_dir), 0.0f), F0);
+        vec3 F0 = vec3(0.04f);
+        F0 = mix(F0, base_color, metallic);
 
-            vec3 kS = F;
-            vec3 kD = vec3(1.0f) - kS;
-            kD *= 1.0f - metallic;
+        vec3 light = vec3(0.0f);
+        for (int i = 0; i < uPoint_lights_num; i++) {
+            vec3 L = normalize(uPoint_lights[i].position - position);
+            float distance = length(uPoint_lights[i].position - position);
+            
+            if (texture(uPoint_lights[i].shadow_map, -1.0f * L).r + uPoint_lights[i].bias > distance) {
+                vec3 intensity = uPoint_lights[i].intensity;
+                vec3 H = normalize(V + L);
+                float radiens = (uPoint_lights[i].radius - distance) / uPoint_lights[i].radius;
 
-            vec3 nominator = NDF * G * F;
-            float denominator = 4.0f * max(dot(normal, view_dir), 0.0f) * max(dot(normal, light_dir), 0.0f) + 0.001f;
-            vec3 specular = nominator / denominator;
+                float NDF = DistributionGGX(N, H, roughness);
+                float G = GeometrySmith(N, V, L, roughness);
+                vec3 F = fresnelSchlick(max(dot(H, V), 0.0f), F0);
 
-            float NdotL = max(dot(normal, light_dir), 0.0f);
-            light += (kD * base_color / PI + specular) * light_color * NdotL * light_radiens;
+                vec3 kS = F;
+                vec3 kD = vec3(1.0f) - kS;
+                kD *= 1.0f - metallic;
+
+                vec3 nominator = NDF * G * F;
+                float denominator = 4.0f * max(dot(N, V), 0.0f) * max(dot(N, L), 0.0f) + 0.001f;
+                vec3 specular = nominator / denominator;
+
+                float NdotL = max(dot(N, L), 0.0f);
+                light += (kD * base_color / PI + specular) * intensity * NdotL * radiens;
+            }
         }
+        
+        vec3 R = reflect(-1.0 * V, N);
+        vec3 F = fresnelSchlickRoughness(max(dot(N, V), 0.0), F0, roughness);
+
+        vec3 kS = F;
+        vec3 kD = 1.0 - kS;
+        kD *= 1.0 - metallic;
+
+        vec3 irradiance = texture(uDiffuse, N).rgb;
+        vec3 diffuse = irradiance * base_color;
+
+        vec3 prefiltered_color = textureLod(uSpecular, R,  roughness * MAX_REFLECTION_LOD).rgb;   
+        vec2 envBRDF  = texture(uLUT, vec2(max(dot(N, V), 0.0), roughness)).rg;
+        vec3 specular = prefiltered_color * (F * envBRDF.x + envBRDF.y);
+
+        vec3 ambient = (kD * diffuse + specular) * ao;
+
+        fColor = vec4(light + ambient, alpha);
     }
-
-    //vec3 view_dir = normalize(uView_position - position);
-
-    //vec3 F0 = vec3(0.04f);
-    //F0 = mix(F0, base_color, metallic);
-
-    //vec3 light_dir = normalize(vec3(1.0f, 0.0f, 1.0f));
-    //vec3 light_color = vec3(1.0f, 1.0f, 1.0f);
-    //vec3 half_dir = normalize(view_dir + light_dir);
-
-    //float NDF = DistributionGGX(normal, half_dir, roughness);
-    //float G = GeometrySmith(normal, view_dir, light_dir, roughness);
-    //vec3 F = fresnelSchlick(max(dot(half_dir, view_dir), 0.0f), F0);
-
-    //vec3 kS = F;
-    //vec3 kD = vec3(1.0f) - kS;
-    //kD *= 1.0f - metallic;
-
-    //vec3 nominator = NDF * G * F;
-    //float denominator = 4.0f * max(dot(normal, view_dir), 0.0f) * max(dot(normal, light_dir), 0.0f) + 0.001f;
-    //vec3 specular = nominator / denominator;
-
-    //float NdotL = max(dot(normal, light_dir), 0.0f);
-    //vec3 light = (kD * base_color / PI + specular) * light_color * NdotL;
-
-    // vec3 kS_environment = fresnelSchlick(max(dot(normal, view_dir), 0.0f), F0);
-    // vec3 kD_environment = 1.0f - kS_environment;
-    // vec3 ambient = (kD_environment * texture(uDiffuse, normal).rgb * base_color) * ao;
-    //vec3 ambient = vec3(0.01) * base_color * ao;
-    vec3 R = reflect(-1.0 * view_dir, normal);
-    vec3 F = fresnelSchlickRoughness(max(dot(normal, view_dir), 0.0), F0, roughness);
-
-    vec3 kS = F;
-    vec3 kD = 1.0 - kS;
-    kD *= 1.0 - metallic;     
-
-    vec3 irradiance = texture(uDiffuse, normal).rgb;
-    vec3 diffuse    = irradiance * base_color;
-
-    const float MAX_REFLECTION_LOD = 4.0;
-    vec3 prefilteredColor = textureLod(uSpecular, R,  roughness * MAX_REFLECTION_LOD).rgb;   
-    vec2 envBRDF  = texture(uLUT, vec2(max(dot(normal, view_dir), 0.0), roughness)).rg;
-    vec3 specular = prefilteredColor * (F * envBRDF.x + envBRDF.y);
-
-    vec3 ambient = (kD * diffuse + specular) * ao;
-
-    vec3 color = ambient + light;
-
-    color = color / (color + vec3(1.0f));
-    color = pow(color, vec3(1.0f / 2.2f));
-
-    fColor = vec4(color, 1.0f);
 }

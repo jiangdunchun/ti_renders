@@ -24,13 +24,21 @@ in VS_OUT {
     vec3 position;
 } fs_in;
 
-uniform samplerCube uEnvironment;
+uniform sampler2D uEnvironment;
 uniform float uRoughness;
 
 layout(location = 0) out vec3 fSpecular;
 
 const float PI = 3.14159265359f;
 const uint SAMPLE_COUNT = 1024u;
+const vec2 INV_ATAN = vec2(0.1591, 0.3183);
+
+vec2 SampleSphericalMap(vec3 v) {
+    vec2 uv = vec2(atan(v.z, v.x), asin(v.y));
+    uv *= INV_ATAN;
+    uv += 0.5;
+    return uv;
+}
 
 float RadicalInverse_VdC(uint bits) {
     bits = (bits << 16u) | (bits >> 16u);
@@ -79,7 +87,8 @@ void main() {
 
         float NdotL = max(dot(N, L), 0.0f);
         if (NdotL > 0.0f) {
-            prefiltered_color += texture(uEnvironment, L).rgb * NdotL;
+            vec2 uv = SampleSphericalMap(normalize(L));
+            prefiltered_color += texture(uEnvironment, uv).rgb * NdotL;
             total_weight += NdotL;
         }
     }
