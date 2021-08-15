@@ -20,10 +20,10 @@
 
 ## images
 
-![](./images/pbr_balls.png)
+![](images/pbr_balls.png)
 
 > pbr balls
 
-![](./images/star_sparrow.png)
+![](images/star_sparrow.png)
 
-> a start sparrow
+> a star sparrow
