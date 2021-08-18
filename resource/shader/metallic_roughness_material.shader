@@ -50,6 +50,8 @@ in VS_OUT {
 
 uniform int uLight_model;
 
+uniform vec3 uView_position;
+
 uniform vec3 uBase_color_val;
 uniform sampler2D uBase_color_map;
 uniform sampler2D uNormal_map;
@@ -57,7 +59,8 @@ uniform float uMetallic_val;
 uniform sampler2D uMetallic_map;
 uniform float uRoughness_val;
 uniform sampler2D uRoughness_map;
-uniform sampler2D uDisplacement_map;
+uniform sampler2D uHeight_map;
+uniform float uHeight_val;
 uniform sampler2D uAo_map;
 uniform sampler2D uEmissive_map;
 
@@ -73,7 +76,18 @@ bool is_sample2d_null(sampler2D texture) {
     else return true;
 }
 
+vec2 parallax_mapping(vec2 tex_coord, vec3 V) {
+    if (is_sample2d_null(uHeight_map)) return tex_coord;
+
+    float height = texture(uHeight_map, tex_coord).r;
+    vec2 p = V.rg * (height * 1.0f);
+    return tex_coord + p;
+}
+
 void main() {
+    vec2 tex_coord = parallax_mapping(fs_in.tex_coord, fs_in.TBN * normalize(uView_position - fs_in.frag_position));
+    if (tex_coord.x > 1.0 || tex_coord.y > 1.0 || tex_coord.x < 0.0 || tex_coord.y < 0.0) discard;
+
     fPosition = fs_in.frag_position;
 
     if (is_sample2d_null(uBase_color_map)) fBase_color = vec4(uBase_color_val, 1.0f);

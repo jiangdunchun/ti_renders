@@ -8,7 +8,8 @@
     "uMetallic_map": "./texture/StarSparrow_Metallic.png",
     "uRoughness_val": "0.0f",
     "uRoughness_map": "./texture/StarSparrow_Roughness.png",
-    "uDisplacement_map": "",
+    "uHeight_map": "",
+    "uHeight_val": "0.0f",
     "uAo_map": "",
     "uEmissive_map": "./texture/StarSparrow_Emissive.png"
   }

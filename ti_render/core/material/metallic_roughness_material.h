@@ -20,7 +20,8 @@ namespace ti_render {
 				{"uMetallic_map", value_type::TEXTURE2D},
 				{"uRoughness_val", value_type::FLOAT, "0.0f"},
 				{"uRoughness_map", value_type::TEXTURE2D},
-				{"uDisplacement_map", value_type::TEXTURE2D},
+				{"uHeight_map", value_type::TEXTURE2D},
+				{"uHeight_val", value_type::FLOAT, "0.0f"},
 				{"uAo_map", value_type::TEXTURE2D},
 				{"uEmissive_map", value_type::TEXTURE2D}
 			};
