@@ -7,6 +7,7 @@
 #include <stb/stb_image_write.h>
 
 #include "../../common/logger_management.h"
+#include "file_common.h"
 
 using namespace std;
 
@@ -52,7 +53,8 @@ namespace ti_render {
 		}
 
 		int component, width, height;
-		m_data = image_loader(path.c_str(), &width, &height, &component, req_component);
+		string file_path = file_common::get_file_path(path);
+		m_data = image_loader(file_path.c_str(), &width, &height, &component, req_component);
 		
 		if (m_data != nullptr) {
 			m_width = width;

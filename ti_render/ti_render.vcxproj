@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -25,6 +25,7 @@
     <ClInclude Include="common\tr_enum.h" />
     <ClInclude Include="common\tr_string_parser.h" />
     <ClInclude Include="common\tr_struct.h" />
+    <ClInclude Include="core\file\file_common.h" />
     <ClInclude Include="core\file\image_file.h" />
     <ClInclude Include="core\file\material_file.h" />
     <ClInclude Include="core\file\mesh_file.h" />
@@ -69,6 +70,7 @@
     <ClCompile Include="common\logger_management.cpp" />
     <ClCompile Include="common\tr_algorithm.cpp" />
     <ClCompile Include="common\tr_string_parser.cpp" />
+    <ClCompile Include="core\file\file_common.cpp" />
     <ClCompile Include="core\file\image_file.cpp" />
     <ClCompile Include="core\file\material_file.cpp" />
     <ClCompile Include="core\file\mesh_file.cpp" />

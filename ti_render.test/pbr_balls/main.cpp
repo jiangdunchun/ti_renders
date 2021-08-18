@@ -24,13 +24,13 @@ int main(int, char**) {
 	console_logger c_logger;
 	logger_management::attach_logger(&c_logger);
 	
-	render::init(1000, 1000, "ti render");
+	render::init(1000, 1000, "ti render", "../../resource");
 
 	scene scene;
 
 	for (int i = 0; i < 11; i++) {
 		for (int j = 0; j < 11; j++) {
-			mesh_object* ball = scene.create_mesh("./mesh/ball.mesh");
+			mesh_object* ball = scene.create_mesh("mesh/ball.mesh");
 			material* mat = material_factory::create(material_type::METALLIC_ROUGHNESS);
 			mat->set_value({ "uBase_color_val",  value_type::VEC3 }, "1.0f, 0.0f, 0.0f");
 			mat->set_value({ "uMetallic_val",  value_type::FLOAT }, to_string(i / 10.0f));
@@ -48,7 +48,6 @@ int main(int, char**) {
 	camera_obj = scene.get_camera();
 
 	render::add_post_update_func(update);
-	render::set_scene(&scene);
 
-	render::run();
+	render::run(&scene);
 }

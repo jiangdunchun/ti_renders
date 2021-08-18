@@ -11,7 +11,7 @@
 namespace ti_render {
 	class pre_pass {
 	private:
-		const std::string m_shader_path = "./shader/pre_pass.shader";
+		const std::string m_shader_path = "shader/pre_pass.shader";
 
 		shader* m_shader;
 		texture_2d* m_id;

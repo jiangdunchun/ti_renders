@@ -55,7 +55,8 @@ namespace ti_render {
 					mat->m_shader->set_mat4("uProjection", camera->get_projection());
 					mat->m_shader->set_mat4("uView", camera->get_view());
 					mat->m_shader->set_mat4("uModel", (*m_iter)->get_world_transform());
-					mat->m_shader->set_int("uView", (int)mat->get_light_model());
+					mat->m_shader->set_vec3("uView_position", camera->get_world_position());
+					mat->m_shader->set_int("uLight_model", (int)mat->get_light_model());
 					mat->bind_data();
 
 					(*m_iter)->m_mesh->m_vbo_buffer[i]->draw();

@@ -3,18 +3,20 @@
 #include <fstream>
 
 #include "../../common/logger_management.h"
+#include "file_common.h"
 
 using namespace std;
 using namespace glm;
 
 namespace ti_render {
     mesh_file::mesh_file(const string& path) {
+        string file_path = file_common::get_file_path(path);
         ifstream file;
 
         vector<surface> faces;
         AABB aabb;
         try {
-            file.open(path, ios::binary);
+            file.open(file_path, ios::binary);
 
             unsigned int faces_num;
             file.read((char*)&faces_num, sizeof(unsigned int));

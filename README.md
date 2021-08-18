@@ -6,6 +6,8 @@
 
 - [x] deferred shading
 
+- [x] z pre-pass
+
 - material
     - [x] normal map
     - [x] ao map

@@ -3,6 +3,7 @@
 #include <fstream>
 
 #include "../../common/logger_management.h"
+#include "file_common.h"
 
 using namespace std;
 
@@ -12,11 +13,12 @@ namespace ti_render {
         string fragment_code = "";
         string geometry_code = "";
 
+        string file_path = file_common::get_file_path(path);
         ifstream file;
 
         try {
             int flag = 0;
-            file.open(path, ios::in);
+            file.open(file_path, ios::in);
 
             string line;
             while (getline(file, line)) {

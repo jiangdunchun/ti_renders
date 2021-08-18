@@ -7,7 +7,7 @@
 namespace ti_render {
 	class final_pass {
 	private:
-		const std::string m_shader_path = "./shader/final_pass.shader";
+		const std::string m_shader_path = "shader/final_pass.shader";
 
 		unsigned int m_width;
 		unsigned int m_height;

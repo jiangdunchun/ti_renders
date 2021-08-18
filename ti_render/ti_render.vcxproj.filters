@@ -177,6 +177,9 @@
     <ClInclude Include="core\pass\light_pass.h">
       <Filter>core\pass</Filter>
     </ClInclude>
+    <ClInclude Include="core\file\file_common.h">
+      <Filter>core\file</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="third_party\glad\glad.c">
@@ -295,6 +298,9 @@
     </ClCompile>
     <ClCompile Include="core\pass\light_pass.cpp">
       <Filter>core\pass</Filter>
+    </ClCompile>
+    <ClCompile Include="core\file\file_common.cpp">
+      <Filter>core\file</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

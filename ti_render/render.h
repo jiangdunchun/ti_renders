@@ -7,7 +7,6 @@
 namespace ti_render {
 	class render {
 	private:
-		static scene* m_scene;
 		static render_system* m_render_system;
 		static pass_management* m_pass_management;
 		static float m_tick;
@@ -18,12 +17,6 @@ namespace ti_render {
 		static void invoke_post_update_funcs(void);
 
 	public:
-		static scene* get_scene(void) {
-			return m_scene;
-		}
-		static void set_scene(scene* scene_ptr) {
-			 m_scene = scene_ptr;
-		}
 		static float get_tick(void) {
 			return m_tick;
 		}
@@ -33,8 +26,8 @@ namespace ti_render {
 		static void add_post_update_func(void(*func_ptr)(void));
 		static void remove_post_update_func(void(*func_ptr)(void));
 
-		static void init(unsigned int width, unsigned int height, const std::string& name);
-		static void run(void);
+		static void init(unsigned int width, unsigned int height, const std::string& name, const std::string& resource_path);
+		static void run(scene* scene_ptr);
 	};
 }
 

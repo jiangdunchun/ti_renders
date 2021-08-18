@@ -29,21 +29,20 @@ int main(int, char**) {
 	console_logger c_logger;
 	logger_management::attach_logger(&c_logger);
 	
-	render::init(1000, 1000, "ti render");
+	render::init(1000, 1000, "ti render", "../../resource");
 
 	scene scene;
 
-	mesh_object* StarSparrow = scene.create_mesh("./mesh/StarSparrow.mesh");
-	StarSparrow->set_material(material_factory::create("./material/StarSparrow.material"), 0);
+	mesh_object* StarSparrow = scene.create_mesh("mesh/StarSparrow.mesh");
+	StarSparrow->set_material(material_factory::create("material/StarSparrow.material"), 0);
 
 	point_light_obj = scene.create_point_light(glm::vec3(3.0f, 3.0f, 3.0f));
 
-	scene.set_sky_hdr("./texture/Alexs_Apt_2k.hdr");
+	scene.set_sky_hdr("texture/Alexs_Apt_2k.hdr");
 
 	camera_obj = scene.get_camera();
 
 	render::add_post_update_func(update);
-	render::set_scene(&scene);
 
-	render::run();
+	render::run(&scene);
 }

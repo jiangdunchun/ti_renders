@@ -8,7 +8,7 @@
 namespace ti_render {
 	class shadowmap_pass {
 	private:
-		const std::string m_point_light_shader_path = "./shader/point_light_shadowmap_pass.shader";
+		const std::string m_point_light_shader_path = "shader/point_light_shadowmap_pass.shader";
 
 		shader* m_point_light_shader;
 

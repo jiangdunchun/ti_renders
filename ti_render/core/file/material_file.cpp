@@ -6,6 +6,7 @@
 #include <rapidjson/writer.h>
 
 #include "../../common/logger_management.h"
+#include "file_common.h"
 
 
 using namespace std;
@@ -13,9 +14,10 @@ using namespace rapidjson;
 
 namespace ti_render {
 	material_file::material_file(const string& path) {
+		string file_path = file_common::get_file_path(path);
 		ifstream file;
 		try {
-			file.open(path, ios::binary);
+			file.open(file_path, ios::binary);
 
 			istreambuf_iterator<char> beg(file), end;
 			string mat_str(beg, end);
