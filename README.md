@@ -10,8 +10,10 @@
 
 - material
     - [x] normal map
+    - [x] bump map
     - [x] ao map
     - [x] emissive map
+
 - pbr
     - [x] light
     - [x] diffuse irradiance
