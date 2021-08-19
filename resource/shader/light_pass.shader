@@ -155,6 +155,6 @@ void main() {
 
         vec3 ambient = (kD * diffuse + specular) * ao;
 
-        fColor = vec4(light + ambient, alpha);
+        fColor = vec4(light * ao + ambient, alpha);
     }
 }

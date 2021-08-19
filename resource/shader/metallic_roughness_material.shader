@@ -91,22 +91,22 @@ void main() {
     fPosition = fs_in.frag_position;
 
     if (is_sample2d_null(uBase_color_map)) fBase_color = vec4(uBase_color_val, 1.0f);
-    else fBase_color = vec4(pow(texture(uBase_color_map, fs_in.tex_coord).rgb, vec3(2.2f)), 1.0f);
+    else fBase_color = vec4(pow(texture(uBase_color_map, tex_coord).rgb, vec3(2.2f)), 1.0f);
 
     if (is_sample2d_null(uNormal_map)) fNormal = fs_in.normal;
-    else fNormal = normalize(inverse(fs_in.TBN) * (texture(uNormal_map, fs_in.tex_coord).rgb * 2.0f - 1.0f));
+    else fNormal = normalize(inverse(fs_in.TBN) * (texture(uNormal_map, tex_coord).rgb * 2.0f - 1.0f));
 
     if (is_sample2d_null(uMetallic_map)) fMaterial.r = uMetallic_val;
-    else fMaterial.r = texture(uMetallic_map, fs_in.tex_coord).r;
+    else fMaterial.r = texture(uMetallic_map, tex_coord).r;
 
     if (is_sample2d_null(uRoughness_map)) fMaterial.g = uRoughness_val;
-    else fMaterial.g = texture(uRoughness_map, fs_in.tex_coord).r;
+    else fMaterial.g = texture(uRoughness_map, tex_coord).r;
 
     if (is_sample2d_null(uAo_map)) fMaterial.b = 1.0f;
-    else fMaterial.b = texture(uAo_map, fs_in.tex_coord).r;
+    else fMaterial.b = texture(uAo_map, tex_coord).r;
 
     fMaterial.a = float(uLight_model);
 
     if (is_sample2d_null(uEmissive_map)) fEmissive = vec3(0.0f, 0.0f, 0.0f);
-    else fEmissive = pow(texture(uEmissive_map, fs_in.tex_coord).rgb, vec3(2.2f));
+    else fEmissive = pow(texture(uEmissive_map, tex_coord).rgb, vec3(2.2f));
 }

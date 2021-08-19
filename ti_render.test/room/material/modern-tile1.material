@@ -1,0 +1,17 @@
+{
+  "type": "METALLIC_ROUGHNESS",
+  "parameters": {
+    "uBase_color_val": "0.5f, 0.5f, 0.5f",
+    "uBase_color_map": "./texture/modern-tile1-albedo.png",
+    "uNormal_map": "./texture/modern-tile1-normal-ogl.png",
+    "uMetallic_val": "1.0f",
+    "uMetallic_map": "./texture/modern-tile1-metallic.png",
+    "uRoughness_val": "1.0f",
+    "uRoughness_map": "",
+    "uHeight_map": "./texture/modern-tile1-height.png",
+    "uHeight_val": "0.0f",
+    "uAo_map": "./texture/modern-tile1-ao.png",
+    "uEmissive_map": ""
+  }
+}
+

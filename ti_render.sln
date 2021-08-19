@@ -15,6 +15,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pbr_balls", "ti_render.test
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "star_sparrow", "ti_render.test\star_sparrow\star_sparrow.vcxproj", "{2DE8729A-A270-44BE-8CB9-A069DD28BFBC}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "room", "ti_render.test\room\room.vcxproj", "{0444A103-A591-47B1-AB1E-628BE3F8E556}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -55,6 +57,14 @@ Global
 		{2DE8729A-A270-44BE-8CB9-A069DD28BFBC}.Release|x64.Build.0 = Release|x64
 		{2DE8729A-A270-44BE-8CB9-A069DD28BFBC}.Release|x86.ActiveCfg = Release|Win32
 		{2DE8729A-A270-44BE-8CB9-A069DD28BFBC}.Release|x86.Build.0 = Release|Win32
+		{0444A103-A591-47B1-AB1E-628BE3F8E556}.Debug|x64.ActiveCfg = Debug|x64
+		{0444A103-A591-47B1-AB1E-628BE3F8E556}.Debug|x64.Build.0 = Debug|x64
+		{0444A103-A591-47B1-AB1E-628BE3F8E556}.Debug|x86.ActiveCfg = Debug|Win32
+		{0444A103-A591-47B1-AB1E-628BE3F8E556}.Debug|x86.Build.0 = Debug|Win32
+		{0444A103-A591-47B1-AB1E-628BE3F8E556}.Release|x64.ActiveCfg = Release|x64
+		{0444A103-A591-47B1-AB1E-628BE3F8E556}.Release|x64.Build.0 = Release|x64
+		{0444A103-A591-47B1-AB1E-628BE3F8E556}.Release|x86.ActiveCfg = Release|Win32
+		{0444A103-A591-47B1-AB1E-628BE3F8E556}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -63,6 +73,7 @@ Global
 		{1D3D23E0-D185-4CE7-9DC8-8B1802FA74B8} = {CDA5201A-A1D3-4C4D-B94A-2F3BC077D6E5}
 		{7E4F6B39-97CF-487E-8C66-33508374F42B} = {387C0565-AACB-44A7-B6B5-D005E06FD744}
 		{2DE8729A-A270-44BE-8CB9-A069DD28BFBC} = {387C0565-AACB-44A7-B6B5-D005E06FD744}
+		{0444A103-A591-47B1-AB1E-628BE3F8E556} = {387C0565-AACB-44A7-B6B5-D005E06FD744}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A3BBF731-0C82-4C8D-9D80-470B50507CB6}
