@@ -30,7 +30,7 @@ void main() {
     mat3 model_mat = mat3(transpose(inverse(uModel)));
     vec3 T = normalize(model_mat * aTangent);
     vec3 N = normalize(model_mat * aNormal);
-    vec3 B = normalize(model_mat * aBi_tangent);
+    vec3 B = normalize(cross(N,T));
     vs_out.TBN = transpose(mat3(T, B, N));
 
     gl_Position = projection_pos;
@@ -80,7 +80,7 @@ vec2 parallax_mapping(vec2 tex_coord, vec3 V) {
     if (is_sample2d_null(uHeight_map)) return tex_coord;
 
     float height = texture(uHeight_map, tex_coord).r;
-    vec2 p = V.rg * (height * 1.0f);
+    vec2 p = V.rg * (height * uHeight_val);
     return tex_coord + p;
 }
 
