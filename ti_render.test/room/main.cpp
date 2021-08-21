@@ -23,7 +23,7 @@ void update() {
 
 	height += render::get_tick() / 5.0f;
 	height = height > 1.0f ? height - 1.0f : height;
-	mat_tile1->set_value({ "uHeight_val",  value_type::FLOAT }, to_string(height / 100.0f));
+	mat_tile1->set_value({ "uHeight_val",  value_type::FLOAT }, to_string(height / 10.0f));
 }
 
 int main(int, char**) {

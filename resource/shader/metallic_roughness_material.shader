@@ -76,12 +76,37 @@ bool is_sample2d_null(sampler2D texture) {
     else return true;
 }
 
-vec2 parallax_mapping(vec2 tex_coord, vec3 V) {
-    if (is_sample2d_null(uHeight_map)) return tex_coord;
+//vec2 parallax_mapping(vec2 tex_coord, vec3 V) {
+//    if (is_sample2d_null(uHeight_map)) return tex_coord;
+//
+//    float height = texture(uHeight_map, tex_coord).r;
+//    vec2 p = V.rg * (height * uHeight_val);
+//    return tex_coord + p;
+//}
 
-    float height = texture(uHeight_map, tex_coord).r;
-    vec2 p = V.rg * (height * uHeight_val);
-    return tex_coord + p;
+const float LAYER_MIN = 10;
+const float LAYER_MAX = 20;
+vec2 parallax_mapping(vec2 tex_coord, vec3 V) {
+    float layer_num = mix(LAYER_MAX, LAYER_MIN, abs(dot(vec3(0.0f, 0.0f, 1.0f), V)));
+    float layer_depth = 1.0f / layer_num;
+    vec2 tex_coord_step = V.xy * uHeight_val / layer_num;
+
+    float now_depth = 0.0;
+    vec2  now_tex_coord = tex_coord;
+    float now_depth_in_map = (1.0f - texture(uHeight_map, now_tex_coord).r);
+    while (now_depth < now_depth_in_map) {
+        now_tex_coord -= tex_coord_step;
+        now_depth_in_map = (1.0f - texture(uHeight_map, now_tex_coord).r);
+        now_depth += layer_depth;
+    }
+
+    vec2 pre_tex_coord = now_tex_coord + tex_coord_step;
+
+    float now_delta = now_depth - now_depth_in_map;
+    float pre_delta = (1.0f - texture(uHeight_map, pre_tex_coord).r) - (now_depth - layer_depth);
+
+    float weight = pre_delta / (pre_delta + now_delta);
+    return pre_tex_coord * weight + now_tex_coord * (1.0 - weight);
 }
 
 void main() {
