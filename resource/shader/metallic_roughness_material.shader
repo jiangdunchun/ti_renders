@@ -87,6 +87,8 @@ bool is_sample2d_null(sampler2D texture) {
 const float LAYER_MIN = 10;
 const float LAYER_MAX = 20;
 vec2 parallax_mapping(vec2 tex_coord, vec3 V) {
+    if (is_sample2d_null(uHeight_map)) return tex_coord;
+
     float layer_num = mix(LAYER_MAX, LAYER_MIN, abs(dot(vec3(0.0f, 0.0f, 1.0f), V)));
     float layer_depth = 1.0f / layer_num;
     vec2 tex_coord_step = V.xy * uHeight_val / layer_num;

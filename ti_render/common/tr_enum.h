@@ -28,6 +28,7 @@ namespace ti_render {
 
 	enum class graphic_capability {
 		DEPTH_TEST,
+		TEXTURE_CUBE_MAP_SEAMLESS,
 	};
 
 	enum class graphic_func {

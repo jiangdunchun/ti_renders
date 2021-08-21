@@ -16,7 +16,7 @@ namespace ti_render {
 		unsigned m_mipmap_layer_max;
 
 	public:
-		gl3plus_texture_cube(unsigned int width, unsigned int height, color_format format, bool mipmap = false);
+		gl3plus_texture_cube(unsigned int width, unsigned int height, color_format format);
 		~gl3plus_texture_cube();
 
 		void push_data(cubemap_face face, color_format format, void* data, unsigned int mipmap_layer = 0);
@@ -26,6 +26,7 @@ namespace ti_render {
 		const color_format& get_color_format(void) const {
 			return m_format;
 		}
+		void generate_mipmap(void);
 		unsigned int get_width(unsigned int mipmap_layer = 0) const;
 		unsigned int get_height(unsigned int mipmap_layer = 0) const;
 	};

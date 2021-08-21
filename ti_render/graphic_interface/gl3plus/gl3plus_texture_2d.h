@@ -19,8 +19,7 @@ namespace ti_render {
 		gl3plus_texture_2d(
 			unsigned int width,
 			unsigned int height,
-			color_format format,
-			bool mipmap = false);
+			color_format format);
 		~gl3plus_texture_2d();
 
 		void push_data(color_format format, const void* data, unsigned int mipmap_layer = 0);
@@ -30,6 +29,7 @@ namespace ti_render {
 		const color_format& get_color_format(void) const {
 			return m_format;
 		}
+		void generate_mipmap(void);
 		unsigned int get_width(unsigned int mipmap_layer = 0) const;
 		unsigned int get_height(unsigned int mipmap_layer = 0) const;
 	};

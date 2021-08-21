@@ -6,8 +6,7 @@ namespace ti_render {
 	gl3plus_texture_cube::gl3plus_texture_cube(
 		unsigned int width, 
 		unsigned int height, 
-		color_format format,
-		bool mipmap) : m_width(width), m_height(height), m_format(format) {
+		color_format format) : m_width(width), m_height(height), m_format(format) {
 		glGenTextures(1, &m_id);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, m_id);
 		for (unsigned int i = 0; i < 6; i++) {
@@ -23,16 +22,8 @@ namespace ti_render {
 				nullptr);
 		}
 
-		if (mipmap) {
-			m_mipmap_layer_max = unsigned int(log2(max(m_width, m_height)));
-			glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
-			glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-		}
-		else {
-			m_mipmap_layer_max = 0;
-			glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		}
-
+		m_mipmap_layer_max = 0;
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	}
 
@@ -62,6 +53,14 @@ namespace ti_render {
 			map_color_format(format),
 			map_color_data_type(format),
 			data);
+	}
+
+	void gl3plus_texture_cube::generate_mipmap(void) {
+		glBindTexture(GL_TEXTURE_CUBE_MAP, m_id);
+
+		m_mipmap_layer_max = unsigned int(log2(max(m_width, m_height)));
+		glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	}
 
 	unsigned int gl3plus_texture_cube::get_width(unsigned int mipmap_layer) const {

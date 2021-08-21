@@ -66,6 +66,7 @@ namespace ti_render {
 
 		m_frame_buffer->bind();
 		render->set_clear_color(vec4(0.0f, 0.0f, 0.0f, 0.0f));
+		render->set(graphic_capability::TEXTURE_CUBE_MAP_SEAMLESS, true);
 		render->set(graphic_capability::DEPTH_TEST, true);
 		render->set(graphic_func::DEPTH_MASK, true);
 		render->set_depth_func(depth_func::LESS);

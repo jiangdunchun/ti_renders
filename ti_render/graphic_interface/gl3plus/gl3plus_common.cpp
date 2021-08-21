@@ -86,6 +86,8 @@ namespace ti_render {
 		case graphic_capability::DEPTH_TEST:
 			gl_capacity = GL_DEPTH_TEST;
 			break;
+		case graphic_capability::TEXTURE_CUBE_MAP_SEAMLESS:
+			gl_capacity = GL_TEXTURE_CUBE_MAP_SEAMLESS;
 		default:
 			break;
 		}

@@ -14,6 +14,7 @@ namespace ti_render {
 
 	private:
 		texture_2d* m_environment;
+		texture_cube* m_environment_cube = nullptr;
 		texture_cube* m_diffuse_cube = nullptr;
 		texture_cube* m_specular_cube = nullptr;
 
