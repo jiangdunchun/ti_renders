@@ -29,10 +29,27 @@ namespace ti_render {
 		glm::vec3 direction;
 	};
 
+	struct point;
+	struct edge;
 	struct triangle {
-		vertex* p0;
-		vertex* p1;
-		vertex* p2;
+		point* p0;
+		point* p1;
+		point* p2;
+		edge* e0;
+		edge* e1;
+		edge* e2;
+	};
+
+	struct edge {
+		std::vector<triangle*> ts;
+		point* p0;
+		point* p1;
+	};
+
+	struct point {
+		std::vector<triangle*> ts;
+		std::vector<edge*> es;
+		vertex* v;
 	};
 }
 

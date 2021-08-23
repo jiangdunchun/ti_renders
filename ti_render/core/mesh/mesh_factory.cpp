@@ -1,6 +1,7 @@
 #include "mesh_factory.h"
 
 #include "../../third_party/md5/md5.h"
+#include "../../common/tr_algorithm.h"
 #include "../file/mesh_file.h"
 
 using namespace std;
@@ -21,6 +22,14 @@ namespace ti_render {
 			get<1>(iter->second)++;
 			return get<0>(iter->second);
 		}
+	}
+
+	mesh* mesh_factory::create_plane(float width, float height, int x_num, int y_num) {
+		surface face;
+		AABB aabb;
+		tr_algorithm::generate_plane(width, height, x_num, y_num, face, aabb);
+
+		return new mesh({ face }, aabb);
 	}
 
 	void mesh_factory::dispose(mesh* mesh_ptr) {

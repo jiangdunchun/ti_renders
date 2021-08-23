@@ -118,7 +118,11 @@ void main() {
     fPosition = fs_in.frag_position;
 
     if (is_sample2d_null(uBase_color_map)) fBase_color = vec4(uBase_color_val, 1.0f);
-    else fBase_color = vec4(pow(texture(uBase_color_map, tex_coord).rgb, vec3(2.2f)), 1.0f);
+    else {
+        vec4 color = texture(uBase_color_map, tex_coord);
+        if (color.a < 0.0001f) discard;
+        fBase_color = vec4(pow(color.rgb, vec3(2.2f)), 1.0f);
+    }
 
     if (is_sample2d_null(uNormal_map)) fNormal = fs_in.normal;
     else fNormal = normalize(inverse(fs_in.TBN) * (texture(uNormal_map, tex_coord).rgb * 2.0f - 1.0f));

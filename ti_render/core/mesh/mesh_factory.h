@@ -12,6 +12,7 @@ namespace ti_render {
 		static std::map<std::string, std::tuple<mesh*, unsigned int>> sm_mesh_pool;
 	public:
 		static mesh* create(const std::string& path);
+		static mesh* create_plane(float width, float height, int x_num, int y_num);
 		static void dispose(mesh* mesh_ptr);
 	};
 }

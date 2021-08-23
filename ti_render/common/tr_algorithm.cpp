@@ -77,4 +77,123 @@ namespace ti_render {
 		if (near_d < 0 && far_d < 0) return false;
 		else return near_d < far_d;
 	}
+
+	void tr_algorithm::generate_plane(
+		float width, float height,
+		int x_num, int y_num,
+		surface& face, AABB& aabb) {
+		vec3 ld = vec3(width / -2.0f, 0.0f, height / 2.0f);
+
+		vector<vertex> vertices;
+		vec3 normal = vec3(0.0f, 1.0f, 0.0f);
+		vec3 tangent = vec3(1.0f, 0.0f, 0.0f);
+		vec3 bi_tangent = vec3(0.0f, 0.0f, -1.0f);
+		float t_step_x = 1.0f / x_num;
+		float t_step_y = 1.0f / y_num;
+		float p_step_x = width * t_step_x;
+		float p_step_y = -1.0f * height * t_step_y;
+		for (int y = 0; y <= y_num; y++) {
+			for (int x = 0; x <= x_num; x++) {
+				vec3 position = ld + float(x) * vec3(p_step_x, 0.0f, 0.0f) + float(y) * vec3(0.0f, 0.0f, p_step_y);
+				vec2 tex_coord = vec2(float(x) * t_step_x, float(y) * t_step_y);
+				vertices.push_back({ position, tex_coord, normal, tangent, bi_tangent });
+			}
+		}
+
+		vector<unsigned int> indices;
+		for (int y = 0; y < y_num; y++) {
+			for (int x = 0; x < x_num; x++) {
+				indices.push_back(y * (x_num + 1) + x);
+				indices.push_back(y * (x_num + 1) + x + 1);
+				indices.push_back((y + 1) * (x_num + 1) + x + 1);
+				indices.push_back(y * (x_num + 1) + x);
+				indices.push_back((y + 1) * (x_num + 1) + x + 1);
+				indices.push_back((y + 1) * (x_num + 1) + x);
+			}
+		}
+
+		aabb = { vec3(width / -2.0f, 0.0f, height / -2.0f), vec3(width / 2.0f, 0.0f, height / 2.0f) };
+		face.vertices = vertices;
+		face.indices = indices;
+		face.aabb = aabb;
+	}
+
+	void tr_algorithm::generate_triagnles(
+		surface& face,
+		vector<triangle*>& ts,
+		vector<edge*>& es,
+		vector<point*>& ps) {
+		for (int i = 0; i < face.vertices.size(); i++) {
+			point* n_point = new point();
+			n_point->v = &face.vertices[i];
+			ps.push_back(n_point);
+		}
+
+		for (int i = 0; i < face.indices.size() / 3; i++) {
+			triangle* n_triangle = new triangle();
+			n_triangle->p0 = ps[face.indices[i * 3]];
+			n_triangle->p0->ts.push_back(n_triangle);
+			n_triangle->p1 = ps[face.indices[i * 3 + 1]];
+			n_triangle->p1->ts.push_back(n_triangle);
+			n_triangle->p2 = ps[face.indices[i * 3 + 2]];
+			n_triangle->p2->ts.push_back(n_triangle);
+			n_triangle->e0 = nullptr;
+			n_triangle->e1 = nullptr;
+			n_triangle->e2 = nullptr;
+
+			for (int j = 0; j < es.size(); j++) {
+				if ((es[j]->p0 == n_triangle->p0 && es[j]->p1 == n_triangle->p1)
+					|| (es[j]->p0 == n_triangle->p1 && es[j]->p1 == n_triangle->p0)) {
+					n_triangle->e0 = es[j];
+					n_triangle->e0->ts.push_back(n_triangle);
+					continue;
+				}
+				if ((es[j]->p0 == n_triangle->p1 && es[j]->p1 == n_triangle->p2)
+					|| (es[j]->p0 == n_triangle->p2 && es[j]->p1 == n_triangle->p1)) {
+					n_triangle->e1 = es[j];
+					n_triangle->e1->ts.push_back(n_triangle);
+					continue;
+				}
+				if ((es[j]->p0 == n_triangle->p2 && es[j]->p1 == n_triangle->p0)
+					|| (es[j]->p0 == n_triangle->p0 && es[j]->p1 == n_triangle->p2)) {
+					n_triangle->e2 = es[j];
+					n_triangle->e2->ts.push_back(n_triangle);
+					continue;
+				}
+			}
+
+			if (!n_triangle->e0) {
+				edge* n_edge = new edge();
+				n_edge->p0 = n_triangle->p0;
+				n_edge->p1 = n_triangle->p1;
+				n_triangle->e0 = n_edge;
+				n_triangle->e0->ts.push_back(n_triangle);
+				n_triangle->p0->es.push_back(n_triangle->e0);
+				n_triangle->p1->es.push_back(n_triangle->e0);
+				es.push_back(n_edge);
+			}
+			if (!n_triangle->e1) {
+				edge* n_edge = new edge();
+				n_edge->p0 = n_triangle->p1;
+				n_edge->p1 = n_triangle->p2;
+				n_triangle->e1 = n_edge;
+				n_triangle->e1->ts.push_back(n_triangle);
+				n_triangle->p1->es.push_back(n_triangle->e1);
+				n_triangle->p2->es.push_back(n_triangle->e1);
+				es.push_back(n_edge);
+			}
+			if (!n_triangle->e2) {
+				edge* n_edge = new edge();
+				n_edge->p0 = n_triangle->p2;
+				n_edge->p1 = n_triangle->p0;
+				n_triangle->e2 = n_edge;
+				n_triangle->e2->ts.push_back(n_triangle);
+				n_triangle->p2->es.push_back(n_triangle->e2);
+				n_triangle->p0->es.push_back(n_triangle->e2);
+				es.push_back(n_edge);
+			}
+
+			ts.push_back(n_triangle);
+		}
+	}
 }
