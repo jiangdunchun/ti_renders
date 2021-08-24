@@ -3,6 +3,7 @@
 
 #include <string>
 #include <map>
+#include <glm/glm.hpp>
 
 #include "../../common/tr_enum.h"
 
@@ -14,11 +15,15 @@ namespace ti_render {
 		color_format m_format;
 		void* m_data = nullptr;
 
+		
+
 	public:
 		image_file(const std::string& path, color_format format, bool flip_y = true);
 		image_file(unsigned int width, unsigned int height, color_format format);
 		~image_file();
 
+		static unsigned int get_component(color_format format);
+		int get_data_index(unsigned int x, unsigned int y) const;
 		void save(const std::string& path) const;
 		const unsigned int& get_width(void) const {
 			return m_width;
@@ -33,6 +38,7 @@ namespace ti_render {
 		const void* get_data(void) {
 			return m_data;
 		}
+		glm::vec4 sample_liner(glm::vec2 uv) const;
 	};
 }
 

@@ -39,6 +39,14 @@ int main(int, char**) {
 	floor->set_local_scale(vec3(10.0f, 10.0f, 10.0f));
 	floor->set_material(mat_tile1, 0);
 
+	//mesh_object* floor = scene.create_mesh("mesh/terrain.mesh");
+	//material* mat = material_factory::create(material_type::METALLIC_ROUGHNESS);
+	//mat->set_value({ "uBase_color_val",  value_type::VEC3 }, "0.5f, 0.5f, 0.5f");
+	//mat->set_value({ "uMetallic_val",  value_type::FLOAT }, "0.0f");
+	//mat->set_value({ "uRoughness_val",  value_type::FLOAT }, "1.0f");
+	//floor->set_material(mat, 0);
+	//floor->set_local_scale(vec3(10.0f, 10.0f, 10.0f));
+
 	point_light_obj = scene.create_point_light(glm::vec3(3.0f, 3.0f, 3.0f));
 	point_light_obj->get_radius() = 0.1f;
 

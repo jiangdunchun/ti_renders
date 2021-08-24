@@ -6,7 +6,7 @@ using namespace std;
 using namespace glm;
 
 namespace ti_render {
-	glm::vec4 pre_pass::get_color(unsigned int id) {
+	vec4 pre_pass::get_color(unsigned int id) {
 		vec4 color;
 		color.r = (id & 0xff) / float(0xff);
 		id >>= 8;
