@@ -10,7 +10,7 @@ namespace ti_render {
 		static bool is_contain_in_AABB(glm::vec3 point, AABB aabb_o, glm::mat4 aabb_o_trans = glm::mat4(1.0f));
 		static bool is_intersect_with_AABB(ray ray, AABB aabb, glm::mat4 aabb_trans = glm::mat4(1.0f));
 		static void generate_plane(float width, float height, int x_num, int y_num, surface& face, AABB& aabb);
-		static void generate_triagnles(surface& face, std::vector<triangle*>& ts, std::vector<edge*>& es, std::vector<point*>& ps);
+		static void build_triagnles(surface& face, std::vector<triangle*>& ts, std::vector<edge*>& es, std::vector<point*>& ps, bool directed = false);
 	};
 	
 }

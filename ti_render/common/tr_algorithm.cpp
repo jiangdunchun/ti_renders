@@ -1,6 +1,7 @@
 #include "tr_algorithm.h"
 
 #include <algorithm>
+#include <map>
 
 using namespace std;
 using namespace glm;
@@ -118,16 +119,20 @@ namespace ti_render {
 		face.aabb = aabb;
 	}
 
-	void tr_algorithm::generate_triagnles(
+	void tr_algorithm::build_triagnles(
 		surface& face,
 		vector<triangle*>& ts,
 		vector<edge*>& es,
-		vector<point*>& ps) {
+		vector<point*>& ps,
+		bool directed) {
 		for (int i = 0; i < face.vertices.size(); i++) {
 			point* n_point = new point();
 			n_point->v = &face.vertices[i];
 			ps.push_back(n_point);
 		}
+
+		map<tuple<point*, point*>, edge*> edge_buffer;
+		map<tuple<point*, point*>, edge*>::iterator edge_iter;
 
 		for (int i = 0; i < face.indices.size() / 3; i++) {
 			triangle* n_triangle = new triangle();
@@ -141,24 +146,48 @@ namespace ti_render {
 			n_triangle->e1 = nullptr;
 			n_triangle->e2 = nullptr;
 
-			for (int j = 0; j < es.size(); j++) {
-				if ((es[j]->p0 == n_triangle->p0 && es[j]->p1 == n_triangle->p1)
-					|| (es[j]->p0 == n_triangle->p1 && es[j]->p1 == n_triangle->p0)) {
-					n_triangle->e0 = es[j];
-					n_triangle->e0->ts.push_back(n_triangle);
-					continue;
+			edge_iter = edge_buffer.find({ n_triangle->p0 , n_triangle->p1 });
+			if (edge_iter != edge_buffer.end()) {
+				n_triangle->e0 = edge_iter->second;
+				n_triangle->e0->ts.push_back(n_triangle);
+			}
+			else {
+				if (directed) {
+					edge_iter = edge_buffer.find({ n_triangle->p1 , n_triangle->p0 });
+					if (edge_iter != edge_buffer.end()) {
+						n_triangle->e0 = edge_iter->second;
+						n_triangle->e0->ts.push_back(n_triangle);
+					}
 				}
-				if ((es[j]->p0 == n_triangle->p1 && es[j]->p1 == n_triangle->p2)
-					|| (es[j]->p0 == n_triangle->p2 && es[j]->p1 == n_triangle->p1)) {
-					n_triangle->e1 = es[j];
-					n_triangle->e1->ts.push_back(n_triangle);
-					continue;
+			}
+
+			edge_iter = edge_buffer.find({ n_triangle->p1 , n_triangle->p2 });
+			if (edge_iter != edge_buffer.end()) {
+				n_triangle->e1 = edge_iter->second;
+				n_triangle->e1->ts.push_back(n_triangle);
+			}
+			else {
+				if (directed) {
+					edge_iter = edge_buffer.find({ n_triangle->p2 , n_triangle->p1 });
+					if (edge_iter != edge_buffer.end()) {
+						n_triangle->e1 = edge_iter->second;
+						n_triangle->e1->ts.push_back(n_triangle);
+					}
 				}
-				if ((es[j]->p0 == n_triangle->p2 && es[j]->p1 == n_triangle->p0)
-					|| (es[j]->p0 == n_triangle->p0 && es[j]->p1 == n_triangle->p2)) {
-					n_triangle->e2 = es[j];
-					n_triangle->e2->ts.push_back(n_triangle);
-					continue;
+			}
+
+			edge_iter = edge_buffer.find({ n_triangle->p2 , n_triangle->p0 });
+			if (edge_iter != edge_buffer.end()) {
+				n_triangle->e2 = edge_iter->second;
+				n_triangle->e2->ts.push_back(n_triangle);
+			}
+			else {
+				if (directed) {
+					edge_iter = edge_buffer.find({ n_triangle->p0 , n_triangle->p2 });
+					if (edge_iter != edge_buffer.end()) {
+						n_triangle->e2 = edge_iter->second;
+						n_triangle->e2->ts.push_back(n_triangle);
+					}
 				}
 			}
 
@@ -166,31 +195,34 @@ namespace ti_render {
 				edge* n_edge = new edge();
 				n_edge->p0 = n_triangle->p0;
 				n_edge->p1 = n_triangle->p1;
+				es.push_back(n_edge);
+				edge_buffer[{n_edge->p0, n_edge->p1}] = n_edge;
 				n_triangle->e0 = n_edge;
 				n_triangle->e0->ts.push_back(n_triangle);
 				n_triangle->p0->es.push_back(n_triangle->e0);
 				n_triangle->p1->es.push_back(n_triangle->e0);
-				es.push_back(n_edge);
 			}
 			if (!n_triangle->e1) {
 				edge* n_edge = new edge();
 				n_edge->p0 = n_triangle->p1;
 				n_edge->p1 = n_triangle->p2;
+				es.push_back(n_edge);
+				edge_buffer[{n_edge->p0, n_edge->p1}] = n_edge;
 				n_triangle->e1 = n_edge;
 				n_triangle->e1->ts.push_back(n_triangle);
 				n_triangle->p1->es.push_back(n_triangle->e1);
 				n_triangle->p2->es.push_back(n_triangle->e1);
-				es.push_back(n_edge);
 			}
 			if (!n_triangle->e2) {
 				edge* n_edge = new edge();
 				n_edge->p0 = n_triangle->p2;
 				n_edge->p1 = n_triangle->p0;
+				es.push_back(n_edge);
+				edge_buffer[{n_edge->p0, n_edge->p1}] = n_edge;
 				n_triangle->e2 = n_edge;
 				n_triangle->e2->ts.push_back(n_triangle);
 				n_triangle->p2->es.push_back(n_triangle->e2);
 				n_triangle->p0->es.push_back(n_triangle->e2);
-				es.push_back(n_edge);
 			}
 
 			ts.push_back(n_triangle);

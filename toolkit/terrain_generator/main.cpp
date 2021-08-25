@@ -68,7 +68,7 @@ int main(unsigned int argc, char** argv) {
     vector<triangle*> ts;
     vector<edge*> es;
     vector<point*> ps;
-    tr_algorithm::generate_triagnles(face, ts, es, ps);
+    tr_algorithm::build_triagnles(face, ts, es, ps);
     for (unsigned int i = 0; i < ps.size(); i++) {
         vec3 normal = vec3(0.0f, 0.0f, 0.0f);
         for (unsigned int j = 0; j < ps[i]->ts.size(); j++) {

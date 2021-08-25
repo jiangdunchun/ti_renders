@@ -10,12 +10,11 @@
 namespace ti_render {
 	class image_file {
 	private:
+		unsigned int m_component;
 		unsigned int m_width = 0;
 		unsigned int m_height = 0;
 		color_format m_format;
 		void* m_data = nullptr;
-
-		
 
 	public:
 		image_file(const std::string& path, color_format format, bool flip_y = true);

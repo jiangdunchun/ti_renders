@@ -35,11 +35,11 @@ namespace ti_render {
 			break;
 		}
 
-		int req_component = get_component(m_format);
+		m_component = get_component(m_format);
 
 		int component, width, height;
 		string file_path = file_common::get_file_path(path);
-		m_data = image_loader(file_path.c_str(), &width, &height, &component, req_component);
+		m_data = image_loader(file_path.c_str(), &width, &height, &component, m_component);
 		
 		if (m_data != nullptr) {
 			m_width = width;
@@ -55,17 +55,17 @@ namespace ti_render {
 		unsigned int width,
 		unsigned int height,
 		color_format format) : m_width(width), m_height(height), m_format(format) {
-		int component = get_component(m_format);
+		m_component = get_component(m_format);
 		switch (m_format) {
 		case color_format::R8B:
 		case color_format::RGB8B:
 		case color_format::RGBA8B:
-			m_data = new char[m_width * m_height * component];
+			m_data = new char[m_width * m_height * m_component];
 			break;
 		case color_format::R16F:
 		case color_format::RGB16F:
 		case color_format::RGBA16F:
-			m_data = new float[m_width * m_height * component];
+			m_data = new float[m_width * m_height * m_component];
 			break;
 		default:
 			break;
@@ -98,10 +98,9 @@ namespace ti_render {
 	}
 
 	int image_file::get_data_index(unsigned int x, unsigned int y) const {
-		if (x < 0 || x >= m_width || y < 0 || y > m_height) return -1;
+		if (x < 0 || x >= m_width || y < 0 || y >= m_height) return -1;
 
-		int component = get_component(m_format);
-		return (y * m_width + x) * component;
+		return (y * m_width + x) * m_component;
 	}
 
 	void image_file::save(const string& path) const {
@@ -111,17 +110,16 @@ namespace ti_render {
 	void image_file::set_data(const void* data) {
 		if (!m_data) delete[] m_data;
 
-		int component = get_component(m_format);
 		switch (m_format) {
 		case color_format::R8B:
 		case color_format::RGB8B:
 		case color_format::RGBA8B:
-			memcpy(m_data, data, sizeof(char) * m_width * m_height * component);
+			memcpy(m_data, data, sizeof(char) * m_width * m_height * m_component);
 			break;
 		case color_format::R16F:
 		case color_format::RGB16F:
 		case color_format::RGBA16F:
-			memcpy(m_data, data, sizeof(float) * m_width * m_height * component);
+			memcpy(m_data, data, sizeof(float) * m_width * m_height * m_component);
 			break;
 		default:
 			break;
@@ -132,8 +130,8 @@ namespace ti_render {
 		vec4 color = vec4(0.0, 0.0f, 0.0f, 0.0f);
 		if (uv.x < 0.0f || uv.x > 1.0f || uv.y < 0.0f || uv.y > 1.0f) return color;
 
-		float x = uv.x * m_width;
-		float y = uv.y * m_height;
+		float x = uv.x * (m_width - 1);
+		float y = uv.y * (m_height - 1);
 		float x_weight = x - int(x);
 		float y_weight = y - int(y);
 		int ld = get_data_index(int(x), int(y));
@@ -141,14 +139,13 @@ namespace ti_render {
 		int rd = get_data_index(int(x) + 1, int(y));
 		int ru = get_data_index(int(x) + 1, int(y) + 1);
 
-		int component = get_component(m_format);
 		if (m_format == color_format::R8B || m_format == color_format::RGB8B || m_format == color_format::RGBA8B) {
 			float r_ld = ld < 0 ? 0.0f : *((unsigned char*)m_data + ld);
 			float r_lu = lu < 0 ? 0.0f : *((unsigned char*)m_data + lu);
 			float r_rd = rd < 0 ? 0.0f : *((unsigned char*)m_data + rd);
 			float r_ru = ru < 0 ? 0.0f : *((unsigned char*)m_data + ru);
 			color.r = (1.0f - y_weight) * ((1.0f - x_weight) * r_ld + x_weight * r_rd) + y_weight * ((1.0f - x_weight) * r_lu + x_weight * r_ru);
-			if (component == 3) {
+			if (m_component >= 3) {
 				float g_ld = ld < 0 ? 0.0f : *((unsigned char*)m_data + ld + 1);
 				float g_lu = lu < 0 ? 0.0f : *((unsigned char*)m_data + lu + 1);
 				float g_rd = rd < 0 ? 0.0f : *((unsigned char*)m_data + rd + 1);
@@ -161,7 +158,7 @@ namespace ti_render {
 				float b_ru = ru < 0 ? 0.0f : *((unsigned char*)m_data + ru + 2);
 				color.b = (1.0f - y_weight) * ((1.0f - x_weight) * b_ld + x_weight * b_rd) + y_weight * ((1.0f - x_weight) * b_lu + x_weight * b_ru);
 			}
-			if (component == 4) {
+			if (m_component == 4) {
 				float a_ld = ld < 0 ? 0.0f : *((unsigned char*)m_data + ld + 3);
 				float a_lu = lu < 0 ? 0.0f : *((unsigned char*)m_data + lu + 3);
 				float a_rd = rd < 0 ? 0.0f : *((unsigned char*)m_data + rd + 3);
@@ -177,7 +174,7 @@ namespace ti_render {
 			float r_rd = rd < 0 ? 0.0f : *((float*)m_data + rd);
 			float r_ru = ru < 0 ? 0.0f : *((float*)m_data + ru);
 			color.r = (1.0f - y_weight) * ((1.0f - x_weight) * r_ld + x_weight * r_rd) + y_weight * ((1.0f - x_weight) * r_lu + x_weight * r_ru);
-			if (component == 3) {
+			if (m_component >= 3) {
 				float g_ld = ld < 0 ? 0.0f : *((float*)m_data + ld + 1);
 				float g_lu = lu < 0 ? 0.0f : *((float*)m_data + lu + 1);
 				float g_rd = rd < 0 ? 0.0f : *((float*)m_data + rd + 1);
@@ -190,7 +187,7 @@ namespace ti_render {
 				float b_ru = ru < 0 ? 0.0f : *((float*)m_data + ru + 2);
 				color.b = (1.0f - y_weight) * ((1.0f - x_weight) * b_ld + x_weight * b_rd) + y_weight * ((1.0f - x_weight) * b_lu + x_weight * b_ru);
 			}
-			if (component == 4) {
+			if (m_component == 4) {
 				float a_ld = ld < 0 ? 0.0f : *((float*)m_data + ld + 3);
 				float a_lu = lu < 0 ? 0.0f : *((float*)m_data + lu + 3);
 				float a_rd = rd < 0 ? 0.0f : *((float*)m_data + rd + 3);
