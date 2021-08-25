@@ -15,7 +15,8 @@ namespace ti_render {
 		POINT_LIGHT,
 		ENVIRONMENT_LIGHT,
 		PARALLEL_LIGHT,
-		MESH_OBJECT
+		MESH_OBJECT,
+		WATER_OBJECT
 	};
 
 	class dummy_object;

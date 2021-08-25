@@ -43,6 +43,7 @@
     <ClInclude Include="core\object\object.h" />
     <ClInclude Include="core\object\point_light_object.h" />
     <ClInclude Include="core\object\sky_object.h" />
+    <ClInclude Include="core\object\water_object.h" />
     <ClInclude Include="core\pass\emissive_pass.h" />
     <ClInclude Include="core\pass\final_pass.h" />
     <ClInclude Include="core\pass\geometry_pass.h" />
@@ -87,6 +88,7 @@
     <ClCompile Include="core\object\object.cpp" />
     <ClCompile Include="core\object\point_light_object.cpp" />
     <ClCompile Include="core\object\sky_object.cpp" />
+    <ClCompile Include="core\object\water_object.cpp" />
     <ClCompile Include="core\pass\emissive_pass.cpp" />
     <ClCompile Include="core\pass\final_pass.cpp" />
     <ClCompile Include="core\pass\geometry_pass.cpp" />

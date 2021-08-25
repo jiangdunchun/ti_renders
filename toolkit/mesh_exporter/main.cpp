@@ -21,14 +21,15 @@ using namespace glm;
 #define MESH_FILE_EXTENTION                 ".mesh"
 
 string get_obj_dir(const string& path) {
-    string dir = path;
-    for (int i = dir.size() - 1; i > 0; i--) {
-        if (dir[i] == '/' || dir[i] == '\\') {
-            dir = dir.substr(0, i);
+    string dir = "";
+    for (int i = path.size() - 1; i > 0; i--) {
+        if (path[i] == '/' || path[i] == '\\') {
+            dir = path.substr(0, i);
             break;
         }
     }
 
+    if (dir == "") dir = "./";
     return dir;
 }
 

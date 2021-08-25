@@ -80,20 +80,20 @@ namespace ti_render {
 	}
 
 	void tr_algorithm::generate_plane(
-		float width, float height,
-		int x_num, int y_num,
+		float x, float z,
+		int x_num, int z_num,
 		surface& face, AABB& aabb) {
-		vec3 ld = vec3(width / -2.0f, 0.0f, height / 2.0f);
+		vec3 ld = vec3(x / -2.0f, 0.0f, z / 2.0f);
 
 		vector<vertex> vertices;
 		vec3 normal = vec3(0.0f, 1.0f, 0.0f);
 		vec3 tangent = vec3(1.0f, 0.0f, 0.0f);
 		vec3 bi_tangent = vec3(0.0f, 0.0f, -1.0f);
 		float t_step_x = 1.0f / x_num;
-		float t_step_y = 1.0f / y_num;
-		float p_step_x = width * t_step_x;
-		float p_step_y = -1.0f * height * t_step_y;
-		for (int y = 0; y <= y_num; y++) {
+		float t_step_y = 1.0f / z_num;
+		float p_step_x = x * t_step_x;
+		float p_step_y = -1.0f * z * t_step_y;
+		for (int y = 0; y <= z_num; y++) {
 			for (int x = 0; x <= x_num; x++) {
 				vec3 position = ld + float(x) * vec3(p_step_x, 0.0f, 0.0f) + float(y) * vec3(0.0f, 0.0f, p_step_y);
 				vec2 tex_coord = vec2(float(x) * t_step_x, float(y) * t_step_y);
@@ -102,7 +102,7 @@ namespace ti_render {
 		}
 
 		vector<unsigned int> indices;
-		for (int y = 0; y < y_num; y++) {
+		for (int y = 0; y < z_num; y++) {
 			for (int x = 0; x < x_num; x++) {
 				indices.push_back(y * (x_num + 1) + x);
 				indices.push_back(y * (x_num + 1) + x + 1);
@@ -113,7 +113,7 @@ namespace ti_render {
 			}
 		}
 
-		aabb = { vec3(width / -2.0f, 0.0f, height / -2.0f), vec3(width / 2.0f, 0.0f, height / 2.0f) };
+		aabb = { vec3(x / -2.0f, 0.0f, z / -2.0f), vec3(x / 2.0f, 0.0f, z / 2.0f) };
 		face.vertices = vertices;
 		face.indices = indices;
 		face.aabb = aabb;
