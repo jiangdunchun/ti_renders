@@ -81,6 +81,17 @@ namespace ti_render {
 		return pl_obj;
 	}
 
+	water_object* scene::create_water(
+		float x, float z,
+		unsigned int x_num, unsigned int z_num) {
+		water_object* w_obj = new water_object(x, z, x_num, z_num);
+		m_water_objects.push_back(w_obj);
+
+		w_obj->set_parent(m_root);
+		set_id(w_obj);
+		return w_obj;
+	}
+
 	void scene::dispose(object* obj) {
 		if (!obj) return;
 

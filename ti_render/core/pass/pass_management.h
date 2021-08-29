@@ -9,6 +9,7 @@
 #include "shadowmap_pass.h"
 #include "emissive_pass.h"
 #include "light_pass.h"
+#include "water_pass.h"
 #include "final_pass.h"
 
 namespace ti_render {
@@ -20,6 +21,7 @@ namespace ti_render {
 		shadowmap_pass* m_shadowmap_pass;
 		emissive_pass* m_emissive_pass;
 		light_pass* m_light_pass;
+		water_pass* m_water_pass;
 		final_pass* m_final_pass;
 
 	public:

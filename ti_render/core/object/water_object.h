@@ -7,6 +7,9 @@
 
 namespace ti_render {
 	class water_object : public object {
+	friend class scene;
+	friend class water_pass;
+
 	private:
 		float m_x;
 		float m_z;

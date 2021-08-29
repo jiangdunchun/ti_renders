@@ -8,6 +8,7 @@
 #include "../object/sky_object.h"
 #include "../object/mesh_object.h"
 #include "../object/point_light_object.h"
+#include "../object/water_object.h"
 
 namespace ti_render {
 	class scene {
@@ -30,6 +31,7 @@ namespace ti_render {
 		sky_object* m_sky = nullptr;
 		std::vector<mesh_object*> m_mesh_objects;
 		std::vector<light_object*> m_light_objects;
+		std::vector<water_object*> m_water_objects;
 
 	public:
 		scene();
@@ -45,6 +47,7 @@ namespace ti_render {
 		dummy_object* create_dummy(void);
 		mesh_object* create_mesh(const std::string& mesh_path);
 		point_light_object* create_point_light(const glm::vec3& intensity);
+		water_object* create_water(float x, float z, unsigned int x_num, unsigned int z_num);
 		void dispose(object* obj);
 	};
 }

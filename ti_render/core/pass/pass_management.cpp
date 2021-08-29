@@ -5,7 +5,7 @@ using namespace std;
 namespace ti_render {
 	pass_management::pass_management(unsigned int width, unsigned int height) {
 		m_pre_pass = new pre_pass(width, height);
-		m_geomtry_pass = new geometry_pass(width, height, m_pre_pass->get_ds_render_buffer());
+		m_geomtry_pass = new geometry_pass(width, height);
 		m_sky_pass = new sky_pass(width, height);
 		m_shadowmap_pass = new shadowmap_pass();
 		m_emissive_pass = new emissive_pass(width, height, m_geomtry_pass->get_emissive());
@@ -17,10 +17,17 @@ namespace ti_render {
 			m_geomtry_pass->get_normal(),
 			m_geomtry_pass->get_material()
 		);
+		m_water_pass = new water_pass(
+			width,
+			height, 
+			m_geomtry_pass->get_position(),
+			m_geomtry_pass->get_base_color(),
+			m_pre_pass->get_ds_render_buffer());
 		m_final_pass = new final_pass(
 			width,
 			height,
 			m_light_pass->get_color(),
+			m_water_pass->get_color(),
 			m_sky_pass->get_backgroud(),
 			m_emissive_pass->get_emissive()
 		);
@@ -41,6 +48,7 @@ namespace ti_render {
 		sky_object* sky = scene->m_sky;
 		vector<mesh_object*> meshes = scene->m_mesh_objects;
 		vector<light_object*> lights = scene->m_light_objects;
+		vector<water_object*> waters = scene->m_water_objects;
 
 		m_pre_pass->rend(render, camera, meshes);
 		m_geomtry_pass->rend(render, camera, meshes);
@@ -48,6 +56,7 @@ namespace ti_render {
 		m_shadowmap_pass->rend(render, lights, meshes);
 		m_emissive_pass->rend(render);
 		m_light_pass->rend(render, camera, sky, lights);
+		m_water_pass->rend(render, camera, sky, waters);
 		m_final_pass->rend(render);
 	}
 }

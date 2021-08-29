@@ -13,6 +13,7 @@ namespace ti_render {
 		unsigned int m_height;
 		shader* m_shader;
 		texture_2d* m_color_in;
+		texture_2d* m_water_in;
 		texture_2d* m_background_in;
 		texture_2d* m_emissive_in;
 		vertex_buffer* m_mesh;
@@ -22,6 +23,7 @@ namespace ti_render {
 			unsigned int width,
 			unsigned int height, 
 			texture_2d* color,
+			texture_2d* water,
 			texture_2d* background,
 			texture_2d* emissive);
 		~final_pass();

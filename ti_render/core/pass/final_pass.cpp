@@ -10,12 +10,14 @@ namespace ti_render {
 		unsigned int width,
 		unsigned int height,
 		texture_2d* color,
+		texture_2d* water,
 		texture_2d* background,
 		texture_2d* emissive) : m_width(width), m_height(height) {
 		shader_file s_file(m_shader_path);
 		m_shader = new shader(s_file.get_vertex_code(), s_file.get_fragment_code());
 
 		m_color_in = color;
+		m_water_in = water;
 		m_background_in = background;
 		m_emissive_in = emissive;
 
@@ -48,6 +50,7 @@ namespace ti_render {
 
 		m_shader->use();
 		m_shader->set_texture_2d("uColor", *m_color_in);
+		m_shader->set_texture_2d("uWater", *m_water_in);
 		m_shader->set_texture_2d("uBackground", *m_background_in);
 		m_shader->set_texture_2d("uEmissive", *m_emissive_in);
 		m_mesh->draw();

@@ -10,6 +10,7 @@ namespace ti_render {
 	friend class pre_pass;
 	friend class geometry_pass;
 	friend class shadowmap_pass;
+	friend class water_pass;
 
 	private:
 		std::vector<vertex_buffer*> m_vbo_buffer;

@@ -11,6 +11,7 @@ namespace ti_render {
 		friend class scene;
 		friend class sky_pass;
 		friend class light_pass;
+		friend class water_pass;
 
 	private:
 		texture_2d* m_environment;
