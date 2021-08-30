@@ -17,7 +17,7 @@ namespace ti_render {
 		camera_object(
 			float zoom,
 			float aspect,
-			float near = 0.001f,
+			float near = 0.1f,
 			float far = 1000.0f);
 		~camera_object();
 

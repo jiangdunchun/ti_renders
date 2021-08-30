@@ -27,7 +27,7 @@ void main() {
 
     vs_out.tex_coord = aTex_coord;
 
-    vs_out.normal = (uModel * vec4(aNormal, 1.0f)).rgb;
+    vs_out.normal = normalize((uModel * vec4(aNormal, 1.0f)).rgb);
 
     mat3 model_mat = mat3(transpose(inverse(uModel)));
     vec3 T = normalize(model_mat * aTangent);
@@ -61,11 +61,19 @@ layout(location = 0) out vec4 fColor;
 
 
 void main() {
+    fColor = vec4(0.0f, 0.0f, 0.0f, 1.0f);
     vec3 V = normalize(uView_position - fs_in.frag_position);
     vec3 R = reflect(-1.0f * V, fs_in.normal);
 
     vec4 p_position = fs_in.PV * vec4(fs_in.frag_position, 1.0f);
-    vec2 uv = p_position.xy / p_position.w;
+    vec2 uv = 0.5f * (p_position.xy / p_position.w + vec2(1.0f));
 
-    fColor = vec4(1.0f, 0.0f, 0.0f, 1.0f);
+    vec4 floor_color = texture(uBase_color, uv);
+    float alpha = 5.0f;
+    if (floor_color.a > 0.1f)  alpha = length(texture(uPosition, uv).rgb - fs_in.frag_position);
+    if (alpha > 5.0f) alpha = 5.0f;
+    alpha = alpha / 5.0f;
+
+    fColor.rgb += floor_color.rgb * (1.0f - alpha) + vec3(0.0f, 0.0f, 1.0f) * alpha;
+    fColor.rgb += 0.1* texture(uEnvironment, R).rgb;
 }

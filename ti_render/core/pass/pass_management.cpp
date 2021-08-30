@@ -21,7 +21,7 @@ namespace ti_render {
 			width,
 			height, 
 			m_geomtry_pass->get_position(),
-			m_geomtry_pass->get_base_color(),
+			m_light_pass->get_color(),
 			m_pre_pass->get_ds_render_buffer());
 		m_final_pass = new final_pass(
 			width,
