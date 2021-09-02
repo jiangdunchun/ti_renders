@@ -17,7 +17,7 @@ float height = 0.0f;
 void update() {
 	camera_angle += render::get_tick() / 20.0f;
 	camera_angle = camera_angle > 1.0f ? camera_angle - 1.0f : camera_angle;
-	glm::vec3 camera_pos = 50.0f * glm::vec3(sin(2.0f * PI * camera_angle), 0.5f, cos(2.0f * PI * camera_angle));
+	glm::vec3 camera_pos = 200.0f * glm::vec3(sin(2.0f * PI * camera_angle), 0.0f, cos(2.0f * PI * camera_angle));
 	camera_obj->set_local_position(camera_pos);
 	camera_obj->set_local_rotation(glm::vec3(0.0f, 360.0f * camera_angle, 0.0f));
 
@@ -39,14 +39,14 @@ int main(int, char**) {
 	//floor->set_local_scale(vec3(10.0f, 10.0f, 10.0f));
 	//floor->set_material(mat_tile1, 0);
 
-	mesh_object* floor = scene.create_mesh("mesh/terrain.mesh");
+	mesh_object* floor = scene.create_mesh("mesh/ball.mesh");
 	material* mat = material_factory::create(material_type::METALLIC_ROUGHNESS);
-	mat->set_value({ "uBase_color_val",  value_type::VEC3 }, "0.5f, 0.5f, 0.5f");
+	mat->set_value({ "uBase_color_val",  value_type::VEC3 }, "1.0f, 0.5f, 0.5f");
 	mat->set_value({ "uMetallic_val",  value_type::FLOAT }, "0.0f");
 	mat->set_value({ "uRoughness_val",  value_type::FLOAT }, "1.0f");
 	floor->set_material(mat, 0);
-	floor->set_local_scale(vec3(1000.0f, 1000.0f, 1000.0f));
-	floor->set_local_position(vec3(0.0f, -100.0f, 0.0f));
+	floor->set_local_scale(vec3(30.0f, 30.0f, 30.0f));
+	floor->set_local_position(vec3(0.0f, 0.0f, 0.0f));
 
 	water_object* sea = scene.create_water(1000, 1000, 100, 100);
 	sea->set_local_position(vec3(0.0f, -90.0f, 0.0f));
