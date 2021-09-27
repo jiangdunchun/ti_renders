@@ -45,6 +45,11 @@ namespace ti_render {
 		NOTEQUAL,
 		GEQUAL
 	};
+
+	enum class access_type {
+		READ = 1 << 0,
+		WRITE = 1 << 1
+	};
 }
 
 #endif // !__TR_ENUM_H__

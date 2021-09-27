@@ -6,13 +6,13 @@ using namespace glm;
 namespace ti_render {
 	geometry_pass::geometry_pass(unsigned int width, unsigned int height, ds_render_buffer* dbo) {
 		m_pre_z = dbo ? true : false;
-		m_position = new gl3plus_texture_2d(width, height, color_format::RGB16F);
-		m_base_color = new gl3plus_texture_2d(width, height, color_format::RGBA16F);
-		m_normal = new gl3plus_texture_2d(width, height, color_format::RGB16F);
-		m_material = new gl3plus_texture_2d(width, height, color_format::RGBA16F);
-		m_emissive = new gl3plus_texture_2d(width, height, color_format::RGB16F);
+		m_position = new gl430plus_texture_2d(width, height, color_format::RGB16F);
+		m_base_color = new gl430plus_texture_2d(width, height, color_format::RGBA16F);
+		m_normal = new gl430plus_texture_2d(width, height, color_format::RGB16F);
+		m_material = new gl430plus_texture_2d(width, height, color_format::RGBA16F);
+		m_emissive = new gl430plus_texture_2d(width, height, color_format::RGB16F);
 
-		m_frame_buffer = new gl3plus_frame_buffer(width, height, dbo);
+		m_frame_buffer = new gl430plus_frame_buffer(width, height, dbo);
 		m_frame_buffer->attach_color_buffer(0, m_position);
 		m_frame_buffer->attach_color_buffer(1, m_base_color);
 		m_frame_buffer->attach_color_buffer(2, m_normal);

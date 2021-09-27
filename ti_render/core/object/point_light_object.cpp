@@ -11,8 +11,8 @@ namespace ti_render {
 		unsigned int shadow_map_size) : light_object(intensity), m_radius(radius), m_bias(bias), m_shadow_map_size(shadow_map_size) {
 		m_type = object_type::POINT_LIGHT;
 
-		m_shadow_map = new gl3plus_texture_cube(m_shadow_map_size, m_shadow_map_size, color_format::RGBA16F);
-		m_frame_buffer = new gl3plus_frame_buffer(m_shadow_map_size, m_shadow_map_size);
+		m_shadow_map = new gl430plus_texture_cube(m_shadow_map_size, m_shadow_map_size, color_format::RGBA16F);
+		m_frame_buffer = new gl430plus_frame_buffer(m_shadow_map_size, m_shadow_map_size);
 	}
 
 	point_light_object::~point_light_object() {
@@ -25,7 +25,7 @@ namespace ti_render {
 		delete m_frame_buffer;
 
 		m_shadow_map_size = size;
-		m_shadow_map = new gl3plus_texture_cube(m_shadow_map_size, m_shadow_map_size, color_format::RGBA16F);
-		m_frame_buffer = new gl3plus_frame_buffer(m_shadow_map_size, m_shadow_map_size);
+		m_shadow_map = new gl430plus_texture_cube(m_shadow_map_size, m_shadow_map_size, color_format::RGBA16F);
+		m_frame_buffer = new gl430plus_frame_buffer(m_shadow_map_size, m_shadow_map_size);
 	}
 }

@@ -206,7 +206,7 @@ namespace ti_render {
 				m_shader->set_mat4(p_name, *(mat4*)p_value);
 				break;
 			case value_type::TEXTURE2D:
-				m_shader->set_texture_2d(p_name, *(gl3plus_texture_2d*)p_value);
+				m_shader->set_texture_2d(p_name, *(gl430plus_texture_2d*)p_value);
 				break;
 			}
 		}

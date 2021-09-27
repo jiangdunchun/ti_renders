@@ -1,21 +1,21 @@
-#ifndef __GL3PLUS_SHADER_H__
-#define __GL3PLUS_SHADER_H__
+#ifndef __GL430PLUS_SHADER_H__
+#define __GL430PLUS_SHADER_H__
 
 #include <string>
 
-#include "gl3plus_texture_2d.h"
-#include "gl3plus_texture_cube.h"
+#include "gl430plus_texture_2d.h"
+#include "gl430plus_texture_cube.h"
 
 namespace ti_render {
-	class gl3plus_shader {
+	class gl430plus_shader {
     private:
         static unsigned int sm_texture_index;
 
         unsigned int m_id;
 
     public:
-        gl3plus_shader(const std::string& vertex_code, const std::string& fragment_code, const std::string& geometry_code = "");
-        ~gl3plus_shader();
+        gl430plus_shader(const std::string& vertex_code, const std::string& fragment_code, const std::string& geometry_code = "");
+        ~gl430plus_shader();
 
         void use(void) const;
         void set_bool(const std::string& name, const bool value) const;
@@ -27,10 +27,10 @@ namespace ti_render {
         void set_mat2(const std::string& name, const glm::mat2& value) const;
         void set_mat3(const std::string& name, const glm::mat3& value) const;
         void set_mat4(const std::string& name, const glm::mat4& value) const;
-        void set_texture_2d(const std::string& name, const gl3plus_texture_2d& value) const;
-        void set_texture_cube(const std::string& name, const gl3plus_texture_cube& value) const;
+        void set_texture_2d(const std::string& name, const gl430plus_texture_2d& value) const;
+        void set_texture_cube(const std::string& name, const gl430plus_texture_cube& value) const;
 	};
 }
 
-#endif // !__GL3PLUS_SHADER_H__
+#endif // !__GL430PLUS_SHADER_H__
 

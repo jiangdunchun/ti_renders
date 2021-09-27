@@ -9,7 +9,7 @@ namespace ti_render {
 		m_type = object_type::SKY_OBJECT;
 
 		image_file sky_hdr_image(sky_hdr, color_format::RGBA16F, true);
-		m_environment = new gl3plus_texture_2d(sky_hdr_image.get_width(), sky_hdr_image.get_height(), color_format::RGBA16F);
+		m_environment = new gl430plus_texture_2d(sky_hdr_image.get_width(), sky_hdr_image.get_height(), color_format::RGBA16F);
 		m_environment->push_data(sky_hdr_image.get_color_format(), sky_hdr_image.get_data());
 		//m_environment->generate_mipmap();
 	}

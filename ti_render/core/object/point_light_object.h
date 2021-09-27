@@ -14,8 +14,8 @@ namespace ti_render {
 		float m_radius;
 		float m_bias;
 		unsigned int m_shadow_map_size;
-		gl3plus_texture_cube* m_shadow_map;
-		gl3plus_frame_buffer* m_frame_buffer;
+		gl430plus_texture_cube* m_shadow_map;
+		gl430plus_frame_buffer* m_frame_buffer;
 
 		point_light_object(
 			const glm::vec3& intensity, 

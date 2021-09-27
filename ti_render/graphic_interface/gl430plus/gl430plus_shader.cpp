@@ -1,4 +1,4 @@
-#include "gl3plus_shader.h"
+#include "gl430plus_shader.h"
 
 using namespace std;
 using namespace glm;
@@ -15,7 +15,7 @@ namespace ti_render {
         if (!success) {
             glGetShaderInfoLog(id, 1024, NULL, info_log);
             logger_management::log(log_tag::LOG_ERROR,
-                "graphic_interface::gl3plus_shader:compile error\n"
+                "graphic_interface::gl430plus_shader:compile error\n"
                 + type + "------------>\n"
                 + code + +"\n"
                 + "=====================\n"
@@ -35,7 +35,7 @@ namespace ti_render {
         if (!success) {
             glGetProgramInfoLog(id, 1024, NULL, info_log);
             logger_management::log(log_tag::LOG_ERROR,
-                "graphic_interface::gl3plus_shader:link error\nVERTEX------------>\n"
+                "graphic_interface::gl430plus_shader:link error\nVERTEX------------>\n"
                 + v_code + "\n"
                 + "GEOMETRY------------>\n"
                 + g_code + "\n"
@@ -46,9 +46,9 @@ namespace ti_render {
         }
     }
 
-	unsigned int gl3plus_shader::sm_texture_index = 0;
+	unsigned int gl430plus_shader::sm_texture_index = 0;
 
-    gl3plus_shader::gl3plus_shader(
+    gl430plus_shader::gl430plus_shader(
         const string& vertex_code, 
         const string& fragment_code, 
         const string& geometry_code) {
@@ -95,59 +95,59 @@ namespace ti_render {
         }
     }
 
-	gl3plus_shader::~gl3plus_shader() {
+	gl430plus_shader::~gl430plus_shader() {
         glDeleteProgram(m_id);
 	}
 
-    void gl3plus_shader::use(void) const {
+    void gl430plus_shader::use(void) const {
         glUseProgram(m_id);
-        gl3plus_shader::sm_texture_index = 0;
+        gl430plus_shader::sm_texture_index = 0;
     }
 
-    void gl3plus_shader::set_bool(const string& name, const bool value) const {
+    void gl430plus_shader::set_bool(const string& name, const bool value) const {
         glUniform1i(glGetUniformLocation(m_id, name.c_str()), (int)value);
     }
 
-    void gl3plus_shader::set_int(const string& name, const int value) const {
+    void gl430plus_shader::set_int(const string& name, const int value) const {
         glUniform1i(glGetUniformLocation(m_id, name.c_str()), value);
     }
 
-    void gl3plus_shader::set_float(const string& name, const float value) const {
+    void gl430plus_shader::set_float(const string& name, const float value) const {
         glUniform1f(glGetUniformLocation(m_id, name.c_str()), value);
     }
 
-    void gl3plus_shader::set_vec2(const string& name, const vec2& value) const {
+    void gl430plus_shader::set_vec2(const string& name, const vec2& value) const {
         glUniform2fv(glGetUniformLocation(m_id, name.c_str()), 1, &value[0]);
     }
 
-    void gl3plus_shader::set_vec3(const string& name, const vec3& value) const {
+    void gl430plus_shader::set_vec3(const string& name, const vec3& value) const {
         glUniform3fv(glGetUniformLocation(m_id, name.c_str()), 1, &value[0]);
     }
 
-    void gl3plus_shader::set_vec4(const string& name, const vec4& value) const {
+    void gl430plus_shader::set_vec4(const string& name, const vec4& value) const {
         glUniform4fv(glGetUniformLocation(m_id, name.c_str()), 1, &value[0]);
     }
 
-    void gl3plus_shader::set_mat2(const string& name, const mat2& value) const {
+    void gl430plus_shader::set_mat2(const string& name, const mat2& value) const {
         glUniformMatrix2fv(glGetUniformLocation(m_id, name.c_str()), 1, GL_FALSE, &value[0][0]);
     }
 
-    void gl3plus_shader::set_mat3(const string& name, const mat3& value) const {
+    void gl430plus_shader::set_mat3(const string& name, const mat3& value) const {
         glUniformMatrix3fv(glGetUniformLocation(m_id, name.c_str()), 1, GL_FALSE, &value[0][0]);
     }
 
-    void gl3plus_shader::set_mat4(const string& name, const mat4& value) const {
+    void gl430plus_shader::set_mat4(const string& name, const mat4& value) const {
         glUniformMatrix4fv(glGetUniformLocation(m_id, name.c_str()), 1, GL_FALSE, &value[0][0]);
     }
 
-    void gl3plus_shader::set_texture_2d(const string& name, const gl3plus_texture_2d& value) const {
+    void gl430plus_shader::set_texture_2d(const string& name, const gl430plus_texture_2d& value) const {
         glActiveTexture(GL_TEXTURE0 + sm_texture_index);
         set_int(name.c_str(), sm_texture_index);
         glBindTexture(GL_TEXTURE_2D, value.m_id);
         sm_texture_index++;
     }
 
-    void gl3plus_shader::set_texture_cube(const string& name, const gl3plus_texture_cube& value) const {
+    void gl430plus_shader::set_texture_cube(const string& name, const gl430plus_texture_cube& value) const {
         glActiveTexture(GL_TEXTURE0 + sm_texture_index);
         set_int(name.c_str(), sm_texture_index);
         glBindTexture(GL_TEXTURE_CUBE_MAP, value.m_id);

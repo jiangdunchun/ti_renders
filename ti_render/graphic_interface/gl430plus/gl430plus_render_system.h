@@ -1,12 +1,12 @@
-#ifndef __GL3PLUS_RENDER_SYSTEM_H__
-#define __GL3PLUS_RENDER_SYSTEM_H__
+#ifndef __GL430PLUS_RENDER_SYSTEM_H__
+#define __GL430PLUS_RENDER_SYSTEM_H__
 
 #include <string>
 
-#include "gl3plus_common.h"
+#include "gl430plus_common.h"
 
 namespace ti_render {
-	class gl3plus_render_system {
+	class gl430plus_render_system {
 	private:
 		GLFWwindow* m_window;
 
@@ -26,5 +26,5 @@ namespace ti_render {
 	};
 }
 
-#endif // !__GL3PLUS_RENDER_SYSTEM_H__
+#endif // !__GL430PLUS_RENDER_SYSTEM_H__
 

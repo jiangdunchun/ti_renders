@@ -1,31 +1,31 @@
-#include "gl3plus_frame_buffer.h"
+#include "gl430plus_frame_buffer.h"
 
 using namespace std;
 
 namespace ti_render {
-	gl3plus_frame_buffer::gl3plus_frame_buffer(
+	gl430plus_frame_buffer::gl430plus_frame_buffer(
 		unsigned int width,
 		unsigned int height,
-		gl3plus_ds_render_buffer* ds_rbo) : m_width(width), m_height(height) {
+		gl430plus_ds_render_buffer* ds_rbo) : m_width(width), m_height(height) {
 		glGenFramebuffers(1, &m_id);
 		glBindFramebuffer(GL_FRAMEBUFFER, m_id);
 
 		if (!ds_rbo) {
-			m_ds_rbo = new gl3plus_ds_render_buffer(width, height);
+			m_ds_rbo = new gl430plus_ds_render_buffer(width, height);
 			ds_rbo = m_ds_rbo;
 		}
 		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, ds_rbo->m_id);
 	}
 
-	gl3plus_frame_buffer::~gl3plus_frame_buffer() {
+	gl430plus_frame_buffer::~gl430plus_frame_buffer() {
 		if (m_ds_rbo) delete m_ds_rbo;
 
 		glDeleteFramebuffers(1, &m_id);
 	}
 
-	void gl3plus_frame_buffer::attach_color_buffer(
+	void gl430plus_frame_buffer::attach_color_buffer(
 		unsigned int attachment,
-		gl3plus_texture_2d* texture, 
+		gl430plus_texture_2d* texture, 
 		unsigned int mipmap_layer) {
 		glBindFramebuffer(GL_FRAMEBUFFER, m_id);
 		glFramebufferTexture2D(
@@ -51,9 +51,9 @@ namespace ti_render {
 		}
 	}
 
-	void gl3plus_frame_buffer::attach_color_buffer(
+	void gl430plus_frame_buffer::attach_color_buffer(
 		unsigned int attachment, 
-		gl3plus_texture_cube* texture, 
+		gl430plus_texture_cube* texture, 
 		cubemap_face face, 
 		unsigned int mipmap_layer) {
 		glBindFramebuffer(GL_FRAMEBUFFER, m_id);
@@ -80,7 +80,7 @@ namespace ti_render {
 		}
 	}
 
-	void gl3plus_frame_buffer::detach_color_buffer(unsigned int attachment) {
+	void gl430plus_frame_buffer::detach_color_buffer(unsigned int attachment) {
 		bool is_exist = false;
 		for (vector<GLuint>::iterator iter = m_attachments.begin();
 			iter != m_attachments.end();
@@ -104,7 +104,7 @@ namespace ti_render {
 		}
 	}
 
-	void gl3plus_frame_buffer::bind(void) const {
+	void gl430plus_frame_buffer::bind(void) const {
 		glBindFramebuffer(GL_FRAMEBUFFER, m_id);
 		glViewport(0, 0, m_width, m_height);
 	}

@@ -1,9 +1,9 @@
-#include "gl3plus_vertex_buffer.h"
+#include "gl430plus_vertex_buffer.h"
 
 using namespace std;
 
 namespace ti_render {
-	gl3plus_vertex_buffer::gl3plus_vertex_buffer(
+	gl430plus_vertex_buffer::gl430plus_vertex_buffer(
 		const vector<vertex>& vertices, 
 		const vector<unsigned int>& indices){
         glGenVertexArrays(1, &m_VAO);
@@ -35,13 +35,13 @@ namespace ti_render {
         m_triangle_num = indices.size() / 3;
 	}
 
-	gl3plus_vertex_buffer::~gl3plus_vertex_buffer() {
+	gl430plus_vertex_buffer::~gl430plus_vertex_buffer() {
         glDeleteBuffers(1, &m_VBO);
         glDeleteBuffers(1, &m_EBO);
         glDeleteVertexArrays(1, &m_VAO);
 	}
 
-    void gl3plus_vertex_buffer::draw(void) const {
+    void gl430plus_vertex_buffer::draw(void) const {
         glBindVertexArray(m_VAO);
         glDrawElements(GL_TRIANGLES, m_triangle_num * 3, GL_UNSIGNED_INT, 0);
     }

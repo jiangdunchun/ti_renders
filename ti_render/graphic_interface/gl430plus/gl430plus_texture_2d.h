@@ -1,12 +1,13 @@
-#ifndef __GL3PLUS_TEXTURE_CUBE_H__
-#define __GL3PLUS_TEXTURE_CUBE_H__
+#ifndef __GL430PLUS_TEXTURE_2D_H__
+#define __GL430PLUS_TEXTURE_2D_H__
 
-#include "gl3plus_common.h"
+#include "gl430plus_common.h"
 
 namespace ti_render {
-	class gl3plus_texture_cube {
-		friend class gl3plus_shader;
-		friend class gl3plus_frame_buffer;
+	class gl430plus_texture_2d {
+	friend class gl430plus_shader;
+	friend class gl430plus_compute_shader;
+	friend class gl430plus_frame_buffer;
 
 	private:
 		unsigned int m_id;
@@ -16,10 +17,13 @@ namespace ti_render {
 		unsigned m_mipmap_layer_max;
 
 	public:
-		gl3plus_texture_cube(unsigned int width, unsigned int height, color_format format);
-		~gl3plus_texture_cube();
+		gl430plus_texture_2d(
+			unsigned int width,
+			unsigned int height,
+			color_format format);
+		~gl430plus_texture_2d();
 
-		void push_data(cubemap_face face, color_format format, void* data, unsigned int mipmap_layer = 0);
+		void push_data(color_format format, const void* data, unsigned int mipmap_layer = 0);
 		const unsigned int& get_mipmap_layer_max(void) const {
 			return m_mipmap_layer_max;
 		}
@@ -32,4 +36,4 @@ namespace ti_render {
 	};
 }
 
-#endif //!__GL3PLUS_TEXTURE_CUBE_H__
+#endif // !__GL430PLUS_TEXTURE_2D_H__

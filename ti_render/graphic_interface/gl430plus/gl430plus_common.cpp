@@ -1,4 +1,4 @@
-#include "gl3plus_common.h"
+#include "gl430plus_common.h"
 
 namespace ti_render {
 	GLuint map_cubemap_face(cubemap_face face) {
@@ -125,5 +125,17 @@ namespace ti_render {
 			break;
 		}
 		return gl_depth_test_func;
+	}
+
+	GLuint map_access_type(int mask) {
+		GLuint gl_access = 0;
+		if (mask & (char)access_type::READ) {
+			if (mask & (char)access_type::WRITE) gl_access = GL_READ_WRITE;
+			else gl_access = GL_READ_ONLY;
+		}
+		else {
+			if (mask & (char)access_type::WRITE) gl_access = GL_WRITE_ONLY;
+		}
+		return gl_access;
 	}
 }
