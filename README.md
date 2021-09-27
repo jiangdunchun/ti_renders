@@ -31,3 +31,13 @@
 ![](images/star_sparrow.png)
 
 > a star sparrow
+
+# dependencies
+* [glfw](https://github.com/glfw/glfw)
+* [glad](https://github.com/Dav1dde/glad)
+* [glm](https://github.com/Groovounet/glm)
+* [stb](https://github.com/nothings/stb)
+* [rapidjson](https://github.com/Tencent/rapidjson)
+* [assimp](https://github.com/assimp/assimp)
+* [md5](https://github.com/JieweiWei/md5)
+
