@@ -9,6 +9,7 @@
 #include "gl430plus/gl430plus_texture_2d.h"
 #include "gl430plus/gl430plus_texture_cube.h"
 #include "gl430plus/gl430plus_shader.h"
+#include "gl430plus/gl430plus_compute_shader.h"
 #endif // GL430PLUS
 
 namespace ti_render {
@@ -20,6 +21,7 @@ namespace ti_render {
 	typedef gl430plus_texture_2d			texture_2d;
 	typedef gl430plus_texture_cube			texture_cube;
 	typedef gl430plus_shader				shader;
+	typedef gl430plus_compute_shader		compute_shader;
 #endif // GL430PLUS
 }
 

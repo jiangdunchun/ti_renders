@@ -80,7 +80,7 @@ namespace ti_render {
             GL_FALSE, 
             0,
             map_access_type(access),
-            map_color_format(texture->get_color_format()));
+            map_color_internal_format(texture->get_color_format()));
     }
 
     void gl430plus_compute_shader::compute(unsigned int num_x, unsigned int num_y, unsigned int num_z) {

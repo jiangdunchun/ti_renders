@@ -10,7 +10,7 @@ namespace ti_render {
 		m_base_color = new gl430plus_texture_2d(width, height, color_format::RGBA16F);
 		m_normal = new gl430plus_texture_2d(width, height, color_format::RGB16F);
 		m_material = new gl430plus_texture_2d(width, height, color_format::RGBA16F);
-		m_emissive = new gl430plus_texture_2d(width, height, color_format::RGB16F);
+		m_emissive = new gl430plus_texture_2d(width, height, color_format::RGBA16F);
 
 		m_frame_buffer = new gl430plus_frame_buffer(width, height, dbo);
 		m_frame_buffer->attach_color_buffer(0, m_position);

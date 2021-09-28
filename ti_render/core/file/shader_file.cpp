@@ -12,6 +12,7 @@ namespace ti_render {
         string vertex_code = "";
         string fragment_code = "";
         string geometry_code = "";
+        string compute_code = "";
 
         string file_path = file_common::get_file_path(path);
         ifstream file;
@@ -37,6 +38,10 @@ namespace ti_render {
                     flag = 3;
                     continue;
                 }
+                if (line.find(COMPUTE_SHADER_ELEM) == 0) {
+                    flag = 4;
+                    continue;
+                }
 
                 switch (flag) {
                 case 1:
@@ -48,6 +53,9 @@ namespace ti_render {
                 case 3:
                     geometry_code += line + "\n";
                     break;
+                case 4:
+                    compute_code += line + "\n";
+                    break;
                 }
             }
             file.close();
@@ -58,17 +66,13 @@ namespace ti_render {
                 "file_management::shader_file:read file \"" + path + "\" failed");
         }
 
-        new (this)shader_file(vertex_code, fragment_code, geometry_code);
+        m_vertex_code = vertex_code;
+        m_fragment_code = fragment_code;
+        m_geometry_code = geometry_code;
+        m_compute_code = compute_code;
 	}
 
-    shader_file::shader_file(
-        const string& vertex_code, 
-        const string& fragment_code,
-        const string& geometry_code) : m_vertex_code(vertex_code), m_fragment_code(fragment_code), m_geometry_code(geometry_code) {
-    }
-
-	shader_file::~shader_file() {
-	}
+	shader_file::~shader_file() { }
 
     void shader_file::save(const string& path) const {
         throw "not impl!";

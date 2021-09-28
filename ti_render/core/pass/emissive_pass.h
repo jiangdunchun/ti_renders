@@ -8,12 +8,10 @@ namespace ti_render {
 	private:
 		const std::string m_shader_path = "shader/emissive_pass.shader";
 
-		shader* m_shader;
+		compute_shader* m_shader;
 		texture_2d* m_emissive_in;
-		vertex_buffer* m_mesh;
 		texture_2d* m_emissive_h;
 		texture_2d* m_emissive_v;
-		frame_buffer* m_frame_buffer;
 
 	public:
 		emissive_pass(unsigned int width, unsigned int height, texture_2d* emissive);
