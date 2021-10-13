@@ -3,7 +3,7 @@
 
 #include <string>
 #include <map>
-#include <glm/glm.hpp>
+#include <glm.hpp>
 
 #include "../../common/tr_enum.h"
 

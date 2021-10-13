@@ -1,7 +1,7 @@
 #ifndef __TR_STRUCT_H__
 #define __TR_STRUCT_H__
 
-#include <glm/glm.hpp>
+#include <glm.hpp>
 #include <vector>
 
 namespace ti_render {

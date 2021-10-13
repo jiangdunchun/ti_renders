@@ -1,9 +1,9 @@
 #include "material_file.h"
 
 #include <fstream>
-#include <rapidjson/stringbuffer.h>
-#include <rapidjson/document.h>
-#include <rapidjson/writer.h>
+#include <stringbuffer.h>
+#include <document.h>
+#include <writer.h>
 
 #include "../../common/logger_management.h"
 #include "file_common.h"

@@ -6,7 +6,7 @@
 #include "../../common/logger_management.h"
 #include "../../third_party/glad/glad.h"
 #include <glfw/glfw3.h>
-#include <glm/glm.hpp>
+#include <glm.hpp>
 
 
 namespace ti_render {

@@ -2,7 +2,7 @@
 #define __TR_STRING_PARSER_H__
 
 #include <string>
-#include <glm/glm.hpp>
+#include <glm.hpp>
 
 namespace ti_render {
 	class tr_string_parser {

@@ -3,8 +3,8 @@
 
 #include <string>
 
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
+#include <glm.hpp>
+#include <gtc/matrix_transform.hpp>
 
 
 namespace ti_render {
@@ -27,7 +27,7 @@ namespace ti_render {
 
 	private:
 		unsigned int m_id;
-		dummy_object* m_parent;
+		dummy_object* m_parent = nullptr;
 
 	protected:
 		glm::vec3 m_postion;
