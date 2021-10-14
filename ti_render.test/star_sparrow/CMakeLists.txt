@@ -1,4 +1,4 @@
-project(pbr_balls)
+project(star_sparrow)
 
 file(COPY ${ASSERT_DIR}
      DESTINATION ${CMAKE_CURRENT_BINARY_DIR})

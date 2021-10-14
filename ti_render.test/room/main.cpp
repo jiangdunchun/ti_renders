@@ -1,4 +1,4 @@
-#include <common\logger_management.cpp>
+#include <common/logger_management.cpp>
 #include <render.h>
 #include "console_logger.hpp"
 
@@ -30,7 +30,7 @@ int main(int, char**) {
 	console_logger c_logger;
 	logger_management::attach_logger(&c_logger);
 	
-	render::init(1000, 1000, "ti render", "../../resource");
+	render::init(1000, 1000, "ti render", "../assert");
 
 	scene scene;
 

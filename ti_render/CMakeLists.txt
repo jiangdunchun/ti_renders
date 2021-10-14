@@ -10,3 +10,5 @@ include_directories(${GLFW_INCLUDE_DIR})
 file(GLOB_RECURSE CPP_SRC_LIST ${CMAKE_CURRENT_LIST_DIR}/*.cpp)
 
 add_library(ti_render ${CPP_SRC_LIST})
+
+target_link_libraries(ti_render)

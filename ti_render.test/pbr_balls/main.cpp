@@ -1,4 +1,4 @@
-#include <common\logger_management.cpp>
+#include <common/logger_management.cpp>
 #include <render.h>
 #include "console_logger.hpp"
 
