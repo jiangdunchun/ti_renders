@@ -1,6 +1,7 @@
 #ifndef __IMAGE_ASSET_H__
 #define __IMAGE_ASSET_H__
 
+#include <string>
 #include <glm/glm.hpp>
 
 namespace tigine {

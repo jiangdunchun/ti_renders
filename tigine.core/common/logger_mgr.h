@@ -2,6 +2,7 @@
 #define __LOGGER_MGR_H__
 
 #include <string>
+#include <vector>
 
 namespace tigine{
     enum class log_tag {
