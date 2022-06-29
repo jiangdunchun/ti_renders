@@ -9,5 +9,6 @@ add_subdirectory(./3rdparty)
 
 add_subdirectory(./tigine.core)
 
-add_subdirectory(./examples)
+add_subdirectory(./tests)
+
 

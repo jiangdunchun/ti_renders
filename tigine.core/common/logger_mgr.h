@@ -26,8 +26,8 @@ namespace tigine{
 	};
 }
 
-#define LOG_HELPER(LOG_LEVEL, ...) \
-    tigine::logger_mgr::log(LOG_LEVEL, "[" + std::string(__FUNCTION__) + "] " + __VA_ARGS__);
+#define LOG_HELPER(LOG_TAG, ...) \
+    tigine::logger_mgr::log(LOG_TAG, "[" + std::string(__FUNCTION__) + "] " + __VA_ARGS__);
 
 #define LOG_DEBUG(...) LOG_HELPER(tigine::log_tag::DEBUG, __VA_ARGS__);
 

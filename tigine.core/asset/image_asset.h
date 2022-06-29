@@ -26,7 +26,7 @@ namespace tigine {
 		image_asset(unsigned int width, unsigned int height, image_format format);
     	image_asset(const image_asset& img) = delete;
 		image_asset& operator=(const image_asset& img) = delete;
-		~image_file();
+		~image_asset();
 
 		static unsigned int get_component(image_format format);
 		int get_data_index(unsigned int x, unsigned int y) const;

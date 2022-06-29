@@ -6,12 +6,12 @@ namespace tigine {
 	vector<i_logger*> logger_mgr::sm_logger_pool = {};
 
 	void logger_mgr::attach_logger(i_logger* logger) {
-        auto iter = sm_logger_pool.find(sm_logger_pool.begin(), sm_logger_pool.end(), logger);
+        auto iter = find(sm_logger_pool.begin(), sm_logger_pool.end(), logger);
         if (iter == sm_logger_pool.end()) sm_logger_pool.push_back(logger);
 	}
 
 	void logger_mgr::detach_logger(i_logger* logger) {
-		auto iter = sm_logger_pool.find(sm_logger_pool.begin(), sm_logger_pool.end(), logger);
+		auto iter = find(sm_logger_pool.begin(), sm_logger_pool.end(), logger);
         if (iter != sm_logger_pool.end()) sm_logger_pool.erase(iter);
 	}
 
