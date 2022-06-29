@@ -6,7 +6,7 @@
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include <stb/stb_image_write.h>
 
-#include <common/logger_mgr.h>
+#include "../common/logger_mgr.h"
 
 using namespace std;
 using namespace glm;
@@ -37,17 +37,13 @@ namespace tigine {
 		m_component = get_component(m_format);
 
 		int component, width, height;
-		string file_path = file_common::get_file_path(path);
-		m_data = image_loader(file_path.c_str(), &width, &height, &component, m_component);
+		m_data = image_loader(path.c_str(), &width, &height, &component, m_component);
 		
 		if (m_data != nullptr) {
 			m_width = width;
 			m_height = height;
 		}
-		else {
-			logger_management::log(log_tag::LOG_ERROR,
-				"file::image_asset:load file \"" + path + "\" failed");
-		}
+		else LOG_ERROR("load image failed from " + path);
 	}
 
 	image_asset::image_asset(

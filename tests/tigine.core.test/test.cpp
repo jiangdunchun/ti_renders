@@ -1,29 +1,42 @@
 #include <iostream>
 #include <tigine.core/common/logger_mgr.h>
+#include <tigine.core/asset/image_asset.h>
 
 #define RESET   "\033[0m"
 #define RED     "\033[31m"
 #define GREEN   "\033[32m"
 #define YELLOW  "\033[33m"
 
-class my_logger : public tigine::i_logger {
+using namespace tigine;
+using namespace std;
+
+class my_logger : public i_logger {
 public:
-	void log(tigine::log_tag tag, std::string msg) {
-		std::cout << "[";
-		if (tag == tigine::log_tag::DEBUG)
-			std::cout << GREEN << "DEBUG" << RESET << "] ";
-		else if (tag == tigine::log_tag::WARN)
-			std::cout << YELLOW << "WARN" << RESET << "] ";
-		else if (tag == tigine::log_tag::ERROR)
-			std::cout << RED << "ERROR" << RESET << "] ";
-		std::cout << msg << std::endl;
+	void log(log_tag tag, string msg) {
+		cout << "[";
+		if (tag == log_tag::DEBUG)
+			cout << GREEN << "DEBUG" << RESET << "] ";
+		else if (tag == log_tag::WARN)
+			cout << YELLOW << "WARN" << RESET << "] ";
+		else if (tag == log_tag::ERROR)
+			cout << RED << "ERROR" << RESET << "] ";
+		cout << msg << endl;
 	}
 };
 
+void image_asset_test() {
+	image_asset img("./assets/GGX_E_IS_LUT.png", image_format::RGB8B);
+	string img_info = "GGX_E_IS_LUT.png---> \n";
+	img_info += ("width:" + to_string(img.get_width()) + ", height:" + to_string(img.get_height()) + "\n");
+	LOG_DEBUG(img_info);
+}
+
 int main() {
-	tigine::i_logger* logger = new my_logger();
-	tigine::logger_mgr::attach_logger(logger);
+	i_logger* logger = new my_logger();
+	logger_mgr::attach_logger(logger);
 	LOG_DEBUG("init logger");
+
+	image_asset_test();
 
 	delete logger;
 }
