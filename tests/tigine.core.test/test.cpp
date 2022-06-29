@@ -25,7 +25,7 @@ public:
 };
 
 void image_asset_test() {
-	image_asset img("./assets/GGX_E_IS_LUT.png", image_format::RGB8B);
+	image_asset img("./asset/GGX_E_IS_LUT.png", image_format::RGB8B);
 	string img_info = "GGX_E_IS_LUT.png---> \n";
 	img_info += ("width:" + to_string(img.get_width()) + ", height:" + to_string(img.get_height()) + "\n");
 	LOG_DEBUG(img_info);
