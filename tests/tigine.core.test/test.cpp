@@ -9,6 +9,7 @@
 
 using namespace tigine;
 using namespace std;
+using namespace glm;
 
 class my_logger : public i_logger {
 public:
@@ -28,6 +29,12 @@ void image_asset_test() {
 	image_asset img("./asset/GGX_E_IS_LUT.png", image_format::RGB8B);
 	string img_info = "GGX_E_IS_LUT.png---> \n";
 	img_info += ("width:" + to_string(img.get_width()) + ", height:" + to_string(img.get_height()) + "\n");
+	vec4 p_color = img.sample_liner(vec2(0.1, 0.23));
+	img_info += ("sample liner from (0.1, 0.23):" 
+		+ to_string(p_color.x) + ", "
+		+ to_string(p_color.y) + ", "
+		+ to_string(p_color.z) + ", " 
+		+ to_string(p_color.w) + "\n");
 	LOG_DEBUG(img_info);
 }
 
