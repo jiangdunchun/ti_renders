@@ -16,33 +16,33 @@ namespace tigine {
 
     class image_asset {
 	private:
-		unsigned int m_component;
-		unsigned int m_width = 0;
-		unsigned int m_height = 0;
+		uint32_t m_component;
+		uint32_t m_width = 0;
+		uint32_t m_height = 0;
 		image_format m_format;
 		void* m_data = nullptr;
 
 	public:
 		image_asset(const std::string& path, image_format format, bool flip_y = true);
-		image_asset(unsigned int width, unsigned int height, image_format format);
+		image_asset(uint32_t width, uint32_t height, image_format format);
     	image_asset(const image_asset& img) = delete;
 		image_asset& operator=(const image_asset& img) = delete;
 		~image_asset();
 
-		static unsigned int get_component(image_format format);
-		int get_data_index(unsigned int x, unsigned int y) const;
+		static uint32_t get_component(image_format format);
+		size_t get_data_index(uint32_t x, uint32_t y) const;
 		void save(const std::string& path) const;
-		unsigned int get_width(void) const {
+		uint32_t get_width(void) const {
 			return m_width;
 		}
-		unsigned int get_height(void) const {
+		uint32_t get_height(void) const {
 			return m_height;
 		}
 		image_format get_format(void) {
 			return m_format;
 		}
-		void set_data(void* const data);
-		void* const get_data(void) {
+		void set_data(const void* data);
+		const void* const get_data(void) {
 			return m_data;
 		}
 		glm::vec4 sample_liner(glm::vec2 uv) const;

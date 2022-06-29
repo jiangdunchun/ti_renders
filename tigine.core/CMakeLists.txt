@@ -5,7 +5,7 @@ add_library(tigine.core ${SRC_FILES})
 
 target_include_directories(tigine.core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../)
 
-target_link_libraries(tigine.core glad glfw)
+target_link_libraries(tigine.core)
 
 
 
