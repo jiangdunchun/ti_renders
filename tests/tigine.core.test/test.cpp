@@ -38,12 +38,25 @@ void image_asset_test() {
 	LOG_DEBUG(img_info);
 }
 
+void material_asset_test() {
+	material_asset mat("./asset/StarSparrow.mat");
+	string mat_info = "StarSparrow.mat---> \n";
+	mat_info += ("type:" + mat.get_type() + "\n");
+	std::vector<std::string> parameters = mat.get_parameters();
+	mat_info += ("parameters:\n");
+	for (auto& para : parameters) {
+		mat_info += ("	" + para + ":" + mat.get_value(para) + "\n");
+	}
+	LOG_DEBUG(mat_info);
+}
+
 int main() {
 	i_logger* logger = new my_logger();
 	logger_mgr::attach_logger(logger);
 	LOG_DEBUG("init logger");
 
 	image_asset_test();
+	material_asset_test();
 
 	delete logger;
 }
