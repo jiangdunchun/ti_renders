@@ -1,6 +1,7 @@
 #include <iostream>
 #include <tigine.core/common/logger_mgr.h>
 #include <tigine.core/asset/image_asset.h>
+#include <tigine.core/asset/material_asset.h>
 
 #define RESET   "\033[0m"
 #define RED     "\033[31m"
