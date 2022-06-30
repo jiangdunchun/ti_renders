@@ -34,10 +34,8 @@ namespace tigine {
 			break;
 		}
 
-		m_component = get_component(m_format);
-
 		int component, width, height;
-		m_data = image_loader(path.c_str(), &width, &height, &component, m_component);
+		m_data = image_loader(path.c_str(), &width, &height, &component, get_component(m_format));
 		
 		if (m_data != nullptr) {
 			m_width = width;
@@ -47,31 +45,41 @@ namespace tigine {
 	}
 
 	image_asset::image_asset(
-		uint32_t width,
-		uint32_t height,
+		int width,
+		int height,
 		image_format format) : m_width(width), m_height(height), m_format(format) {
-		m_component = get_component(m_format);
-		switch (m_format) {
-		case image_format::R8B:
-		case image_format::RGB8B:
-		case image_format::RGBA8B:
-			m_data = new char[m_width * m_height * m_component];
-			break;
-		case image_format::R16F:
-		case image_format::RGB16F:
-		case image_format::RGBA16F:
-			m_data = new float[m_width * m_height * m_component];
-			break;
-		default:
-			break;
+		int data_len = get_data_len();
+		m_data = malloc(data_len);
+	}
+
+	image_asset::image_asset(const image_asset& img) {
+		m_width = img.m_width;
+		m_height = img.m_height;
+		m_format = img.m_format;
+		int data_len = get_data_len();
+		m_data = malloc(data_len);
+		memcpy(m_data, img.m_data, data_len);
+	}
+
+	image_asset& image_asset::operator=(const image_asset& img) {
+		if (this != &img) {
+			if (!m_data) stbi_image_free(m_data);
+
+			m_width = img.m_width;
+			m_height = img.m_height;
+			m_format = img.m_format;
+			int data_len = get_data_len();
+			m_data = malloc(data_len);
+			memcpy(m_data, img.m_data, data_len);
 		}
+		return *this;
 	}
 
 	image_asset::~image_asset() {
 		stbi_image_free(m_data);
 	}
 
-	uint32_t image_asset::get_component(image_format format) {
+	int image_asset::get_component(image_format format) const {
 		int component = 0;
 		switch (format) {
 		case image_format::R8B:
@@ -92,10 +100,30 @@ namespace tigine {
 		return component;
 	}
 
-	size_t image_asset::get_data_index(uint32_t x, uint32_t y) const {
+	int image_asset::get_data_len() const {
+		int data_len = 0;
+		switch (m_format) {
+		case image_format::R8B:
+		case image_format::RGB8B:
+		case image_format::RGBA8B:
+			data_len = sizeof(char) * m_width * m_height * get_component(m_format);
+
+			break;
+		case image_format::R16F:
+		case image_format::RGB16F:
+		case image_format::RGBA16F:
+			data_len = sizeof(float) * m_width * m_height * get_component(m_format);
+			break;
+		default:
+			break;
+		}
+		return data_len;
+	}
+
+	int image_asset::get_data_index(int x, int y) const {
 		if (x < 0 || x >= m_width || y < 0 || y >= m_height) return -1;
 
-		return ((size_t)y * m_width + x) * m_component;
+		return (y * m_width + x) * get_component(m_format);
 	}
 
 	void image_asset::save(const string& path) const {
@@ -103,22 +131,8 @@ namespace tigine {
 	}
 
 	void image_asset::set_data(const void* data) {
-		if (!m_data) delete[] m_data;
-
-		switch (m_format) {
-		case image_format::R8B:
-		case image_format::RGB8B:
-		case image_format::RGBA8B:
-			memcpy(m_data, data, sizeof(char) * m_width * m_height * m_component);
-			break;
-		case image_format::R16F:
-		case image_format::RGB16F:
-		case image_format::RGBA16F:
-			memcpy(m_data, data, sizeof(float) * m_width * m_height * m_component);
-			break;
-		default:
-			break;
-		}
+		int data_len = get_data_len();
+		memcpy(m_data, data, data_len);
 	}
 
 	vec4 image_asset::sample_liner(vec2 uv) const {
@@ -140,7 +154,7 @@ namespace tigine {
 			float r_rd = rd < 0 ? 0.0f : *((unsigned char*)m_data + rd);
 			float r_ru = ru < 0 ? 0.0f : *((unsigned char*)m_data + ru);
 			color.r = (1.0f - y_weight) * ((1.0f - x_weight) * r_ld + x_weight * r_rd) + y_weight * ((1.0f - x_weight) * r_lu + x_weight * r_ru);
-			if (m_component >= 3) {
+			if (get_component(m_format) >= 3) {
 				float g_ld = ld < 0 ? 0.0f : *((unsigned char*)m_data + ld + 1);
 				float g_lu = lu < 0 ? 0.0f : *((unsigned char*)m_data + lu + 1);
 				float g_rd = rd < 0 ? 0.0f : *((unsigned char*)m_data + rd + 1);
@@ -153,7 +167,7 @@ namespace tigine {
 				float b_ru = ru < 0 ? 0.0f : *((unsigned char*)m_data + ru + 2);
 				color.b = (1.0f - y_weight) * ((1.0f - x_weight) * b_ld + x_weight * b_rd) + y_weight * ((1.0f - x_weight) * b_lu + x_weight * b_ru);
 			}
-			if (m_component == 4) {
+			if (get_component(m_format) == 4) {
 				float a_ld = ld < 0 ? 0.0f : *((unsigned char*)m_data + ld + 3);
 				float a_lu = lu < 0 ? 0.0f : *((unsigned char*)m_data + lu + 3);
 				float a_rd = rd < 0 ? 0.0f : *((unsigned char*)m_data + rd + 3);
@@ -169,7 +183,7 @@ namespace tigine {
 			float r_rd = rd < 0 ? 0.0f : *((float*)m_data + rd);
 			float r_ru = ru < 0 ? 0.0f : *((float*)m_data + ru);
 			color.r = (1.0f - y_weight) * ((1.0f - x_weight) * r_ld + x_weight * r_rd) + y_weight * ((1.0f - x_weight) * r_lu + x_weight * r_ru);
-			if (m_component >= 3) {
+			if (get_component(m_format) >= 3) {
 				float g_ld = ld < 0 ? 0.0f : *((float*)m_data + ld + 1);
 				float g_lu = lu < 0 ? 0.0f : *((float*)m_data + lu + 1);
 				float g_rd = rd < 0 ? 0.0f : *((float*)m_data + rd + 1);
@@ -182,7 +196,7 @@ namespace tigine {
 				float b_ru = ru < 0 ? 0.0f : *((float*)m_data + ru + 2);
 				color.b = (1.0f - y_weight) * ((1.0f - x_weight) * b_ld + x_weight * b_rd) + y_weight * ((1.0f - x_weight) * b_lu + x_weight * b_ru);
 			}
-			if (m_component == 4) {
+			if (get_component(m_format) == 4) {
 				float a_ld = ld < 0 ? 0.0f : *((float*)m_data + ld + 3);
 				float a_lu = lu < 0 ? 0.0f : *((float*)m_data + lu + 3);
 				float a_rd = rd < 0 ? 0.0f : *((float*)m_data + rd + 3);

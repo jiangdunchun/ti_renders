@@ -16,27 +16,27 @@ namespace tigine {
 
     class image_asset {
 	private:
-		uint32_t m_component;
-		uint32_t m_width = 0;
-		uint32_t m_height = 0;
+		int m_width = 0;
+		int m_height = 0;
 		image_format m_format;
 		void* m_data = nullptr;
 
-		inline uint32_t get_component(image_format format);
-		inline size_t get_data_index(uint32_t x, uint32_t y) const;
+		int get_component(image_format format) const;
+		int get_data_len() const;
+		int get_data_index(int x, int y) const;
 
 	public:
 		image_asset(const std::string& path, image_format format, bool flip_y = true);
-		image_asset(uint32_t width, uint32_t height, image_format format);
-    	image_asset(const image_asset& img) = delete;
-		image_asset& operator=(const image_asset& img) = delete;
+		image_asset(int width, int height, image_format format);
+    	image_asset(const image_asset& img);
+		image_asset& operator=(const image_asset& img);
 		~image_asset();
 
 		void save(const std::string& path) const;
-		uint32_t get_width(void) const {
+		int get_width(void) const {
 			return m_width;
 		}
-		uint32_t get_height(void) const {
+		int get_height(void) const {
 			return m_height;
 		}
 		image_format get_format(void) {
