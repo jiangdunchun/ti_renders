@@ -18,4 +18,8 @@ set(GLFW_INSTALL OFF)
 set(GLFW_VULKAN_STATIC OFF)
 add_subdirectory(./glfw)
 
+# assimp https://github.com/assimp/assimp/tree/v5.2.3/
+set(ASSIMP_BUILD_TESTS OFF)
+add_subdirectory(./assimp)
+
 # imgui https://github.com/ocornut/imgui/tree/v1.88

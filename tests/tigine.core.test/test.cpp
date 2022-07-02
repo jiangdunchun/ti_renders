@@ -2,6 +2,7 @@
 #include <tigine.core/common/logger_mgr.h>
 #include <tigine.core/asset/image_asset.h>
 #include <tigine.core/asset/material_asset.h>
+#include <tigine.core/asset/mesh_asset.h>
 
 #define RESET   "\033[0m"
 #define RED     "\033[31m"
@@ -51,6 +52,12 @@ void material_asset_test() {
 	LOG_DEBUG(mat_info);
 }
 
+void mesh_asset_test() {
+	mesh_asset mesh("./asset/Bearded_guy.obj");
+	string mat_info = "Bearded_guy.mat---> \n";
+	LOG_DEBUG(mat_info);
+}
+
 int main() {
 	i_logger* logger = new my_logger();
 	logger_mgr::attach_logger(logger);
@@ -58,6 +65,7 @@ int main() {
 
 	image_asset_test();
 	material_asset_test();
+	mesh_asset_test();
 
 	delete logger;
 }
