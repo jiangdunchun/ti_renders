@@ -53,8 +53,8 @@ void material_asset_test() {
 }
 
 void mesh_asset_test() {
-	mesh_asset mesh("./asset/Bearded_guy.obj");
-	string mat_info = "Bearded_guy.mat---> \n";
+	mesh_asset mesh("./asset/StarSparrow01.obj");
+	string mat_info = "StarSparrow01.obj---> \n";
 	LOG_DEBUG(mat_info);
 }
 
