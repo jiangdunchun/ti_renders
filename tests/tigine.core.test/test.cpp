@@ -28,8 +28,9 @@ public:
 };
 
 void image_asset_test() {
-	image_asset img("./asset/GGX_E_IS_LUT.png", image_format::RGB8B);
-	string img_info = "GGX_E_IS_LUT.png---> \n";
+	const string img_path = "GGX_E_IS_LUT.png";
+	string img_info = img_path + "---> \n";
+	image_asset img(TEST_ASSET_DIR + img_path, image_format::RGB8B);
 	img_info += ("width:" + to_string(img.get_width()) + ", height:" + to_string(img.get_height()) + "\n");
 	vec4 p_color = img.sample_liner(vec2(0.1, 0.23));
 	img_info += ("sample liner from (0.1, 0.23):" 
@@ -41,8 +42,9 @@ void image_asset_test() {
 }
 
 void material_asset_test() {
-	material_asset mat("./asset/StarSparrow.mat");
-	string mat_info = "StarSparrow.mat---> \n";
+	const string mat_path = "StarSparrow.mat";
+	string mat_info = mat_path + "---> \n";
+	material_asset mat(TEST_ASSET_DIR + mat_path);
 	mat_info += ("type:" + mat.get_type() + "\n");
 	std::vector<std::string> parameters = mat.get_parameters();
 	mat_info += ("parameters:\n");
@@ -53,15 +55,16 @@ void material_asset_test() {
 }
 
 void mesh_asset_test() {
-	mesh_asset mesh("./asset/StarSparrow01.obj");
-	string mat_info = "StarSparrow01.obj---> \n";
-	LOG_DEBUG(mat_info);
+	const string mesh_path = "StarSparrow01.obj";
+	string mesh_info = mesh_path + "---> \n";
+	mesh_asset mesh(TEST_ASSET_DIR + mesh_path);
+	LOG_DEBUG(mesh_info);
 }
 
 int main() {
 	i_logger* logger = new my_logger();
 	logger_mgr::attach_logger(logger);
-	LOG_DEBUG("init logger");
+	LOG_DEBUG("init logger\n");
 
 	image_asset_test();
 	material_asset_test();
