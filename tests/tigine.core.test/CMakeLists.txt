@@ -4,7 +4,7 @@ add_executable(tigine.core.test ./test.cpp)
 
 target_link_libraries(tigine.core.test tigine.core)
 
-SET(TEST_ASSET_DIR ./asset)
+set(TEST_ASSET_DIR ./asset)
 
 add_definitions(-DTEST_ASSET_DIR="${TEST_ASSET_DIR}/")
 
