@@ -7,18 +7,18 @@
 namespace tigine {
 	class material_asset {
 	private:
-		const std::string TYPE_ELEM = "type";
-		const std::string PARA_ELEM = "parameters";
+		const static std::string TYPE_ELEM;
+		const static std::string PARA_ELEM;
 
 		std::string m_type;
 		std::vector<std::string> m_parameters;
 		std::vector<std::string> m_values;
 
 	public:
-		material_asset(const std::string& path);
 		material_asset(const std::string& type, const std::vector<std::string>& parameters);
 		~material_asset() {}
 
+		static material_asset* load(const std::string& path);
 		void save(const std::string& path) const;
 		const std::string& get_type(void) const {
 			return m_type;

@@ -8,9 +8,17 @@ using namespace std;
 using namespace json11;
 
 namespace tigine {
-	material_asset::material_asset(const string& path) {
-		string mat_str;
+	const string material_asset::TYPE_ELEM = "type";
+	const string material_asset::PARA_ELEM = "parameters";
 
+	material_asset::material_asset(const string& type, const vector<string>& parameters) {
+		m_type = type;
+		m_parameters = parameters;
+		m_values.resize(parameters.size(), "");
+	}
+
+	material_asset* material_asset::load(const std::string& path) {
+		string mat_str;
 		ifstream file;
 		try {
 			file.open(path, ios::binary);
@@ -21,26 +29,27 @@ namespace tigine {
 		catch (ifstream::failure e) {
 			if (file.is_open()) file.close();
 			LOG_ERROR("load material failed from " + path);
-			return;
+			return nullptr;
 		}
 
 		string err;
 		Json mat_json = Json::parse(mat_str, err);
 		if (err != "") {
 			LOG_ERROR("material content damage of " + path);
-			return;
+			return nullptr;
 		}
-		m_type = mat_json[TYPE_ELEM].string_value();
+		string type = mat_json[TYPE_ELEM].string_value();
+		vector<string> parameters;
+		vector<string> values;
 		for (auto& para : mat_json[PARA_ELEM].object_items()) {
-			m_parameters.push_back(para.first);
-			m_values.push_back(para.second.string_value());
+			parameters.push_back(para.first);
+			values.push_back(para.second.string_value());
 		}
-	}
 
-	material_asset::material_asset(const string& type, const vector<string>& parameters) {
-		m_type = type;
-		m_parameters = parameters;
-		m_values.resize(parameters.size(), "");
+		material_asset* ret = new material_asset(type, parameters);
+		for (int i = 0; i < parameters.size(); i++)
+			ret->set_value(parameters[i], values[i]);
+		return ret;
 	}
 
 	void material_asset::save(const string& path) const {

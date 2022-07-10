@@ -21,17 +21,17 @@ namespace tigine {
 		image_format m_format;
 		void* m_data = nullptr;
 
-		int get_component(image_format format) const;
+		static int get_component(image_format format);
 		int get_data_len() const;
 		int get_data_index(int x, int y) const;
 
 	public:
-		image_asset(const std::string& path, image_format format, bool flip_y = true);
 		image_asset(int width, int height, image_format format);
     	image_asset(const image_asset& img);
 		image_asset& operator=(const image_asset& img);
 		~image_asset();
 
+		static image_asset* load(const std::string& path, image_format format, bool flip_y = true);
 		void save(const std::string& path) const;
 		int get_width(void) const {
 			return m_width;

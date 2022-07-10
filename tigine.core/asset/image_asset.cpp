@@ -13,38 +13,6 @@ using namespace glm;
 
 namespace tigine {
 	image_asset::image_asset(
-		const string& path,
-		image_format format,
-		bool flip_y) : m_format(format) {
-		stbi_set_flip_vertically_on_load(flip_y);
-
-		function<void*(char const*, int*, int*, int*, int)> image_loader = nullptr;
-		switch (m_format) {
-		case image_format::R8B:
-		case image_format::RGB8B:
-		case image_format::RGBA8B:
-			image_loader = stbi_load;
-			break;
-		case image_format::R16F:
-		case image_format::RGB16F:
-		case image_format::RGBA16F:
-			image_loader = stbi_loadf;
-			break;
-		default:
-			break;
-		}
-
-		int component, width, height;
-		m_data = image_loader(path.c_str(), &width, &height, &component, get_component(m_format));
-		
-		if (m_data != nullptr) {
-			m_width = width;
-			m_height = height;
-		}
-		else LOG_ERROR("load image failed from " + path);
-	}
-
-	image_asset::image_asset(
 		int width,
 		int height,
 		image_format format) : m_width(width), m_height(height), m_format(format) {
@@ -76,10 +44,10 @@ namespace tigine {
 	}
 
 	image_asset::~image_asset() {
-		stbi_image_free(m_data);
+		free(m_data);
 	}
 
-	int image_asset::get_component(image_format format) const {
+	int image_asset::get_component(image_format format) {
 		int component = 0;
 		switch (format) {
 		case image_format::R8B:
@@ -124,6 +92,41 @@ namespace tigine {
 		if (x < 0 || x >= m_width || y < 0 || y >= m_height) return -1;
 
 		return (y * m_width + x) * get_component(m_format);
+	}
+
+	image_asset* image_asset::load(
+		const string& path,
+		image_format format,
+		bool flip_y) {
+		stbi_set_flip_vertically_on_load(flip_y);
+
+		function<void* (char const*, int*, int*, int*, int)> image_loader = nullptr;
+		switch (format) {
+		case image_format::R8B:
+		case image_format::RGB8B:
+		case image_format::RGBA8B:
+			image_loader = stbi_load;
+			break;
+		case image_format::R16F:
+		case image_format::RGB16F:
+		case image_format::RGBA16F:
+			image_loader = stbi_loadf;
+			break;
+		default:
+			break;
+		}
+
+		int component, width, height;
+		void* data = image_loader(path.c_str(), &width, &height, &component, get_component(format));
+		if (!data) {
+			LOG_ERROR("load image failed from " + path);
+			return nullptr;
+		}
+		
+		image_asset* ret = new image_asset(width, height, format);
+		ret->set_data(data);
+		stbi_image_free(data);
+		return ret;
 	}
 
 	void image_asset::save(const string& path) const {
