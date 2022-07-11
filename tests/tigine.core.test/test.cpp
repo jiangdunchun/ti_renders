@@ -63,11 +63,11 @@ void material_asset_test() {
 void mesh_asset_test() {
 	const string mesh_path = "StarSparrow01.obj";
 	string mesh_info = mesh_path + "---> \n";
-	mesh_asset* mesh = mesh_asset::load(TEST_ASSET_DIR + mesh_path);
-	if (!mesh) return;
+	vector<mesh_asset*> meshes = mesh_asset::load(TEST_ASSET_DIR + mesh_path);
+	if (meshes.size() == 0) return;
 
 	LOG_DEBUG(mesh_info);
-	delete mesh;
+	for (auto& mesh : meshes) delete mesh;
 }
 
 int main() {

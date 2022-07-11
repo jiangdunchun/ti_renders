@@ -21,7 +21,6 @@ namespace tigine {
 		image_format m_format;
 		void* m_data = nullptr;
 
-		static int get_component(image_format format);
 		int get_data_len() const;
 		int get_data_index(int x, int y) const;
 

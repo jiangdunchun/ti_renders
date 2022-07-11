@@ -12,6 +12,27 @@ using namespace std;
 using namespace glm;
 
 namespace tigine {
+	inline int get_component(image_format format) {
+		int component = 0;
+		switch (format) {
+		case image_format::R8B:
+		case image_format::R16F:
+			component = 1;
+			break;
+		case image_format::RGB8B:
+		case image_format::RGB16F:
+			component = 3;
+			break;
+		case image_format::RGBA8B:
+		case image_format::RGBA16F:
+			component = 4;
+			break;
+		default:
+			break;
+		}
+		return component;
+	}
+
 	image_asset::image_asset(
 		int width,
 		int height,
@@ -45,27 +66,6 @@ namespace tigine {
 
 	image_asset::~image_asset() {
 		free(m_data);
-	}
-
-	int image_asset::get_component(image_format format) {
-		int component = 0;
-		switch (format) {
-		case image_format::R8B:
-		case image_format::R16F:
-			component = 1;
-			break;
-		case image_format::RGB8B:
-		case image_format::RGB16F:
-			component = 3;
-			break;
-		case image_format::RGBA8B:
-		case image_format::RGBA16F:
-			component = 4;
-			break;
-		default:
-			break;
-		}
-		return component;
 	}
 
 	int image_asset::get_data_len() const {
