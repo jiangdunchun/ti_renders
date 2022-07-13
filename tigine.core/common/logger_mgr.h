@@ -13,6 +13,7 @@ namespace tigine{
 
 	class i_logger {
 	public:
+		virtual ~i_logger() {};
 		virtual void log(log_tag tag, std::string msg) = 0;
 	};
 
