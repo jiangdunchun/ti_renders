@@ -40,6 +40,41 @@ namespace tigine {
 			
 		return ret;
 	}
+	
+	mesh_asset* mesh_asset::load(const std::string& path) {
+		ifstream file;
+		try {
+			file.open(path, ios::binary);
+
+			unsigned vertices_num;
+			file.read((char*)&vertices_num, sizeof(unsigned));
+			vector<vertex> vertices(vertices_num);
+			file.read((char*)&vertices[0], sizeof(vertex) * vertices_num);
+
+			unsigned bones_num;
+			file.read((char*)&bones_num, sizeof(unsigned));
+			vector<bone> bones(bones_num);
+			file.read((char*)&bones[0], sizeof(bone) * bones_num);
+
+			unsigned indices_num;
+			file.read((char*)&indices_num, sizeof(unsigned));
+			vector<unsigned> indices(indices_num);
+			file.read((char*)&indices[0], sizeof(bone) * indices_num);
+
+			file.close();
+
+			mesh_asset* mesh = new mesh_asset();
+			mesh->set_vertices(vertices);
+			mesh->set_bones(bones);
+			mesh->set_indices(indices);
+			return mesh;
+		}
+		catch (ifstream::failure e) {
+			if (file.is_open()) file.close();
+			LOG_ERROR("load mesh failed from " + path);
+			return nullptr;
+		}
+	}
 
 	void mesh_asset::save(const std::string& path) const {
 		ofstream mesh_stream(path, ios::binary);
