@@ -129,8 +129,13 @@ namespace tigine {
 		return ret;
 	}
 
-	void image_asset::save(const string& path) const {
-		throw "not impl!";
+	void image_asset::save(const string& path, bool flip_y) const {
+		stbi_flip_vertically_on_write(flip_y);
+		stbi_write_png(
+			path.c_str(), 
+			m_width, m_height, 
+			get_component(m_format),
+			m_data, 0);
 	}
 
 	void image_asset::set_data(const void* data) {

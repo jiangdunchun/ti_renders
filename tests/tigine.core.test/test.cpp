@@ -41,6 +41,7 @@ void image_asset_test() {
 		+ to_string(p_color.z) + ", " 
 		+ to_string(p_color.w) + "\n");
 	LOG_DEBUG(img_info);
+	img->save(TEST_ASSET_DIR + img_path + ".png");
 	delete img;
 }
 
@@ -57,13 +58,14 @@ void material_asset_test() {
 		mat_info += ("	" + para + ":" + mat->get_value(para) + "\n");
 	}
 	LOG_DEBUG(mat_info);
+	mat->save(TEST_ASSET_DIR + mat_path + ".mat");
 	delete mat;
 }
 
 void mesh_asset_test() {
-	const string mesh_path = "StarSparrow01.obj";
+	const string mesh_path = "rp_nathan_animated_003_walking.fbx";
 	string mesh_info = mesh_path + "---> \n";
-	vector<mesh_asset*> meshes = mesh_asset::load(TEST_ASSET_DIR + mesh_path);
+	vector<mesh_asset*> meshes = mesh_asset::load_scene(TEST_ASSET_DIR + mesh_path);
 	if (meshes.size() == 0) return;
 
 	LOG_DEBUG(mesh_info);

@@ -53,7 +53,17 @@ namespace tigine {
 	}
 
 	void material_asset::save(const string& path) const {
-		throw "not impl!";
+		Json::object para_json;
+		for (int i = 0; i < m_parameters.size(); i++) {
+			para_json[m_parameters[i]] = Json(m_values[i]);
+		}
+		Json mat_json = Json::object { 
+			{TYPE_ELEM, m_type},
+			{PARA_ELEM, para_json} };
+
+		ofstream mat_file(path);
+		mat_file << mat_json.dump();
+		mat_file.close();
 	}
 
 	const string& material_asset::get_value(const string& parameter) const {

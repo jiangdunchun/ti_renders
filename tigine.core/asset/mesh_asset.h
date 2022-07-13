@@ -11,12 +11,12 @@ namespace tigine {
 		glm::vec2 uv;
 		glm::vec3 normal;
 		glm::vec3 tangent;
-		glm::vec4 jointIndices;
+		glm::ivec4 jointIndices;
 		glm::vec4 jointWeights;
 	};
 
 	struct bone {
-		int index;
+		unsigned index;
 		glm::mat4 offset;
 	};
 
@@ -24,18 +24,20 @@ namespace tigine {
 	private:
 		std::vector<vertex> m_vertices;
 		std::vector<bone> m_bones;
-		std::vector<int> m_indices;
+		std::vector<unsigned> m_indices;
 
 	public:
-		static std::vector<mesh_asset*> load(const std::string path);
+		static std::vector<mesh_asset*> load_scene(const std::string path);
+		mesh_asset* load(const std::string path);
 
+		void save(const std::string& path) const;
 		void set_vertices(const std::vector<vertex>& vertices) {
 			m_vertices = vertices;
 		}
 		void set_bones(const std::vector<bone>& bones) {
 			m_bones = bones;
 		}
-		void set_indices(const std::vector<int>& indices) {
+		void set_indices(const std::vector<unsigned>& indices) {
 			m_indices = indices;
 		}
 		const std::vector<vertex>& get_vertices() const {
@@ -50,7 +52,7 @@ namespace tigine {
 		bool has_indices() const {
 			return m_indices.size() != 0;
 		}
-		const std::vector<int>& get_indices() const {
+		const std::vector<unsigned>& get_indices() const {
 			return m_indices;
 		}
 	};
