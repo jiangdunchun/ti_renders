@@ -28,14 +28,14 @@ namespace tigine {
 		}
 		catch (ifstream::failure e) {
 			if (file.is_open()) file.close();
-			LOG_ERROR("load material failed from " + path);
+			LOG_ERROR("load material failed from %s", path);
 			return nullptr;
 		}
 
 		string err;
 		Json mat_json = Json::parse(mat_str, err);
 		if (err != "") {
-			LOG_ERROR("material content damage of " + path);
+			LOG_ERROR("material content damage of %s", path);
 			return nullptr;
 		}
 		string type = mat_json[TYPE_ELEM].string_value();

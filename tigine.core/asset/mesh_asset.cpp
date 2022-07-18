@@ -14,7 +14,7 @@ namespace tigine {
 		Assimp::Importer importer;
 		const aiScene* scene = importer.ReadFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
 		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
-			LOG_ERROR("load meshes failed from " + path);
+			LOG_ERROR("load meshes failed from %s", path);
 			return {};
 		}
 
@@ -71,7 +71,7 @@ namespace tigine {
 		}
 		catch (ifstream::failure e) {
 			if (file.is_open()) file.close();
-			LOG_ERROR("load mesh failed from " + path);
+			LOG_ERROR("load mesh failed from %s", path);
 			return nullptr;
 		}
 	}

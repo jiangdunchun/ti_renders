@@ -18,4 +18,19 @@ namespace tigine {
 	void logger_mgr::log(log_tag tag, string msg) {
         for (auto& logger : sm_logger_pool) logger->log(tag, msg);
 	}
+	
+	std::string logger_mgr::format_string(const char* format, ...) {
+		char buffer[MAX_LOG_CONTENT_LEN];
+
+		va_list args;
+		va_start(args, format);
+		vsprintf(buffer, format, args);
+		va_end(args);
+
+		return std::string(buffer);
+	}
+
+	std::string logger_mgr::format_string(std::string& log_info) {
+		return log_info;
+	}
 }

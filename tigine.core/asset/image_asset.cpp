@@ -119,7 +119,7 @@ namespace tigine {
 		int component, width, height;
 		void* data = image_loader(path.c_str(), &width, &height, &component, get_component(format));
 		if (!data) {
-			LOG_ERROR("load image failed from " + path);
+			LOG_ERROR("load image failed from %s", path);
 			return nullptr;
 		}
 		
