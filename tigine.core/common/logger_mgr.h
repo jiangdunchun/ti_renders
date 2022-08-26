@@ -31,11 +31,6 @@ namespace tigine{
 	};
 }
 
-#define MAX_LOG_CONTENT_LEN 2048
-
-;
-
-
 #define LOG_HELPER(LOG_TAG, LOG_INFO) \
     tigine::logger_mgr::log(LOG_TAG, "[" + std::string(__FUNCTION__) + "] " + LOG_INFO);
 
