@@ -20,14 +20,21 @@ namespace tigine {
 	}
 	
 	std::string logger_mgr::format_string(const char* format, ...) {
-		char buffer[MAX_LOG_CONTENT_LEN];
+		string ret;
 
 		va_list args;
 		va_start(args, format);
-		vsprintf(buffer, format, args);
+		int len = _vscprintf(format, args) + 1;
+		char* buffer = new char[len];
+		if (buffer) {
+			vsprintf_s(buffer, len, format, args);
+			ret = buffer;
+			delete[] buffer;
+			buffer = NULL;
+		}
 		va_end(args);
 
-		return std::string(buffer);
+		return ret;
 	}
 
 	std::string logger_mgr::format_string(std::string& log_info) {
