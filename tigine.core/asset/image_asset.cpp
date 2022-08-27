@@ -94,7 +94,7 @@ namespace tigine {
 		return (y * m_width + x) * get_component(m_format);
 	}
 
-	image_asset* image_asset::load(
+	unique_ptr<image_asset> image_asset::load(
 		const string& path,
 		image_format format,
 		bool flip_y) {
@@ -119,11 +119,11 @@ namespace tigine {
 		int component, width, height;
 		void* data = image_loader(path.c_str(), &width, &height, &component, get_component(format));
 		if (!data) {
-			LOG_ERROR("load image failed from %s", path);
+			LOG_ERROR("load image failed from %s", path.c_str());
 			return nullptr;
 		}
 		
-		image_asset* ret = new image_asset(width, height, format);
+		unique_ptr<image_asset> ret(new image_asset(width, height, format));
 		ret->set_data(data);
 		stbi_image_free(data);
 		return ret;

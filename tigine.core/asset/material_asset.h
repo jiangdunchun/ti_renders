@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <memory>
 
 namespace tigine {
 	class material_asset {
@@ -18,7 +19,7 @@ namespace tigine {
 		material_asset(const std::string& type, const std::vector<std::string>& parameters);
 		~material_asset() {}
 
-		static material_asset* load(const std::string& path);
+		static std::unique_ptr<material_asset> load(const std::string& path);
 		void save(const std::string& path) const;
 		const std::string& get_type(void) const {
 			return m_type;

@@ -17,7 +17,7 @@ namespace tigine {
 		m_values.resize(parameters.size(), "");
 	}
 
-	material_asset* material_asset::load(const std::string& path) {
+	unique_ptr<material_asset> material_asset::load(const std::string& path) {
 		string mat_str;
 		ifstream file;
 		try {
@@ -28,14 +28,14 @@ namespace tigine {
 		}
 		catch (ifstream::failure e) {
 			if (file.is_open()) file.close();
-			LOG_ERROR("load material failed from %s", path);
+			LOG_ERROR("load material failed from %s", path.c_str());
 			return nullptr;
 		}
 
 		string err;
 		Json mat_json = Json::parse(mat_str, err);
 		if (err != "") {
-			LOG_ERROR("material content damage of %s", path);
+			LOG_ERROR("material content damage of %s", path.c_str());
 			return nullptr;
 		}
 		string type = mat_json[TYPE_ELEM].string_value();
@@ -46,7 +46,7 @@ namespace tigine {
 			values.push_back(para.second.string_value());
 		}
 
-		material_asset* ret = new material_asset(type, parameters);
+		unique_ptr<material_asset> ret(new material_asset(type, parameters));
 		for (int i = 0; i < parameters.size(); i++)
 			ret->set_value(parameters[i], values[i]);
 		return ret;

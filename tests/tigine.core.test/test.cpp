@@ -29,37 +29,31 @@ public:
 
 void image_asset_test() {
 	const string img_path = "GGX_E_IS_LUT.png";
-	string img_info = img_path + "---> \n";
-	image_asset* img = image_asset::load(TEST_ASSET_DIR + img_path, image_format::RGB8B);
+	LOG_DEBUG("load image %s --->", img_path.c_str());
+	unique_ptr<image_asset> img = image_asset::load(TEST_ASSET_DIR + img_path, image_format::RGB8B);
 	if (!img) return;
 
-	img_info += ("width:" + to_string(img->get_width()) + ", height:" + to_string(img->get_height()) + "\n");
+	LOG_DEBUG("	width: %i, height: %i", img->get_width(), img->get_height());
 	vec4 p_color = img->sample_liner(vec2(0.1, 0.23));
-	img_info += ("sample liner from (0.1, 0.23):" 
-		+ to_string(p_color.x) + ", "
-		+ to_string(p_color.y) + ", "
-		+ to_string(p_color.z) + ", " 
-		+ to_string(p_color.w) + "\n");
-	LOG_DEBUG(img_info);
+	LOG_DEBUG("	sample liner from (0.1, 0.23): %f, %f, %f, %f", p_color.x, p_color.y, p_color.z, p_color.w);
 	img->save(TEST_ASSET_DIR + img_path + ".png");
-	delete img;
+	LOG_DEBUG("	save image to %s.png", img_path.c_str());
 }
 
 void material_asset_test() {
 	const string mat_path = "StarSparrow.mat";
-	string mat_info = mat_path + "---> \n";
-	material_asset* mat = material_asset::load(TEST_ASSET_DIR + mat_path);
+	LOG_DEBUG("load mat %s --->", mat_path.c_str());
+	unique_ptr<material_asset> mat = material_asset::load(TEST_ASSET_DIR + mat_path);
 	if (!mat) return;
 
-	mat_info += ("type:" + mat->get_type() + "\n");
+	LOG_DEBUG("	type: %s", mat->get_type().c_str());
 	std::vector<std::string> parameters = mat->get_parameters();
-	mat_info += ("parameters:\n");
+	LOG_DEBUG("	parameters:");
 	for (auto& para : parameters) {
-		mat_info += ("	" + para + ":" + mat->get_value(para) + "\n");
+		LOG_DEBUG("		%s:%s", para.c_str(), mat->get_value(para).c_str());
 	}
-	LOG_DEBUG(mat_info);
 	mat->save(TEST_ASSET_DIR + mat_path + ".mat");
-	delete mat;
+	LOG_DEBUG("	save mat to %s.mat", mat_path.c_str());
 }
 
 void mesh_asset_test() {
@@ -75,7 +69,7 @@ void mesh_asset_test() {
 int main() {
 	i_logger* logger = new my_logger();
 	logger_mgr::attach_logger(logger);
-	LOG_DEBUG("init logger\n");
+	LOG_DEBUG("init logger");
 
 	image_asset_test();
 	material_asset_test();
