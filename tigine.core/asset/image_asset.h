@@ -32,8 +32,7 @@ namespace tigine {
 		~image_asset();
 
 		static std::unique_ptr<image_asset> load(const std::string& path, image_format format, bool flip_y = true);
-		// png && (R8B || RGB8B || RGBA8B)
-		void save(const std::string& path, bool flip_y = true) const;
+		void save_png(const std::string& path, bool flip_y = true) const;
 		int get_width(void) const {
 			return m_width;
 		}

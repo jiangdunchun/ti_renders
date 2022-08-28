@@ -36,7 +36,7 @@ void image_asset_test() {
 	LOG_DEBUG("	width: %i, height: %i", img->get_width(), img->get_height());
 	vec4 p_color = img->sample_liner(vec2(0.1, 0.23));
 	LOG_DEBUG("	sample liner from (0.1, 0.23): %f, %f, %f, %f", p_color.x, p_color.y, p_color.z, p_color.w);
-	img->save(TEST_ASSET_DIR + img_path + ".png");
+	img->save_png(TEST_ASSET_DIR + img_path + ".png");
 	LOG_DEBUG("	save image to %s.png", img_path.c_str());
 }
 
@@ -57,13 +57,6 @@ void material_asset_test() {
 }
 
 void mesh_asset_test() {
-	const string mesh_path = "rp_nathan_animated_003_walking.fbx";
-	string mesh_info = mesh_path + "---> \n";
-	vector<mesh_asset*> meshes = mesh_asset::load_scene(TEST_ASSET_DIR + mesh_path);
-	if (meshes.size() == 0) return;
-
-	LOG_DEBUG(mesh_info);
-	for (auto& mesh : meshes) delete mesh;
 }
 
 int main() {

@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <memory>
 #include <glm/glm.hpp>
 
 namespace tigine {
@@ -27,8 +28,7 @@ namespace tigine {
 		std::vector<unsigned> m_indices;
 
 	public:
-		static std::vector<mesh_asset*> load_scene(const std::string path);
-		static mesh_asset* load(const std::string& path);
+		static std::unique_ptr<mesh_asset> load(const std::string& path);
 
 		void save(const std::string& path) const;
 		void set_vertices(const std::vector<vertex>& vertices) {

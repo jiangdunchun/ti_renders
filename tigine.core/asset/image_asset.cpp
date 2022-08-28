@@ -12,7 +12,7 @@ using namespace std;
 using namespace glm;
 
 namespace tigine {
-	inline int get_component(image_format format) {
+	int get_component(image_format format) {
 		int component = 0;
 		switch (format) {
 		case image_format::R8B:
@@ -129,7 +129,7 @@ namespace tigine {
 		return ret;
 	}
 
-	void image_asset::save(const string& path, bool flip_y) const {
+	void image_asset::save_png(const string& path, bool flip_y) const {
 		stbi_flip_vertically_on_write(flip_y);
 		stbi_write_png(
 			path.c_str(), 
