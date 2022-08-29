@@ -61,6 +61,22 @@ void material_asset_test() {
 void mesh_asset_test() {
 }
 
+void component_test() {
+	object obj("root");
+	LOG_DEBUG("test transform_component--->");
+	obj.add_component(transform_component);
+	shared_ptr<transform_component> t_cpt = obj.get_component(transform_component);
+	t_cpt->get_position() = vec3(10.f, 0.f, 5.f);
+	t_cpt->get_rotation() = vec3(90.f, 0.f, 0.f);
+	t_cpt->get_scale() = vec3(2.f, 1.f, 2.f);
+	mat4 m = t_cpt->get_matrix();
+	LOG_DEBUG("	matrix:\n		%f, %f, %f, %f;\n		%f, %f, %f, %f;\n		%f, %f, %f, %f;\n		%f, %f, %f, %f;", 
+		m[0][0], m[1][0], m[2][0], m[3][0],
+		m[0][1], m[1][1], m[2][1], m[3][1],
+		m[0][2], m[1][2], m[2][2], m[3][2],
+		m[0][3], m[1][3], m[2][3], m[3][3]);
+}
+
 int main() {
 	i_logger* logger = new my_logger();
 	logger_mgr::attach_logger(logger);
@@ -70,9 +86,8 @@ int main() {
 	material_asset_test();
 	mesh_asset_test();
 
-	object obj("root");
-	obj.add_component(transform_component);
-	obj.add_component(transform_component);
+	component_test();
+	
 
 	delete logger;
 }
