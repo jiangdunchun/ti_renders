@@ -3,6 +3,8 @@
 #include <tigine.core/asset/image_asset.h>
 #include <tigine.core/asset/material_asset.h>
 #include <tigine.core/asset/mesh_asset.h>
+#include <tigine.core/scene/object.h>
+#include <tigine.core/component/transform_component.h>
 
 #define RESET   "\033[0m"
 #define RED     "\033[31m"
@@ -67,6 +69,10 @@ int main() {
 	image_asset_test();
 	material_asset_test();
 	mesh_asset_test();
+
+	object obj("root");
+	obj.add_component(transform_component);
+	obj.add_component(transform_component);
 
 	delete logger;
 }

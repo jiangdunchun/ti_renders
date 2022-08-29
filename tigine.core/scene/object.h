@@ -7,24 +7,50 @@
 #include <vector>
 #include "../component/component.h"
 
-namespace ti_engine {
+namespace tigine {
 	class object {
 	private:
 		std::string m_name;
-		std::vector<std::shared_ptr<component>> m_components;
+		std::vector<component*> m_components;
 
 	public:
-		object(const std::string& name);
-		virtual ~object() = 0;
+		object(const std::string& name) : m_name(name) {}
+		virtual ~object() {}
 		std::string& get_name() {
 			return m_name;
 		}
+//		template<class TComponent>
+//		std::shared_ptr<TComponent> get_component_(const type_info& cpt_info) {
+//			for (auto& cpt : m_components)
+//				if (typeid(*cpt) == cpt_info)
+//					return std::static_pointer_cast<TComponent>(cpt);
+//
+//			return nullptr;
+//		}
+//#define get_component(COMPONENT_TYPE) get_component_<COMPONENT_TYPE>(typeid(COMPONENT_TYPE))
 		template<class TComponent>
-		std::shared_ptr<TComponent> get_component_(const std::string& cpt_name); // std::static_pointer_cast<TComponent>()
-#define get_component(COMPONENT_TYPE) get_component_<COMPONENT_TYPE>(#COMPONENT_TYPE)
-		bool add_component(const std::string& cpt_name);
-		void remove_component(const std::string& cpt_name);
-		void tick(float delta_time);
+		bool add_component_() {
+			for (auto& cpt : m_components)
+				if (typeid(*cpt) == typeid(TComponent))
+					return false;
+
+			component* cpt = new TComponent();
+			////cpt->set_parent(weak_from_this());
+			m_components.push_back(cpt);
+			return true;
+		}
+#define add_component(COMPONENT_TYPE) add_component_<COMPONENT_TYPE>()
+//		template<class TComponent>
+//		void remove_component_(const type_info& cpt_info) {
+//			for (auto& iter = m_components.begin(); iter != m_components.end(); iter++) {
+//				if (typeid(*cpt) == cpt_info) {
+//					m_components.erase(iter);
+//					return;
+//				}
+//			}
+//		}
+//#define remove_component(COMPONENT_TYPE) remove_component_<COMPONENT_TYPE>(typeid(COMPONENT_TYPE))
+//		void tick(float delta_time) {}
 	};
 }
 
