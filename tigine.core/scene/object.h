@@ -44,6 +44,7 @@ namespace tigine {
 		void remove_component_(const type_info& cpt_info) {
 			for (auto& iter = m_components.begin(); iter != m_components.end(); iter++) {
 				if (typeid(*cpt) == cpt_info) {
+					delete *iter;
 					m_components.erase(iter);
 					return;
 				}
