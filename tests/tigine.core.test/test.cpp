@@ -78,7 +78,7 @@ void component_test() {
 }
 
 int main() {
-	i_logger logger = new my_logger();
+	my_logger logger;
 	logger_mgr::attach_logger(&logger);
 	LOG_DEBUG("init logger");
 
