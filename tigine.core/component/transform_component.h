@@ -12,8 +12,7 @@ namespace tigine {
 		glm::vec3 m_scale{1.f, 1.f, 1.f};
 
 	public:
-		transform_component() {}
-		~transform_component() {}
+		virtual ~transform_component() {}
 		glm::vec3& get_position() {
 			return m_position;
 		}

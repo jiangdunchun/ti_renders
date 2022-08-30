@@ -3,27 +3,28 @@
 
 #include <map>
 #include <string>
-#include <memory>
 #include <vector>
 #include "../component/component.h"
 
 namespace tigine {
-	class object : public std::enable_shared_from_this<object> {
+	class object {
 	private:
 		std::string m_name;
-		std::vector<std::shared_ptr<component>> m_components;
+		std::vector<component*> m_components;
 
 	public:
-		object(const std::string& name) : m_name(name) {}
-		virtual ~object() {}
+		object(const std::string& name);
+		virtual ~object();
+		object(const object& obj);
+		object& operator=(const object& obj);
 		std::string& get_name() {
 			return m_name;
 		}
 		template<class TComponent>
-		std::shared_ptr<TComponent> get_component_(const type_info& cpt_info) {
+		TComponent* get_component_(const type_info& cpt_info) {
 			for (auto& cpt : m_components)
 				if (typeid(*cpt) == cpt_info)
-					return std::static_pointer_cast<TComponent>(cpt);
+					return static_cast<TComponent*>(cpt);
 
 			return nullptr;
 		}
@@ -33,8 +34,8 @@ namespace tigine {
 			if (get_component(TComponent))
 				return false;
 
-			std::shared_ptr<component> cpt(new TComponent());
-			cpt->set_parent(weak_from_this());
+			component* cpt = new TComponent();
+			cpt->set_parent(this);
 			m_components.push_back(cpt);
 			return true;
 		}

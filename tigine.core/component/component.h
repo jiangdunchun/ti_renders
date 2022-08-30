@@ -1,19 +1,16 @@
 #ifndef __COMPONENT_H__
 #define __COMPONENT_H__
 
-#include <memory>
-
 namespace tigine {
 	class object;
 	class component {
 	private:
-		std::weak_ptr<object> m_parent;
+		object* m_parent = nullptr;
 
 	public:
-		component() = default;
 		virtual ~component() = 0 {};
 
-		void set_parent(std::weak_ptr<object> parent) {
+		void set_parent(object* parent) {
 			m_parent = parent;
 		}
 		virtual void tick(float delta_time) {};

@@ -2,85 +2,100 @@
 #define __REFLECTION_H__
 
 #include <json11/json11.hpp>
-
+#include <map>
+#include <string>
 #include <functional>
-
-#define REFLECTION_TYPE(t_name) \
-    class type_##t_name##_operator; \
-
-#define REFLECTION_BODY(t_name) \
-    friend class type_##t_name##_operator; \
-    friend class tigine::serializer;
 
 namespace tigine {
     using json = json11::Json;
-
     class serializer {
     public:
         template<typename T>
-        static json to_json(const T& instance);
+        static json to_json_ptr(T* instance) {
+            if (!instance) return json();
+            return serializer::to_json(*instance);
+        }
+
         template<typename T>
-        static bool from_json(const json& json_context, T& instance);
+        static bool from_json_Ptr(const json& json_context, T*& instance) {
+            if (!instance) return false;
+            return serializer::from_json(json_context , *instance);
+        }
+
+        template<typename T>
+        static json to_json(T& instance) {
+            if constexpr (std::is_pointer<T>::value) {
+                return to_json_ptr((T)instance);
+            }
+            else {
+                static_assert(always_false<T>, "serializer::to_json<T> has not been implemented yet!");
+                return json();
+            }
+        }
+
+        template<typename T>
+        static bool from_json(const json& json_context, T& instance) {
+            if constexpr (std::is_pointer<T>::value) {
+                return from_json_Ptr(json_context, (T)instance);
+            }
+            else {
+                static_assert(always_false<T>, "serializer::to_json<T> has not been implemented yet!");
+                return false;
+            }
+        }
     };
 
     template<>
-    json serializer::to_json(const int& instance);
+    json serializer::to_json(int& instance) {
+        return json(instance);
+    }
     template<>
-    bool serializer::from_json(const json& json_context, int& instance);
+    bool serializer::from_json(const json& json_context, int& instance) {
+        if (!json_context.is_number()) return false;
+        instance = static_cast<int>(json_context.number_value());
+        return true;
+    }
     template<>
-    json serializer::to_json(const double& instance);
+    json serializer::to_json(double& instance) {
+        return json(instance);
+    }
     template<>
-    bool serializer::from_json(const json& json_context, double& instance);
+    bool serializer::from_json(const json& json_context, double& instance) {
+        if (!json_context.is_number()) return false;
+        instance = static_cast<double>(json_context.number_value());
+        return true;
+    }
     template<>
-    json serializer::to_json(const bool& instance);
+    json serializer::to_json(bool& instance) {
+        return json(instance);
+    }
     template<>
-    bool serializer::from_json(const json& json_context, bool& instance);
+    bool serializer::from_json(const json& json_context, bool& instance) {
+        if (!json_context.is_bool()) return false;
+        instance = json_context.bool_value();
+        return true;
+    }
     template<>
-    json serializer::to_json(const std::string& instance);
+    json serializer::to_json(std::string& instance) {
+        return json(instance);
+    }
     template<>
-    bool serializer::from_json(const json& json_context, std::string& instance);
+    bool serializer::from_json(const json& json_context, std::string& instance) {
+        if (!json_context.is_string()) return false;
+        instance = json_context.string_value();
+        return true;
+    }
 }
-
-#include <map>
-#include <string>
 
 typedef void* (*create_object_func)(void);
 
 namespace tigine {
-    class propety_meta;
-    //class type_meta {
-    //public:
-    //    static type_meta get_by_name(const std::string&& t_name);
-    //    void* create();
-    //    unsigned int get_properties(propety_meta*& properties);
-    //};
-
-    //class propety_meta {
-    //public:
-    //    type_meta get_type_meta();
-    //    void* get_value(void* instance);
-    //    void set_value(void* instance, void* value);
-    //    std::string get_property_name();
-    //    std::string get_property_type_name();
-    //};
-
-    //class reflection {
-    //private:
-    //    static std::map<std::string, create_object_func> m_class_map;
-
-    //public:
-    //    static void* create_object(std::string class_name);
-    //    static void regist_class(std::string class_name, create_object_func constructor);
-    //};
-}
-
-namespace tigine {
-    class variable_meta {
+    class field_meta {
     public:
-        variable_meta() = default;
+        field_meta() = default;
 
         template<typename C, typename T>
-        variable_meta(std::string name, T C::* var) : m_name(name) {
+        field_meta(std::string name, T C::* var) : m_name(name) {
             m_get_func = [var](void* obj) -> void* {
                 return &(static_cast<C*>(obj)->*var);
             };
@@ -119,14 +134,14 @@ namespace tigine {
             return m_name;
         }
 
-        const std::vector<variable_meta>& variables() const {
+        const std::vector<field_meta>& variables() const {
             return m_variables;
         }
 
-        variable_meta get_varible(std::string v_name) {
+        field_meta get_varible(std::string v_name) {
             for (auto& v : m_variables)
                 if (v.name() == v_name) return v;
-            return variable_meta();
+            return field_meta();
         }
 
         template<typename C, typename T>
@@ -134,13 +149,13 @@ namespace tigine {
             for (auto& v : m_variables)
                 if (v.name() == v_name) return false;
 
-            m_variables.push_back(variable_meta(v_name, var));
+            m_variables.push_back(field_meta(v_name, var));
             return true;
         }
 
     private:
         std::string m_name;
-        std::vector<variable_meta> m_variables;
+        std::vector<field_meta> m_variables;
     };
 
     template <typename T>

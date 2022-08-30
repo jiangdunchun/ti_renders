@@ -65,7 +65,7 @@ void component_test() {
 	object obj("root");
 	LOG_DEBUG("test transform_component--->");
 	obj.add_component(transform_component);
-	shared_ptr<transform_component> t_cpt = obj.get_component(transform_component);
+	transform_component* t_cpt = obj.get_component(transform_component);
 	t_cpt->get_position() = vec3(10.f, 0.f, 5.f);
 	t_cpt->get_rotation() = vec3(90.f, 0.f, 0.f);
 	t_cpt->get_scale() = vec3(2.f, 1.f, 2.f);
@@ -78,8 +78,8 @@ void component_test() {
 }
 
 int main() {
-	i_logger* logger = new my_logger();
-	logger_mgr::attach_logger(logger);
+	i_logger logger = new my_logger();
+	logger_mgr::attach_logger(&logger);
 	LOG_DEBUG("init logger");
 
 	image_asset_test();
@@ -87,7 +87,4 @@ int main() {
 	mesh_asset_test();
 
 	component_test();
-	
-
-	delete logger;
 }
