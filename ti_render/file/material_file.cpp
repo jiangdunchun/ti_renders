@@ -1,52 +1,45 @@
 #include "material_file.h"
 
 #include <fstream>
-#include <rapidjson/stringbuffer.h>
-#include <rapidjson/document.h>
-#include <rapidjson/writer.h>
+#include <json11/json11.hpp>
 
-#include "../../common/logger_management.h"
+#include "../common/logger_management.h"
 #include "file_common.h"
 
-
 using namespace std;
-using namespace rapidjson;
+using namespace json11;
 
 namespace ti_render {
 	material_file::material_file(const string& path) {
 		string file_path = file_common::get_file_path(path);
+
+		string mat_str;
 		ifstream file;
 		try {
-			file.open(file_path, ios::binary);
-
+			file.open(path, ios::binary);
 			istreambuf_iterator<char> beg(file), end;
-			string mat_str(beg, end);
-
-			Document m_json;
-			Document::AllocatorType allocator;
-
-			if (!m_json.Parse(mat_str.c_str()).HasParseError()) {
-				m_type = m_json[MATERIAL_TYPE_ELEM].GetString();
-
-				Value& parameters = m_json[MATERIAL_PARAMETERS_ELEM];
-				Value::MemberIterator iter = parameters.MemberBegin();
-				Value name;
-				Value val;
-				while (iter != parameters.MemberEnd()) {
-					name.CopyFrom(iter->name, allocator);
-					val.CopyFrom(iter->value, allocator);
-
-					m_parameters.push_back(name.GetString());
-					m_values.push_back(val.GetString());
-
-					iter++;
-				}
-			}
+			mat_str = string(beg, end);
+			file.close();
 		}
 		catch (ifstream::failure e) {
 			if (file.is_open()) file.close();
 			logger_management::log(log_tag::LOG_ERROR,
 				"file::mesh_file:load file \"" + path + "\" failed");
+		}
+
+		string err;
+		Json mat_json = Json::parse(mat_str, err);
+		if (err != "") {
+			logger_management::log(log_tag::LOG_ERROR,
+				"file::mesh_file:load file \"" + path + "\" failed");
+			return;
+		}
+		string type = mat_json[MATERIAL_TYPE_ELEM].string_value();
+		vector<string> parameters;
+		vector<string> values;
+		for (auto& para : mat_json[MATERIAL_PARAMETERS_ELEM].object_items()) {
+			m_parameters.push_back(para.first);
+			m_values.push_back(para.second.string_value());
 		}
 	}
 
@@ -60,26 +53,7 @@ namespace ti_render {
 	}
 
 	void material_file::save(const string& path) const {
-		Document mat_doc(kObjectType);
-
-		Value type_json(kStringType);
-		type_json.SetString(m_type.c_str(), mat_doc.GetAllocator());
-		mat_doc.AddMember(MATERIAL_TYPE_ELEM, type_json, mat_doc.GetAllocator());
-
-		Value parameters_json(kObjectType);
-		for (unsigned int i = 0; i < m_parameters.size(); i++) {
-			Value parameter_json(kStringType);
-			parameter_json.SetString(m_values[i].c_str(), mat_doc.GetAllocator());
-			parameters_json.AddMember(StringRef(m_parameters[i].c_str()), parameter_json, mat_doc.GetAllocator());
-		}
-		mat_doc.AddMember(MATERIAL_PARAMETERS_ELEM, parameters_json, mat_doc.GetAllocator());
-
-		StringBuffer mat_buffer;
-		Writer<StringBuffer> mat_writer(mat_buffer);
-		mat_doc.Accept(mat_writer);
-		ofstream mat_file(path);
-		mat_file << mat_buffer.GetString();
-		mat_file.close();
+		
 	}
 
 	const string& material_file::get_value(const string& parameter) const {
