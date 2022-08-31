@@ -3,7 +3,7 @@
 
 #include "../object/light_object.h"
 #include "../object/mesh_object.h"
-#include "../../graphic_interface/graphic_interface.h"
+#include "../graphic_interface/graphic_interface.h"
 
 namespace ti_render {
 	class shadowmap_pass {

@@ -4,7 +4,7 @@
 #include "../object/camera_object.h"
 #include "../object/sky_object.h"
 #include "../object/light_object.h"
-#include "../../graphic_interface/graphic_interface.h"
+#include "../graphic_interface/graphic_interface.h"
 
 namespace ti_render {
 	class light_pass {

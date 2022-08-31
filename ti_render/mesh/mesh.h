@@ -1,8 +1,8 @@
 #ifndef __MESH_H__
 #define __MESH_H__
 
-#include "../../common/tr_struct.h"
-#include "../../graphic_interface/graphic_interface.h"
+#include "../common/tr_struct.h"
+#include "../graphic_interface/graphic_interface.h"
 
 namespace ti_render {
 	class mesh {

@@ -2,7 +2,7 @@
 
 #include <fstream>
 
-#include "../../common/logger_management.h"
+#include "../common/logger_management.h"
 #include "file_common.h"
 
 using namespace std;

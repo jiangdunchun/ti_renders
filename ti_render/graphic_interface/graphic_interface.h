@@ -1,7 +1,7 @@
 #ifndef __GRAPHIC_INTERFACE_H__
 #define __GRAPHIC_INTERFACE_H__
 
-#ifdef GL430PLUS
+//#ifdef GL430PLUS
 #include "gl430plus/gl430plus_render_system.h"
 #include "gl430plus/gl430plus_ds_render_buffer.h"
 #include "gl430plus/gl430plus_frame_buffer.h"
@@ -10,10 +10,10 @@
 #include "gl430plus/gl430plus_texture_cube.h"
 #include "gl430plus/gl430plus_shader.h"
 #include "gl430plus/gl430plus_compute_shader.h"
-#endif // GL430PLUS
+//#endif // GL430PLUS
 
 namespace ti_render {
-#ifdef GL430PLUS
+//#ifdef GL430PLUS
 	typedef gl430plus_render_system			render_system;
 	typedef gl430plus_ds_render_buffer		ds_render_buffer;
 	typedef gl430plus_frame_buffer			frame_buffer;
@@ -22,7 +22,7 @@ namespace ti_render {
 	typedef gl430plus_texture_cube			texture_cube;
 	typedef gl430plus_shader				shader;
 	typedef gl430plus_compute_shader		compute_shader;
-#endif // GL430PLUS
+//#endif // GL430PLUS
 }
 
 #endif // !__GRAPHIC_INTERFACE_H__

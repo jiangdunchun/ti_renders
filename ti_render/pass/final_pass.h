@@ -2,7 +2,7 @@
 #define __FINAL_PASS_H__
 
 #include "../material/material.h"
-#include "../../graphic_interface/graphic_interface.h"
+#include "../graphic_interface/graphic_interface.h"
 
 namespace ti_render {
 	class final_pass {

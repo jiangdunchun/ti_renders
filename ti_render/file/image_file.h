@@ -5,7 +5,7 @@
 #include <map>
 #include <glm/glm.hpp>
 
-#include "../../common/tr_enum.h"
+#include "../common/tr_enum.h"
 
 namespace ti_render {
 	class image_file {

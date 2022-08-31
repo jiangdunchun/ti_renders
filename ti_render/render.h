@@ -1,8 +1,8 @@
 #ifndef __ENGINE_H__
 #define __ENGINE_H__
 
-#include "./core/scene/scene.h"
-#include "./core/pass/pass_management.h"
+#include "scene/scene.h"
+#include "pass/pass_management.h"
 
 namespace ti_render {
 	class render {

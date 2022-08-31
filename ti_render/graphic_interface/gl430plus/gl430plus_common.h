@@ -4,7 +4,7 @@
 #include "../../common/tr_enum.h"
 #include "../../common/tr_struct.h"
 #include "../../common/logger_management.h"
-#include "../../third_party/glad/glad.h"
+#include <glad/glad.h>
 #include <glfw/glfw3.h>
 #include <glm/glm.hpp>
 

@@ -1,6 +1,6 @@
 #include "material_factory.h"
 
-#include "../../third_party/md5/md5.h"
+#include <md5/md5.h>
 #include "metallic_roughness_material.h"
 
 using namespace std;

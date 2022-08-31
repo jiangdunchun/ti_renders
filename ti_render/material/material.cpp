@@ -1,7 +1,7 @@
 #include "material.h"
 
-#include "../../common/tr_string_parser.h"
-#include "../../third_party/md5/md5.h"
+#include "../common/tr_string_parser.h"
+#include <md5/md5.h>
 #include "../file/image_file.h"
 #include "../file/shader_file.h"
 

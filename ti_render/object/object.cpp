@@ -1,7 +1,7 @@
 #include "object.h" 
 
 #include "dummy_object.h"
-#include "../../common/tr_algorithm.h"
+#include "../common/tr_algorithm.h"
 
 using namespace std;
 using namespace glm;
@@ -10,9 +10,9 @@ namespace ti_render {
 	void object::update_transform(void) {
 		m_transform = mat4(1.0f);
 		m_transform = translate(m_transform, m_postion);
-		m_transform = rotate(m_transform, radians(m_rotation.x), vec3(1.0f, 0.0f, 0.0f));
-		m_transform = rotate(m_transform, radians(m_rotation.y), vec3(0.0f, 1.0f, 0.0f));
-		m_transform = rotate(m_transform, radians(m_rotation.z), vec3(0.0f, 0.0f, 1.0f));
+		m_transform = rotate(m_transform, m_rotation.x, vec3(1.0f, 0.0f, 0.0f));
+		m_transform = rotate(m_transform, m_rotation.y, vec3(0.0f, 1.0f, 0.0f));
+		m_transform = rotate(m_transform, m_rotation.z, vec3(0.0f, 0.0f, 1.0f));
 		m_transform = scale(m_transform, m_scale);
 	}
 

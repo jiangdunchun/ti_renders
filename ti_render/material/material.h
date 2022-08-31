@@ -4,7 +4,7 @@
 #include <map>
 #include <vector>
 
-#include "../../graphic_interface/graphic_interface.h"
+#include "../graphic_interface/graphic_interface.h"
 #include "../file/material_file.h"
 #include "material_common.h"
 

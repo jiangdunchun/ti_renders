@@ -23,7 +23,7 @@ namespace ti_render {
 			if ((*l_iter)->get_type() == object_type::POINT_LIGHT) {
 				point_light_object* p_obj = static_cast<point_light_object*>(*l_iter);
 
-				mat4 projection = perspective(radians(90.0f), 1.0f, p_obj->get_bias(), p_obj->get_radius());
+				mat4 projection = perspective(90.0f, 1.0f, p_obj->get_bias(), p_obj->get_radius());
 				vec3 view_position = p_obj->get_world_position();
 				vector<mat4> cube_views = {
 					lookAt(view_position, view_position + vec3(1.0f,  0.0f,  0.0f), vec3(0.0f, -1.0f,  0.0f)),

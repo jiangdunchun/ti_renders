@@ -157,7 +157,7 @@ namespace ti_render {
         };
         m_cube_mesh = new vertex_buffer(vertices, indices);
 
-        m_projection = perspective(radians(90.0f), 1.0f, 0.1f, 10.0f);
+        m_projection = perspective(90.0f, 1.0f, 0.1f, 10.0f);
 
         m_cube_views = {
             lookAt(vec3(0.0f, 0.0f, 0.0f), vec3(1.0f,  0.0f,  0.0f), vec3(0.0f, -1.0f,  0.0f)),
@@ -205,9 +205,9 @@ namespace ti_render {
         m_env2background_shader->set_mat4("uProjection", camera->get_projection());
         vec3 rotation = camera->get_world_rotation();
         mat4 view = mat4(1.0f);
-        view = rotate(view, radians(rotation.x), vec3(1.0f, 0.0f, 0.0f));
-        view = rotate(view, radians(rotation.y), vec3(0.0f, 1.0f, 0.0f));
-        view = rotate(view, radians(rotation.z), vec3(0.0f, 0.0f, 1.0f));
+        view = rotate(view, rotation.x, vec3(1.0f, 0.0f, 0.0f));
+        view = rotate(view, rotation.y, vec3(0.0f, 1.0f, 0.0f));
+        view = rotate(view, rotation.z, vec3(0.0f, 0.0f, 1.0f));
         view = inverse(view);
         m_env2background_shader->set_mat4("uView", view);
         m_env2background_shader->set_texture_cube("uEnvironment", *(sky->m_environment_cube));

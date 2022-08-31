@@ -1,7 +1,7 @@
 #ifndef __EMISSIVE_PASS_H__
 #define __EMISSIVE_PASS_H__
 
-#include "../../graphic_interface/graphic_interface.h"
+#include "../graphic_interface/graphic_interface.h"
 
 namespace ti_render {
 	class emissive_pass {

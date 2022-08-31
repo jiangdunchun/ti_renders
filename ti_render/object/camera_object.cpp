@@ -36,6 +36,6 @@ namespace ti_render {
 	}
 
 	mat4 camera_object::get_projection(void) const {
-		return perspective(radians(m_zoom), m_aspect, m_near, m_far);
+		return perspective(m_zoom, m_aspect, m_near, m_far);
 	}
 }

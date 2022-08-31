@@ -5,7 +5,7 @@
 #include <string>
 #include <map>
 
-#include "../../common/tr_struct.h"
+#include "../common/tr_struct.h"
 
 namespace ti_render {
 	class mesh_file {

@@ -2,7 +2,7 @@
 #define __POINT_LIGHT_OBJECT_H__
 
 #include "light_object.h"
-#include "../../graphic_interface/graphic_interface.h"
+#include "../graphic_interface/graphic_interface.h"
 
 namespace ti_render {
 	class point_light_object : public light_object {

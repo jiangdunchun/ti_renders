@@ -6,7 +6,7 @@
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include <stb/stb_image_write.h>
 
-#include "../../common/logger_management.h"
+#include "../common/logger_management.h"
 #include "file_common.h"
 
 using namespace std;

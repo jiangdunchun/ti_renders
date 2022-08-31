@@ -51,16 +51,16 @@ int main(int, char**) {
 	console_logger c_logger;
 	logger_management::attach_logger(&c_logger);
 
-	render::init(1000, 1000, "ti render", "../../resource");
+	render::init(1000, 1000, "ti render", "E:/jdc_code/ti_renders/asset");
 
 	scene scene;
 
-	mesh_object* StarSparrow = scene.create_mesh("mesh/StarSparrow.mesh");
-	StarSparrow->set_material(material_factory::create("material/StarSparrow.material"), 0);
+	mesh_object* StarSparrow = scene.create_mesh("E:/jdc_code/ti_renders/asset/mesh/StarSparrow.mesh");
+	StarSparrow->set_material(material_factory::create("E:/jdc_code/ti_renders/asset/material/StarSparrow.material"), 0);
 
 	point_light_obj = scene.create_point_light(glm::vec3(3.0f, 3.0f, 3.0f));
 
-	scene.set_sky_hdr("texture/Alexs_Apt_2k.hdr");
+	scene.set_sky_hdr("E:/jdc_code/ti_renders/asset/texture/Alexs_Apt_2k.hdr");
 
 	camera_obj = scene.get_camera();
 
