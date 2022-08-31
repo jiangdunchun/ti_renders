@@ -27,7 +27,7 @@ namespace ti_render {
 
 	private:
 		unsigned int m_id;
-		dummy_object* m_parent;
+		dummy_object* m_parent = nullptr;
 
 	protected:
 		glm::vec3 m_postion;

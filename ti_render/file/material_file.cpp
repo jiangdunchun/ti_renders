@@ -34,7 +34,7 @@ namespace ti_render {
 				"file::mesh_file:load file \"" + path + "\" failed");
 			return;
 		}
-		string type = mat_json[MATERIAL_TYPE_ELEM].string_value();
+		m_type = mat_json[MATERIAL_TYPE_ELEM].string_value();
 		vector<string> parameters;
 		vector<string> values;
 		for (auto& para : mat_json[MATERIAL_PARAMETERS_ELEM].object_items()) {
