@@ -11,11 +11,9 @@ endif()
 include_directories(${HEADERONLY_3RDPARTY_INCLUDE_DIR})
 
 file(GLOB_RECURSE SRC_FILES ./*.cpp)
-add_library(tigine.graphic STATIC ${SRC_FILES})
+add_executable(tigine.graphic ${SRC_FILES})
 
-target_include_directories(tigine.graphic  PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/)
-
-target_link_libraries(tigine.graphic  glad glfw)
+target_link_libraries(tigine.graphic glad glfw)
 
 
 
