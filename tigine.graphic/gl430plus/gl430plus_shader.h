@@ -15,21 +15,25 @@ namespace tigine {
         shader_type type = shader_type::undefined;
         const char* source = nullptr;
         std::size_t source_size = 0;
-        vertex_attributes vertex;
-
 	};
 
 	class gl430plus_shader {
     private:
+        GLuint m_id = 0;
         shader_type m_type;
-
-    protected:
-        gl430plus_shader(const shader_type type) : m_type(type) {}
+        int m_success = 0;
+        std::string m_report = "";
 
     public:
-        virtual bool has_error() const = 0;
-        virtual std::string get_report() const = 0;
-
+        gl430plus_shader(shader_type type);
+        ~gl430plus_shader();
+        void compile_shader(const char* src_code);
+        bool has_error() const {
+            return m_success;
+        }
+        std::string get_report() const {
+            return m_report;
+        }
 	};
 }
 

@@ -16,10 +16,10 @@ namespace tigine {
 	class gl430plus_render_context {
 		friend class gl430plus_render_system;
 	private:
-		render_context_descriptor m_dscp;
+		render_context_descriptor m_desc;
 		gl430plus_surface m_surface;
 
-		gl430plus_render_context(const render_context_descriptor& dscp);
+		gl430plus_render_context(const render_context_descriptor& desc);
 		~gl430plus_render_context();
 		
 	public:
