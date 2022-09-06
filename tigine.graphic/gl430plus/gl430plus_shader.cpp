@@ -20,20 +20,26 @@ namespace tigine {
 
 	gl430plus_shader::gl430plus_shader(shader_type type) : m_type(type) {
 		GLuint s_type = map_shader_type(type);
-		// @TODO: check shader type
+		// @todo: check type
 		m_id = glCreateShader(s_type);
+		glShaderSource(m_id, 1, &src_code, NULL);
+		glCompileShader(m_id);
 	}
 
 	gl430plus_shader::~gl430plus_shader()  {
 		glDeleteShader(m_id);
 	}
 
-	void gl430plus_shader::compile_shader(const char* src_code) {
-		glShaderSource(m_id, 1, &src_code, NULL);
-		glCompileShader(m_id);
-		glGetShaderiv(m_id, GL_COMPILE_STATUS, &m_success);
-		GLchar info_log[1024];
-		if (!m_success) glGetShaderInfoLog(m_id, 1024, NULL, info_log);
-		m_report = info_log;
+	bool gl430plus_shader::has_error() const {
+		glGetShaderiv(m_id, GL_COMPILE_STATUS, &m_log_len);
+		return m_log_len != 0;
+	}
+
+	std::string gl430plus_shader::get_report() const {
+		GLchar* info_log = new GLchar[m_log_len];
+		glGetShaderInfoLog(m_id, 1024, NULL, info_log);
+		std::string report = info_log;
+		delete[] info_log;
+		return report;
 	}
 }

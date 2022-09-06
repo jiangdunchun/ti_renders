@@ -19,10 +19,9 @@ namespace tigine {
 		render_context_descriptor m_desc;
 		gl430plus_surface m_surface;
 
+	public:
 		gl430plus_render_context(const render_context_descriptor& desc);
 		~gl430plus_render_context();
-		
-	public:
 		gl430plus_surface* get_surface() {
 			return &m_surface;
 		}
