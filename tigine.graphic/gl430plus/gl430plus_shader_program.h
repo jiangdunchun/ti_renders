@@ -13,12 +13,12 @@ namespace tigine {
 	class gl430plus_shader_program {
 	private:
 		GLuint m_id;
-		GLuint m_log_len = 0;
+		GLint m_log_len = 0;
 
 	public:
 		gl430plus_shader_program(const shader_program_descriptor& desc);
 		~gl430plus_shader_program();
-		bool has_error() const;
+		bool has_error();
 		std::string get_report() const;
 	};
 }

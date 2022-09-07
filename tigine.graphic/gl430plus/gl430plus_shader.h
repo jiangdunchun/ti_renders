@@ -2,6 +2,7 @@
 #define __GL430PLUS_SHADER_H__
 
 #include <string>
+#include "gl430plus_common.h"
 
 namespace tigine {
     enum class shader_type {
@@ -19,14 +20,17 @@ namespace tigine {
 	class gl430plus_shader {
     private:
         GLuint m_id = 0;
-        GLuint m_log_len = 0;
+        GLint m_log_len = 0;
         shader_type m_type;
 
     public:
-        gl430plus_shader(shader_type type);
+        gl430plus_shader(const shader_descriptor& desc);
         ~gl430plus_shader();
-        bool has_error() const;
+        bool has_error();
         std::string get_report() const;
+                GLuint get_id() const {
+            return m_id;
+        }
 	};
 }
 

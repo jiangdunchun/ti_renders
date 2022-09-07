@@ -14,14 +14,16 @@ namespace tigine {
 	}
 
 	gl430plus_shader* gl430plus_render_system::create_shader(const shader_descriptor& desc) {
-		return nullptr;
+		gl430plus_shader* shader = new gl430plus_shader(desc);
+		return shader;
 	}
 
 	void gl430plus_render_system::release(gl430plus_shader* render_cxt) {
 	}
 
 	gl430plus_shader_program* gl430plus_render_system::create_shader_program(const shader_program_descriptor& desc) {
-		return nullptr;
+		gl430plus_shader_program* shader_prog = new gl430plus_shader_program(desc);
+		return shader_prog;
 	}
 
 	void gl430plus_render_system::release(gl430plus_shader_program* render_cxt) {
