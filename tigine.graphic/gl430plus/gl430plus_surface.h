@@ -19,6 +19,10 @@ namespace tigine {
 		void show() {
 			glfwShowWindow(m_window);
 		}
+
+		bool is_active() {
+			return !glfwWindowShouldClose(m_window);
+		}
 	};
 }
 

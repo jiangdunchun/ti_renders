@@ -118,10 +118,6 @@ namespace tigine {
           BC5SNorm,           //!< Compressed color format: S3TC BC5 compressed red and green channels with normalized signed integer components in 128-bit per 4x4 block.
     };
 
-	    enum class buffer_flag {
-        VERTEX_BUFFER = (1 << 0),
-    };
-
 	struct gl430plus_buffer_descriptor {
 		std::uint64_t size = 0;
 		std::uint32_t stride = 0;
@@ -134,6 +130,9 @@ namespace tigine {
 		GLuint m_id;
 
 	public:
+        enum {
+            VERTEX_BUFFER = (1 << 0),
+        };
         gl430plus_buffer(const gl430plus_buffer_descriptor& desc, const void* data);
         ~gl430plus_buffer();
 	};

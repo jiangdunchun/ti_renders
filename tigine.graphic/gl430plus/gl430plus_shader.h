@@ -20,15 +20,14 @@ namespace tigine {
 	class gl430plus_shader {
     private:
         GLuint m_id = 0;
-        GLint m_log_len = 0;
         shader_type m_type;
 
     public:
         gl430plus_shader(const shader_descriptor& desc);
         ~gl430plus_shader();
-        bool has_error();
+        bool has_error() const;
         std::string get_report() const;
-                GLuint get_id() const {
+        GLuint get_id() const {
             return m_id;
         }
 	};

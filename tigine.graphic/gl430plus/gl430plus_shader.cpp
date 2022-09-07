@@ -30,14 +30,17 @@ namespace tigine {
 		glDeleteShader(m_id);
 	}
 
-	bool gl430plus_shader::has_error() {
-		glGetShaderiv(m_id, GL_COMPILE_STATUS, &m_log_len);
-		return m_log_len != 0;
+	bool gl430plus_shader::has_error() const {
+		GLint success = 0;
+		glGetShaderiv(m_id, GL_COMPILE_STATUS, &success);
+		return !success;
 	}
 
 	std::string gl430plus_shader::get_report() const {
-		GLchar* info_log = new GLchar[m_log_len];
-		glGetShaderInfoLog(m_id, m_log_len, NULL, info_log);
+		GLint info_len = 0;
+		glGetShaderiv(m_id, GL_INFO_LOG_LENGTH, &info_len);
+		GLchar* info_log = new GLchar[info_len];
+		glGetShaderInfoLog(m_id, info_len, NULL, info_log);
 		std::string report = info_log;
 		delete[] info_log;
 		return report;

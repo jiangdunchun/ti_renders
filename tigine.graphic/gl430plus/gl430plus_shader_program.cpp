@@ -14,14 +14,17 @@ namespace tigine {
 		glDeleteProgram(m_id);
 	}
 
-	bool gl430plus_shader_program::has_error() {
-		glGetProgramiv(m_id, GL_LINK_STATUS, &m_log_len);
-		return m_log_len != 0;
+	bool gl430plus_shader_program::has_error() const {
+		GLint success = 0;
+		glGetProgramiv(m_id, GL_LINK_STATUS, &success);
+		return !success;
 	}
 
 	std::string gl430plus_shader_program::get_report() const {
-		GLchar* info_log = new GLchar[m_log_len];
-		glGetProgramInfoLog(m_id, m_log_len, NULL, info_log);
+		GLint info_len = 0;
+		glGetProgramiv(m_id, GL_INFO_LOG_LENGTH, &info_len);
+		GLchar* info_log = new GLchar[info_len];
+		glGetProgramInfoLog(m_id, info_len, NULL, info_log);
 		std::string report = info_log;
 		delete[] info_log;
 		return report;

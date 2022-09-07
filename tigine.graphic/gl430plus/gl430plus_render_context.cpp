@@ -17,6 +17,7 @@ namespace tigine {
 		}
 
 		glfwMakeContextCurrent(m_surface.m_window);
+		gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 	}
 
 	gl430plus_render_context::~gl430plus_render_context() {
