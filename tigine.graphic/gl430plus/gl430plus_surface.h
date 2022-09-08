@@ -20,8 +20,13 @@ namespace tigine {
 			glfwShowWindow(m_window);
 		}
 
-		bool is_active() {
+		bool process_events() {
+			glfwPollEvents();
 			return !glfwWindowShouldClose(m_window);
+		}
+
+		void present() {
+			glfwSwapBuffers(m_window);
 		}
 	};
 }

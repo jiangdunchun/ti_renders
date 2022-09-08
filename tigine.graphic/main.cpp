@@ -69,6 +69,6 @@ void main() {
 		std::cout << prog->get_report() << std::endl;
 	}
 
-	while (window->is_active()) {
+	while (window->process_events()) {
 	}
 }
