@@ -19,6 +19,9 @@ namespace tigine {
 		~gl430plus_shader_program();
 		bool has_error() const;
 		std::string get_report() const;
+		GLuint get_id() const {
+			return m_id;
+		}
 	};
 }
 

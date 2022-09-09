@@ -2,7 +2,7 @@
 
 namespace tigine {
 	inline GLsizei map_buffer_flags(std::uint32_t flags) {
-		GLsizei type;
+		GLsizei type = 0;
 		if ((flags & ARRAY_BUFFER) > 0) type |= GL_ARRAY_BUFFER;
 		if ((flags & ELEMENT_ARRAY_BUFFER) > 0) type |= GL_ELEMENT_ARRAY_BUFFER;
 		return type;

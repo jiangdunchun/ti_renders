@@ -4,8 +4,17 @@
 #include "gl430plus_buffer.h"
 
 namespace tigine {
-    enum class data_format {
-        
+    enum data_format {
+        R = 0x01,
+        RG = 0x02,
+        RGB = 0x03,
+        RGBA = 0x04,
+
+        UINT = 0x10,
+        INT = 0x20,
+        FLOAT = 0x30,
+
+        RGB32Float = RGB | FLOAT,
     };
 
     struct vertex_attribute {
@@ -13,6 +22,7 @@ namespace tigine {
         data_format format;
         std::uint32_t location;
         std::uint32_t offset;
+        std::uint32_t stride;
     };
 
 	struct buffer_array_descriptor {
@@ -28,6 +38,9 @@ namespace tigine {
 	public:
         gl430plus_buffer_array(const buffer_array_descriptor& desc);
         ~gl430plus_buffer_array();
+        GLuint get_id() const {
+            return m_id;
+        }
 	};
 }
 

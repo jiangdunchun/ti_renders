@@ -18,26 +18,25 @@ int main() {
 
 	string sky_vertex_shader = R"delimiter(
 #version 330 core
-layout(location = 0) in vec3 aPosition;
+layout(location = 0) in vec3 pos;
+layout(location = 1) in vec3 color;
 
-uniform mat4 uProjection;
-uniform mat4 uView;
-uniform mat4 uModel;
+out vec4 ucolor;
 
 void main() {
-    vec4 position = uProjection * uView * uModel * vec4(aPosition, 1.0f);
-    gl_Position = position + vec4(0.0f, 0.0f, 0.00001f, 0.0f);
+	ucolor = vec4(color, 1.0);
+    gl_Position = vec4(pos, 1.0);
 }
 )delimiter";
 
 	string sky_fragment_shader = R"delimiter(
 #version 330 core
-uniform vec4 uID;
+in vec4 ucolor;
 
-layout(location = 0) out vec4 fID;
+layout(location = 0) out vec4 out_color;
 
 void main() {
-    fID = uID;
+    out_color = ucolor;
 }
 )delimiter";
 
@@ -69,6 +68,37 @@ void main() {
 		std::cout << prog->get_report() << std::endl;
 	}
 
+	float vertices[] = {
+		0,  0.5f, 0, 0, 0, 1,
+		0.5f, -0.5f, 0, 1, 0, 0,
+		-0.5f, -0.5f, 0, 0, 1, 0
+	};
+	buffer_descriptor buffer_desc{
+		buffer_desc.size = sizeof(float) * 18,
+		buffer_desc.flags = ARRAY_BUFFER
+	};
+	gl430plus_buffer* vetices_buffer = render.create_buffer(buffer_desc, vertices);
+
+	vertex_attribute pos_attribute{
+		"position", RGB32Float, 0, 0, sizeof(float) * 6
+	};
+	vertex_attribute color_attribute{
+		"color", RGB32Float, 1, sizeof(float) * 3, sizeof(float) * 6
+	};
+	buffer_array_descriptor array_buffer_desc; {
+		array_buffer_desc.vertices_buffer = vetices_buffer;
+		array_buffer_desc.indices_buffer = nullptr;
+		array_buffer_desc.vertex_attributes = { pos_attribute, color_attribute };
+
+	}
+	gl430plus_buffer_array* array_buffer = render.create_buffer_array(array_buffer_desc);
+
 	while (window->process_events()) {
+		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT);
+		glUseProgram(prog->get_id());
+		glBindVertexArray(array_buffer->get_id());
+		glDrawArrays(GL_TRIANGLES, 0, 3);
+		window->present();
 	}
 }

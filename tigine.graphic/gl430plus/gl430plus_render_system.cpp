@@ -10,7 +10,6 @@ namespace tigine {
 
 	void gl430plus_render_system::release(gl430plus_render_context* render_cxt) {
 		delete render_cxt;
-		render_cxt = nullptr;
 	}
 
 	gl430plus_shader* gl430plus_render_system::create_shader(const shader_descriptor& desc) {
@@ -27,5 +26,19 @@ namespace tigine {
 	}
 
 	void gl430plus_render_system::release(gl430plus_shader_program* render_cxt) {
+	}
+
+	gl430plus_buffer* gl430plus_render_system::create_buffer(const buffer_descriptor& desc, void* data) {
+		return new gl430plus_buffer(desc, data);
+	}
+
+	void gl430plus_render_system::release(gl430plus_buffer* buffer) {
+	}
+
+	gl430plus_buffer_array* gl430plus_render_system::create_buffer_array(const buffer_array_descriptor& desc) {
+		return new gl430plus_buffer_array(desc);
+	}
+
+	void gl430plus_render_system::release(gl430plus_buffer_array* buffer_array) {
 	}
 }
