@@ -16,19 +16,17 @@ namespace tigine {
 
 		char* uniform_name = new char[max_name_len];
 		GLsizei name_len = 0;
-		GLint size = 0;
-		
+		GLuint index = 0;
+		GLint type;
 		for (GLuint i = 0; i < uniform_count; ++i) {
 			glGetActiveUniformName(m_id, i, max_name_len, &name_len, uniform_name);
 			std::string name = uniform_name;
 			GLint location = glGetUniformLocation(m_id, name.c_str());
-			//@TODO: can not get the size 
-			glGetActiveUniformBlockiv(m_id, i, GL_UNIFORM_BLOCK_DATA_SIZE, &size);
-			m_uniforms[name] = {
-				location,
-				size
-			};
+			index = i;
+			glGetActiveUniformsiv(m_id, 1, &index, GL_UNIFORM_TYPE, &type);
+			m_uniforms[name] = { location, type };
 		}
+		delete[] uniform_name;
 	}
 
 	gl430plus_shader_program::~gl430plus_shader_program() {

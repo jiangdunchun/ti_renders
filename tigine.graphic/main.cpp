@@ -7,15 +7,15 @@ using namespace std;
 
 void test_shader(gl430plus_render_system& render) {
 	string test_vertex_shader = R"delimiter(
-#version 330 core
+#version 430 core
 layout(location = 0) in vec3 aPosition;
 
 out VS_OUT{
     vec3 tex_coord;
 } vs_out;
 
-uniform mat4 uProjection;
-uniform mat4 uView;
+layout(location = 0) uniform mat4 uProjection;
+layout(location = 1) uniform mat4 uView;
 
 void main() {
     vs_out.tex_coord = normalize(aPosition);
@@ -24,12 +24,12 @@ void main() {
 )delimiter";
 
 	string test_fragment_shader = R"delimiter(
-#version 330 core
+#version 430 core
 in VS_OUT{
     vec3 tex_coord;
 } fs_in;
 
-uniform samplerCube uEnvironment;
+layout(location = 2) uniform samplerCube uEnvironment;
 
 layout(location = 0) out vec3 fBackgroud;
 

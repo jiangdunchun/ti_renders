@@ -13,7 +13,7 @@ namespace tigine {
 	
 	struct uniform_info {
 		GLint location;
-		GLint size;
+		GLint type;
 	};
 
 	class gl430plus_shader_program {
