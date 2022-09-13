@@ -8,6 +8,27 @@ namespace tigine {
 		if (desc.compute_shader) glAttachShader(m_id, desc.compute_shader->get_id());
 
 		glLinkProgram(m_id);
+
+		GLint uniform_count = 0;
+		glGetProgramiv(m_id, GL_ACTIVE_UNIFORMS, &uniform_count);
+		GLint max_name_len = 0;
+		glGetProgramiv(m_id, GL_ACTIVE_UNIFORM_MAX_LENGTH, &max_name_len);
+
+		char* uniform_name = new char[max_name_len];
+		GLsizei name_len = 0;
+		GLint size = 0;
+		
+		for (GLuint i = 0; i < uniform_count; ++i) {
+			glGetActiveUniformName(m_id, i, max_name_len, &name_len, uniform_name);
+			std::string name = uniform_name;
+			GLint location = glGetUniformLocation(m_id, name.c_str());
+			//@TODO: can not get the size 
+			glGetActiveUniformBlockiv(m_id, i, GL_UNIFORM_BLOCK_DATA_SIZE, &size);
+			m_uniforms[name] = {
+				location,
+				size
+			};
+		}
 	}
 
 	gl430plus_shader_program::~gl430plus_shader_program() {

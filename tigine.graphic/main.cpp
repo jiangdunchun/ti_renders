@@ -5,6 +5,69 @@
 using namespace tigine;
 using namespace std;
 
+void test_shader(gl430plus_render_system& render) {
+	string test_vertex_shader = R"delimiter(
+#version 330 core
+layout(location = 0) in vec3 aPosition;
+
+out VS_OUT{
+    vec3 tex_coord;
+} vs_out;
+
+uniform mat4 uProjection;
+uniform mat4 uView;
+
+void main() {
+    vs_out.tex_coord = normalize(aPosition);
+    gl_Position = uProjection * uView * vec4(aPosition, 1.0f);
+}
+)delimiter";
+
+	string test_fragment_shader = R"delimiter(
+#version 330 core
+in VS_OUT{
+    vec3 tex_coord;
+} fs_in;
+
+uniform samplerCube uEnvironment;
+
+layout(location = 0) out vec3 fBackgroud;
+
+void main() {
+    fBackgroud = texture(uEnvironment, normalize(fs_in.tex_coord)).rgb;
+}
+)delimiter";
+
+	shader_descriptor vert_desc{
+		vert_desc.type = shader_type::vertex,
+		vert_desc.source = test_vertex_shader.data()
+	};
+	gl430plus_shader* vert_shader = render.create_shader(vert_desc);
+	if (vert_shader->has_error()) {
+		std::cout << vert_shader->get_report() << std::endl;
+	}
+
+	shader_descriptor frag_desc{
+		frag_desc.type = shader_type::fragment,
+		frag_desc.source = test_fragment_shader.data()
+	};
+	gl430plus_shader* frag_shader = render.create_shader(frag_desc);
+	if (frag_shader->has_error()) {
+		std::cout << frag_shader->get_report() << std::endl;
+	}
+
+	shader_program_descriptor prog_desc{
+		prog_desc.vertex_shader = vert_shader,
+		prog_desc.fragment_shader = frag_shader
+	};
+
+	gl430plus_shader_program* prog = render.create_shader_program(prog_desc);
+	if (prog->has_error()) {
+		std::cout << prog->get_report() << std::endl;
+	}
+}
+
+
 int main() {
 	gl430plus_render_system render;
 	render_context_descriptor cxt_dscp{
@@ -15,6 +78,8 @@ int main() {
 	gl430plus_surface* window = cxt->get_surface();
 	window->set_title("test");
 	window->show();
+
+	test_shader(render);
 
 	string sky_vertex_shader = R"delimiter(
 #version 330 core
