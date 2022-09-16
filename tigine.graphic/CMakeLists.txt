@@ -10,6 +10,8 @@ endif()
 
 include_directories(${HEADERONLY_3RDPARTY_INCLUDE_DIR})
 
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/)
+
 file(GLOB_RECURSE SRC_FILES ./*.cpp)
 add_executable(tigine.graphic ${SRC_FILES})
 
