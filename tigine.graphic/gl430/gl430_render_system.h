@@ -15,20 +15,40 @@ public:
     ~GL430RenderSystem() = default;
     DISALLOW_COPY_AND_ASSIGN(GL430RenderSystem);
 
-    GL430RenderContext* createRenderContext(const RenderContextDescriptor& desc) { return new GL430RenderContext(desc); }
-    void release(GL430RenderContext* render_context) { delete render_context; }
+    GL430RenderContext* createRenderContext(const RenderContextDescriptor& desc) {
+        return new GL430RenderContext(desc);
+    }
+    void release(GL430RenderContext* render_context) {
+        delete render_context; 
+    }
 
-    GL430Shader* createShader(const ShaderDescriptor& desc) { return new GL430Shader(desc); }
-    void release(GL430Shader* shader) { delete shader; }
+    GL430Shader* createShader(const ShaderDescriptor& desc) {
+        return new GL430Shader(desc);
+    }
+    void release(GL430Shader* shader) {
+        delete shader; 
+    }
 
-    GL430ShaderProgram* createShaderProgram(const ShaderProgramDescriptor& desc) { return new GL430ShaderProgram(desc); }
-    void release(GL430ShaderProgram* shader_program) { delete shader_program; }
+    GL430ShaderProgram* createShaderProgram(const ShaderProgramDescriptor& desc) { 
+        return new GL430ShaderProgram(desc);
+    }
+    void release(GL430ShaderProgram* shader_program) {
+        delete shader_program;
+    }
 
-    GL430Buffer* createBuffer(const BufferDescriptor& desc, void* data) { return new GL430Buffer(desc, data); }
-    void release(GL430Buffer* buffer) { delete buffer; }
+    GL430Buffer* createBuffer(const BufferDescriptor& desc, void* data) {
+        return new GL430Buffer(desc, data); 
+    }
+    void release(GL430Buffer* buffer) {
+        delete buffer; 
+    }
 
-    GL430BufferArray* createBufferArray(const BufferArrayDescriptor& desc) { return new GL430BufferArray(desc); }
-    void release(GL430BufferArray* buffer_array) { delete buffer_array; }
+    GL430BufferArray* createBufferArray(const BufferArrayDescriptor& desc) {
+        return new GL430BufferArray(desc);
+    }
+    void release(GL430BufferArray* buffer_array) { 
+        delete buffer_array; 
+    }
 };
 } // // namespace tigine::graphic
 } // namespace tigine

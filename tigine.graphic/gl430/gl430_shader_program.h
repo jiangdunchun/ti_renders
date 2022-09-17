@@ -7,7 +7,6 @@
 #include "gl430/gl430_common.h"
 #include "gl430/gl430_shader.h"
 
-
 namespace tigine {
 namespace graphic {
 struct ShaderProgramDescriptor {

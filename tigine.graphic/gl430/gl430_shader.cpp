@@ -3,22 +3,22 @@
 namespace tigine {
 namespace graphic {
 namespace {
-	GLuint mapShaderKind(ShaderKind kind) {
-		switch (kind) {
-		case ShaderKind::Vertex:
-			return GL_VERTEX_SHADER;
-			break;
-		case ShaderKind::Fragment:
-			return GL_FRAGMENT_SHADER;
-			break;
-		case ShaderKind::Compute:
-			return GL_COMPUTE_SHADER;
-			break;
-		default:
-			return 0;
-			break;
-		}
+GLuint mapShaderKind(ShaderKind kind) {
+	switch (kind) {
+	case ShaderKind::Vertex:
+		return GL_VERTEX_SHADER;
+		break;
+	case ShaderKind::Fragment:
+		return GL_FRAGMENT_SHADER;
+		break;
+	case ShaderKind::Compute:
+		return GL_COMPUTE_SHADER;
+		break;
+	default:
+		return 0;
+		break;
 	}
+}
 } // namespace
 
 GL430Shader::GL430Shader(const ShaderDescriptor& desc) {

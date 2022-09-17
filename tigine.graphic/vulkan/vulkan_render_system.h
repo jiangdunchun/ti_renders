@@ -1,4 +1,0 @@
-#ifndef __VULKAN_RENDER_SYSTEM_H__
-#define __VULKAN_RENDER_SYSTEM_H__
-
-#endif // !__VULKAN_RENDER_SYSTEM_H__

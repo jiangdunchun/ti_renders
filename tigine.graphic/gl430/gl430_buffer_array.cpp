@@ -3,17 +3,17 @@
 namespace tigine {
 namespace graphic {
 namespace {
-	GLenum mapDataFormat(DataFormat format) {
-		int type = format & 0xf0;
-		switch (type) {
-		case (DF_Float):
-			return GL_FLOAT;
-			break;
-		default:
-			return 0;
-			break;
-		}
+GLenum mapDataFormat(DataFormat format) {
+	int type = format & 0xf0;
+	switch (type) {
+	case (DF_Float):
+		return GL_FLOAT;
+		break;
+	default:
+		return 0;
+		break;
 	}
+}
 } // namespace
 
 GL430BufferArray::GL430BufferArray(const BufferArrayDescriptor& desc) {
