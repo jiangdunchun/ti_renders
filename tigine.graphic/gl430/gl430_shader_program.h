@@ -16,11 +16,11 @@ struct ShaderProgramDescriptor {
 	GL430Shader* compute_shader = nullptr;
 };
 
-class GL430plusShaderProgram {
+class GL430ShaderProgram {
 public:
-	GL430plusShaderProgram(const ShaderProgramDescriptor& desc);
-	~GL430plusShaderProgram();
-	DISALLOW_COPY_AND_ASSIGN(GL430plusShaderProgram);
+	GL430ShaderProgram(const ShaderProgramDescriptor& desc);
+	~GL430ShaderProgram();
+	DISALLOW_COPY_AND_ASSIGN(GL430ShaderProgram);
 
 	bool hasError() const;
 	std::string getReport() const;

@@ -1,0 +1,2 @@
+Checks: '-*,
+    misc-throw-by-value-catch-by-reference,

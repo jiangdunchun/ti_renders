@@ -2,7 +2,7 @@
 
 namespace tigine {
 namespace graphic {
-GL430plusShaderProgram::GL430plusShaderProgram(const ShaderProgramDescriptor& desc) {
+GL430ShaderProgram::GL430ShaderProgram(const ShaderProgramDescriptor& desc) {
 	id_ = glCreateProgram();
 	if (desc.vertex_shader) glAttachShader(id_, desc.vertex_shader->id());
 	if (desc.fragment_shader) glAttachShader(id_, desc.fragment_shader->id());
@@ -29,17 +29,17 @@ GL430plusShaderProgram::GL430plusShaderProgram(const ShaderProgramDescriptor& de
 	delete[] uniform_name;
 }
 
-GL430plusShaderProgram::~GL430plusShaderProgram() {
+GL430ShaderProgram::~GL430ShaderProgram() {
 	glDeleteProgram(id_);
 }
 
-bool GL430plusShaderProgram::hasError() const {
+bool GL430ShaderProgram::hasError() const {
 	GLint success = 0;
 	glGetProgramiv(id_, GL_LINK_STATUS, &success);
 	return !success;
 }
 
-std::string GL430plusShaderProgram::getReport() const {
+std::string GL430ShaderProgram::getReport() const {
 	GLint info_len = 0;
 	glGetProgramiv(id_, GL_INFO_LOG_LENGTH, &info_len);
 	GLchar* info_log = new GLchar[info_len];

@@ -1,11 +1,11 @@
-#include "gl430plus/gl430plus_render_system.h"
+#include "gl430/gl430_render_system.h"
 
 #include <iostream>
 
-using namespace tigine;
+using namespace tigine::graphic;
 using namespace std;
 
-void test_shader(gl430plus_render_system& render) {
+void test_shader(GL430RenderSystem& render) {
 	string test_vertex_shader = R"delimiter(
 #version 430 core
 layout(location = 0) in vec3 aPosition;
@@ -38,45 +38,45 @@ void main() {
 }
 )delimiter";
 
-	shader_descriptor vert_desc{
-		vert_desc.type = shader_type::vertex,
-		vert_desc.source = test_vertex_shader.data()
+	ShaderDescriptor vert_desc{
+		vert_desc.kind = ShaderKind::Vertex,
+		vert_desc.code = test_vertex_shader.data()
 	};
-	gl430plus_shader* vert_shader = render.create_shader(vert_desc);
-	if (vert_shader->has_error()) {
-		std::cout << vert_shader->get_report() << std::endl;
+	GL430Shader* vert_shader = render.createShader(vert_desc);
+	if (vert_shader->hasError()) {
+		std::cout << vert_shader->getReport() << std::endl;
 	}
 
-	shader_descriptor frag_desc{
-		frag_desc.type = shader_type::fragment,
-		frag_desc.source = test_fragment_shader.data()
+	ShaderDescriptor frag_desc {
+		frag_desc.kind = ShaderKind::Fragment,
+		frag_desc.code = test_fragment_shader.data()
 	};
-	gl430plus_shader* frag_shader = render.create_shader(frag_desc);
-	if (frag_shader->has_error()) {
-		std::cout << frag_shader->get_report() << std::endl;
+	GL430Shader* frag_shader = render.createShader(frag_desc);
+	if (frag_shader->hasError()) {
+		std::cout << frag_shader->getReport() << std::endl;
 	}
 
-	shader_program_descriptor prog_desc{
+	ShaderProgramDescriptor prog_desc{
 		prog_desc.vertex_shader = vert_shader,
 		prog_desc.fragment_shader = frag_shader
 	};
 
-	gl430plus_shader_program* prog = render.create_shader_program(prog_desc);
-	if (prog->has_error()) {
-		std::cout << prog->get_report() << std::endl;
+	GL430ShaderProgram* prog = render.createShaderProgram(prog_desc);
+	if (prog->hasError()) {
+		std::cout << prog->getReport() << std::endl;
 	}
 }
 
 
 int main() {
-	gl430plus_render_system render;
-	render_context_descriptor cxt_dscp{
-		cxt_dscp.width = 600,
-		cxt_dscp.height = 600,
+	GL430RenderSystem render;
+	RenderContextDescriptor context_desc{
+        context_desc.width = 600,
+        context_desc.height = 600,
 	};
-	gl430plus_render_context* cxt = render.create_render_context(cxt_dscp);
-	gl430plus_surface* window = cxt->get_surface();
-	window->set_title("test");
+    GL430RenderContext* context = render.createRenderContext(context_desc);
+    GL430Surface*  window  = context->surface();
+	window->setTitle("test");
 	window->show();
 
 	test_shader(render);
@@ -105,32 +105,32 @@ void main() {
 }
 )delimiter";
 
-	shader_descriptor vert_desc{
-		vert_desc.type = shader_type::vertex,
-		vert_desc.source = sky_vertex_shader.data()
+	ShaderDescriptor vert_desc{
+		vert_desc.kind = ShaderKind::Vertex,
+		vert_desc.code = sky_vertex_shader.data()
 	};
-	gl430plus_shader* vert_shader = render.create_shader(vert_desc);
-	if (vert_shader->has_error()) {
-		std::cout << vert_shader->get_report() << std::endl;
+	GL430Shader* vert_shader = render.createShader(vert_desc);
+	if (vert_shader->hasError()) {
+		std::cout << vert_shader->getReport() << std::endl;
 	}
 
-	shader_descriptor frag_desc{
-		frag_desc.type = shader_type::fragment,
-		frag_desc.source = sky_fragment_shader.data()
+	ShaderDescriptor frag_desc {
+		frag_desc.kind = ShaderKind::Fragment,
+		frag_desc.code = sky_fragment_shader.data()
 	};
-	gl430plus_shader* frag_shader = render.create_shader(frag_desc);
-	if (frag_shader->has_error()) {
-		std::cout << frag_shader->get_report() << std::endl;
+	GL430Shader* frag_shader = render.createShader(frag_desc);
+	if (frag_shader->hasError()) {
+		std::cout << frag_shader->getReport() << std::endl;
 	}
 
-	shader_program_descriptor prog_desc{
+	ShaderProgramDescriptor prog_desc{
 		prog_desc.vertex_shader = vert_shader,
 		prog_desc.fragment_shader = frag_shader
 	};
 
-	gl430plus_shader_program* prog = render.create_shader_program(prog_desc);
-	if (prog->has_error()) {
-		std::cout << prog->get_report() << std::endl;
+	GL430ShaderProgram* prog = render.createShaderProgram(prog_desc);
+	if (prog->hasError()) {
+		std::cout << prog->getReport() << std::endl;
 	}
 
 	float vertices[] = {
@@ -138,31 +138,31 @@ void main() {
 		0.5f, -0.5f, 0, 1, 0, 0,
 		-0.5f, -0.5f, 0, 0, 1, 0
 	};
-	buffer_descriptor buffer_desc{
+	BufferDescriptor buffer_desc{
 		buffer_desc.size = sizeof(float) * 18,
-		buffer_desc.flags = ARRAY_BUFFER
+		buffer_desc.kinds = BK_Array
 	};
-	gl430plus_buffer* vetices_buffer = render.create_buffer(buffer_desc, vertices);
+	GL430Buffer* vetices_buffer = render.createBuffer(buffer_desc, vertices);
 
-	vertex_attribute pos_attribute{
-		"position", RGB32Float, 0, 0, sizeof(float) * 6
+	VertexAttribute pos_attribute{
+		DF_RGB32Float, 0, 0, sizeof(float) * 6
 	};
-	vertex_attribute color_attribute{
-		"color", RGB32Float, 1, sizeof(float) * 3, sizeof(float) * 6
+	VertexAttribute color_attribute{
+		DF_RGB32Float, 1, sizeof(float) * 3, sizeof(float) * 6
 	};
-	buffer_array_descriptor array_buffer_desc; {
+	BufferArrayDescriptor array_buffer_desc; {
 		array_buffer_desc.vertices_buffer = vetices_buffer;
 		array_buffer_desc.indices_buffer = nullptr;
 		array_buffer_desc.vertex_attributes = { pos_attribute, color_attribute };
 
 	}
-	gl430plus_buffer_array* array_buffer = render.create_buffer_array(array_buffer_desc);
+	GL430BufferArray* array_buffer = render.createBufferArray(array_buffer_desc);
 
-	while (window->process_events()) {
+	while (window->processEvents()) {
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
-		glUseProgram(prog->get_id());
-		glBindVertexArray(array_buffer->get_id());
+		glUseProgram(prog->id());
+		glBindVertexArray(array_buffer->id());
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 		window->present();
 	}
