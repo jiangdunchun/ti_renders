@@ -161,8 +161,8 @@ void main() {
 	while (window->processEvents()) {
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
-		glUseProgram(prog->id());
-		glBindVertexArray(array_buffer->id());
+		glUseProgram(prog->getID());
+		glBindVertexArray(array_buffer->getID());
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 		window->present();
 	}

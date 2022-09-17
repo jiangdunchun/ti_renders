@@ -7,11 +7,9 @@ namespace tigine {
 namespace graphic {
 class GL430CommandBuffer {
 public:
-    GL430CommandBuffer();
-	~GL430CommandBuffer();
+    GL430CommandBuffer() = default;
+    ~GL430CommandBuffer() = default;
     DISALLOW_COPY_AND_ASSIGN(GL430CommandBuffer);
-
-private:
 };
 } // namespace tigine::graphic
 } // namespace tigine

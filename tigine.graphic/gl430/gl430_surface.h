@@ -7,8 +7,6 @@ namespace tigine {
 namespace graphic {
 class GL430RenderContext;
 class GL430Surface {
-    friend class GL430RenderContext;
-
 public:
     GL430Surface() = default;
     ~GL430Surface() = default;
@@ -29,6 +27,7 @@ public:
     }
 
 private:
+    friend class GL430RenderContext;
     GLFWwindow* window_ = nullptr;
 };
 } // namespace tigine::graphic

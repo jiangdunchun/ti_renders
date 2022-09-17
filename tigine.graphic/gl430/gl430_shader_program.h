@@ -23,7 +23,7 @@ public:
 
 	bool hasError() const;
 	std::string getReport() const;
-	GLuint id() const {
+	GLuint getID() const {
 		return id_;
 	}
 

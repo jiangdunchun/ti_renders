@@ -7,8 +7,8 @@ namespace tigine {
 namespace graphic {
 class GL430CommandQueue {
 public:
-    GL430CommandQueue();
-	~GL430CommandQueue();
+    GL430CommandQueue() = default;
+    ~GL430CommandQueue() = default;
     DISALLOW_COPY_AND_ASSIGN(GL430CommandQueue);
 
 private:

@@ -27,7 +27,7 @@ public:
     ~GL430BufferArray();
     DISALLOW_COPY_AND_ASSIGN(GL430BufferArray);
 
-    GLuint id() const {
+    GLuint getID() const {
         return id_;
     }
 

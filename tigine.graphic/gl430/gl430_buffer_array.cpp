@@ -20,8 +20,8 @@ GL430BufferArray::GL430BufferArray(const BufferArrayDescriptor& desc) {
 	glGenVertexArrays(1, &id_);
 	glBindVertexArray(id_);
 
-	glBindBuffer(GL_ARRAY_BUFFER, desc.vertices_buffer->id());
-	if (desc.indices_buffer) glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, desc.indices_buffer->id());
+	glBindBuffer(GL_ARRAY_BUFFER, desc.vertices_buffer->getID());
+	if (desc.indices_buffer) glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, desc.indices_buffer->getID());
 
 	for (auto& attribute : desc.vertex_attributes) {
 		glEnableVertexAttribArray(attribute.location);
