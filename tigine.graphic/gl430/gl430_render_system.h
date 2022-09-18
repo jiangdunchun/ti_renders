@@ -61,7 +61,7 @@ public:
     void release(GL430CommandBuffer* command_buffer) {
         delete command_buffer;
     }
-    GL430PipelineState* createPipeline(const PipelineDescriptor& desc) {
+    GL430PipelineState* createPipeline(const PipelineStateDescriptor& desc) {
         return new GL430PipelineState(desc);
     }
     void release(GL430PipelineState* pipeline) {

@@ -7,19 +7,21 @@
 
 namespace tigine {
 namespace graphic {
-struct PipelineDescriptor {
+struct PipelineStateDescriptor {
 	GL430ShaderProgram* shader_program;
 	GL430RenderPass* render_pass;
+	DrawMode draw_mode = DrawMode::Triangles;
+	ClearValue clear_value;
 };
 
 class GL430PipelineState {
 public:
-	GL430PipelineState(const PipelineDescriptor& desc) : desc_(desc_){}
+	GL430PipelineState(const PipelineStateDescriptor& desc) : desc_(desc_){}
 	~GL430PipelineState() = default;
     DISALLOW_COPY_AND_ASSIGN(GL430PipelineState);
 
 private:
-	PipelineDescriptor desc_;
+	PipelineStateDescriptor desc_;
 };
 } // namespace tigine::graphic
 } // namespace tigine

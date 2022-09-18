@@ -93,7 +93,7 @@ void main() {
 	}
 	GL430BufferArray* array_buffer = render.createBufferArray(array_buffer_desc);
 
-	PipelineDescriptor pipeline_desc; {
+	PipelineStateDescriptor pipeline_desc; {
 		pipeline_desc.shader_program = prog;
 		pipeline_desc.render_pass = context->getRenderPass();
 	}

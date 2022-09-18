@@ -1,6 +1,8 @@
 #ifndef TIGINE_GRAPHIC_GL430_GL430_COMMON_H_
 #define TIGINE_GRAPHIC_GL430_GL430_COMMON_H_
 
+#include <cstdint>
+
 #include <glad/glad.h>
 #include <glfw/glfw3.h>
 
@@ -27,6 +29,23 @@ enum ClearFlag {
     CF_Color = 1 << 0,
     CF_Depth = 1 << 1,
     CF_Stencil = 1 << 2
+};
+
+enum class DrawMode {
+    Triangles,
+};
+
+struct Viewport {
+    std::uint32_t x;
+    std::uint32_t y;
+    std::uint32_t width;
+    std::uint32_t height;
+};
+
+struct ClearValue {
+    float color[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
+    float depth = 1.0f;
+    int stencil = 0;
 };
 } // namespace tigine::graphic
 } // namespace tigine

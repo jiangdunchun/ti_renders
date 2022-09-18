@@ -17,7 +17,7 @@ public:
 
     void begin();
     void end();
-    void setViewport(std::uint32_t min_x, std::uint32_t min_y, std::uint32_t max_x, std::uint32_t max_y);
+    void setViewport(const Viewport& viewport);
     void setPipeState(GL430PipelineState* pipe_state);
     void setVertexBufferArray(GL430BufferArray* buffer_array);
     void beginRenderPass(GL430RenderPass* render_pass);
