@@ -8,7 +8,7 @@
 #include "gl430/gl430_buffer_array.h"
 #include "gl430/gl430_command_queue.h"
 #include "gl430/gl430_command_buffer.h"
-#include "gl430/gl430_pipeline.h"
+#include "gl430/gl430_pipeline_state.h"
 
 namespace tigine {
 namespace graphic {
@@ -61,10 +61,10 @@ public:
     void release(GL430CommandBuffer* command_buffer) {
         delete command_buffer;
     }
-    GL430Pipeline* createPipeline(const PipelineDescriptor& desc) {
-        return new GL430Pipeline(desc);
+    GL430PipelineState* createPipeline(const PipelineDescriptor& desc) {
+        return new GL430PipelineState(desc);
     }
-    void release(GL430Pipeline* pipeline) {
+    void release(GL430PipelineState* pipeline) {
         delete pipeline;
     }
 

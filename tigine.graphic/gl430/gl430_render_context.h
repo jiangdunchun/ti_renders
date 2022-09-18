@@ -6,6 +6,7 @@
 
 #include "gl430/gl430_common.h"
 #include "gl430/gl430_surface.h"
+#include "gl430/gl430_render_pass.h"
 
 namespace tigine {
 namespace graphic {
@@ -21,12 +22,19 @@ public:
     ~GL430RenderContext();
     DISALLOW_COPY_AND_ASSIGN(GL430RenderContext);
 
-    GL430Surface* surface() { 
+    GL430Surface* getSurface() { 
         return surface_;
+    }
+    GL430RenderPass* getRenderPass() {
+        return render_pass_;
+    }
+    void present() const {
+        glfwSwapBuffers(surface_->window_);
     }
 
 private:
     GL430Surface* surface_;
+    GL430RenderPass* render_pass_;
 };
 } // namespace tigine::graphic
 } // namespace tigine

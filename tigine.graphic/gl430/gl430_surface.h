@@ -22,9 +22,6 @@ public:
         glfwPollEvents();
         return !glfwWindowShouldClose(window_);
     }
-    void present() {
-        glfwSwapBuffers(window_); 
-    }
 
 private:
     friend class GL430RenderContext;

@@ -17,11 +17,15 @@ GL430RenderContext::GL430RenderContext(const RenderContextDescriptor& desc) {
     }
     glfwMakeContextCurrent(surface_->window_);
     gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+
+    RenderPassDescriptor  render_pass_desc;
+    render_pass_ = new GL430RenderPass(render_pass_desc);
 }
 
 GL430RenderContext::~GL430RenderContext() {
     if (surface_->window_) glfwDestroyWindow(surface_->window_);
     delete surface_;
+    delete render_pass_;
     glfwTerminate();
 }
 } // namepace tigine::graphic

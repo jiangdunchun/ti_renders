@@ -22,6 +22,12 @@ enum DataFormat {
 
     DF_RGB32Float = DF_RGB | DF_Float,
 };
+
+enum ClearFlag {
+    CF_Color = 1 << 0,
+    CF_Depth = 1 << 1,
+    CF_Stencil = 1 << 2
+};
 } // namespace tigine::graphic
 } // namespace tigine
 
