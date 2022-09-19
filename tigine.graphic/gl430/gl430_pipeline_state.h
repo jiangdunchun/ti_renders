@@ -16,7 +16,7 @@ struct PipelineStateDescriptor {
 
 class GL430PipelineState {
 public:
-	GL430PipelineState(const PipelineStateDescriptor& desc) : desc_(desc_){}
+	GL430PipelineState(const PipelineStateDescriptor& desc) : desc_(desc){}
 	~GL430PipelineState() = default;
     DISALLOW_COPY_AND_ASSIGN(GL430PipelineState);
 

@@ -12,7 +12,7 @@ public:
     ~GL430CommandQueue() = default;
     DISALLOW_COPY_AND_ASSIGN(GL430CommandQueue);
 
-    void submit(GL430CommandBuffer* command_buffer);
+    void submit(GL430CommandBuffer* command_buffer) {}
 
 private:
 };

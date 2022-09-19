@@ -11,8 +11,8 @@ namespace tigine {
 namespace graphic {
 class GL430CommandBuffer {
 public:
-    GL430CommandBuffer() = default;
-    ~GL430CommandBuffer() = default;
+    GL430CommandBuffer();
+    ~GL430CommandBuffer();
     DISALLOW_COPY_AND_ASSIGN(GL430CommandBuffer);
 
     void begin();

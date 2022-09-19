@@ -28,6 +28,9 @@ public:
     GL430RenderPass* getRenderPass() {
         return render_pass_;
     }
+    Viewport getResolution() {
+        return { 0, 0, 600, 600 };
+    }
     void present() const {
         glfwSwapBuffers(surface_->window_);
     }

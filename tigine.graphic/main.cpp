@@ -103,11 +103,21 @@ void main() {
 	GL430CommandBuffer* command_buffer = render.createCommandBuffer();
 
 	while (window->processEvents()) {
-		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
-		glUseProgram(prog->getID());
-		glBindVertexArray(array_buffer->getID());
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		command_buffer->begin();
+		command_buffer->setViewport(context->getResolution());
+		command_buffer->setPipeState(pipeline_state);
+		command_buffer->setVertexBufferArray(array_buffer);
+		command_buffer->beginRenderPass(context->getRenderPass());
+		command_buffer->clear(CF_Color);
+		command_buffer->drawArray(3, 0);
+		command_buffer->endRenderPass();
+		command_buffer->end();
+		queue->submit(command_buffer);
+		// glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+		// glClear(GL_COLOR_BUFFER_BIT);
+		// glUseProgram(prog->getID());
+		// glBindVertexArray(array_buffer->getID());
+		// glDrawArrays(GL_TRIANGLES, 0, 3);
 		context->present();
 	}
 }
