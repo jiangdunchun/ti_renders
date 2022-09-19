@@ -1,4 +1,4 @@
-#include "gl430/gl430_render_system.h"
+#include "graphic.h"
 
 #include <iostream>
 
@@ -6,13 +6,13 @@ using namespace tigine::graphic;
 using namespace std;
 
 int main() {
-	GL430RenderSystem render;
+	RenderSystem render;
 	RenderContextDescriptor context_desc{
         context_desc.width = 600,
         context_desc.height = 600,
 	};
-    GL430RenderContext* context = render.createRenderContext(context_desc);
-    GL430Surface*  window  = context->getSurface();
+    RenderContext* context = render.createRenderContext(context_desc);
+    Surface*  window  = context->getSurface();
 	window->setTitle("test");
 	window->show();
 
@@ -44,7 +44,7 @@ void main() {
 		vert_desc.kind = ShaderKind::Vertex,
 		vert_desc.code = sky_vertex_shader.data()
 	};
-	GL430Shader* vert_shader = render.createShader(vert_desc);
+	Shader* vert_shader = render.createShader(vert_desc);
 	if (vert_shader->hasError()) {
 		std::cout << vert_shader->getReport() << std::endl;
 	}
@@ -53,7 +53,7 @@ void main() {
 		frag_desc.kind = ShaderKind::Fragment,
 		frag_desc.code = sky_fragment_shader.data()
 	};
-	GL430Shader* frag_shader = render.createShader(frag_desc);
+	Shader* frag_shader = render.createShader(frag_desc);
 	if (frag_shader->hasError()) {
 		std::cout << frag_shader->getReport() << std::endl;
 	}
@@ -63,7 +63,7 @@ void main() {
 		prog_desc.fragment_shader = frag_shader
 	};
 
-	GL430ShaderProgram* prog = render.createShaderProgram(prog_desc);
+	ShaderProgram* prog = render.createShaderProgram(prog_desc);
 	if (prog->hasError()) {
 		std::cout << prog->getReport() << std::endl;
 	}
@@ -77,7 +77,7 @@ void main() {
 		buffer_desc.size = sizeof(float) * 18,
 		buffer_desc.kinds = BK_Array
 	};
-	GL430Buffer* vetices_buffer = render.createBuffer(buffer_desc, vertices);
+	Buffer* vetices_buffer = render.createBuffer(buffer_desc, vertices);
 
 	VertexAttribute pos_attribute{
 		DF_RGB32Float, 0, 0, sizeof(float) * 6
@@ -91,16 +91,16 @@ void main() {
 		array_buffer_desc.vertex_attributes = { pos_attribute, color_attribute };
 
 	}
-	GL430BufferArray* array_buffer = render.createBufferArray(array_buffer_desc);
+	BufferArray* array_buffer = render.createBufferArray(array_buffer_desc);
 
 	PipelineStateDescriptor pipeline_desc; {
 		pipeline_desc.shader_program = prog;
 		pipeline_desc.render_pass = context->getRenderPass();
 	}
-	GL430PipelineState* pipeline_state = render.createPipeline(pipeline_desc);
+	PipelineState* pipeline_state = render.createPipeline(pipeline_desc);
 
-	GL430CommandQueue* queue = render.getCommandQueue();
-	GL430CommandBuffer* command_buffer = render.createCommandBuffer();
+	CommandQueue* queue = render.getCommandQueue();
+	CommandBuffer* command_buffer = render.createCommandBuffer();
 
 	while (window->processEvents()) {
 		command_buffer->begin();
