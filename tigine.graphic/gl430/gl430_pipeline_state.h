@@ -14,6 +14,7 @@ struct PipelineStateDescriptor {
 	ClearValue clear_value;
 };
 
+class GL430CommandBuffer;
 class GL430PipelineState {
 public:
 	GL430PipelineState(const PipelineStateDescriptor& desc) : desc_(desc){}
@@ -21,6 +22,7 @@ public:
     DISALLOW_COPY_AND_ASSIGN(GL430PipelineState);
 
 private:
+	friend class GL430CommandBuffer;
 	PipelineStateDescriptor desc_;
 };
 } // namespace tigine::graphic
