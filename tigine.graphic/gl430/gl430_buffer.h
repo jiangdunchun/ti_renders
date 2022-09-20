@@ -4,33 +4,20 @@
 #include <cstdint>
 
 #include "gl430/gl430_common.h"
+#include "interface/i_buffer.h"
 
-namespace tigine {
-namespace graphic {
-enum BufferKind {
-	BK_Array = (1 << 0),
-	BK_ElementArray = (1 << 1),
-};
-
-struct BufferDescriptor {
-	std::uint64_t size = 0;
-	std::uint32_t kinds = 0;
-};
-
-class GL430Buffer {
+namespace tigine { namespace graphic {
+class GL430Buffer : public IBuffer {
 public:
-	GL430Buffer(const BufferDescriptor& desc, const void* data);
-	~GL430Buffer();
-	DISALLOW_COPY_AND_ASSIGN(GL430Buffer);
+    GL430Buffer(const BufferDescriptor &desc, const void *data);
+    ~GL430Buffer();
+    DISALLOW_COPY_AND_ASSIGN(GL430Buffer);
 
-	GLuint getID() const {
-		return id_;
-	}
+    GLuint getID() const { return id_; }
 
 private:
-	GLuint id_;
+    GLuint id_;
 };
-} // namespace tigine::graphic
-} // namespace tigine
+}} // namespace tigine::graphic
 
 #endif // !TIGINE_GRAPHIC_GL430_GL430_BUFFER_H_

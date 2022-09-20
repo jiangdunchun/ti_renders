@@ -7,24 +7,23 @@
   TypeName(const TypeName&) = delete;      \
   void operator=(const TypeName&) = delete
 
-namespace tigine {
-namespace graphic {
+namespace tigine { namespace graphic {
 enum DataFormat {
-    DF_R = 0x01,
-    DF_RG = 0x02,
-    DF_RGB = 0x03,
+    DF_R    = 0x01,
+    DF_RG   = 0x02,
+    DF_RGB  = 0x03,
     DF_RGBA = 0x04,
 
-    DF_Uint = 0x10,
-    DF_Int = 0x20,
+    DF_Uint  = 0x10,
+    DF_Int   = 0x20,
     DF_Float = 0x30,
 
     DF_RGB32Float = DF_RGB | DF_Float,
 };
 
 enum ClearFlag {
-    CF_Color = 1 << 0,
-    CF_Depth = 1 << 1,
+    CF_Color   = 1 << 0,
+    CF_Depth   = 1 << 1,
     CF_Stencil = 1 << 2
 };
 
@@ -40,11 +39,10 @@ struct Viewport {
 };
 
 struct ClearValue {
-    float color[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
-    float depth = 1.0f;
-    int stencil = 0;
+    float color[4] = {0.0f, 0.0f, 0.0f, 1.0f};
+    float depth    = 1.0f;
+    int   stencil  = 0;
 };
-} // namespace tigine::graphic
-} // namespace tigine
+}} // namespace tigine::graphic
 
 #endif // !TIGINE_GRAPHIC_INTERFACE_I_COMMON_H_

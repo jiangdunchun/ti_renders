@@ -49,5 +49,4 @@ std::string GL430Shader::getReport() const {
 	return report;
 }
 
-} // namespace tigine::graphic
-} // namspace tigine
+}} // namespace tigine::graphic

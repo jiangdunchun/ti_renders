@@ -1,7 +1,6 @@
 #include "gl430/gl430_buffer.h"
 
-namespace tigine {
-namespace graphic {
+namespace tigine { namespace graphic {
 namespace {
 GLsizei mapBufferKinds(std::uint32_t kinds) {
 	GLsizei type = 0;
@@ -11,7 +10,7 @@ GLsizei mapBufferKinds(std::uint32_t kinds) {
 }
 } // namespace
 
-GL430Buffer::GL430Buffer(const BufferDescriptor& desc, const void* data) {
+GL430Buffer::GL430Buffer(const BufferDescriptor &desc, const void *data) {
 	GLsizei buffer_type = mapBufferKinds(desc.kinds);
 	glGenBuffers(1, &id_);
 	glBindBuffer(buffer_type, id_);
@@ -21,5 +20,4 @@ GL430Buffer::GL430Buffer(const BufferDescriptor& desc, const void* data) {
 GL430Buffer::~GL430Buffer() {
 	glDeleteBuffers(1, &id_);
 }
-} // namespace tigine::graphic
-} // namespace tigine
+}} // namespace tigine::graphic

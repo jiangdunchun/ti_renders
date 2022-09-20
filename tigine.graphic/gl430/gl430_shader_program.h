@@ -5,38 +5,28 @@
 #include <string>
 
 #include "gl430/gl430_common.h"
-#include "gl430/gl430_shader.h"
+#include "interface/i_shader_program.h"
 
-namespace tigine {
-namespace graphic {
-struct ShaderProgramDescriptor {
-	GL430Shader* vertex_shader = nullptr;
-	GL430Shader* fragment_shader = nullptr;
-	GL430Shader* compute_shader = nullptr;
-};
-
-class GL430ShaderProgram {
+namespace tigine { namespace graphic {
+class GL430ShaderProgram : public IShaderProgram {
 public:
-	GL430ShaderProgram(const ShaderProgramDescriptor& desc);
-	~GL430ShaderProgram();
-	DISALLOW_COPY_AND_ASSIGN(GL430ShaderProgram);
+    GL430ShaderProgram(const ShaderProgramDescriptor &desc);
+    ~GL430ShaderProgram();
+    DISALLOW_COPY_AND_ASSIGN(GL430ShaderProgram);
 
-	bool hasError() const;
-	std::string getReport() const;
-	GLuint getID() const {
-		return id_;
-	}
+    bool        hasError() const override;
+    std::string getReport() const override;
+    GLuint      getID() const { return id_; }
 
 private:
-	GLuint id_;
-	struct Uniform {
-		GLint location;
-		GLint type;
-	};
-	std::map<std::string, Uniform> uniforms_;
+    GLuint id_;
+    struct Uniform {
+        GLint location;
+        GLint type;
+    };
+    std::map<std::string, Uniform> uniforms_;
 };
 
-} // namespace tigine::graphic
-} // namespace tigine
+}} // namespace tigine::graphic
 
 #endif // !TIGINE_GRAPHIC_GL430_GL430_SHADER_H_

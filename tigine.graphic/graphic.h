@@ -27,35 +27,33 @@
 #include "vulkan/vulkan_pipeline_state.h"
 #endif
 
-namespace tigine {
-namespace graphic {
+namespace tigine { namespace graphic {
 #if 1
-typedef GL430RenderSystem	RenderSystem;
-typedef GL430Surface		Surface;
-typedef GL430RenderContext	RenderContext;
-typedef GL430Shader			Shader;
-typedef GL430ShaderProgram  ShaderProgram;
-typedef GL430Buffer			Buffer;
-typedef GL430BufferArray	BufferArray;
-typedef GL430CommandBuffer  CommandBuffer;
-typedef GL430CommandQueue	CommandQueue;
-typedef GL430RenderPass		RenderPass;
-typedef GL430PipelineState	PipelineState;
+typedef GL430RenderSystem  RenderSystem;
+typedef GL430Surface       Surface;
+typedef GL430RenderContext RenderContext;
+typedef GL430Shader        Shader;
+typedef GL430ShaderProgram ShaderProgram;
+typedef GL430Buffer        Buffer;
+typedef GL430BufferArray   BufferArray;
+typedef GL430CommandBuffer CommandBuffer;
+typedef GL430CommandQueue  CommandQueue;
+typedef GL430RenderPass    RenderPass;
+typedef GL430PipelineState PipelineState;
 #else
-typedef VulkanRenderSystem	RenderSystem;
-typedef VulkanSurface		Surface;
-typedef VulkanRenderContext	RenderContext;
-typedef VulkanShader		Shader;
+typedef VulkanRenderSystem  RenderSystem;
+typedef VulkanSurface       Surface;
+typedef VulkanRenderContext RenderContext;
+typedef VulkanShader        Shader;
 typedef VulkanShaderProgram ShaderProgram;
-typedef VulkanBuffer		Buffer;
-typedef VulkanBufferArray	BufferArray;
+typedef VulkanBuffer        Buffer;
+typedef VulkanBufferArray   BufferArray;
 typedef VulkanCommandBuffer CommandBuffer;
-typedef VulkanCommandQueue	CommandQueue;
-typedef VulkanRenderPass	RenderPass;
-typedef VulkanPipelineState	PipelineState;
+typedef VulkanCommandQueue  CommandQueue;
+typedef VulkanRenderPass    RenderPass;
+typedef VulkanPipelineState PipelineState;
 #endif
-} // namespace tigine::graphic
-} // namespace tigine
+}} // namespace tigine::graphic
 
 
 #endif // !TIGINE_GRAPHIC_GRAPHIC_H_

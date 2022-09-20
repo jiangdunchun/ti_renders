@@ -1,7 +1,6 @@
 #include "gl430/gl430_render_context.h"
 
-namespace tigine {
-namespace graphic {
+namespace tigine { namespace graphic {
 GL430RenderContext::GL430RenderContext(const RenderContextDescriptor& desc) {
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
@@ -28,5 +27,4 @@ GL430RenderContext::~GL430RenderContext() {
     delete render_pass_;
     glfwTerminate();
 }
-} // namepace tigine::graphic
-} // namespace tigine
+}} // namespace tigine::graphic

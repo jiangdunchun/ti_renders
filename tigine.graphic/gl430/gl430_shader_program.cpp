@@ -1,12 +1,13 @@
 #include "gl430/gl430_shader_program.h"
 
-namespace tigine {
-namespace graphic {
+#include "gl430/gl430_shader.h"
+
+namespace tigine { namespace graphic {
 GL430ShaderProgram::GL430ShaderProgram(const ShaderProgramDescriptor& desc) {
 	id_ = glCreateProgram();
-	if (desc.vertex_shader) glAttachShader(id_, desc.vertex_shader->getID());
-	if (desc.fragment_shader) glAttachShader(id_, desc.fragment_shader->getID());
-	if (desc.compute_shader) glAttachShader(id_, desc.compute_shader->getID());
+	if (desc.vertex_shader) glAttachShader(id_, static_cast<GL430Shader*>(desc.vertex_shader)->getID());
+    if (desc.fragment_shader) glAttachShader(id_, static_cast<GL430Shader*>(desc.fragment_shader)->getID());
+    if (desc.compute_shader) glAttachShader(id_, static_cast<GL430Shader*>(desc.compute_shader)->getID());
 
 	glLinkProgram(id_);
 
@@ -15,10 +16,10 @@ GL430ShaderProgram::GL430ShaderProgram(const ShaderProgramDescriptor& desc) {
 	GLint max_name_len = 0;
 	glGetProgramiv(id_, GL_ACTIVE_UNIFORM_MAX_LENGTH, &max_name_len);
 
-	char* uniform_name = new char[max_name_len];
-	GLsizei name_len = 0;
-	GLint uniform_location = 0;
-	GLint uniform_type = 0;
+	char   *uniform_name     = new char[max_name_len];
+    GLsizei name_len         = 0;
+    GLint   uniform_location = 0;
+    GLint   uniform_type     = 0;
 	for (GLuint i = 0; i < uniform_count; ++i) {
 		glGetActiveUniformName(id_, i, max_name_len, &name_len, uniform_name);
 		std::string name = uniform_name;
@@ -48,5 +49,4 @@ std::string GL430ShaderProgram::getReport() const {
 	delete[] info_log;
 	return report;
 }
-} // namespace tigine::graphic
-} // namspace tigine
+}} // namespace tigine::graphic

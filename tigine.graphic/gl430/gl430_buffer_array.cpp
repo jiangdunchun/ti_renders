@@ -1,7 +1,8 @@
 #include "gl430/gl430_buffer_array.h"
 
-namespace tigine {
-namespace graphic {
+#include "gl430/gl430_buffer.h"
+
+namespace tigine { namespace graphic {
 namespace {
 GLenum mapDataFormat(DataFormat format) {
 	int type = format & 0xf0;
@@ -20,8 +21,8 @@ GL430BufferArray::GL430BufferArray(const BufferArrayDescriptor& desc) {
 	glGenVertexArrays(1, &id_);
 	glBindVertexArray(id_);
 
-	glBindBuffer(GL_ARRAY_BUFFER, desc.vertices_buffer->getID());
-	if (desc.indices_buffer) glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, desc.indices_buffer->getID());
+	glBindBuffer(GL_ARRAY_BUFFER, static_cast<GL430Buffer*>(desc.vertices_buffer)->getID());
+    if (desc.indices_buffer) glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, static_cast<GL430Buffer*>(desc.indices_buffer)->getID());
 
 	for (auto& attribute : desc.vertex_attributes) {
 		glEnableVertexAttribArray(attribute.location);
@@ -38,5 +39,4 @@ GL430BufferArray::GL430BufferArray(const BufferArrayDescriptor& desc) {
 GL430BufferArray::~GL430BufferArray() {
 	glDeleteVertexArrays(1, &id_);
 }
-} // namespace tigine::graphic
-} // namspace tigine
+}} // namespace tigine::graphic

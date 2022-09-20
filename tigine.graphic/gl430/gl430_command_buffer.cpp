@@ -1,7 +1,6 @@
 #include "gl430/gl430_command_buffer.h"
 
-namespace tigine {
-namespace graphic {
+namespace tigine { namespace graphic {
 namespace {
 GLbitfield mapClearFlags(std::uint8_t clear_flags) {
 	GLbitfield ret = 0;
@@ -52,5 +51,4 @@ void GL430CommandBuffer::drawArray(std::uint32_t num_vertices, std::uint32_t fir
 void GL430CommandBuffer::clear(std::uint8_t clear_flags) {
 	glClear(mapClearFlags(clear_flags));
 }
-} // namespace tigine::graphic
-} // namespace tigine
+}} // namespace tigine::graphic

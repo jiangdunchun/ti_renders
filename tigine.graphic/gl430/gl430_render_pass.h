@@ -3,21 +3,17 @@
 
 #include "gl430/gl430_common.h"
 
-namespace tigine {
-namespace graphic {
-struct RenderPassDescriptor {
-	
-};
+namespace tigine { namespace graphic {
+struct RenderPassDescriptor {};
 
 class GL430RenderPass {
 public:
-	GL430RenderPass(const RenderPassDescriptor& desc) {}
-	~GL430RenderPass() = default;
+    GL430RenderPass(const RenderPassDescriptor &desc) {}
+    ~GL430RenderPass() = default;
     DISALLOW_COPY_AND_ASSIGN(GL430RenderPass);
 
 private:
 };
-} // namespace tigine::graphic
-} // namespace tigine
+}} // namespace tigine::graphic
 
 #endif // !TIGINE_GRAPHIC_GL430_GL430_RENDER_PASS_H_
