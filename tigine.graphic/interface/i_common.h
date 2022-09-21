@@ -8,6 +8,14 @@
   void operator=(const TypeName&) = delete
 
 namespace tigine { namespace graphic {
+typedef std::uint8_t  TChar;
+typedef std::uint16_t TUShort;
+typedef std::int16_t  TShort;
+typedef std::uint32_t TUInt;
+typedef std::int32_t  TInt;
+typedef std::uint64_t TULong;
+typedef std::int64_t  TLong;
+
 enum DataFormat {
     DF_R    = 0x01,
     DF_RG   = 0x02,
