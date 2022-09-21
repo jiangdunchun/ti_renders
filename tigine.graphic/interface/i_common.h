@@ -16,7 +16,7 @@ typedef std::int32_t  TInt;
 typedef std::uint64_t TULong;
 typedef std::int64_t  TLong;
 
-enum DataFormat {
+enum DataFormat : TUShort {
     DF_R    = 0x01,
     DF_RG   = 0x02,
     DF_RGB  = 0x03,
@@ -29,7 +29,7 @@ enum DataFormat {
     DF_RGB32Float = DF_RGB | DF_Float,
 };
 
-enum ClearFlag {
+enum ClearFlag : TChar {
     CF_Color   = 1 << 0,
     CF_Depth   = 1 << 1,
     CF_Stencil = 1 << 2
@@ -40,10 +40,10 @@ enum class DrawMode {
 };
 
 struct Viewport {
-    std::uint32_t x;
-    std::uint32_t y;
-    std::uint32_t width;
-    std::uint32_t height;
+    TUInt x;
+    TUInt y;
+    TUInt width;
+    TUInt height;
 };
 
 struct ClearValue {

@@ -5,30 +5,19 @@
 #include <string>
 
 #include "gl430/gl430_common.h"
+#include "interface/i_render_context.h"
 #include "gl430/gl430_surface.h"
-#include "gl430/gl430_render_pass.h"
+
 
 namespace tigine { namespace graphic {
-struct RenderContextDescriptor {
-    std::uint32_t width;
-    std::uint32_t height;
-    std::uint32_t samples = 1;
-};
-
-class GL430RenderContext {
+class GL430RenderContext : public IRenderContext {
 public:
     GL430RenderContext(const RenderContextDescriptor &desc);
     ~GL430RenderContext();
     DISALLOW_COPY_AND_ASSIGN(GL430RenderContext);
 
-    GL430Surface    *getSurface() { return surface_; }
-    GL430RenderPass *getRenderPass() { return render_pass_; }
-    Viewport         getResolution() { return {0, 0, 600, 600}; }
-    void             present() const { glfwSwapBuffers(surface_->window_); }
-
-private:
-    GL430Surface    *surface_;
-    GL430RenderPass *render_pass_;
+    Viewport         getResolution() override { return {0, 0, 600, 600}; }
+    void     present() override { glfwSwapBuffers(static_cast<GL430Surface*>(surface_)->window_); }
 };
 }} // namespace tigine::graphic
 
