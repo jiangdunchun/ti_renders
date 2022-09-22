@@ -3,9 +3,9 @@
 
 #include <cstdint>
 
-#define DISALLOW_COPY_AND_ASSIGN(TypeName) \
-  TypeName(const TypeName&) = delete;      \
-  void operator=(const TypeName&) = delete
+#define DISALLOW_COPY_AND_ASSIGN(TypeName)     \
+    TypeName(const TypeName &)       = delete; \
+    void operator=(const TypeName &) = delete
 
 namespace tigine { namespace graphic {
 typedef std::uint8_t  TChar;
@@ -29,11 +29,7 @@ enum DataFormat : TUShort {
     DF_RGB32Float = DF_RGB | DF_Float,
 };
 
-enum ClearFlag : TChar {
-    CF_Color   = 1 << 0,
-    CF_Depth   = 1 << 1,
-    CF_Stencil = 1 << 2
-};
+enum ClearFlag : TChar { CF_Color = 1 << 0, CF_Depth = 1 << 1, CF_Stencil = 1 << 2 };
 
 enum class DrawMode {
     Triangles,

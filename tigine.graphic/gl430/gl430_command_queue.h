@@ -1,7 +1,6 @@
 #ifndef TIGINE_GRAPHIC_GL430_GL430_COMMAND_QUEUE_H_
 #define TIGINE_GRAPHIC_GL430_GL430_COMMAND_QUEUE_H_
 
-
 #include "gl430/gl430_common.h"
 #include "interface/i_command_queue.h"
 

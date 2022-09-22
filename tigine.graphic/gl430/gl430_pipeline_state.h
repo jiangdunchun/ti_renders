@@ -5,15 +5,13 @@
 #include "interface/i_pipeline_state.h"
 
 namespace tigine { namespace graphic {
-class GL430CommandBuffer;
 class GL430PipelineState : public IPipelineState {
 public:
-    GL430PipelineState(const PipelineStateDescriptor& desc) : IPipelineState(desc) {}
+    GL430PipelineState(const PipelineStateDescriptor &desc) : IPipelineState(desc) {}
     ~GL430PipelineState() = default;
     DISALLOW_COPY_AND_ASSIGN(GL430PipelineState);
 
 private:
-    friend class GL430CommandBuffer;
 };
 }} // namespace tigine::graphic
 

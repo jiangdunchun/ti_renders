@@ -7,21 +7,15 @@
 #include "interface/i_buffer_array.h"
 
 namespace tigine { namespace graphic {
-class GL430RenderSystem;
-class GL430CommandBuffer;
 class GL430BufferArray : public IBufferArray {
 public:
-    explicit GL430BufferArray(const BufferArrayDescriptor& desc);
+    explicit GL430BufferArray(const BufferArrayDescriptor &desc);
     ~GL430BufferArray();
     DISALLOW_COPY_AND_ASSIGN(GL430BufferArray);
 
     GLuint getID() const { return id_; }
 
 private:
-    friend class GL430RenderSystem;
-    friend class GL430CommandBuffer;
-    
-
     GLuint id_;
 };
 }} // namespace tigine::graphic

@@ -3,20 +3,20 @@
 
 #include <vector>
 
-#include "interface/i_common.h"
 #include "interface/i_buffer.h"
+#include "interface/i_common.h"
 
 namespace tigine { namespace graphic {
 struct VertexAttribute {
-    DataFormat    format;
-    std::uint32_t location;
-    std::uint32_t offset;
-    std::uint32_t stride;
+    DataFormat format;
+    TUInt      location;
+    TUInt      offset;
+    TUInt      stride;
 };
 
 struct BufferArrayDescriptor {
-    IBuffer                      *vertices_buffer;
-    IBuffer                      *indices_buffer = nullptr;
+    IBuffer                     *vertices_buffer;
+    IBuffer                     *indices_buffer = nullptr;
     std::vector<VertexAttribute> vertex_attributes;
 };
 

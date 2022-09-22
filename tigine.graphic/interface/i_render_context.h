@@ -4,27 +4,26 @@
 #include <string>
 
 #include "interface/i_common.h"
-#include "interface/i_surface.h"
 #include "interface/i_render_pass.h"
-
+#include "interface/i_surface.h"
 
 namespace tigine { namespace graphic {
 struct RenderContextDescriptor {
-    std::uint32_t width;
-    std::uint32_t height;
-    std::uint32_t samples = 1;
+    TUInt width;
+    TUInt height;
+    TUInt samples = 1;
 };
 
 class IRenderContext {
 public:
-    ISurface*    getSurface() { return surface_; }
-    IRenderPass* getRenderPass() { return render_pass_; }
+    ISurface        *getSurface() { return surface_; }
+    IRenderPass     *getRenderPass() { return render_pass_; }
     virtual Viewport getResolution() = 0;
     virtual void     present()       = 0;
 
 protected:
-    ISurface*    surface_;
-    IRenderPass* render_pass_;
+    ISurface    *surface_;
+    IRenderPass *render_pass_;
 };
 }} // namespace tigine::graphic
 

@@ -7,4 +7,3 @@
 #include "interface/i_common.h"
 
 #endif // !TIGINE_GRAPHIC_GL430_GL430_COMMON_H_
-

@@ -4,7 +4,6 @@
 #include "gl430/gl430_common.h"
 #include "interface/i_render_pass.h"
 
-
 namespace tigine { namespace graphic {
 class GL430RenderPass : public IRenderPass {
 public:
