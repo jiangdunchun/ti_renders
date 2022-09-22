@@ -9,7 +9,10 @@
 #include "interface/i_pipeline_layout.h"
 #include "interface/i_pipeline_state.h"
 #include "interface/i_render_context.h"
+#include "interface/i_render_pass.h"
 #include "interface/i_render_target.h"
+#include "interface/i_resource_heap.h"
+#include "interface/i_sampler.h"
 #include "interface/i_shader.h"
 #include "interface/i_shader_program.h"
 #include "interface/i_texture.h"
@@ -31,7 +34,13 @@ public:
     virtual IShaderProgram  *createShaderProgram(const ShaderProgramDescriptor &desc)   = 0;
     virtual void             release(IShaderProgram *shader_program)                    = 0;
     virtual ITexture        *createTexture(const TextureDescriptor &desc)               = 0;
-    virtual void             release(ITexture *render_target)                           = 0;
+    virtual void             release(ITexture *texture)                                 = 0;
+    virtual ISampler        *CreateSampler(const SamplerDescriptor &desc)               = 0;
+    virtual void             release(ISampler *sampler)                                 = 0;
+    virtual IResourceHeap   *CreateResourceHeap(const ResourceHeapDescriptor &desc)     = 0;
+    virtual void             release(IResourceHeap *resource_heap)                      = 0;
+    virtual IRenderPass     *CreateRenderPass(const RenderPassDescriptor &desc)         = 0;
+    virtual void             release(IRenderPass *render_pass)                          = 0;
     virtual IRenderTarget   *createRenderTarget(const RenderTargetDescriptor &desc)     = 0;
     virtual void             release(IRenderTarget *render_target)                      = 0;
     virtual IPipelineLayout *createPipelineLayout(const PipelineLayoutDescriptor &desc) = 0;
