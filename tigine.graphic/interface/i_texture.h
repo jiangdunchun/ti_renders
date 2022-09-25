@@ -3,6 +3,8 @@
 
 #include "interface/i_common.h"
 
+#include "interface/i_resource.h"
+
 namespace tigine { namespace graphic {
 enum class TextureKind {
     Texture1D,
@@ -11,12 +13,22 @@ enum class TextureKind {
     TextureCube
 };
 
-struct TextureDescriptor {};
+struct TextureDescriptor {
+    TextureKind kind;
+    TUShort     format;
+    TUInt       width;
+    TUInt       height = 1;
+    TUInt       depth  = 1;
+};
 
-class ITexture {
+class ITexture : IResource {
 public:
-    TextureKind getTextureKind() const { return kind_; }
-    TUShort     getFormat() const { return format_; }
+    ITexture(const TextureDescriptor &desc) : kind_(desc.kind), format_(desc.format) {}
+    virtual ~ITexture() {}
+
+    ResourceKind getResourceKind() const override { return ResourceKind::Texture; }
+    TextureKind  getTextureKind() const { return kind_; }
+    TUShort      getFormat() const { return format_; }
 
 private: 
     TextureKind kind_;

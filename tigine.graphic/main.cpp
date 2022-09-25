@@ -6,7 +6,12 @@ using namespace tigine::graphic;
 using namespace std;
 
 int main() {
-    IRenderSystem          *render = new GL430RenderSystem();
+#if 1
+    IRenderSystem *render = new GL430RenderSystem();
+#else
+    IRenderSystem *render = new VulkanRenderSystem();
+#endif 
+    
     RenderContextDescriptor context_desc {
         context_desc.width  = 600,
         context_desc.height = 600,
@@ -85,7 +90,7 @@ void main() {
 
     while (window->processEvents()) {
         command_buffer->begin();
-        command_buffer->setViewport(context->getResolution());
+        command_buffer->setViewport({0, 0, context->getResolution().width, context->getResolution().height});
         command_buffer->setPipeState(pipeline_state);
         command_buffer->setVertexBufferArray(array_buffer);
         command_buffer->beginRenderPass(context->getRenderPass());

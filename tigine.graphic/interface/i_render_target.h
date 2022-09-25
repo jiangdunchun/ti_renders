@@ -3,6 +3,8 @@
 
 #include "interface/i_common.h"
 
+#include "interface/i_render_pass.h"
+
 namespace tigine { namespace graphic {
 struct RenderTargetDescriptor {};
 
@@ -13,7 +15,11 @@ public:
     virtual TUInt              getNumColorAttachments() const = 0;
     virtual bool               hasDepthAttachment() const     = 0;
     virtual bool               hasStencilAttachment() const   = 0;
-    virtual const IRenderPass *GetRenderPass() const          = 0;
+
+    IRenderPass* getRenderPass() { return render_pass_; }
+
+protected:
+    IRenderPass *render_pass_ = nullptr;
 };
 }} // namespace tigine::graphic
 

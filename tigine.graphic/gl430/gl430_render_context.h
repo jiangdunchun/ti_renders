@@ -14,8 +14,13 @@ public:
     ~GL430RenderContext();
     DISALLOW_COPY_AND_ASSIGN(GL430RenderContext);
 
-    Viewport getResolution() override { return {0, 0, 600, 600}; }
+    Extent2D getResolution() override { return {600, 600}; }
     void     present() override { glfwSwapBuffers(static_cast<GL430Surface *>(surface_)->window_); }
+
+    TUInt getSamples() override { return 1; }
+    TUInt getNumColorAttachments() const override { return 0; }
+    bool  hasDepthAttachment() const override { return 0; }
+    bool  hasStencilAttachment() const override { return 0; }
 };
 }} // namespace tigine::graphic
 
