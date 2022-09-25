@@ -23,12 +23,12 @@ struct TextureDescriptor {
 
 class ITexture : IResource {
 public:
-    ITexture(const TextureDescriptor &desc) : kind_(desc.kind), format_(desc.format) {}
-    virtual ~ITexture() {}
-
     ResourceKind getResourceKind() const override { return ResourceKind::Texture; }
     TextureKind  getTextureKind() const { return kind_; }
     TUShort      getFormat() const { return format_; }
+
+protected:
+    ITexture(TextureKind kind, TUShort format) : kind_(kind), format_(format) {}
 
 private: 
     TextureKind kind_;

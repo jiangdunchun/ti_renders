@@ -16,6 +16,17 @@ typedef std::int32_t  TInt;
 typedef std::uint64_t TULong;
 typedef std::int64_t  TLong;
 
+class NonCopyable {
+public:
+    NonCopyable(const NonCopyable &)            = delete;
+    NonCopyable &operator=(const NonCopyable &) = delete;
+
+    virtual ~NonCopyable() = default;
+
+protected:
+    NonCopyable() = default;
+};
+
 enum DataFormat : TUShort {
     DF_R    = 0x01,
     DF_RG   = 0x02,
