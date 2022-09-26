@@ -13,7 +13,7 @@ struct PipelineStateDescriptor {
     ClearValue      clear_value;
 };
 
-class IPipelineState {
+class IPipelineState : public NonCopyable {
 public:
     IPipelineState(const PipelineStateDescriptor &desc) : desc_(desc) {}
     virtual ~IPipelineState() = 0 {}

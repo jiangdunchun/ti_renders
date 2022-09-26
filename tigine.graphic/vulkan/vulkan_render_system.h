@@ -17,7 +17,6 @@ class VulkanRenderSystem : public IRenderSystem {
 public:
     VulkanRenderSystem() { command_queue_ = new VulkanCommandQueue(); }
     ~VulkanRenderSystem() { delete command_queue_; }
-    DISALLOW_COPY_AND_ASSIGN(VulkanRenderSystem);
 
     IRenderContext  *createRenderContext(const RenderContextDescriptor &desc) override { return new VulkanRenderContext(desc); }
     void             release(IRenderContext *render_context) override { delete render_context; }

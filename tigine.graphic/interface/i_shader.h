@@ -18,7 +18,7 @@ struct ShaderDescriptor {
     const char *code = nullptr;
 };
 
-class IShader {
+class IShader : public NonCopyable {
 public:
     virtual bool        hasError() const  = 0;
     virtual std::string getReport() const = 0;

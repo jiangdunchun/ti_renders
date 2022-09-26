@@ -9,7 +9,6 @@ class GL430RenderPass : public IRenderPass {
 public:
     GL430RenderPass(const RenderPassDescriptor &desc) {}
     ~GL430RenderPass() = default;
-    DISALLOW_COPY_AND_ASSIGN(GL430RenderPass);
 
 private:
 };

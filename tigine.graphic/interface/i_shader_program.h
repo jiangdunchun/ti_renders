@@ -11,7 +11,7 @@ struct ShaderProgramDescriptor {
     IShader *compute_shader  = nullptr;
 };
 
-class IShaderProgram {
+class IShaderProgram : public NonCopyable {
 public:
     virtual bool        hasError() const  = 0;
     virtual std::string getReport() const = 0;

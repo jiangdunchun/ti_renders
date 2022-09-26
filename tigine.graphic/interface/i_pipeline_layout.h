@@ -6,7 +6,7 @@
 namespace tigine { namespace graphic {
 struct PipelineLayoutDescriptor {};
 
-class IPipelineLayout {};
+class IPipelineLayout : public NonCopyable {};
 }} // namespace tigine::graphic
 
 #endif // !TIGINE_GRAPHIC_INTERFACE_I_PIPELINE_LAYOUT_H_

@@ -11,7 +11,6 @@ class VulkanSurface : public ISurface {
 public:
     VulkanSurface()  = default;
     ~VulkanSurface() = default;
-    DISALLOW_COPY_AND_ASSIGN(VulkanSurface);
 
     void setTitle(const std::string &name) override { glfwSetWindowTitle(window_, name.c_str()); }
     void show() override { glfwShowWindow(window_); }

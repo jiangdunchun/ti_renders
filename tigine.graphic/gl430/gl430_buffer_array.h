@@ -11,7 +11,6 @@ class GL430BufferArray : public IBufferArray {
 public:
     explicit GL430BufferArray(const BufferArrayDescriptor &desc);
     ~GL430BufferArray();
-    DISALLOW_COPY_AND_ASSIGN(GL430BufferArray);
 
     GLuint getID() const { return id_; }
 

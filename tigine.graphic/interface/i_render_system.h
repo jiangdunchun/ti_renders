@@ -18,7 +18,7 @@
 #include "interface/i_texture.h"
 
 namespace tigine { namespace graphic {
-class IRenderSystem {
+class IRenderSystem : public NonCopyable {
 public:
     virtual IRenderContext  *createRenderContext(const RenderContextDescriptor &desc)   = 0;
     virtual void             release(IRenderContext *render_context)                    = 0;

@@ -2,7 +2,6 @@
 #define TIGINE_GRAPHIC_INTERFACE_I_BUFFER_H_
 
 #include "interface/i_common.h"
-
 #include "interface/i_resource.h"
 
 namespace tigine { namespace graphic {

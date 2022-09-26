@@ -10,12 +10,11 @@ class VulkanCommandQueue : public ICommandQueue {
 public:
     VulkanCommandQueue()  = default;
     ~VulkanCommandQueue() = default;
-    DISALLOW_COPY_AND_ASSIGN(VulkanCommandQueue);
-
+    
     void submit(ICommandBuffer *command_buffer) override {}
 
 private:
-    VkCommandPool command_pool_;
+    VkCommandPool *command_pool_ = nullptr;
 };
 }} // namespace tigine::graphic
 

@@ -9,7 +9,6 @@ class VulkanBuffer : public IBuffer {
 public:
     VulkanBuffer(const BufferDescriptor &desc, const void *data);
     ~VulkanBuffer();
-    DISALLOW_COPY_AND_ASSIGN(VulkanBuffer);
 
     GLuint getID() const { return id_; }
 

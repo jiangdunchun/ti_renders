@@ -9,7 +9,6 @@ class GL430CommandQueue : public ICommandQueue {
 public:
     GL430CommandQueue()  = default;
     ~GL430CommandQueue() = default;
-    DISALLOW_COPY_AND_ASSIGN(GL430CommandQueue);
 
     void submit(ICommandBuffer *command_buffer) override {}
 

@@ -9,7 +9,6 @@ class VulkanCommandBuffer : public ICommandBuffer {
 public:
     VulkanCommandBuffer();
     ~VulkanCommandBuffer();
-    DISALLOW_COPY_AND_ASSIGN(VulkanCommandBuffer);
 
     void begin() override;
     void end() override;

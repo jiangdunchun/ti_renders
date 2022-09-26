@@ -9,7 +9,6 @@ class GL430PipelineState : public IPipelineState {
 public:
     GL430PipelineState(const PipelineStateDescriptor &desc) : IPipelineState(desc) {}
     ~GL430PipelineState() = default;
-    DISALLOW_COPY_AND_ASSIGN(GL430PipelineState);
 
 private:
 };

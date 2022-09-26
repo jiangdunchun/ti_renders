@@ -12,7 +12,6 @@ class VulkanShaderProgram : public IShaderProgram {
 public:
     VulkanShaderProgram(const ShaderProgramDescriptor &desc);
     ~VulkanShaderProgram();
-    DISALLOW_COPY_AND_ASSIGN(VulkanShaderProgram);
 
     bool        hasError() const override;
     std::string getReport() const override;

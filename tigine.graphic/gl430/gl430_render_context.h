@@ -12,7 +12,6 @@ class GL430RenderContext : public IRenderContext {
 public:
     GL430RenderContext(const RenderContextDescriptor &desc);
     ~GL430RenderContext();
-    DISALLOW_COPY_AND_ASSIGN(GL430RenderContext);
 
     Extent2D getResolution() override { return {600, 600}; }
     void     present() override { glfwSwapBuffers(static_cast<GL430Surface *>(surface_)->window_); }

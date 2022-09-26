@@ -9,7 +9,6 @@ class GL430CommandBuffer : public ICommandBuffer {
 public:
     GL430CommandBuffer();
     ~GL430CommandBuffer();
-    DISALLOW_COPY_AND_ASSIGN(GL430CommandBuffer);
 
     void begin() override;
     void end() override;

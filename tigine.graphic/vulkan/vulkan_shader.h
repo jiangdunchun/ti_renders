@@ -9,7 +9,6 @@ class VulkanShader : public IShader {
 public:
     VulkanShader(const ShaderDescriptor &desc);
     ~VulkanShader();
-    DISALLOW_COPY_AND_ASSIGN(VulkanShader);
 
     bool        hasError() const;
     std::string getReport() const;

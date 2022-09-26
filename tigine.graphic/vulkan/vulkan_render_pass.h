@@ -9,7 +9,6 @@ class VulkanRenderPass : public IRenderPass {
 public:
     VulkanRenderPass(const RenderPassDescriptor &desc) {}
     ~VulkanRenderPass() = default;
-    DISALLOW_COPY_AND_ASSIGN(VulkanRenderPass);
 
 private:
 };

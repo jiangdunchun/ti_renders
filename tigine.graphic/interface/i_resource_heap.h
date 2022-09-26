@@ -6,7 +6,7 @@
 namespace tigine { namespace graphic {
 struct ResourceHeapDescriptor {};
 
-class IResourceHeap {};
+class IResourceHeap : public NonCopyable {};
 }} // namespace tigine::graphic
 
 #endif // !TIGINE_GRAPHIC_INTERFACE_I_RESOURCE_HEAP_H_

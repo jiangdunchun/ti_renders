@@ -6,11 +6,7 @@ using namespace tigine::graphic;
 using namespace std;
 
 int main() {
-#if 1
-    IRenderSystem *render = new GL430RenderSystem();
-#else
-    IRenderSystem *render = new VulkanRenderSystem();
-#endif 
+    IRenderSystem *render = CREATE_RENDER_SYSTEM();
     
     RenderContextDescriptor context_desc {
         context_desc.width  = 600,

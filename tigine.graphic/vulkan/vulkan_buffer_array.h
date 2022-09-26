@@ -11,7 +11,6 @@ class VulkanBufferArray : public IBufferArray {
 public:
     explicit VulkanBufferArray(const BufferArrayDescriptor &desc);
     ~VulkanBufferArray();
-    DISALLOW_COPY_AND_ASSIGN(VulkanBufferArray);
 
     GLuint getID() const { return id_; }
 

@@ -12,7 +12,6 @@ class VulkanRenderContext : public IRenderContext {
 public:
     VulkanRenderContext(const RenderContextDescriptor &desc);
     ~VulkanRenderContext();
-    DISALLOW_COPY_AND_ASSIGN(VulkanRenderContext);
 
     Extent2D getResolution() override { return {600, 600}; }
     void     present() override { glfwSwapBuffers(static_cast<VulkanSurface *>(surface_)->window_); }

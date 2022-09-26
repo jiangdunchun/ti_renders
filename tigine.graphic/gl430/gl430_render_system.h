@@ -17,7 +17,6 @@ class GL430RenderSystem : public IRenderSystem {
 public:
     GL430RenderSystem() { command_queue_ = new GL430CommandQueue(); }
     ~GL430RenderSystem() { delete command_queue_; }
-    DISALLOW_COPY_AND_ASSIGN(GL430RenderSystem);
 
     IRenderContext  *createRenderContext(const RenderContextDescriptor &desc) override { return new GL430RenderContext(desc); }
     void             release(IRenderContext *render_context) override { delete render_context; }

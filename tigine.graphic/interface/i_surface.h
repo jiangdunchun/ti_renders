@@ -6,7 +6,7 @@
 #include "gl430/gl430_common.h"
 
 namespace tigine { namespace graphic {
-class ISurface {
+class ISurface : public NonCopyable {
 public:
     virtual void setTitle(const std::string &name) = 0;
     virtual void show()                            = 0;

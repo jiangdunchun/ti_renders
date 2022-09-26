@@ -10,7 +10,6 @@ class GL430Surface : public ISurface {
 public:
     GL430Surface()  = default;
     ~GL430Surface() = default;
-    DISALLOW_COPY_AND_ASSIGN(GL430Surface);
 
     void setTitle(const std::string &name) override { glfwSetWindowTitle(window_, name.c_str()); }
     void show() override { glfwShowWindow(window_); }

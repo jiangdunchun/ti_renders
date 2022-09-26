@@ -5,7 +5,7 @@
 #include "interface/i_common.h"
 
 namespace tigine { namespace graphic {
-class ICommandQueue {
+class ICommandQueue : public NonCopyable {
 public:
     virtual void submit(ICommandBuffer *command_buffer) = 0;
 };

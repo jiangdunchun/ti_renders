@@ -12,7 +12,6 @@ class GL430ShaderProgram : public IShaderProgram {
 public:
     GL430ShaderProgram(const ShaderProgramDescriptor &desc);
     ~GL430ShaderProgram();
-    DISALLOW_COPY_AND_ASSIGN(GL430ShaderProgram);
 
     bool        hasError() const override;
     std::string getReport() const override;

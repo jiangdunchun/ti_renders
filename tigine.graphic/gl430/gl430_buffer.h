@@ -9,7 +9,6 @@ class GL430Buffer : public IBuffer {
 public:
     GL430Buffer(const BufferDescriptor &desc, const void *data);
     ~GL430Buffer();
-    DISALLOW_COPY_AND_ASSIGN(GL430Buffer);
 
     GLuint getID() const { return id_; }
 

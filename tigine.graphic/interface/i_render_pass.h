@@ -6,7 +6,7 @@
 namespace tigine { namespace graphic {
 struct RenderPassDescriptor {};
 
-class IRenderPass {};
+class IRenderPass : public NonCopyable {};
 }} // namespace tigine::graphic
 
 #endif // !TIGINE_GRAPHIC_INTERFACE_I_RENDER_PASS_H_

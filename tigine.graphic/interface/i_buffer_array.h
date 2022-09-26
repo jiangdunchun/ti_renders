@@ -3,8 +3,8 @@
 
 #include <vector>
 
-#include "interface/i_buffer.h"
 #include "interface/i_common.h"
+#include "interface/i_buffer.h"
 
 namespace tigine { namespace graphic {
 struct VertexAttribute {
@@ -20,7 +20,7 @@ struct BufferArrayDescriptor {
     std::vector<VertexAttribute> vertex_attributes;
 };
 
-class IBufferArray {};
+class IBufferArray : public NonCopyable {};
 }} // namespace tigine::graphic
 
 #endif // !TIGINE_GRAPHIC_INTERFACE_I_BUFFER_ARRAY_H_
