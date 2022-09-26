@@ -14,8 +14,12 @@ public:
     ~VulkanRenderContext();
     DISALLOW_COPY_AND_ASSIGN(VulkanRenderContext);
 
-    Viewport getResolution() override { return {600, 600}; }
+    Extent2D getResolution() override { return {600, 600}; }
     void     present() override { glfwSwapBuffers(static_cast<VulkanSurface *>(surface_)->window_); }
+    TUInt getSamples() override { return 1; }
+    TUInt getNumColorAttachments() const override { return 0; }
+    bool  hasDepthAttachment() const override { return 0; }
+    bool  hasStencilAttachment() const override { return 0; }
 };
 }} // namespace tigine::graphic
 
