@@ -9,5 +9,4 @@
 #define CREATE_RENDER_SYSTEM() new GL430RenderSystem()
 #endif
 
-
 #endif // !TIGINE_GRAPHIC_GRAPHIC_H_
