@@ -1,9 +1,9 @@
 #ifndef TIGINE_GRAPHIC_INTERFACE_I_COMMAND_BUFFER_H_
 #define TIGINE_GRAPHIC_INTERFACE_I_COMMAND_BUFFER_H_
 
+#include "interface/i_buffer_array.h"
 #include "interface/i_common.h"
 #include "interface/i_pipeline_state.h"
-#include "interface/i_buffer_array.h"
 #include "interface/i_render_pass.h"
 
 namespace tigine { namespace graphic {

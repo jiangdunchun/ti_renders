@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include "gl430/gl430_common.h"
+#include "interface/i_common.h"
 
 namespace tigine { namespace graphic {
 class ISurface : public NonCopyable {

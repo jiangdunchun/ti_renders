@@ -17,7 +17,7 @@ struct BufferDescriptor {
 
 class IBuffer : public IResource {
 public:
-    ResourceKind getResourceKind() const override { return ResourceKind::Buffer; }
+    ResourceKind getResourceKind() const override final { return ResourceKind::Buffer; }
 };
 }} // namespace tigine::graphic
 

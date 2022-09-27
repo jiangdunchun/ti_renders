@@ -13,19 +13,7 @@ struct PipelineStateDescriptor {
     ClearValue      clear_value;
 };
 
-class IPipelineState : public NonCopyable {
-public:
-    IPipelineState(const PipelineStateDescriptor &desc) : desc_(desc) {}
-    virtual ~IPipelineState() = 0 {}
-
-    IShaderProgram *getShaderProgram() const { return desc_.shader_program; }
-    IRenderPass    *getRenderPass() const { return desc_.render_pass; }
-    DrawMode        getDrawMode() const { return desc_.draw_mode; }
-    ClearValue      getClearValue() const { return desc_.clear_value; }
-
-private:
-    PipelineStateDescriptor desc_;
-};
+class IPipelineState : public NonCopyable {};
 }} // namespace tigine::graphic
 
 #endif // !TIGINE_GRAPHIC_INTERFACE_I_PIPELINE_STATE_H_

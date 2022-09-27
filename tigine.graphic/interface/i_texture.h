@@ -2,7 +2,6 @@
 #define TIGINE_GRAPHIC_INTERFACE_I_TEXTURE_H_
 
 #include "interface/i_common.h"
-
 #include "interface/i_resource.h"
 
 namespace tigine { namespace graphic {
@@ -23,7 +22,7 @@ struct TextureDescriptor {
 
 class ITexture : IResource {
 public:
-    ResourceKind getResourceKind() const override { return ResourceKind::Texture; }
+    ResourceKind getResourceKind() const override final { return ResourceKind::Texture; }
     TextureKind  getTextureKind() const { return kind_; }
     TUShort      getFormat() const { return format_; }
 

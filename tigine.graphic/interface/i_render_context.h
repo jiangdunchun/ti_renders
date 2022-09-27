@@ -4,10 +4,10 @@
 #include <string>
 
 #include "interface/i_common.h"
-
 #include "interface/i_render_pass.h"
-#include "interface/i_surface.h"
 #include "interface/i_render_target.h"
+#include "interface/i_surface.h"
+
 
 namespace tigine { namespace graphic {
 struct RenderContextDescriptor {
@@ -18,11 +18,8 @@ struct RenderContextDescriptor {
 
 class IRenderContext : public IRenderTarget {
 public:
-    ISurface        *getSurface() { return surface_; }
-    virtual void     present()       = 0;
-
-protected:
-    ISurface    *surface_;
+    virtual ISurface *getSurface() = 0;
+    virtual void      present()    = 0;
 };
 }} // namespace tigine::graphic
 

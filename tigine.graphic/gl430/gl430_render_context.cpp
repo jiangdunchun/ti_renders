@@ -11,23 +11,23 @@ GL430RenderContext::GL430RenderContext(const RenderContextDescriptor &desc) {
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
 
-    surface_                    = new GL430Surface();
-    GL430Surface *gl430_surface = static_cast<GL430Surface *>(surface_);
-    gl430_surface->window_      = glfwCreateWindow(desc.width, desc.height, "", NULL, NULL);
-    if (!gl430_surface->window_) {
+    window_ = glfwCreateWindow(desc.width, desc.height, "", NULL, NULL);
+    if (!window_) {
         // @TODO
         glfwTerminate();
     }
-    glfwMakeContextCurrent(gl430_surface->window_);
+
+    glfwMakeContextCurrent(window_);
     gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+
+    surface_ = new GL430Surface(window_);
 
     RenderPassDescriptor render_pass_desc;
     render_pass_ = new GL430RenderPass(render_pass_desc);
 }
 
 GL430RenderContext::~GL430RenderContext() {
-    GL430Surface *gl430_surface = static_cast<GL430Surface *>(surface_);
-    if (gl430_surface->window_) glfwDestroyWindow(gl430_surface->window_);
+    if (window_) glfwDestroyWindow(window_);
     delete surface_;
     delete render_pass_;
     glfwTerminate();

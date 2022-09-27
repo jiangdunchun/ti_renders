@@ -5,6 +5,7 @@
 
 #include "gl430/gl430_common.h"
 #include "gl430/gl430_surface.h"
+#include "gl430/gl430_render_pass.h"
 #include "interface/i_render_context.h"
 
 namespace tigine { namespace graphic {
@@ -13,13 +14,20 @@ public:
     GL430RenderContext(const RenderContextDescriptor &desc);
     ~GL430RenderContext();
 
-    Extent2D getResolution() override { return {600, 600}; }
-    void     present() override { glfwSwapBuffers(static_cast<GL430Surface *>(surface_)->window_); }
+    ISurface* getSurface() override { return surface_; }
+    void      present() override { glfwSwapBuffers(window_); }
+    IRenderPass* getRenderPass() override { return render_pass_; }
 
-    TUInt getSamples() override { return 1; }
-    TUInt getNumColorAttachments() const override { return 0; }
-    bool  hasDepthAttachment() const override { return 0; }
-    bool  hasStencilAttachment() const override { return 0; }
+    Extent2D getResolution() override { return {600, 600}; } //@TODO
+    TUInt getSamples() override { return 0; } // @TODO
+    TUInt getNumColorAttachments() const override { return 0; } // @TODO
+    bool  hasDepthAttachment() const override { return 0; } // @TODO
+    bool  hasStencilAttachment() const override { return 0; } // @TODO
+
+private:
+    GLFWwindow      *window_;
+    GL430Surface    *surface_;
+    GL430RenderPass *render_pass_;
 };
 }} // namespace tigine::graphic
 

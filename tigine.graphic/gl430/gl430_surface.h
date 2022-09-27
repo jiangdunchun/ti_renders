@@ -5,22 +5,24 @@
 #include "interface/i_surface.h"
 
 namespace tigine { namespace graphic {
-class GL430RenderContext;
 class GL430Surface : public ISurface {
 public:
-    GL430Surface()  = default;
+    GL430Surface(GLFWwindow *window) : window_(window) {}
     ~GL430Surface() = default;
 
-    void setTitle(const std::string &name) override { glfwSetWindowTitle(window_, name.c_str()); }
-    void show() override { glfwShowWindow(window_); }
+    void setTitle(const std::string &name) override {
+        glfwSetWindowTitle(window_, name.c_str());
+    }
+    void show() override { 
+        glfwShowWindow(window_);
+    }
     bool processEvents() override {
         glfwPollEvents();
         return !glfwWindowShouldClose(window_);
     }
 
 private:
-    friend class GL430RenderContext;
-    GLFWwindow *window_ = nullptr;
+    GLFWwindow *window_;
 };
 }} // namespace tigine::graphic
 
