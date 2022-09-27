@@ -3,8 +3,6 @@
 
 #include "vulkan/vulkan_common.h"
 
-#include "interface/i_surface.h"
-
 namespace tigine { namespace graphic {
 class VulkanRenderContext;
 class VulkanSurface : public ISurface {
