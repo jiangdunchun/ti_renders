@@ -1,5 +1,5 @@
-#set(GRAPHIC_API "vulkan" CACHE STRING "gl430 || vulkan" FORCE)
-set(GRAPHIC_API "gl430" CACHE STRING "gl430 || vulkan" FORCE)
+set(GRAPHIC_API "vulkan" CACHE STRING "gl430 || vulkan" FORCE)
+#set(GRAPHIC_API "gl430" CACHE STRING "gl430 || vulkan" FORCE)
 
 if(${GRAPHIC_API} STREQUAL "vulkan")
 	message(STATUS "--->Using vulkan as graphic api")

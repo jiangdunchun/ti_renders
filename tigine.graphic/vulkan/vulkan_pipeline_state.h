@@ -7,10 +7,6 @@
 namespace tigine { namespace graphic {
 class VulkanPipelineState : public IPipelineState {
 public:
-    VulkanPipelineState(const PipelineStateDescriptor &desc) : IPipelineState(desc) {}
-    ~VulkanPipelineState() = default;
-
-private:
 };
 }} // namespace tigine::graphic
 

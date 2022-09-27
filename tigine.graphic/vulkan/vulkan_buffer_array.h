@@ -9,13 +9,6 @@
 namespace tigine { namespace graphic {
 class VulkanBufferArray : public IBufferArray {
 public:
-    explicit VulkanBufferArray(const BufferArrayDescriptor &desc);
-    ~VulkanBufferArray();
-
-    GLuint getID() const { return id_; }
-
-private:
-    GLuint id_;
 };
 }} // namespace tigine::graphic
 

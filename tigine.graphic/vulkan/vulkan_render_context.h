@@ -5,6 +5,7 @@
 
 #include "vulkan/vulkan_common.h"
 #include "vulkan/vulkan_surface.h"
+#include "vulkan/vulkan_render_pass.h"
 #include "interface/i_render_context.h"
 
 namespace tigine { namespace graphic {
@@ -13,12 +14,20 @@ public:
     VulkanRenderContext(const RenderContextDescriptor &desc);
     ~VulkanRenderContext();
 
-    Extent2D getResolution() override { return {600, 600}; }
-    void     present() override { glfwSwapBuffers(static_cast<VulkanSurface *>(surface_)->window_); }
-    TUInt getSamples() override { return 1; }
-    TUInt getNumColorAttachments() const override { return 0; }
-    bool  hasDepthAttachment() const override { return 0; }
-    bool  hasStencilAttachment() const override { return 0; }
+    ISurface    *getSurface() override { return surface_; }
+    void         present() override { glfwSwapBuffers(window_); }
+    IRenderPass *getRenderPass() override { return render_pass_; }
+
+    Extent2D getResolution() override { return {600, 600}; }       //@TODO
+    TUInt    getSamples() override { return 0; }                   // @TODO
+    TUInt    getNumColorAttachments() const override { return 0; } // @TODO
+    bool     hasDepthAttachment() const override { return 0; }     // @TODO
+    bool     hasStencilAttachment() const override { return 0; }   // @TODO
+
+private:
+    GLFWwindow       *window_;
+    VulkanSurface    *surface_;
+    VulkanRenderPass *render_pass_;
 };
 }} // namespace tigine::graphic
 

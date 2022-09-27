@@ -7,13 +7,6 @@
 namespace tigine { namespace graphic {
 class VulkanBuffer : public IBuffer {
 public:
-    VulkanBuffer(const BufferDescriptor &desc, const void *data);
-    ~VulkanBuffer();
-
-    GLuint getID() const { return id_; }
-
-private:
-    GLuint id_;
 };
 }} // namespace tigine::graphic
 

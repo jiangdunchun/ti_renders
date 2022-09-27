@@ -8,7 +8,6 @@
 #include "interface/i_render_target.h"
 #include "interface/i_surface.h"
 
-
 namespace tigine { namespace graphic {
 struct RenderContextDescriptor {
     TUInt width;

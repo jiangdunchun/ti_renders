@@ -20,16 +20,16 @@ public:
 
     IRenderContext  *createRenderContext(const RenderContextDescriptor &desc) override { return new VulkanRenderContext(desc); }
     void             release(IRenderContext *render_context) override { delete render_context; }
-    IShader         *createShader(const ShaderDescriptor &desc) override { return new VulkanShader(desc); }
+    IShader         *createShader(const ShaderDescriptor &desc) override { return nullptr; }
     void             release(IShader *shader) override { delete shader; }
-    IShaderProgram  *createShaderProgram(const ShaderProgramDescriptor &desc) override { return new VulkanShaderProgram(desc); }
+    IShaderProgram  *createShaderProgram(const ShaderProgramDescriptor &desc) override { return nullptr; }
     void             release(IShaderProgram *shader_program) override { delete shader_program; }
-    IBuffer         *createBuffer(const BufferDescriptor &desc, void *data) override { return new VulkanBuffer(desc, data); }
+    IBuffer         *createBuffer(const BufferDescriptor &desc, void *data) override { return nullptr; }
     void             release(IBuffer *buffer) override { delete buffer; }
-    IBufferArray    *createBufferArray(const BufferArrayDescriptor &desc) override { return new VulkanBufferArray(desc); }
+    IBufferArray    *createBufferArray(const BufferArrayDescriptor &desc) override { return nullptr; }
     void             release(IBufferArray *buffer_array) override { delete buffer_array; }
     ICommandQueue   *getCommandQueue() override { return command_queue_; }
-    ICommandBuffer  *createCommandBuffer() override { return new VulkanCommandBuffer(); }
+    ICommandBuffer  *createCommandBuffer() override { return nullptr; }
     void             release(ICommandBuffer *command_buffer) override { delete command_buffer; }
     ITexture        *createTexture(const TextureDescriptor &desc) override { return nullptr; }
     void             release(ITexture *render_target) override {}
@@ -43,7 +43,7 @@ public:
     void             release(IRenderTarget *render_target) override {}
     IPipelineLayout *createPipelineLayout(const PipelineLayoutDescriptor &desc) override { return nullptr; }
     void             release(IPipelineLayout *pipeline_layout) override {}
-    IPipelineState  *createPipelineState(const PipelineStateDescriptor &desc) override { return new VulkanPipelineState(desc); }
+    IPipelineState  *createPipelineState(const PipelineStateDescriptor &desc) override { return nullptr; }
     void             release(IPipelineState *pipeline) override { delete pipeline; }
 
 private:

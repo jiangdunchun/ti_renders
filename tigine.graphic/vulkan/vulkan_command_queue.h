@@ -8,9 +8,6 @@
 namespace tigine { namespace graphic {
 class VulkanCommandQueue : public ICommandQueue {
 public:
-    VulkanCommandQueue()  = default;
-    ~VulkanCommandQueue() = default;
-    
     void submit(ICommandBuffer *command_buffer) override {}
 
 private:

@@ -7,9 +7,6 @@
 namespace tigine { namespace graphic {
 class VulkanCommandBuffer : public ICommandBuffer {
 public:
-    VulkanCommandBuffer();
-    ~VulkanCommandBuffer();
-
     void begin() override;
     void end() override;
     void setViewport(const Viewport &viewport) override;
