@@ -1,6 +1,16 @@
 #include "vulkan/vulkan_render_context.h"
 
 namespace tigine { namespace graphic {
+namespace {
+void createWindow(GLFWwindow &window) {}
+void releaseWindow(GLFWwindow &window) {}
+void createInstance(VkInstance &instance) {}
+void releaseInstance(VkInstance &instance) {}
+void pickupPhysicalDevice(VkPhysicalDevice &physcal_device) {}
+void createDevice(VkDevice &device) {}
+void releaseDevice(VkDevice &device) {}
+} // namespace
+
 VulkanRenderContext::VulkanRenderContext(const RenderContextDescriptor &desc) {
     glfwInit();
     glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
