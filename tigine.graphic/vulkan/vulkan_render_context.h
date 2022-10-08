@@ -28,6 +28,7 @@ private:
     GLFWwindow       *window_;
     VulkanSurface    *surface_;
     VulkanRenderPass *render_pass_;
+    VkInstance        instance;
 };
 }} // namespace tigine::graphic
 
