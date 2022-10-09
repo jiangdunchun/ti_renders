@@ -9,8 +9,11 @@ add_executable(vulkan_hello test.cpp)
 include(../../cmake/ShaderCompile.cmake)
 
 file(GLOB_RECURSE SHADER_FILES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/shader/*.vert"
-                                            "${CMAKE_CURRENT_SOURCE_DIR}/glsl/*.frag"
-                                            "${CMAKE_CURRENT_SOURCE_DIR}/glsl/*.comp")
+                                            "${CMAKE_CURRENT_SOURCE_DIR}/shader/*.frag"
+                                            "${CMAKE_CURRENT_SOURCE_DIR}/shader/*.comp")
 
+compile_shader(
+  "${SHADER_FILES}"
+  ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 target_link_libraries(vulkan_hello glfw ${Vulkan_LIBRARY})

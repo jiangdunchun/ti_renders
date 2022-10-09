@@ -12,6 +12,9 @@
 #include <stdexcept>
 #include <vector>
 
+#include "./include/shader_frag.h"
+#include "./include/shader_vert.h"
+
 const uint32_t WIDTH  = 800;
 const uint32_t HEIGHT = 600;
 
@@ -458,11 +461,8 @@ private:
     }
 
     void createGraphicsPipeline() {
-        auto vertShaderCode = readFile("E:/jdc_code/ti_renders/tests/vulkan_hello/shader/vert.spv");
-        auto fragShaderCode = readFile("E:/jdc_code/ti_renders/tests/vulkan_hello/shader/frag.spv");
-
-        VkShaderModule vertShaderModule = createShaderModule(vertShaderCode);
-        VkShaderModule fragShaderModule = createShaderModule(fragShaderCode);
+        VkShaderModule vertShaderModule = createShaderModule(shader_vert);
+        VkShaderModule fragShaderModule = createShaderModule(shader_frag);
 
         VkPipelineShaderStageCreateInfo vertShaderStageInfo {};
         vertShaderStageInfo.sType  = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
@@ -736,7 +736,7 @@ private:
         currentFrame = (currentFrame + 1) % MAX_FRAMES_IN_FLIGHT;
     }
 
-    VkShaderModule createShaderModule(const std::vector<char> &code) {
+    VkShaderModule createShaderModule(const std::vector<unsigned char> &code) {
         VkShaderModuleCreateInfo createInfo {};
         createInfo.sType    = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
         createInfo.codeSize = code.size();
