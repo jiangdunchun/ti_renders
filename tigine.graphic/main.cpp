@@ -9,8 +9,7 @@ int main() {
     IRenderSystem *render = CREATE_RENDER_SYSTEM();
     
     RenderContextDescriptor context_desc {
-        context_desc.width  = 600,
-        context_desc.height = 600,
+        context_desc.resolution = {600, 600}
     };
     IRenderContext *context = render->createRenderContext(context_desc);
     ISurface       *window  = context->getSurface();
@@ -84,7 +83,7 @@ int main() {
 //    ICommandQueue  *queue          = render->getCommandQueue();
 //    ICommandBuffer *command_buffer = render->createCommandBuffer();
 //
-//    while (window->processEvents()) {
+    while (window->processEvents()) {
 //        command_buffer->begin();
 //        command_buffer->setViewport({0, 0, context->getResolution().width, context->getResolution().height});
 //        command_buffer->setPipeState(pipeline_state);
@@ -101,5 +100,5 @@ int main() {
 //        // glBindVertexArray(array_buffer->getID());
 //        // glDrawArrays(GL_TRIANGLES, 0, 3);
 //        context->present();
-//    }
+    }
 }

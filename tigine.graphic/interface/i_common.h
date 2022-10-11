@@ -54,14 +54,14 @@ struct Viewport {
 };
 
 struct Extent2D {
-    TUInt width;
-    TUInt height;
+    TUInt width  = 0;
+    TUInt height = 0;
 };
 
 struct Extent3D {
-    TUInt width;
-    TUInt height;
-    TUInt depth;
+    TUInt width  = 0;
+    TUInt height = 0;
+    TUInt depth  = 0;
 };
 
 struct ClearValue {

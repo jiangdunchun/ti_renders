@@ -11,7 +11,7 @@ GL430RenderContext::GL430RenderContext(const RenderContextDescriptor &desc) {
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
 
-    window_ = glfwCreateWindow(desc.width, desc.height, "", NULL, NULL);
+    window_ = glfwCreateWindow(desc.resolution.width, desc.resolution.height, "", NULL, NULL);
     if (!window_) {
         // @TODO
         glfwTerminate();

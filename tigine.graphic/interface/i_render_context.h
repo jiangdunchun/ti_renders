@@ -10,9 +10,8 @@
 
 namespace tigine { namespace graphic {
 struct RenderContextDescriptor {
-    TUInt width;
-    TUInt height;
-    TUInt samples = 1;
+    Extent2D resolution;
+    TUInt    samples = 1;
 };
 
 class IRenderContext : public IRenderTarget {
