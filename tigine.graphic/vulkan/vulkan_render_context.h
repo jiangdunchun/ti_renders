@@ -30,6 +30,11 @@ private:
     VulkanRenderPass *render_pass_;
     VkInstance        instance_;
     VkDebugUtilsMessengerEXT debugMessenger_;
+    VkSurfaceKHR             surface_KHR_;
+    VkPhysicalDevice         physiclDevice_;
+    VkDevice                 device_;
+    VkQueue                  graphicsQueue_;
+    VkQueue                  presentQueue_;
 };
 }} // namespace tigine::graphic
 
