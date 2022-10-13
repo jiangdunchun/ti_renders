@@ -99,6 +99,6 @@ int main() {
 //        // glUseProgram(prog->getID());
 //        // glBindVertexArray(array_buffer->getID());
 //        // glDrawArrays(GL_TRIANGLES, 0, 3);
-//        context->present();
+        context->present();
     }
 }

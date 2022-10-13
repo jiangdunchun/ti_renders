@@ -35,6 +35,12 @@ private:
     VkDevice                 device_;
     VkQueue                  graphicsQueue_;
     VkQueue                  presentQueue_;
+    VkSwapchainKHR           swapChain_;
+    std::vector<VkImage>     swapChainImages_;
+    VkFormat                 swapChainImageFormat_;
+    VkExtent2D               swapChainExtent_;
+    std::vector<VkImageView> swapChainImageViews_;
+    VkRenderPass             renderPass_;
 };
 }} // namespace tigine::graphic
 

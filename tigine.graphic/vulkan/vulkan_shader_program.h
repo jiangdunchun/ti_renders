@@ -3,22 +3,54 @@
 
 #include <map>
 #include <string>
+#include <vector>
 
 #include "vulkan/vulkan_common.h"
 #include "interface/i_shader_program.h"
 
+#include "vulkan/vulkan_shader.h"
+
 namespace tigine { namespace graphic {
 class VulkanShaderProgram : public IShaderProgram {
 public:
-    VulkanShaderProgram(const ShaderProgramDescriptor &desc);
-    ~VulkanShaderProgram();
+    VulkanShaderProgram(VkDevice* device, const ShaderProgramDescriptor& desc) : device_(device) {
+        if (desc.vertex_shader) {
+            VkPipelineShaderStageCreateInfo shaderStageInfo {};
+            shaderStageInfo.sType  = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
+            shaderStageInfo.stage  = VK_SHADER_STAGE_VERTEX_BIT;
+            shaderStageInfo.module = static_cast<VulkanShader *>(desc.vertex_shader)->getShaderModule();
+            shaderStageInfo.pName  = "main";
 
-    bool        hasError() const override;
-    std::string getReport() const override;
-    GLuint      getID() const { return id_; }
+            shader_stage_create_info_.push_back(shaderStageInfo);
+        }
+        if (desc.fragment_shader) {
+            VkPipelineShaderStageCreateInfo shaderStageInfo {};
+            shaderStageInfo.sType  = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
+            shaderStageInfo.stage  = VK_SHADER_STAGE_FRAGMENT_BIT;
+            shaderStageInfo.module = static_cast<VulkanShader *>(desc.fragment_shader)->getShaderModule();
+            shaderStageInfo.pName  = "main";
+
+            shader_stage_create_info_.push_back(shaderStageInfo);
+        }
+        if (desc.compute_shader) {
+            VkPipelineShaderStageCreateInfo shaderStageInfo {};
+            shaderStageInfo.sType  = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
+            shaderStageInfo.stage  = VK_SHADER_STAGE_COMPUTE_BIT;
+            shaderStageInfo.module = static_cast<VulkanShader *>(desc.compute_shader)->getShaderModule();
+            shaderStageInfo.pName  = "main";
+
+            shader_stage_create_info_.push_back(shaderStageInfo);
+        }
+    }
+    ~VulkanShaderProgram() {}
+
+    bool                                         hasError() const override { return false; }
+    std::string                                  getReport() const override { return ""; }
+    std::vector<VkPipelineShaderStageCreateInfo> getShaderStageCreateInfo() { return shader_stage_create_info_; }
 
 private:
-    GLuint id_;
+    VkDevice *device_;
+    std::vector<VkPipelineShaderStageCreateInfo> shader_stage_create_info_;
     struct Uniform {
         GLint location;
         GLint type;
