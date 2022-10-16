@@ -2,6 +2,7 @@
 #define TIGINE_GRAPHIC_VULKAN_VULKAN_RENDER_CONTEXT_H_
 
 #include <string>
+#include <vector>
 
 #include "vulkan/vulkan_common.h"
 #include "vulkan/vulkan_surface.h"

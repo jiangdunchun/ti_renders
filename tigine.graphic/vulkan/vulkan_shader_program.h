@@ -13,7 +13,7 @@
 namespace tigine { namespace graphic {
 class VulkanShaderProgram : public IShaderProgram {
 public:
-    VulkanShaderProgram(VkDevice* device, const ShaderProgramDescriptor& desc) : device_(device) {
+    VulkanShaderProgram(const ShaderProgramDescriptor& desc) {
         if (desc.vertex_shader) {
             VkPipelineShaderStageCreateInfo shaderStageInfo {};
             shaderStageInfo.sType  = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
@@ -45,17 +45,11 @@ public:
     ~VulkanShaderProgram() {}
 
     bool                                         hasError() const override { return false; }
-    std::string                                  getReport() const override { return ""; }
+    std::string                                  getReport() const override { return "getReport() is not support in vulkan"; }
     std::vector<VkPipelineShaderStageCreateInfo> getShaderStageCreateInfo() { return shader_stage_create_info_; }
 
 private:
-    VkDevice *device_;
     std::vector<VkPipelineShaderStageCreateInfo> shader_stage_create_info_;
-    struct Uniform {
-        GLint location;
-        GLint type;
-    };
-    std::map<std::string, Uniform> uniforms_;
 };
 
 }} // namespace tigine::graphic

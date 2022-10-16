@@ -19,7 +19,7 @@ public:
     ~VulkanShader() { vkDestroyShaderModule(*device_, shader_, nullptr); }
 
     bool        hasError() const { return has_error_; }
-    std::string getReport() const { return ""; }
+    std::string getReport() const { return "getReport() is not support in vulkan"; }
     VkShaderModule getShaderModule() { return shader_; }
 
 private:
