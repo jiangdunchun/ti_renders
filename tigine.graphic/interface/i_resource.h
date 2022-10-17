@@ -6,8 +6,7 @@
 namespace tigine { namespace graphic {
 enum class ResourceKind {
     Buffer,
-    Texture,
-    Sampler 
+    Texture
 };
 
 class IResource : public NonCopyable {

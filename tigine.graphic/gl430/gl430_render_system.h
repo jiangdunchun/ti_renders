@@ -33,8 +33,6 @@ public:
     void             release(ICommandBuffer *command_buffer) override { delete command_buffer; }
     ITexture        *createTexture(const TextureDescriptor &desc) override { return nullptr; }
     void             release(ITexture *render_target) override {}
-    ISampler        *CreateSampler(const SamplerDescriptor &desc) { return nullptr; }
-    void             release(ISampler *sampler) {}
     IResourceHeap   *CreateResourceHeap(const ResourceHeapDescriptor &desc) { return nullptr; }
     void             release(IResourceHeap *resource_heap) {}
     IRenderPass     *CreateRenderPass(const RenderPassDescriptor &desc) { return nullptr; }

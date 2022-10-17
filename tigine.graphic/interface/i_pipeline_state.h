@@ -4,13 +4,15 @@
 #include "interface/i_common.h"
 #include "interface/i_render_pass.h"
 #include "interface/i_shader_program.h"
+#include "interface/i_pipeline_layout.h"
 
 namespace tigine { namespace graphic {
 struct PipelineStateDescriptor {
-    IShaderProgram *shader_program;
-    IRenderPass    *render_pass;
-    DrawMode        draw_mode = DrawMode::Triangles;
-    ClearValue      clear_value;
+    IShaderProgram  *shader_program;
+    IPipelineLayout *pipe_layout;
+    IRenderPass     *render_pass;
+    DrawMode         draw_mode = DrawMode::Triangles;
+    ClearValue       clear_value;
 };
 
 class IPipelineState : public NonCopyable {};
