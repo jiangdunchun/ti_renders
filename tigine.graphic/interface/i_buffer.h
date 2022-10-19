@@ -11,8 +11,9 @@ enum BufferKind {
 };
 
 struct BufferDescriptor {
-    TULong size  = 0;
     TUInt  kinds = 0;
+    TULong data_size  = 0;
+    void  *data  = nullptr;
 };
 
 class IBuffer : public IResource {

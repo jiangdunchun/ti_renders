@@ -7,6 +7,13 @@
 namespace tigine { namespace graphic {
 class VulkanBuffer : public IBuffer {
 public:
+    VulkanBuffer(VkDevice *device, const BufferDescriptor &desc);
+    ~VulkanBuffer();
+
+private:
+    VkDevice      *device_;
+    VkBuffer       buffer_;
+    VkDeviceMemory memory_;
 };
 }} // namespace tigine::graphic
 
