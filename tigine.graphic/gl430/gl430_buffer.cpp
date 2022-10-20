@@ -14,7 +14,7 @@ GL430Buffer::GL430Buffer(const BufferDescriptor &desc, const void *data) {
     GLsizei buffer_type = mapBufferKinds(desc.kinds);
     glGenBuffers(1, &id_);
     glBindBuffer(buffer_type, id_);
-    glBufferData(buffer_type, desc.size, data, GL_STATIC_DRAW);
+    glBufferData(buffer_type, desc.data_size, data, GL_STATIC_DRAW);
 }
 
 GL430Buffer::~GL430Buffer() { glDeleteBuffers(1, &id_); }

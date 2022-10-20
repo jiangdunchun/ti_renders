@@ -9,7 +9,7 @@
 namespace tigine { namespace graphic {
 struct PipelineStateDescriptor {
     IShaderProgram  *shader_program;
-    IPipelineLayout *pipe_layout;
+    IPipelineLayout *pipeline_layout;
     IRenderPass     *render_pass;
     DrawMode         draw_mode = DrawMode::Triangles;
     ClearValue       clear_value;

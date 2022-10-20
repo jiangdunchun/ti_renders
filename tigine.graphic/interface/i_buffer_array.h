@@ -16,7 +16,7 @@ struct BufferArrayDescriptor {
     IBuffer       *vertices_buffer;
     IBuffer       *indices_buffer = nullptr;
     TUInt          attributes_count;
-    AttributeInfo *vertex_attributes;
+    AttributeInfo *attributes;
 };
 
 class IBufferArray : public NonCopyable {};

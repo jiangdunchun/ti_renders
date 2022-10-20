@@ -11,6 +11,7 @@
 #include "vulkan/vulkan_render_context.h"
 #include "vulkan/vulkan_shader.h"
 #include "vulkan/vulkan_shader_program.h"
+#include "vulkan/vulkan_resource_heap.h"
 
 namespace tigine { namespace graphic {
 class VulkanRenderSystem : public IRenderSystem {

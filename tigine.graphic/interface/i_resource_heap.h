@@ -3,8 +3,21 @@
 
 #include "interface/i_common.h"
 
+#include "interface/i_resource.h"
+#include "interface/i_texture.h"
+#include "interface/i_shader.h"
+
 namespace tigine { namespace graphic {
-struct ResourceHeapDescriptor {};
+struct UniformInfo {
+    TUInt      binding;
+    IResource *resource = nullptr;
+    ShaderKind shader_stage;
+};
+
+struct ResourceHeapDescriptor {
+    TUInt        uniforms_count;
+    UniformInfo *uniforms;
+};
 
 class IResourceHeap : public NonCopyable {};
 }} // namespace tigine::graphic
