@@ -27,7 +27,7 @@ uint32_t findMemoryType(VkPhysicalDevice *physical_divece, uint32_t type_filter,
 } // namespace
 
 VulkanBuffer::VulkanBuffer(VkPhysicalDevice *physical_divece, VkDevice *device, const BufferDescriptor &desc) 
-    : physical_divece_(physical_divece), device_(device) {
+    : data_size_(desc.data_size), physical_divece_(physical_divece), device_(device) {
     VkBufferCreateInfo buffer_create_info    = {};
     buffer_create_info.sType                 = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
     buffer_create_info.pNext                 = NULL;
