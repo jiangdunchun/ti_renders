@@ -5,22 +5,14 @@
 #include "interface/i_surface.h"
 
 namespace tigine { namespace graphic {
-class VulkanRenderContext;
 class VulkanSurface : public ISurface {
 public:
-    VulkanSurface(GLFWwindow *window) : window_(window) {}
-    ~VulkanSurface() {}
+    VulkanSurface(GLFWwindow *window);
+    ~VulkanSurface();
 
-    void setTitle(const std::string &name) override {
-        glfwSetWindowTitle(window_, name.c_str());
-    }
-    void show() override { 
-        glfwShowWindow(window_);
-    }
-    bool processEvents() override {
-        glfwPollEvents();
-        return !glfwWindowShouldClose(window_);
-    }
+    void setTitle(const std::string &name) override;
+    void show() override;
+    bool processEvents() override;
 
 private:
     GLFWwindow *window_ = nullptr;

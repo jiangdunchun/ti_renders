@@ -28,7 +28,7 @@ uint32_t findMemoryType(VkPhysicalDevice *physical_divece, uint32_t type_filter,
 
 VulkanBuffer::VulkanBuffer(VkPhysicalDevice *physical_divece, VkDevice *device, const BufferDescriptor &desc) 
     : data_size_(desc.data_size), physical_divece_(physical_divece), device_(device) {
-    VkBufferCreateInfo buffer_create_info    = {};
+    VkBufferCreateInfo buffer_create_info {};
     buffer_create_info.sType                 = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
     buffer_create_info.pNext                 = NULL;
     buffer_create_info.usage                 = mapBufferKinds(desc.kinds);
@@ -43,10 +43,10 @@ VulkanBuffer::VulkanBuffer(VkPhysicalDevice *physical_divece, VkDevice *device, 
     vkGetBufferMemoryRequirements(*device, buffer_, &mem_requirements);
     VkMemoryPropertyFlags properties = VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT;
 
-    VkMemoryAllocateInfo memory_allocate_info = {};
-    memory_allocate_info.sType                = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
-    memory_allocate_info.allocationSize       = mem_requirements.size;
-    memory_allocate_info.memoryTypeIndex      = findMemoryType(physical_divece, mem_requirements.memoryTypeBits, properties);
+    VkMemoryAllocateInfo memory_allocate_info {};
+    memory_allocate_info.sType           = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+    memory_allocate_info.allocationSize  = mem_requirements.size;
+    memory_allocate_info.memoryTypeIndex = findMemoryType(physical_divece, mem_requirements.memoryTypeBits, properties);
     vkAllocateMemory(*device_, &memory_allocate_info, nullptr, &memory_);
 
     vkBindBufferMemory(*device_, buffer_, memory_, 0);
@@ -66,5 +66,4 @@ void VulkanBuffer::updateData(TULong data_size, void *data) {
     memcpy(dst_ptr, data, (size_t)data_size);
     vkUnmapMemory(*device_, memory_);
 }
-}
-} // namespace tigine
+}} // namespace tigine::graphic

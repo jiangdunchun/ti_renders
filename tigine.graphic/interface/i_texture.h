@@ -12,15 +12,39 @@ enum class TextureKind {
     TextureCube
 };
 
+enum class SamplerAddressMode {
+    Repeat,
+    Mirror,
+    Clamp,
+    Border,
+    MirrorOnce,
+};
+
+enum class SamplerFilter {
+    Nearest,
+    Linear,
+};
+
+struct SamplerDescriptor {
+    SamplerAddressMode address_mode_U = SamplerAddressMode::Repeat;
+    SamplerAddressMode address_mode_V = SamplerAddressMode::Repeat;
+    SamplerAddressMode address_mode_W = SamplerAddressMode::Repeat;
+    SamplerFilter min_filter = SamplerFilter::Linear;
+    SamplerFilter mag_filter = SamplerFilter::Linear;
+    SamplerFilter mipmap_filter = SamplerFilter::Linear;
+    bool mipmapping = true;
+};
+
 struct TextureDescriptor {
     TextureKind kind;
     TUShort     format;
     TUInt       width;
     TUInt       height = 1;
     TUInt       depth  = 1;
+    SamplerDescriptor sample_desc;
 };
 
-class ITexture : IResource {
+class ITexture : public IResource {
 public:
     ResourceKind getResourceKind() const override final { return ResourceKind::Texture; }
     TextureKind  getTextureKind() const { return kind_; }

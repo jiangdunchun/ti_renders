@@ -5,16 +5,23 @@
 #include "interface/i_buffer.h"
 
 namespace tigine { namespace graphic {
+struct BindingInfo {
+    TUInt binding;
+    TUInt stride;
+};
+
 struct AttributeInfo {
+    TUInt      binding;
     DataFormat format;
     TUInt      location;
     TUInt      offset;
-    TUInt      stride;
 };
 
 struct BufferArrayDescriptor {
     IBuffer       *vertices_buffer;
     IBuffer       *indices_buffer = nullptr;
+    TUInt          bindings_count;
+    BindingInfo   *bindings;
     TUInt          attributes_count;
     AttributeInfo *attributes;
 };

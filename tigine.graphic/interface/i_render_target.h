@@ -9,12 +9,12 @@ struct RenderTargetDescriptor {};
 
 class IRenderTarget : public NonCopyable {
 public:
-    virtual IRenderPass       *getRenderPass()                = 0;
-    virtual Extent2D           getResolution()                = 0;
-    virtual TUInt              getSamples()                   = 0;
-    virtual TUInt              getNumColorAttachments() const = 0;
-    virtual bool               hasDepthAttachment() const     = 0;
-    virtual bool               hasStencilAttachment() const   = 0;
+    virtual IRenderPass *getRenderPass()                = 0;
+    virtual Extent2D     getResolution()                = 0;
+    virtual TUInt        getSamples()                   = 0;
+    virtual TUInt        getNumColorAttachments() const = 0;
+    virtual bool         hasDepthAttachment() const     = 0;
+    virtual bool         hasStencilAttachment() const   = 0;
 };
 }} // namespace tigine::graphic
 

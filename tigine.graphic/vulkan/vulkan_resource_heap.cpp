@@ -4,6 +4,7 @@
 #include <stdexcept>
 
 #include "Vulkan/vulkan_buffer.h"
+#include "vulkan/vulkan_texture.h"
 
 namespace tigine { namespace graphic {
 namespace {
@@ -113,10 +114,12 @@ VulkanResourceHeap::VulkanResourceHeap(VkDevice *device, const ResourceHeapDescr
 
             write.pBufferInfo = &buffer_info;
         } else if (uniform.resource->getResourceKind() == ResourceKind::Texture) {
+            VulkanTexture *vulkan_texture = static_cast<VulkanTexture *>(uniform.resource);
+
             VkDescriptorImageInfo image_info {};
             image_info.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-            image_info.imageView   = textureImageView;
-            image_info.sampler     = textureSampler;
+            image_info.imageView   = *(vulkan_texture->getImageview());
+            image_info.sampler     = *(vulkan_texture->getSampler());
 
             write.pImageInfo = &image_info;
         }
