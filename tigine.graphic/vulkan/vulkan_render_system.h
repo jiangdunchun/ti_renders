@@ -16,37 +16,28 @@
 namespace tigine { namespace graphic {
 class VulkanRenderSystem : public IRenderSystem {
 public:
-    VulkanRenderSystem() { command_queue_ = new VulkanCommandQueue(); }
-    ~VulkanRenderSystem() { delete command_queue_; }
+    VulkanRenderSystem();
+    ~VulkanRenderSystem();
 
-    IRenderContext  *createRenderContext(const RenderContextDescriptor &desc) override { return new VulkanRenderContext(desc); }
-    void             release(IRenderContext *render_context) override { delete render_context; }
-    IShader         *createShader(const ShaderDescriptor &desc) override { return nullptr; }
-    void             release(IShader *shader) override { delete shader; }
-    IShaderProgram  *createShaderProgram(const ShaderProgramDescriptor &desc) override { return nullptr; }
-    void             release(IShaderProgram *shader_program) override { delete shader_program; }
-    IBuffer         *createBuffer(const BufferDescriptor &desc, void *data) override { return nullptr; }
-    void             release(IBuffer *buffer) override { delete buffer; }
-    IBufferArray    *createBufferArray(const BufferArrayDescriptor &desc) override { return nullptr; }
-    void             release(IBufferArray *buffer_array) override { delete buffer_array; }
-    ICommandQueue   *getCommandQueue() override { return command_queue_; }
-    ICommandBuffer  *createCommandBuffer() override { return nullptr; }
-    void             release(ICommandBuffer *command_buffer) override { delete command_buffer; }
-    ITexture        *createTexture(const TextureDescriptor &desc) override { return nullptr; }
-    void             release(ITexture *render_target) override {}
-    IResourceHeap   *CreateResourceHeap(const ResourceHeapDescriptor &desc) { return nullptr; }
-    void             release(IResourceHeap *resource_heap) {}
-    IRenderPass     *CreateRenderPass(const RenderPassDescriptor &desc) { return nullptr; }
-    void             release(IRenderPass *render_pass) {}
-    IRenderTarget   *createRenderTarget(const RenderTargetDescriptor &desc) override { return nullptr; }
-    void             release(IRenderTarget *render_target) override {}
-    IPipelineLayout *createPipelineLayout(const PipelineLayoutDescriptor &desc) override { return nullptr; }
-    void             release(IPipelineLayout *pipeline_layout) override {}
-    IPipelineState  *createPipelineState(const PipelineStateDescriptor &desc) override { return nullptr; }
-    void             release(IPipelineState *pipeline) override { delete pipeline; }
+    IRenderContext  *createRenderContext(const RenderContextDescriptor &desc) override;
+    IShader         *createShader(const ShaderDescriptor &desc) override;
+    IShaderProgram  *createShaderProgram(const ShaderProgramDescriptor &desc) override;
+    IBuffer         *createBuffer(const BufferDescriptor &desc) override;
+    IBufferArray    *createBufferArray(const BufferArrayDescriptor &desc) override;
+    ICommandQueue   *getCommandQueue() override;
+    ICommandBuffer  *createCommandBuffer() override;
+    ITexture        *createTexture(const TextureDescriptor &desc) override;
+    IResourceHeap   *CreateResourceHeap(const ResourceHeapDescriptor &desc) override;
+    IRenderPass     *CreateRenderPass(const RenderPassDescriptor &desc) override;
+    IRenderTarget   *createRenderTarget(const RenderTargetDescriptor &desc) override;
+    IPipelineLayout *createPipelineLayout(const PipelineLayoutDescriptor &desc) override;
+    IPipelineState  *createPipelineState(const PipelineStateDescriptor &desc) override;
 
 private:
     VulkanCommandQueue *command_queue_ = nullptr;
+    VkPhysicalDevice   *vk_physicl_device_ = nullptr;
+    VkDevice           *vk_device_        = nullptr;
+
 };
 }} // namespace tigine::graphic
 

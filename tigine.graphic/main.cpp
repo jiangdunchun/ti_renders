@@ -16,6 +16,38 @@ int main() {
     window->setTitle("test");
     window->show();
 
+    float vertices[] = {0, 0.5f, 0, 0, 0, 1, 0.5f, -0.5f, 0, 1, 0, 0, -0.5f, -0.5f, 0, 0, 1, 0};
+
+    BufferDescriptor buffer_desc;
+    buffer_desc.kinds     = BK_Vertices;
+    buffer_desc.data_size = sizeof(vertices);
+    buffer_desc.data      = vertices;
+
+    IBuffer *vertices_buffer = render->createBuffer(buffer_desc);
+
+    std::vector<BindingInfo> bindings_info(1);
+    bindings_info[0].binding = 0;
+    bindings_info[0].stride  = sizeof(vertices[0]) * 6;
+
+    std::vector<AttributeInfo> attributes_info(2);
+    attributes_info[0].binding  = 0;
+    attributes_info[0].format   = DF_RGB32Float;
+    attributes_info[0].location = 0;
+    attributes_info[0].offset   = 0;
+    attributes_info[1].binding  = 0;
+    attributes_info[1].format   = DF_RGB32Float;
+    attributes_info[1].location = 1;
+    attributes_info[1].offset   = sizeof(vertices[0]) * 3;
+
+    BufferArrayDescriptor array_desc;
+    array_desc.vertices_buffer  = vertices_buffer;
+    array_desc.bindings_count   = bindings_info.size();
+    array_desc.bindings         = bindings_info.data();
+    array_desc.attributes_count = attributes_info.size();
+    array_desc.attributes       = attributes_info.data();
+
+    IBufferArray *vertices_array = render->createBufferArray(array_desc);
+
 //    string sky_vertex_shader = R"delimiter(
 //#version 330 core
 //layout(location = 0) in vec3 pos;

@@ -14,14 +14,15 @@ public:
     VulkanBufferArray(const BufferArrayDescriptor &desc);
     ~VulkanBufferArray();
 
-    VkPipelineVertexInputStateCreateInfo getVertexInputInfo() { return vertex_input_info_; }
+    VkPipelineVertexInputStateCreateInfo getVkPipelineVertexInputStateCreateInfo() { return vk_pipeline_vertex_input_state_create_info_; }
 
 private:
     VulkanBuffer *vertices_buffer_;
-    VulkanBuffer *indices_buffer_;
-    VkPipelineVertexInputStateCreateInfo vertex_input_info_;
-    std::vector<VkVertexInputBindingDescription> bindings_desc_;
-    std::vector<VkVertexInputAttributeDescription> attributes_desc_;
+    VulkanBuffer *indices_buffer_ = nullptr;
+
+    VkPipelineVertexInputStateCreateInfo vk_pipeline_vertex_input_state_create_info_;
+    std::vector<VkVertexInputBindingDescription> vk_bindings_desc_;
+    std::vector<VkVertexInputAttributeDescription> vk_attributes_desc_;
 };
 }} // namespace tigine::graphic
 

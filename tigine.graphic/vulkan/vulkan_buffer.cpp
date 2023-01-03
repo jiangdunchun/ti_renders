@@ -26,8 +26,8 @@ uint32_t findMemoryType(VkPhysicalDevice *physical_divece, uint32_t type_filter,
 }
 } // namespace
 
-VulkanBuffer::VulkanBuffer(VkPhysicalDevice *physical_divece, VkDevice *device, const BufferDescriptor &desc) 
-    : data_size_(desc.data_size), physical_divece_(physical_divece), device_(device) {
+VulkanBuffer::VulkanBuffer(VkPhysicalDevice *physical_device, VkDevice *device, const BufferDescriptor &desc) 
+    : data_size_(desc.data_size), vk_physical_divece_(physical_device), vk_device_(device) {
     VkBufferCreateInfo buffer_create_info {};
     buffer_create_info.sType                 = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
     buffer_create_info.pNext                 = NULL;
@@ -37,33 +37,33 @@ VulkanBuffer::VulkanBuffer(VkPhysicalDevice *physical_divece, VkDevice *device, 
     buffer_create_info.pQueueFamilyIndices   = NULL;
     buffer_create_info.sharingMode           = VK_SHARING_MODE_EXCLUSIVE;
     buffer_create_info.flags                 = 0;
-    vkCreateBuffer(*device_, &buffer_create_info, NULL, &buffer_);
+    vkCreateBuffer(*vk_device_, &buffer_create_info, NULL, &vk_buffer_);
 
     VkMemoryRequirements mem_requirements;
-    vkGetBufferMemoryRequirements(*device, buffer_, &mem_requirements);
+    vkGetBufferMemoryRequirements(*device, vk_buffer_, &mem_requirements);
     VkMemoryPropertyFlags properties = VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT;
 
     VkMemoryAllocateInfo memory_allocate_info {};
     memory_allocate_info.sType           = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
     memory_allocate_info.allocationSize  = mem_requirements.size;
-    memory_allocate_info.memoryTypeIndex = findMemoryType(physical_divece, mem_requirements.memoryTypeBits, properties);
-    vkAllocateMemory(*device_, &memory_allocate_info, nullptr, &memory_);
+    memory_allocate_info.memoryTypeIndex = findMemoryType(physical_device, mem_requirements.memoryTypeBits, properties);
+    vkAllocateMemory(*vk_device_, &memory_allocate_info, nullptr, &vk_device_memory_);
 
-    vkBindBufferMemory(*device_, buffer_, memory_, 0);
+    vkBindBufferMemory(*vk_device_, vk_buffer_, vk_device_memory_, 0);
     if (desc.data) {
         updateData(desc.data_size, desc.data);
     }
 }
 
 VulkanBuffer::~VulkanBuffer() { 
-    vkDestroyBuffer(*device_, buffer_, nullptr);
-    vkFreeMemory(*device_, memory_, nullptr);
+    vkDestroyBuffer(*vk_device_, vk_buffer_, nullptr);
+    vkFreeMemory(*vk_device_, vk_device_memory_, nullptr);
 }
 
 void VulkanBuffer::updateData(TULong data_size, void *data) {
     void *dst_ptr;
-    vkMapMemory(*device_, memory_, 0, data_size, 0, &dst_ptr);
+    vkMapMemory(*vk_device_, vk_device_memory_, 0, data_size, 0, &dst_ptr);
     memcpy(dst_ptr, data, (size_t)data_size);
-    vkUnmapMemory(*device_, memory_);
+    vkUnmapMemory(*vk_device_, vk_device_memory_);
 }
 }} // namespace tigine::graphic

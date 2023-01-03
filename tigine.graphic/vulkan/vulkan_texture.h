@@ -10,13 +10,13 @@ public:
     VulkanTexture(VkDevice *device, const TextureDescriptor &desc);
     ~VulkanTexture();
 
-    VkImageView *getImageview() { return &imageview_; }
-    VkSampler   *getSampler() { return &sampler_; }
+    VkImageView *getVKImageview() { return &vk_imageview_; }
+    VkSampler   *getVKSampler() { return &vk_sampler_; }
 
 private:
-    VkDevice   *device_;
-    VkImageView imageview_;
-    VkSampler   sampler_;
+    VkDevice   *vk_device_;
+    VkImageView vk_imageview_;
+    VkSampler   vk_sampler_;
 };
 }} // namespace tigine::graphic
 

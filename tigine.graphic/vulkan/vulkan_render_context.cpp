@@ -79,8 +79,7 @@ std::vector<const char *> getRequiredExtensions() {
 void populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT &createInfo) {
     createInfo                 = {};
     createInfo.sType           = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
-    createInfo.messageSeverity = VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT
-                               | VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT;
+    createInfo.messageSeverity =  VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT;
     createInfo.messageType = VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT
                            | VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT;
     createInfo.pfnUserCallback = debugCallback;
@@ -514,14 +513,14 @@ void createGraphicsPipeline() {
 
 VulkanRenderContext::VulkanRenderContext(const RenderContextDescriptor &desc) {
     createWindow(window_, desc.resolution);
-    createInstance(instance_);
-    setupDebugMessenger(instance_, debugMessenger_);
-    createSurface(instance_, window_, surface_KHR_);
-    pickPhysicalDevice(instance_, surface_KHR_, physiclDevice_);
-    createLogicalDevice(physiclDevice_, surface_KHR_, device_, graphicsQueue_, presentQueue_);
-    createSwapChain(physiclDevice_, surface_KHR_, device_, window_, swapChain_, swapChainImages_, swapChainImageFormat_, swapChainExtent_);
-    createImageViews(device_, swapChainImageViews_, swapChainImages_, swapChainImageFormat_);
-    createRenderPass(swapChainImageFormat_, device_, renderPass_);
+    createInstance(vk_instance_);
+    setupDebugMessenger(vk_instance_, vk_debug_messenger_);
+    createSurface(vk_instance_, window_, vk_surface_KHR_);
+    pickPhysicalDevice(vk_instance_, vk_surface_KHR_, vk_physicl_device_);
+    createLogicalDevice(vk_physicl_device_, vk_surface_KHR_, vk_device_, vk_graphics_queue_, vk_present_queue_);
+    createSwapChain(vk_physicl_device_, vk_surface_KHR_, vk_device_, window_, vk_swap_chain_, vk_swap_chain_images_, vk_swap_chain_image_format_, vk_swap_chain_extent_);
+    createImageViews(vk_device_, vk_swap_chain_image_views_, vk_swap_chain_images_, vk_swap_chain_image_format_);
+    createRenderPass(vk_swap_chain_image_format_, vk_device_, vk_render_pass_);
 
     surface_     = new VulkanSurface(window_);
     render_pass_ = nullptr;

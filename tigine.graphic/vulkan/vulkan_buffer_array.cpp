@@ -14,30 +14,32 @@ VkFormat mapDataFormat(DataFormat format) {
 }
 } // namespace
 
-VulkanBufferArray::VulkanBufferArray(const BufferArrayDescriptor &desc) 
-	: vertices_buffer_(desc.vertices_buffer), indices_buffer_(desc.indices_buffer) {
-    bindings_desc_.resize(desc.bindings_count);
+VulkanBufferArray::VulkanBufferArray(const BufferArrayDescriptor &desc) {
+    vertices_buffer_ = static_cast<VulkanBuffer *>(desc.vertices_buffer);
+    if (desc.indices_buffer) indices_buffer_ = static_cast<VulkanBuffer *>(desc.indices_buffer);
+
+    vk_bindings_desc_.resize(desc.bindings_count);
     for (int i = 0; i < desc.bindings_count; ++i) {
         BindingInfo &binding_info = *(desc.bindings + i);
 
-        bindings_desc_[i].binding   = binding_info.binding;
-        bindings_desc_[i].stride    = binding_info.stride;
-        bindings_desc_[i].inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
+        vk_bindings_desc_[i].binding   = binding_info.binding;
+        vk_bindings_desc_[i].stride    = binding_info.stride;
+        vk_bindings_desc_[i].inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
     }
-    vertex_input_info_.vertexBindingDescriptionCount = static_cast<uint32_t>(bindings_desc_.size());
-    vertex_input_info_.pVertexBindingDescriptions    = bindings_desc_.data();
+    vk_pipeline_vertex_input_state_create_info_.vertexBindingDescriptionCount = static_cast<uint32_t>(vk_bindings_desc_.size());
+    vk_pipeline_vertex_input_state_create_info_.pVertexBindingDescriptions    = vk_bindings_desc_.data();
 
-    attributes_desc_.resize(desc.attributes_count);
+    vk_attributes_desc_.resize(desc.attributes_count);
     for (int i = 0; i < desc.attributes_count; ++i) {
         AttributeInfo &attribute_info = *(desc.attributes + i);
 
-        attributes_desc_[i].binding  = attribute_info.binding;
-        attributes_desc_[i].location = attribute_info.location;
-        attributes_desc_[i].format   = mapDataFormat(attribute_info.format);
-        attributes_desc_[i].offset   = attribute_info.offset;
+        vk_attributes_desc_[i].binding  = attribute_info.binding;
+        vk_attributes_desc_[i].location = attribute_info.location;
+        vk_attributes_desc_[i].format   = mapDataFormat(attribute_info.format);
+        vk_attributes_desc_[i].offset   = attribute_info.offset;
     }
-    vertex_input_info_.vertexAttributeDescriptionCount = static_cast<uint32_t>(attributes_desc_.size());
-    vertex_input_info_.pVertexAttributeDescriptions    = attributes_desc_.data();
+    vk_pipeline_vertex_input_state_create_info_.vertexAttributeDescriptionCount = static_cast<uint32_t>(vk_attributes_desc_.size());
+    vk_pipeline_vertex_input_state_create_info_.pVertexAttributeDescriptions    = vk_attributes_desc_.data();
 }
 
 VulkanBufferArray::~VulkanBufferArray() {}

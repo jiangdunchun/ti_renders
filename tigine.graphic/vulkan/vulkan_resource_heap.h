@@ -8,13 +8,13 @@ class VulkanResourceHeap : public IResourceHeap {
 public:
     VulkanResourceHeap(VkDevice *device, const ResourceHeapDescriptor &desc);
     ~VulkanResourceHeap();
-    VkDescriptorSetLayout *getDescriptorSetLayout() { return &descriptor_set_layout_; }
+    VkDescriptorSetLayout *getVKDescriptorSetLayout() { return &vk_descriptor_set_layout_; }
 
 private:
-    VkDevice             *device_;
-    VkDescriptorSetLayout descriptor_set_layout_;
-    VkDescriptorPool      descriptor_pool_;
-    VkDescriptorSet       descriptor_set_;
+    VkDevice             *vk_device_;
+    VkDescriptorSetLayout vk_descriptor_set_layout_;
+    VkDescriptorPool      vk_descriptor_pool_;
+    VkDescriptorSet       vk_descriptor_set_;
 };
 }} // namespace tigine::graphic
 

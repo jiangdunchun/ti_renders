@@ -7,18 +7,18 @@
 namespace tigine { namespace graphic {
 class VulkanBuffer : public IBuffer {
 public:
-    VulkanBuffer(VkPhysicalDevice *physical_divece, VkDevice * device, const BufferDescriptor &desc);
+    VulkanBuffer(VkPhysicalDevice *physical_device, VkDevice * device, const BufferDescriptor &desc);
     ~VulkanBuffer();
     virtual void updateData(TULong data_size, void *data) override;
     TUInt        getDataSize() { return data_size_; }
-    VkBuffer    *getVkBuffer() { return &buffer_; }
+    VkBuffer    *getVkBuffer() { return &vk_buffer_; }
 
 private:
     TUInt             data_size_;
-    VkPhysicalDevice *physical_divece_;
-    VkDevice         *device_;
-    VkBuffer          buffer_;
-    VkDeviceMemory    memory_;
+    VkPhysicalDevice *vk_physical_divece_;
+    VkDevice         *vk_device_;
+    VkBuffer          vk_buffer_;
+    VkDeviceMemory    vk_device_memory_;
 };
 }} // namespace tigine::graphic
 

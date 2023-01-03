@@ -15,10 +15,10 @@ public:
 
     bool                                         hasError() const override { return false; }
     std::string                                  getReport() const override { return "getReport() is not support in vulkan"; }
-    std::vector<VkPipelineShaderStageCreateInfo> getShaderStageCreateInfo() { return shader_stage_create_info_; }
+    std::vector<VkPipelineShaderStageCreateInfo> getVKShaderStageCreateInfos() { return vk_shader_stage_create_info_; }
 
 private:
-    std::vector<VkPipelineShaderStageCreateInfo> shader_stage_create_info_;
+    std::vector<VkPipelineShaderStageCreateInfo> vk_shader_stage_create_info_;
 };
 
 }} // namespace tigine::graphic

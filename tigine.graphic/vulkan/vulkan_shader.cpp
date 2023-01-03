@@ -1,14 +1,14 @@
 #include "vulkan/vulkan_shader.h"
 
 namespace tigine { namespace graphic {
-VulkanShader::VulkanShader(VkDevice *device, const ShaderDescriptor &desc) : device_(device) {
+VulkanShader::VulkanShader(VkDevice *device, const ShaderDescriptor &desc) : vk_device_(device) {
     VkShaderModuleCreateInfo create_info {};
     create_info.sType    = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
     create_info.pCode    = reinterpret_cast<const uint32_t *>(desc.code);
     create_info.codeSize = desc.code_size;
 
-    if (vkCreateShaderModule(*device_, &create_info, nullptr, &shader_) != VK_SUCCESS) has_error_ = true;
+    if (vkCreateShaderModule(*vk_device_, &create_info, nullptr, &vk_shader_) != VK_SUCCESS) has_error_ = true;
 }
 
-VulkanShader::~VulkanShader() { vkDestroyShaderModule(*device_, shader_, nullptr); }
+VulkanShader::~VulkanShader() { vkDestroyShaderModule(*vk_device_, vk_shader_, nullptr); }
 }} // namespace tigine::graphic

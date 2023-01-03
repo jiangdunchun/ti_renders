@@ -11,7 +11,7 @@ public:
     void submit(ICommandBuffer *command_buffer) override {}
 
 private:
-    VkCommandPool *command_pool_ = nullptr;
+    VkCommandPool *vk_command_pool_ = nullptr;
 };
 }} // namespace tigine::graphic
 

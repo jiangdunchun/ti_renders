@@ -10,13 +10,13 @@ public:
     VulkanShader(VkDevice *device, const ShaderDescriptor &desc);
     ~VulkanShader();
 
-    bool           hasError() const override { return has_error_; }
-    std::string    getReport() const override { return "getReport() is not support in vulkan"; }
-    VkShaderModule getShaderModule() { return shader_; }
+    bool            hasError() const override { return has_error_; }
+    std::string     getReport() const override { return "getReport() is not support in vulkan"; }
+    VkShaderModule* getVKShaderModule() { return &vk_shader_; }
 
 private:
-    VkDevice      *device_;
-    VkShaderModule shader_;
+    VkDevice      *vk_device_;
+    VkShaderModule vk_shader_;
     bool           has_error_ = false;
 };
 }} // namespace tigine::graphic

@@ -41,7 +41,7 @@ VkShaderStageFlags mapShaderStageFlags(ShaderKind kind) {
 }
 } // namespace
 
-VulkanResourceHeap::VulkanResourceHeap(VkDevice *device, const ResourceHeapDescriptor &desc) : device_(device) {
+VulkanResourceHeap::VulkanResourceHeap(VkDevice *device, const ResourceHeapDescriptor &desc) : vk_device_(device) {
     std::vector<VkDescriptorSetLayoutBinding> bindings(desc.uniforms_count);
     for (int i = 0; i < desc.uniforms_count; ++i) {
         UniformInfo &uniform = *(desc.uniforms + i);
@@ -58,7 +58,7 @@ VulkanResourceHeap::VulkanResourceHeap(VkDevice *device, const ResourceHeapDescr
     layout_info.sType        = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
     layout_info.bindingCount = static_cast<uint32_t>(bindings.size());
     layout_info.pBindings    = bindings.data();
-    if (vkCreateDescriptorSetLayout(*device_, &layout_info, nullptr, &descriptor_set_layout_) != VK_SUCCESS) {
+    if (vkCreateDescriptorSetLayout(*vk_device_, &layout_info, nullptr, &vk_descriptor_set_layout_) != VK_SUCCESS) {
         throw std::runtime_error("failed to create descriptor set layout!");
     }
 
@@ -78,16 +78,16 @@ VulkanResourceHeap::VulkanResourceHeap(VkDevice *device, const ResourceHeapDescr
     pool_info.pPoolSizes    = pool_sizes.data();
     pool_info.maxSets       = 1;
 
-    if (vkCreateDescriptorPool(*device_, &pool_info, nullptr, &descriptor_pool_) != VK_SUCCESS) {
+    if (vkCreateDescriptorPool(*vk_device_, &pool_info, nullptr, &vk_descriptor_pool_) != VK_SUCCESS) {
         throw std::runtime_error("failed to create descriptor pool!");
     }
 
     VkDescriptorSetAllocateInfo alloc_info {};
     alloc_info.sType              = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
-    alloc_info.descriptorPool     = descriptor_pool_;
+    alloc_info.descriptorPool     = vk_descriptor_pool_;
     alloc_info.descriptorSetCount = 1;
-    alloc_info.pSetLayouts        = &descriptor_set_layout_;
-    if (vkAllocateDescriptorSets(*device_, &alloc_info, &descriptor_set_) != VK_SUCCESS) {
+    alloc_info.pSetLayouts        = &vk_descriptor_set_layout_;
+    if (vkAllocateDescriptorSets(*vk_device_, &alloc_info, &vk_descriptor_set_) != VK_SUCCESS) {
         throw std::runtime_error("failed to allocate descriptor sets!");
     }
 
@@ -98,7 +98,7 @@ VulkanResourceHeap::VulkanResourceHeap(VkDevice *device, const ResourceHeapDescr
         VkWriteDescriptorSet &write = writes[i];
 
         write.sType           = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-        write.dstSet          = descriptor_set_;
+        write.dstSet          = vk_descriptor_set_;
         write.dstBinding      = 0;
         write.dstArrayElement = 0;
         write.descriptorType  = mapDescriptorType(uniform.resource);
@@ -118,14 +118,14 @@ VulkanResourceHeap::VulkanResourceHeap(VkDevice *device, const ResourceHeapDescr
 
             VkDescriptorImageInfo image_info {};
             image_info.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-            image_info.imageView   = *(vulkan_texture->getImageview());
-            image_info.sampler     = *(vulkan_texture->getSampler());
+            image_info.imageView   = *(vulkan_texture->getVKImageview());
+            image_info.sampler     = *(vulkan_texture->getVKSampler());
 
             write.pImageInfo = &image_info;
         }
     }
-    vkUpdateDescriptorSets(*device_, static_cast<uint32_t>(writes.size()), writes.data(), 0, nullptr);
+    vkUpdateDescriptorSets(*vk_device_, static_cast<uint32_t>(writes.size()), writes.data(), 0, nullptr);
 }
 
-VulkanResourceHeap::~VulkanResourceHeap() { vkDestroyDescriptorSetLayout(*device_, descriptor_set_layout_, nullptr); }
+VulkanResourceHeap::~VulkanResourceHeap() { vkDestroyDescriptorSetLayout(*vk_device_, vk_descriptor_set_layout_, nullptr); }
 }} // namespace tigine::graphic

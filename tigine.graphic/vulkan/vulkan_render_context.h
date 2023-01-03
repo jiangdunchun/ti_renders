@@ -24,24 +24,28 @@ public:
     TUInt    getNumColorAttachments() const override { return 0; } // @TODO
     bool     hasDepthAttachment() const override { return 0; }     // @TODO
     bool     hasStencilAttachment() const override { return 0; }   // @TODO
+    
+    VkPhysicalDevice *getVkPhysicalDevice() { return &vk_physicl_device_; }
+    VkDevice         *getVklDevice() { return &vk_device_; }
 
 private:
     GLFWwindow       *window_;
     VulkanSurface    *surface_;
     VulkanRenderPass *render_pass_;
-    VkInstance        instance_;
-    VkDebugUtilsMessengerEXT debugMessenger_;
-    VkSurfaceKHR             surface_KHR_;
-    VkPhysicalDevice         physiclDevice_;
-    VkDevice                 device_;
-    VkQueue                  graphicsQueue_;
-    VkQueue                  presentQueue_;
-    VkSwapchainKHR           swapChain_;
-    std::vector<VkImage>     swapChainImages_;
-    VkFormat                 swapChainImageFormat_;
-    VkExtent2D               swapChainExtent_;
-    std::vector<VkImageView> swapChainImageViews_;
-    VkRenderPass             renderPass_;
+
+    VkInstance               vk_instance_;
+    VkDebugUtilsMessengerEXT vk_debug_messenger_;
+    VkSurfaceKHR             vk_surface_KHR_;
+    VkPhysicalDevice         vk_physicl_device_;
+    VkDevice                 vk_device_;
+    VkQueue                  vk_graphics_queue_;
+    VkQueue                  vk_present_queue_;
+    VkSwapchainKHR           vk_swap_chain_;
+    std::vector<VkImage>     vk_swap_chain_images_;
+    VkFormat                 vk_swap_chain_image_format_;
+    VkExtent2D               vk_swap_chain_extent_;
+    std::vector<VkImageView> vk_swap_chain_image_views_;
+    VkRenderPass             vk_render_pass_;
 };
 }} // namespace tigine::graphic
 
