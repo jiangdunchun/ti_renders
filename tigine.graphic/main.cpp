@@ -2,17 +2,18 @@
 
 #include <iostream>
 
+#include "hello_triangle_vert.h"
+#include "hello_triangle_frag.h"
+
 using namespace tigine::graphic;
 using namespace std;
 
 int main() {
     IRenderSystem *render = CREATE_RENDER_SYSTEM();
-    
-    RenderContextDescriptor context_desc {
-        context_desc.resolution = {600, 600}
-    };
-    IRenderContext *context = render->createRenderContext(context_desc);
-    ISurface       *window  = context->getSurface();
+
+    RenderContextDescriptor context_desc {context_desc.resolution = {600, 600}};
+    IRenderContext         *context = render->createRenderContext(context_desc);
+    ISurface               *window  = context->getSurface();
     window->setTitle("test");
     window->show();
 
@@ -47,6 +48,29 @@ int main() {
     array_desc.attributes       = attributes_info.data();
 
     IBufferArray *vertices_array = render->createBufferArray(array_desc);
+
+    ShaderDescriptor vert_shader_desc;
+    vert_shader_desc.kind      = ShaderKind::Vertex;
+    vert_shader_desc.code_size = hello_triangle_vert.size();
+    vert_shader_desc.code      = hello_triangle_vert.data();
+
+    IShader *vert_shader = render->createShader(vert_shader_desc);
+    if (vert_shader->hasError()) std::cout << vert_shader->getReport() << std::endl;
+
+    ShaderDescriptor frag_shader_desc;
+    frag_shader_desc.kind      = ShaderKind::Fragment;
+    frag_shader_desc.code_size = hello_triangle_frag.size();
+    frag_shader_desc.code      = hello_triangle_frag.data();
+
+    IShader *frag_shader = render->createShader(frag_shader_desc);
+    if (frag_shader->hasError()) std::cout << frag_shader->getReport() << std::endl;
+
+    ShaderProgramDescriptor shader_prog_desc;
+    shader_prog_desc.vertex_shader = vert_shader;
+    shader_prog_desc.fragment_shader = frag_shader;
+
+    IShaderProgram *shader_prog = render->createShaderProgram(shader_prog_desc);
+
 
 //    string sky_vertex_shader = R"delimiter(
 //#version 330 core
