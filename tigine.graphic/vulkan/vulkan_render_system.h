@@ -12,6 +12,7 @@
 #include "vulkan/vulkan_shader.h"
 #include "vulkan/vulkan_shader_program.h"
 #include "vulkan/vulkan_resource_heap.h"
+#include "vulkan/vulkan_texture.h"
 
 namespace tigine { namespace graphic {
 class VulkanRenderSystem : public IRenderSystem {
@@ -30,7 +31,6 @@ public:
     IResourceHeap   *CreateResourceHeap(const ResourceHeapDescriptor &desc) override;
     IRenderPass     *CreateRenderPass(const RenderPassDescriptor &desc) override;
     IRenderTarget   *createRenderTarget(const RenderTargetDescriptor &desc) override;
-    IPipelineLayout *createPipelineLayout(const PipelineLayoutDescriptor &desc) override;
     IPipelineState  *createPipelineState(const PipelineStateDescriptor &desc) override;
 
 private:

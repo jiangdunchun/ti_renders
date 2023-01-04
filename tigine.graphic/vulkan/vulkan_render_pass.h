@@ -8,9 +8,12 @@ namespace tigine { namespace graphic {
 class VulkanRenderPass : public IRenderPass {
 public:
     VulkanRenderPass(const RenderPassDescriptor &desc) {}
-    ~VulkanRenderPass() = default;
+    ~VulkanRenderPass() {};
+
+    VkRenderPass *getVkRenderPass() { return &vk_render_pass_; }
 
 private:
+    VkRenderPass vk_render_pass_;
 };
 }} // namespace tigine::graphic
 

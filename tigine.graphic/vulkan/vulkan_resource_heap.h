@@ -8,10 +8,12 @@ class VulkanResourceHeap : public IResourceHeap {
 public:
     VulkanResourceHeap(VkDevice *device, const ResourceHeapDescriptor &desc);
     ~VulkanResourceHeap();
-    VkDescriptorSetLayout *getVKDescriptorSetLayout() { return &vk_descriptor_set_layout_; }
+
+    VkPipelineLayout *getVkPipelineLayout() { return &vk_pipeline_layout_; }
 
 private:
     VkDevice             *vk_device_;
+    VkPipelineLayout      vk_pipeline_layout_;
     VkDescriptorSetLayout vk_descriptor_set_layout_;
     VkDescriptorPool      vk_descriptor_pool_;
     VkDescriptorSet       vk_descriptor_set_;

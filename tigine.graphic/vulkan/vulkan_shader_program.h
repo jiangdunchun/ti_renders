@@ -13,9 +13,10 @@ public:
     VulkanShaderProgram(const ShaderProgramDescriptor &desc);
     ~VulkanShaderProgram();
 
-    bool                                         hasError() const override { return false; }
-    std::string                                  getReport() const override { return "getReport() is not support in vulkan"; }
-    std::vector<VkPipelineShaderStageCreateInfo> getVKShaderStageCreateInfos() { return vk_shader_stage_create_info_; }
+    bool                             hasError() const override { return false; }
+    std::string                      getReport() const override { return "getReport() is not support in vulkan"; }
+    TUInt                            getVKShaderStageCreateInfosSize() { return vk_shader_stage_create_info_.size(); }
+    VkPipelineShaderStageCreateInfo *getVKShaderStageCreateInfos() { return vk_shader_stage_create_info_.data(); }
 
 private:
     std::vector<VkPipelineShaderStageCreateInfo> vk_shader_stage_create_info_;

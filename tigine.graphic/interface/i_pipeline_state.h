@@ -4,12 +4,14 @@
 #include "interface/i_common.h"
 #include "interface/i_render_pass.h"
 #include "interface/i_shader_program.h"
-#include "interface/i_pipeline_layout.h"
+#include "interface/i_resource_heap.h"
+#include "interface/i_buffer_array.h"
 
 namespace tigine { namespace graphic {
 struct PipelineStateDescriptor {
     IShaderProgram  *shader_program;
-    IPipelineLayout *pipeline_layout;
+    IResourceHeap   *resource_heap;
+    IBufferArray    *vertices_array;
     IRenderPass     *render_pass;
     DrawMode         draw_mode = DrawMode::Triangles;
     ClearValue       clear_value;

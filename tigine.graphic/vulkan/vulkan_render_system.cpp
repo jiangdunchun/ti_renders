@@ -34,13 +34,20 @@ IBuffer *VulkanRenderSystem::createBuffer(const BufferDescriptor &desc) {
 	return new VulkanBuffer(vk_physicl_device_, vk_device_, desc);
 }
 
-IBufferArray    *VulkanRenderSystem::createBufferArray(const BufferArrayDescriptor &desc) { return nullptr; }
+IBufferArray *VulkanRenderSystem::createBufferArray(const BufferArrayDescriptor &desc) { 
+	return new VulkanBufferArray(desc);
+}
+
 ICommandQueue   *VulkanRenderSystem::getCommandQueue() { return command_queue_; }
 ICommandBuffer  *VulkanRenderSystem::createCommandBuffer() { return nullptr; }
-ITexture        *VulkanRenderSystem::createTexture(const TextureDescriptor &desc) { return nullptr; }
+
+ITexture *VulkanRenderSystem::createTexture(const TextureDescriptor &desc) { 
+	return new VulkanTexture(vk_device_, desc);
+}
+
+
 IResourceHeap   *VulkanRenderSystem::CreateResourceHeap(const ResourceHeapDescriptor &desc) { return nullptr; }
 IRenderPass     *VulkanRenderSystem::CreateRenderPass(const RenderPassDescriptor &desc) { return nullptr; }
 IRenderTarget   *VulkanRenderSystem::createRenderTarget(const RenderTargetDescriptor &desc) { return nullptr; }
-IPipelineLayout *VulkanRenderSystem::createPipelineLayout(const PipelineLayoutDescriptor &desc) { return nullptr; }
 IPipelineState  *VulkanRenderSystem::createPipelineState(const PipelineStateDescriptor &desc) { return nullptr; }
 }} // namespace tigine::graphic

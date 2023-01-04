@@ -14,7 +14,7 @@ public:
     VulkanBufferArray(const BufferArrayDescriptor &desc);
     ~VulkanBufferArray();
 
-    VkPipelineVertexInputStateCreateInfo getVkPipelineVertexInputStateCreateInfo() { return vk_pipeline_vertex_input_state_create_info_; }
+    VkPipelineVertexInputStateCreateInfo *getVkPipelineVertexInputStateCreateInfo() { return &vk_pipeline_vertex_input_state_create_info_; }
 
 private:
     VulkanBuffer *vertices_buffer_;

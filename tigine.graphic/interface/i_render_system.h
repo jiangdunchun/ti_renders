@@ -6,8 +6,6 @@
 #include "interface/i_command_buffer.h"
 #include "interface/i_command_queue.h"
 #include "interface/i_common.h"
-#include "interface/i_pipeline_layout.h"
-#include "interface/i_pipeline_state.h"
 #include "interface/i_render_context.h"
 #include "interface/i_render_pass.h"
 #include "interface/i_render_target.h"
@@ -30,7 +28,6 @@ public:
     virtual IResourceHeap   *CreateResourceHeap(const ResourceHeapDescriptor &desc)     = 0;
     virtual IRenderPass     *CreateRenderPass(const RenderPassDescriptor &desc)         = 0;
     virtual IRenderTarget   *createRenderTarget(const RenderTargetDescriptor &desc)     = 0;
-    virtual IPipelineLayout *createPipelineLayout(const PipelineLayoutDescriptor &desc) = 0;
     virtual IPipelineState  *createPipelineState(const PipelineStateDescriptor &desc)   = 0;
 };
 }} // namespace tigine::graphic

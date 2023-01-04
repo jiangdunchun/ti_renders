@@ -17,6 +17,8 @@ int main() {
     window->setTitle("test");
     window->show();
 
+
+
     float vertices[] = {0, 0.5f, 0, 0, 0, 1, 0.5f, -0.5f, 0, 1, 0, 0, -0.5f, -0.5f, 0, 0, 1, 0};
 
     BufferDescriptor buffer_desc;
@@ -49,6 +51,8 @@ int main() {
 
     IBufferArray *vertices_array = render->createBufferArray(array_desc);
 
+
+
     ShaderDescriptor vert_shader_desc;
     vert_shader_desc.kind      = ShaderKind::Vertex;
     vert_shader_desc.code_size = hello_triangle_vert.size();
@@ -70,6 +74,26 @@ int main() {
     shader_prog_desc.fragment_shader = frag_shader;
 
     IShaderProgram *shader_prog = render->createShaderProgram(shader_prog_desc);
+
+
+
+    ResourceHeapDescriptor resource_heap_desc;
+    resource_heap_desc.uniforms_count = 0;
+    resource_heap_desc.uniforms       = nullptr;
+
+    IResourceHeap *resource_heap = render->CreateResourceHeap(resource_heap_desc);
+
+
+
+    PipelineStateDescriptor pipeline_desc;
+    pipeline_desc.vertices_array = vertices_array;
+    pipeline_desc.shader_program = shader_prog;
+    pipeline_desc.resource_heap  = resource_heap;
+    pipeline_desc.render_pass    = context->getRenderPass();
+
+    IPipelineState *pipeline = render->createPipelineState(pipeline_desc);
+
+
 
 
 //    string sky_vertex_shader = R"delimiter(

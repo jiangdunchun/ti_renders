@@ -125,7 +125,19 @@ VulkanResourceHeap::VulkanResourceHeap(VkDevice *device, const ResourceHeapDescr
         }
     }
     vkUpdateDescriptorSets(*vk_device_, static_cast<uint32_t>(writes.size()), writes.data(), 0, nullptr);
+
+    VkPipelineLayoutCreateInfo pipeline_layout_info {};
+    pipeline_layout_info.sType          = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
+    pipeline_layout_info.setLayoutCount = 1;
+    pipeline_layout_info.pSetLayouts    = &vk_descriptor_set_layout_;
+
+    if (vkCreatePipelineLayout(*vk_device_, &pipeline_layout_info, nullptr, &vk_pipeline_layout_) != VK_SUCCESS) {
+        throw std::runtime_error("failed to create pipeline layout!");
+    }
 }
 
-VulkanResourceHeap::~VulkanResourceHeap() { vkDestroyDescriptorSetLayout(*vk_device_, vk_descriptor_set_layout_, nullptr); }
+VulkanResourceHeap::~VulkanResourceHeap() { 
+    vkDestroyPipelineLayout(*vk_device_, vk_pipeline_layout_, nullptr);
+    vkDestroyDescriptorSetLayout(*vk_device_, vk_descriptor_set_layout_, nullptr);
+}
 }} // namespace tigine::graphic
