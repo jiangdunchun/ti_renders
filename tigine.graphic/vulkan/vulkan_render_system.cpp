@@ -1,5 +1,15 @@
 #include "vulkan/vulkan_render_system.h"
 
+#include "vulkan/vulkan_buffer.h"
+#include "vulkan/vulkan_buffer_array.h"
+#include "vulkan/vulkan_command_buffer.h"
+#include "vulkan/vulkan_pipeline_state.h"
+#include "vulkan/vulkan_render_context.h"
+#include "vulkan/vulkan_shader.h"
+#include "vulkan/vulkan_shader_program.h"
+#include "vulkan/vulkan_resource_heap.h"
+#include "vulkan/vulkan_texture.h"
+
 #include <assert.h>
 
 namespace tigine { namespace graphic {
@@ -45,9 +55,15 @@ ITexture *VulkanRenderSystem::createTexture(const TextureDescriptor &desc) {
 	return new VulkanTexture(vk_device_, desc);
 }
 
+IResourceHeap   *VulkanRenderSystem::CreateResourceHeap(const ResourceHeapDescriptor &desc) {
+	return new VulkanResourceHeap(vk_device_, desc);
+}
 
-IResourceHeap   *VulkanRenderSystem::CreateResourceHeap(const ResourceHeapDescriptor &desc) { return nullptr; }
 IRenderPass     *VulkanRenderSystem::CreateRenderPass(const RenderPassDescriptor &desc) { return nullptr; }
 IRenderTarget   *VulkanRenderSystem::createRenderTarget(const RenderTargetDescriptor &desc) { return nullptr; }
-IPipelineState  *VulkanRenderSystem::createPipelineState(const PipelineStateDescriptor &desc) { return nullptr; }
+
+IPipelineState  *VulkanRenderSystem::createPipelineState(const PipelineStateDescriptor &desc) { 
+	return new VulkanPipelineState(vk_device_, desc);
+}
+
 }} // namespace tigine::graphic

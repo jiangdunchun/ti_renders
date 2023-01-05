@@ -7,14 +7,15 @@
 namespace tigine { namespace graphic {
 class VulkanTexture : public ITexture {
 public:
-    VulkanTexture(VkDevice *device, const TextureDescriptor &desc);
+    VulkanTexture(VkDevice *vk_device, const TextureDescriptor &desc);
     ~VulkanTexture();
 
     VkImageView *getVKImageview() { return &vk_imageview_; }
     VkSampler   *getVKSampler() { return &vk_sampler_; }
 
 private:
-    VkDevice   *vk_device_;
+    VkDevice *vk_device_;
+
     VkImageView vk_imageview_;
     VkSampler   vk_sampler_;
 };

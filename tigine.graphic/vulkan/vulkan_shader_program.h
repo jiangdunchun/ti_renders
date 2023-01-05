@@ -15,7 +15,7 @@ public:
 
     bool                             hasError() const override { return false; }
     std::string                      getReport() const override { return "getReport() is not support in vulkan"; }
-    TUInt                            getVKShaderStageCreateInfosSize() { return vk_shader_stage_create_info_.size(); }
+    TUInt                            getVKShaderStageCreateInfosCount() { return vk_shader_stage_create_info_.size(); }
     VkPipelineShaderStageCreateInfo *getVKShaderStageCreateInfos() { return vk_shader_stage_create_info_.data(); }
 
 private:

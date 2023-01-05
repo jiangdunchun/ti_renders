@@ -6,17 +6,18 @@
 namespace tigine { namespace graphic {
 class VulkanResourceHeap : public IResourceHeap {
 public:
-    VulkanResourceHeap(VkDevice *device, const ResourceHeapDescriptor &desc);
+    VulkanResourceHeap(VkDevice *vk_device, const ResourceHeapDescriptor &desc);
     ~VulkanResourceHeap();
 
     VkPipelineLayout *getVkPipelineLayout() { return &vk_pipeline_layout_; }
 
 private:
     VkDevice             *vk_device_;
-    VkPipelineLayout      vk_pipeline_layout_;
+
     VkDescriptorSetLayout vk_descriptor_set_layout_;
     VkDescriptorPool      vk_descriptor_pool_;
-    VkDescriptorSet       vk_descriptor_set_;
+    VkDescriptorSet       vk_descriptor_set_; 
+    VkPipelineLayout      vk_pipeline_layout_;
 };
 }} // namespace tigine::graphic
 

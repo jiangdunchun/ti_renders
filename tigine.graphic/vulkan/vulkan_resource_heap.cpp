@@ -41,7 +41,7 @@ VkShaderStageFlags mapShaderStageFlags(ShaderKind kind) {
 }
 } // namespace
 
-VulkanResourceHeap::VulkanResourceHeap(VkDevice *device, const ResourceHeapDescriptor &desc) : vk_device_(device) {
+VulkanResourceHeap::VulkanResourceHeap(VkDevice *vk_device, const ResourceHeapDescriptor &desc) : vk_device_(vk_device) {
     std::vector<VkDescriptorSetLayoutBinding> bindings(desc.uniforms_count);
     for (int i = 0; i < desc.uniforms_count; ++i) {
         UniformInfo &uniform = *(desc.uniforms + i);
@@ -54,6 +54,7 @@ VulkanResourceHeap::VulkanResourceHeap(VkDevice *device, const ResourceHeapDescr
         binding.pImmutableSamplers = nullptr;
         binding.stageFlags         = mapShaderStageFlags(uniform.shader_stage);
     }
+
     VkDescriptorSetLayoutCreateInfo layout_info {};
     layout_info.sType        = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
     layout_info.bindingCount = static_cast<uint32_t>(bindings.size());
@@ -61,6 +62,7 @@ VulkanResourceHeap::VulkanResourceHeap(VkDevice *device, const ResourceHeapDescr
     if (vkCreateDescriptorSetLayout(*vk_device_, &layout_info, nullptr, &vk_descriptor_set_layout_) != VK_SUCCESS) {
         throw std::runtime_error("failed to create descriptor set layout!");
     }
+
 
     std::vector<VkDescriptorPoolSize> pool_sizes(desc.uniforms_count);
     for (int i = 0; i < desc.uniforms_count; ++i) {
@@ -77,10 +79,10 @@ VulkanResourceHeap::VulkanResourceHeap(VkDevice *device, const ResourceHeapDescr
     pool_info.poolSizeCount = static_cast<uint32_t>(pool_sizes.size());
     pool_info.pPoolSizes    = pool_sizes.data();
     pool_info.maxSets       = 1;
-
     if (vkCreateDescriptorPool(*vk_device_, &pool_info, nullptr, &vk_descriptor_pool_) != VK_SUCCESS) {
         throw std::runtime_error("failed to create descriptor pool!");
     }
+
 
     VkDescriptorSetAllocateInfo alloc_info {};
     alloc_info.sType              = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
@@ -90,6 +92,7 @@ VulkanResourceHeap::VulkanResourceHeap(VkDevice *device, const ResourceHeapDescr
     if (vkAllocateDescriptorSets(*vk_device_, &alloc_info, &vk_descriptor_set_) != VK_SUCCESS) {
         throw std::runtime_error("failed to allocate descriptor sets!");
     }
+
 
     std::vector<VkWriteDescriptorSet> writes(desc.uniforms_count);
     for (int i = 0; i < desc.uniforms_count; ++i) {
@@ -126,11 +129,11 @@ VulkanResourceHeap::VulkanResourceHeap(VkDevice *device, const ResourceHeapDescr
     }
     vkUpdateDescriptorSets(*vk_device_, static_cast<uint32_t>(writes.size()), writes.data(), 0, nullptr);
 
+
     VkPipelineLayoutCreateInfo pipeline_layout_info {};
     pipeline_layout_info.sType          = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
     pipeline_layout_info.setLayoutCount = 1;
     pipeline_layout_info.pSetLayouts    = &vk_descriptor_set_layout_;
-
     if (vkCreatePipelineLayout(*vk_device_, &pipeline_layout_info, nullptr, &vk_pipeline_layout_) != VK_SUCCESS) {
         throw std::runtime_error("failed to create pipeline layout!");
     }
@@ -138,6 +141,8 @@ VulkanResourceHeap::VulkanResourceHeap(VkDevice *device, const ResourceHeapDescr
 
 VulkanResourceHeap::~VulkanResourceHeap() { 
     vkDestroyPipelineLayout(*vk_device_, vk_pipeline_layout_, nullptr);
+    vkFreeDescriptorSets(*vk_device_, vk_descriptor_pool_, 1, &vk_descriptor_set_);
+    vkDestroyDescriptorPool(*vk_device_, vk_descriptor_pool_, nullptr);
     vkDestroyDescriptorSetLayout(*vk_device_, vk_descriptor_set_layout_, nullptr);
 }
 }} // namespace tigine::graphic
