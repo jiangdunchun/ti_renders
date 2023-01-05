@@ -1,10 +1,12 @@
 #include "vulkan/vulkan_pipeline_state.h"
 
+#include <stdexcept>
+
 #include "vulkan/vulkan_shader_program.h"
 #include "vulkan/vulkan_buffer_array.h"
 #include "vulkan/vulkan_render_pass.h"
 #include "vulkan/vulkan_resource_heap.h"
-#include <stdexcept>
+
 
 namespace tigine { namespace graphic {
 VulkanPipelineState::VulkanPipelineState(VkDevice* vk_device, const PipelineStateDescriptor& desc) {

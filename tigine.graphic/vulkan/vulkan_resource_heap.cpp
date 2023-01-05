@@ -6,6 +6,7 @@
 #include "Vulkan/vulkan_buffer.h"
 #include "vulkan/vulkan_texture.h"
 
+
 namespace tigine { namespace graphic {
 namespace {
 VkDescriptorType mapDescriptorType(IResource *resource) {

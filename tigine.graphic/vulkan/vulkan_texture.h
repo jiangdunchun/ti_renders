@@ -1,8 +1,10 @@
 #ifndef TIGINE_GRAPHIC_VULKAN_VULKAN_TEXTURE_H_
 #define TIGINE_GRAPHIC_VULKAN_VULKAN_TEXTURE_H_
 
-#include "vulkan/vulkan_common.h"
 #include "interface/i_texture.h"
+
+#include "vulkan/vulkan_common.h"
+
 
 namespace tigine { namespace graphic {
 class VulkanTexture : public ITexture {

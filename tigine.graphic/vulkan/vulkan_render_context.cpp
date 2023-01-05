@@ -6,6 +6,10 @@
 #include <string>
 #include <iostream>
 
+#include "vulkan/vulkan_surface.h"
+#include "vulkan/vulkan_render_pass.h"
+
+
 namespace tigine { namespace graphic {
 namespace {
 void createWindow(GLFWwindow *&window, Extent2D resolution) {
@@ -531,5 +535,17 @@ VulkanRenderContext::~VulkanRenderContext() {
     delete surface_;
     delete render_pass_;
     glfwTerminate();
+}
+
+ISurface *VulkanRenderContext::getSurface() { 
+    return surface_;
+}
+
+void VulkanRenderContext::present() {
+    glfwSwapBuffers(window_);
+}
+
+IRenderPass *VulkanRenderContext::getRenderPass() {
+    return render_pass_;
 }
 }} // namespace tigine::graphic

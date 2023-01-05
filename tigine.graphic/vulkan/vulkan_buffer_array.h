@@ -1,14 +1,15 @@
 #ifndef TIGINE_GRAPHIC_VULKAN_VULKAN_BUFFER_ARRAY_H_
 #define TIGINE_GRAPHIC_VULKAN_VULKAN_BUFFER_ARRAY_H_
 
-#include <vector>
-
 #include "interface/i_buffer_array.h"
 
+#include <vector>
+
 #include "vulkan/vulkan_common.h"
-#include "vulkan/vulkan_buffer.h"
+
 
 namespace tigine { namespace graphic {
+class VulkanBuffer;
 class VulkanBufferArray : public IBufferArray {
 public:
     VulkanBufferArray(const BufferArrayDescriptor &desc);

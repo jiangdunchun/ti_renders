@@ -1,5 +1,8 @@
 #include "vulkan/vulkan_render_system.h"
 
+#include <assert.h>
+
+#include "vulkan/vulkan_command_queue.h"
 #include "vulkan/vulkan_buffer.h"
 #include "vulkan/vulkan_buffer_array.h"
 #include "vulkan/vulkan_command_buffer.h"
@@ -10,7 +13,6 @@
 #include "vulkan/vulkan_resource_heap.h"
 #include "vulkan/vulkan_texture.h"
 
-#include <assert.h>
 
 namespace tigine { namespace graphic {
 VulkanRenderSystem::VulkanRenderSystem() { 

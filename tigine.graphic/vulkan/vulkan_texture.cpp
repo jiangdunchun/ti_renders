@@ -2,6 +2,7 @@
 
 #include <stdexcept>
 
+
 namespace tigine { namespace graphic { 
 namespace {
 } // namespace

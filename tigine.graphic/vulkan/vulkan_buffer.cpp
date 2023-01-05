@@ -3,6 +3,7 @@
 #include <string>
 #include <stdexcept>
 
+
 namespace tigine { namespace graphic {
 namespace {
 VkBufferUsageFlags mapBufferKinds(std::uint32_t kinds) {

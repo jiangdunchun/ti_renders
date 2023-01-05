@@ -3,9 +3,11 @@
 
 #include "interface/i_render_system.h"
 
-#include "vulkan/vulkan_command_queue.h"
+#include "vulkan/vulkan_common.h"
+
 
 namespace tigine { namespace graphic {
+class VulkanCommandQueue;
 class VulkanRenderSystem : public IRenderSystem {
 public:
     VulkanRenderSystem();
@@ -25,9 +27,11 @@ public:
     IPipelineState  *createPipelineState(const PipelineStateDescriptor &desc) override;
 
 private:
+    VkPhysicalDevice *vk_physicl_device_ = nullptr;
+    VkDevice         *vk_device_         = nullptr;
+
     VulkanCommandQueue *command_queue_ = nullptr;
-    VkPhysicalDevice   *vk_physicl_device_ = nullptr;
-    VkDevice           *vk_device_        = nullptr;
+    
 
 };
 }} // namespace tigine::graphic

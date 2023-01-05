@@ -1,8 +1,10 @@
 #ifndef TIGINE_GRAPHIC_VULKAN_VULKAN_SHADER_H_
 #define TIGINE_GRAPHIC_VULKAN_VULKAN_SHADER_H_
 
-#include "vulkan/vulkan_common.h"
 #include "interface/i_shader.h"
+
+#include "vulkan/vulkan_common.h"
+
 
 namespace tigine { namespace graphic {
 class VulkanShader : public IShader {

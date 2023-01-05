@@ -1,5 +1,8 @@
 #include "vulkan/vulkan_buffer_array.h"
 
+#include "vulkan/vulkan_buffer.h"
+
+
 namespace tigine { namespace graphic {
 namespace {
 VkFormat mapDataFormat(DataFormat format) {

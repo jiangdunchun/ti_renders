@@ -1,8 +1,10 @@
 #ifndef TIGINE_GRAPHIC_VULKAN_VULKAN_BUFFER_H_
 #define TIGINE_GRAPHIC_VULKAN_VULKAN_BUFFER_H_
 
-#include "vulkan/vulkan_common.h"
 #include "interface/i_buffer.h"
+
+#include "vulkan/vulkan_common.h"
+
 
 namespace tigine { namespace graphic {
 class VulkanBuffer : public IBuffer {
@@ -14,9 +16,10 @@ public:
     VkBuffer    *getVkBuffer() { return &vk_buffer_; }
 
 private:
+    TUInt data_size_;
+
     VkPhysicalDevice *vk_physical_divece_;
     VkDevice         *vk_device_;
-    TUInt             data_size_;
 
     VkBuffer       vk_buffer_;
     VkDeviceMemory vk_device_memory_;
