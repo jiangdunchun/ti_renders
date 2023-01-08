@@ -94,9 +94,13 @@ int main() {
     IPipelineState *pipeline = render->createPipelineState(pipeline_desc);
 
 
+    ICommandQueue *queue = render->getCommandQueue();
 
 
-//    string sky_vertex_shader = R"delimiter(
+    CommandBufferDescriptor command_buffer_desc;
+    ICommandBuffer         *command_buffer = render->createCommandBuffer(command_buffer_desc);
+
+    //    string sky_vertex_shader = R"delimiter(
 //#version 330 core
 //layout(location = 0) in vec3 pos;
 //layout(location = 1) in vec3 color;

@@ -19,7 +19,7 @@ public:
     IBuffer        *createBuffer(const BufferDescriptor &desc) override;
     IBufferArray   *createBufferArray(const BufferArrayDescriptor &desc) override;
     ICommandQueue  *getCommandQueue() override;
-    ICommandBuffer *createCommandBuffer() override;
+    ICommandBuffer *createCommandBuffer(const CommandBufferDescriptor &desc) override;
     ITexture       *createTexture(const TextureDescriptor &desc) override;
     IResourceHeap  *CreateResourceHeap(const ResourceHeapDescriptor &desc) override;
     IRenderPass    *CreateRenderPass(const RenderPassDescriptor &desc) override;

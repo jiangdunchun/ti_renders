@@ -2,7 +2,7 @@
 
 
 namespace tigine { namespace graphic {
-VulkanCommandBuffer::VulkanCommandBuffer() {}
+VulkanCommandBuffer::VulkanCommandBuffer(VkDevice *vk_device, const CommandBufferDescriptor &desc) : vk_device_(vk_device) {}
 
 VulkanCommandBuffer::~VulkanCommandBuffer() {}
 

@@ -9,7 +9,7 @@
 namespace tigine { namespace graphic {
 class VulkanCommandBuffer : public ICommandBuffer {
 public:
-    VulkanCommandBuffer();
+    VulkanCommandBuffer(VkDevice *vk_device, const CommandBufferDescriptor &desc);
     ~VulkanCommandBuffer();
 
     void begin() override;
@@ -21,6 +21,9 @@ public:
     void endRenderPass() override;
     void drawArray(TULong num_vertices, TULong first_vertex) override;
     void clear(TChar clear_flags) override;
+
+private:
+    VkDevice *vk_device_;
 };
 }} // namespace tigine::graphic
 

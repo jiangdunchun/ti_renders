@@ -7,6 +7,9 @@
 #include "interface/i_render_pass.h"
 
 namespace tigine { namespace graphic {
+struct CommandBufferDescriptor {
+};
+
 class ICommandBuffer : public NonCopyable {
 public:
     virtual void begin()                                             = 0;

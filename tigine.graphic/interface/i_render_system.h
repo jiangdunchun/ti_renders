@@ -19,7 +19,7 @@ class IRenderSystem : public NonCopyable {
 public:
     virtual IRenderContext  *createRenderContext(const RenderContextDescriptor &desc)   = 0;
     virtual ICommandQueue   *getCommandQueue()                                          = 0;
-    virtual ICommandBuffer  *createCommandBuffer()                                      = 0;
+    virtual ICommandBuffer  *createCommandBuffer(const CommandBufferDescriptor &desc)   = 0;
     virtual IBuffer         *createBuffer(const BufferDescriptor &desc)                 = 0;
     virtual IBufferArray    *createBufferArray(const BufferArrayDescriptor &desc)       = 0;
     virtual IShader         *createShader(const ShaderDescriptor &desc)                 = 0;
