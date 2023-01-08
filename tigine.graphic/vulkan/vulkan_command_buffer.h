@@ -1,12 +1,17 @@
 #ifndef TIGINE_GRAPHIC_VULKAN_VULKAN_COMMAND_BUFFER_H_
 #define TIGINE_GRAPHIC_VULKAN_VULKAN_COMMAND_BUFFER_H_
 
-#include "vulkan/vulkan_common.h"
 #include "interface/i_command_buffer.h"
+
+#include "vulkan/vulkan_common.h"
+
 
 namespace tigine { namespace graphic {
 class VulkanCommandBuffer : public ICommandBuffer {
 public:
+    VulkanCommandBuffer();
+    ~VulkanCommandBuffer();
+
     void begin() override;
     void end() override;
     void setViewport(const Viewport &viewport) override;
