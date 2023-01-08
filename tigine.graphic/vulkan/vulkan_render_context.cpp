@@ -540,15 +540,11 @@ VulkanRenderContext::~VulkanRenderContext() {
     glfwTerminate();
 }
 
-ISurface *VulkanRenderContext::getSurface() { 
-    return surface_;
-}
+ISurface *VulkanRenderContext::getSurface() {  return surface_; }
+
+IRenderPass *VulkanRenderContext::getRenderPass() { return render_pass_; }
 
 void VulkanRenderContext::present() {
     glfwSwapBuffers(window_);
-}
-
-IRenderPass *VulkanRenderContext::getRenderPass() {
-    return render_pass_;
 }
 }} // namespace tigine::graphic

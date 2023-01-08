@@ -12,8 +12,9 @@ public:
     VulkanShader(VkDevice *vk_device, const ShaderDescriptor &desc);
     ~VulkanShader();
 
-    bool            hasError() const override { return has_error_; }
-    std::string     getReport() const override { return "getReport() is not support in vulkan"; }
+    bool        hasError() const override { return has_error_; }
+    std::string getReport() const override { return "getReport() is not support in vulkan"; }
+
     VkShaderModule* getVKShaderModule() { return &vk_shader_; }
 
 private:

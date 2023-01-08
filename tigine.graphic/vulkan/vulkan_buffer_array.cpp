@@ -22,7 +22,7 @@ VulkanBufferArray::VulkanBufferArray(const BufferArrayDescriptor &desc) {
     if (desc.indices_buffer) indices_buffer_ = static_cast<VulkanBuffer *>(desc.indices_buffer);
 
 
-    vk_bindings_desc_.resize(desc.bindings_count);
+    vk_bindings_desc_.resize(desc.bindings_count, {});
     for (int i = 0; i < desc.bindings_count; ++i) {
         BindingInfo &binding_info = *(desc.bindings + i);
 
@@ -31,7 +31,7 @@ VulkanBufferArray::VulkanBufferArray(const BufferArrayDescriptor &desc) {
         vk_bindings_desc_[i].inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
     }
 
-    vk_attributes_desc_.resize(desc.attributes_count);
+    vk_attributes_desc_.resize(desc.attributes_count, {});
     for (int i = 0; i < desc.attributes_count; ++i) {
         AttributeInfo &attribute_info = *(desc.attributes + i);
 

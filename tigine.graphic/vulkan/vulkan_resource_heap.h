@@ -15,7 +15,7 @@ public:
     VkPipelineLayout *getVkPipelineLayout() { return &vk_pipeline_layout_; }
 
 private:
-    VkDevice             *vk_device_;
+    VkDevice *vk_device_;
 
     VkDescriptorSetLayout vk_descriptor_set_layout_;
     VkDescriptorPool      vk_descriptor_pool_;
