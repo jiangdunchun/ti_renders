@@ -41,6 +41,8 @@ VulkanBufferArray::VulkanBufferArray(const BufferArrayDescriptor &desc) {
         vk_attributes_desc_[i].offset   = attribute_info.offset;
     }
 
+    vk_pipeline_vertex_input_state_create_info_                                 = {};
+    vk_pipeline_vertex_input_state_create_info_.sType                           = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
     vk_pipeline_vertex_input_state_create_info_.vertexBindingDescriptionCount   = static_cast<uint32_t>(vk_bindings_desc_.size());
     vk_pipeline_vertex_input_state_create_info_.pVertexBindingDescriptions      = vk_bindings_desc_.data();
     vk_pipeline_vertex_input_state_create_info_.vertexAttributeDescriptionCount = static_cast<uint32_t>(vk_attributes_desc_.size());

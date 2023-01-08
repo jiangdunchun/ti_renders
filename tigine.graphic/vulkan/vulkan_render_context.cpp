@@ -524,10 +524,13 @@ VulkanRenderContext::VulkanRenderContext(const RenderContextDescriptor &desc) {
     createLogicalDevice(vk_physicl_device_, vk_surface_KHR_, vk_device_, vk_graphics_queue_, vk_present_queue_);
     createSwapChain(vk_physicl_device_, vk_surface_KHR_, vk_device_, window_, vk_swap_chain_, vk_swap_chain_images_, vk_swap_chain_image_format_, vk_swap_chain_extent_);
     createImageViews(vk_device_, vk_swap_chain_image_views_, vk_swap_chain_images_, vk_swap_chain_image_format_);
-    createRenderPass(vk_swap_chain_image_format_, vk_device_, vk_render_pass_);
+    //createRenderPass(vk_swap_chain_image_format_, vk_device_, vk_render_pass_);
 
     surface_     = new VulkanSurface(window_);
-    render_pass_ = nullptr;
+
+    RenderPassDescriptor render_pass_desc;
+    //render_pass_desc.format = VK_FORMAT_R8G8B8A8_SRGB;
+    render_pass_ = new VulkanRenderPass(&vk_device_, render_pass_desc);
 }
 
 VulkanRenderContext::~VulkanRenderContext() {

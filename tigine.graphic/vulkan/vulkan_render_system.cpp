@@ -54,10 +54,12 @@ ICommandQueue   *VulkanRenderSystem::getCommandQueue() { return command_queue_; 
 ICommandBuffer  *VulkanRenderSystem::createCommandBuffer() { return nullptr; }
 
 ITexture *VulkanRenderSystem::createTexture(const TextureDescriptor &desc) { 
+	assert(vk_device_);
 	return new VulkanTexture(vk_device_, desc);
 }
 
-IResourceHeap   *VulkanRenderSystem::CreateResourceHeap(const ResourceHeapDescriptor &desc) {
+IResourceHeap  *VulkanRenderSystem::CreateResourceHeap(const ResourceHeapDescriptor &desc) {
+    assert(vk_device_);
 	return new VulkanResourceHeap(vk_device_, desc);
 }
 
@@ -65,6 +67,7 @@ IRenderPass     *VulkanRenderSystem::CreateRenderPass(const RenderPassDescriptor
 IRenderTarget   *VulkanRenderSystem::createRenderTarget(const RenderTargetDescriptor &desc) { return nullptr; }
 
 IPipelineState  *VulkanRenderSystem::createPipelineState(const PipelineStateDescriptor &desc) { 
+	assert(vk_device_);
 	return new VulkanPipelineState(vk_device_, desc);
 }
 
