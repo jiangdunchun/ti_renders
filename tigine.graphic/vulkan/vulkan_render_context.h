@@ -42,11 +42,11 @@ private:
     VkDevice                 vk_device_;
     VkQueue                  vk_graphics_queue_;
     VkQueue                  vk_present_queue_;
-    VkSwapchainKHR           vk_swap_chain_;
-    std::vector<VkImage>     vk_swap_chain_images_;
-    VkFormat                 vk_swap_chain_image_format_;
-    VkExtent2D               vk_swap_chain_extent_;
-    std::vector<VkImageView> vk_swap_chain_image_views_;
+    VkSwapchainKHR           vk_swapchain_;
+    std::vector<VkImage>     vk_swapchain_images_;
+    VkFormat                 vk_swapchain_image_format_;
+    VkExtent2D               vk_swapchain_extent_;
+    std::vector<VkImageView> vk_swapchain_image_views_;
     VkRenderPass             vk_render_pass_;
 };
 }} // namespace tigine::graphic
