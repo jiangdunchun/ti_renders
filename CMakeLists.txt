@@ -15,4 +15,6 @@ add_subdirectory(./ti_render)
 
 add_subdirectory(./tests)
 
+add_subdirectory(./meta)
+
 
