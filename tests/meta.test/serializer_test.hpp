@@ -1,3 +1,6 @@
+#ifndef META_TEST_SERIALIZER_TEST_HPP_
+#define META_TEST_SERIALIZER_TEST_HPP_
+
 #include <serializer.h>
 
 #include <string>
@@ -24,10 +27,10 @@ public:
     std::string string_var_;
 
     SerializerTest2(float float_var, double double_var, bool bool_var, std::string string_var) {
-        float_var_   = float_var;
-        double_var_  = double_var;
-        bool_var_    = bool_var;
-        string_var_  = string_var;
+        float_var_  = float_var;
+        double_var_ = double_var;
+        bool_var_   = bool_var;
+        string_var_ = string_var;
     }
     SerializerTest2() {}
 };
@@ -43,7 +46,6 @@ public:
     }
     SerializerTest3() {}
 };
-
 
 /* auto generated code */
 template<>
@@ -90,3 +92,5 @@ void meta::Serializer::fromJson(const json &json_context, SerializerTest3 &insta
     fromJson(json_context["serializer_test_1_var_"], instance.serializer_test_1_var_);
     fromJson(json_context["serializer_test_2_var_"], instance.serializer_test_2_var_);
 }
+
+#endif // !META_TEST_SERIALIZER_TEST_HPP_
