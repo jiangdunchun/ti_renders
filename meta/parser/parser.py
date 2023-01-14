@@ -9,7 +9,7 @@ import argparse
 # print(args.proj_dir)
 
 def traverse(node, depth):
-    if node.kind is clang.cindex.CursorKind.NAMESPACE and str(node.get_usr()).__contains__("reflection_test"):
+    if node.kind is clang.cindex.CursorKind.NAMESPACE and str(node.get_usr()).__contains__("MetaTest"):
         for n in node.get_children():
             traverse_reflect(n, depth + 1)
     else:        
@@ -23,6 +23,6 @@ def traverse_reflect(node, depth):
 
 clang.cindex.Config.set_library_path("./")
 index = clang.cindex.Index.create()
-parser = index.parse("E:/study/ti_renders/tests/tigine.reflection.test/test.h", ["-ObjC++"])
+parser = index.parse("../../tests/meta.test/meta_test.hpp", ["-ObjC++"])
 cursor = parser.cursor
 traverse(cursor, 0)

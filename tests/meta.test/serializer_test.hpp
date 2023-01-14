@@ -1,11 +1,12 @@
 #ifndef META_TEST_SERIALIZER_TEST_HPP_
 #define META_TEST_SERIALIZER_TEST_HPP_
 
-#include <serializer.h>
+#include <meta.h>
 
 #include <string>
 
 class SerializerTest1 {
+    MEATA_SERIALIZABLE
 public:
     char         char_var_;
     int          int_var_;

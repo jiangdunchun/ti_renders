@@ -22,7 +22,7 @@ void serializer_test() {
 
 void reflector_test() { 
     // regist
-    ReflectorTest1::makeReflectable();
+    ReflectorTest1::makeReflectible();
 
 
     meta::TypeMeta reflector_test_1_t_meta = meta::Reflector::getType("ReflectorTest1");
