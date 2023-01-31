@@ -3,6 +3,8 @@
 #include "serializer_test.hpp"
 
 void serializer_test() { 
+    std::cout << "serializer test----->" << std::endl;
+
 	SerializerTest1 serializer_test_1_var(1, 2, 3);
     SerializerTest2 serializer_test_2_var(1.0f, 2.0, false, "serializer_test_2");
     SerializerTest3 serializer_test_3_var(serializer_test_1_var, serializer_test_2_var);
@@ -26,8 +28,8 @@ void reflector_test() {
     ReflectorTest1::makeReflectible();
     /*<----------end*/
 
-
-
+    std::cout << "serializer test----->" << std::endl;
+    ReflectorTest1 reflector_test_1_var;
     meta::TypeMeta reflector_test_1_t_meta = meta::Reflector::getType("ReflectorTest1");
 
 
@@ -35,7 +37,6 @@ void reflector_test() {
     meta::FieldMeta reflector_test_1_int_var_f_meta = reflector_test_1_t_meta.getField("int_var_");
     meta::FieldMeta reflector_test_1_unsigned_int_var_f_meta = reflector_test_1_t_meta.getField("unsigned_int_var_");
 
-    ReflectorTest1 reflector_test_1_var;
     reflector_test_1_char_var_f_meta.set(reflector_test_1_var, 'a');
     reflector_test_1_int_var_f_meta.set(reflector_test_1_var, 2);
     reflector_test_1_unsigned_int_var_f_meta.set(reflector_test_1_var, 3);
@@ -61,9 +62,9 @@ void reflector_test() {
 
     std::cout << "reflector_test_1_plus_char_var_m_meta.invoke<char>(reflector_test_1_var, char(1):" 
               << reflector_test_1_plus_char_var_m_meta.invoke<char>(reflector_test_1_var, char(1)) << std::endl;
-
     reflector_test_1_plus_int_var_m_meta.invoke(reflector_test_1_var, int(1));
-    std::cout << "reflector_test_1_var.int_var_:" << reflector_test_1_var.int_var_ << std::endl;
+    std::cout << "reflector_test_1_plus_int_var_m_meta.invoke(reflector_test_1_var, int(1)):" 
+              << reflector_test_1_var.int_var_ << std::endl;
 }
 
 int main(int, char **) { 

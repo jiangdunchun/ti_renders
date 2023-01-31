@@ -112,13 +112,13 @@ public:
 
     const std::string &getName() const { return name_; }
     const std::vector<FieldMeta> &getFields() const { return fields_; }
-    FieldMeta getField(std::string name) {
+    FieldMeta getField(const std::string &name) {
         for (auto &f : fields_)
             if (f.getName() == name) return f;
         return FieldMeta();
     }
     template<typename T, typename F>
-    bool addField(std::string name, F T::*field) {
+    bool addField(const std::string &name, F T::*field) {
         for (auto &f : fields_)
             if (f.getName() == name) return false;
 
@@ -126,13 +126,13 @@ public:
         return true;
     }
     const std::vector<MethodMeta> &getMethods() const { return methods_; }
-    MethodMeta getMethod(std::string name) {
+    MethodMeta getMethod(const std::string &name) {
         for (auto &m : methods_)
             if (m.getName() == name) return m;
         return MethodMeta();
     }
     template<typename M>
-    bool addMethod(std::string name, M method) {
+    bool addMethod(const std::string &name, M method) {
         for (auto &m : methods_)
             if (m.getName() == name) return false;
 
