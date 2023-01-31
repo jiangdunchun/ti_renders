@@ -7,11 +7,12 @@
 
 class SerializerTest1 {
     MEATA_SERIALIZABLE
-public:
+private:
     char         char_var_;
     int          int_var_;
     unsigned int unsigned_int_var_;
 
+public:
     SerializerTest1(char char_var, int int_var, unsigned int unsigned_int_var) {
         char_var_         = char_var;
         int_var_          = int_var;
@@ -21,6 +22,7 @@ public:
 };
 
 class SerializerTest2 {
+    MEATA_SERIALIZABLE
 public:
     float       float_var_;
     double      double_var_;
@@ -37,6 +39,7 @@ public:
 };
 
 class SerializerTest3 {
+    MEATA_SERIALIZABLE
 public:
     SerializerTest1 serializer_test_1_var_;
     SerializerTest2 serializer_test_2_var_;
@@ -53,7 +56,7 @@ public:
 
 
 /* auto generated code */
-//-------------------------------------
+/*start---------->*/
 template<>
 json meta::Serializer::toJson(SerializerTest1 &instance) {
     json::object ret;
@@ -98,6 +101,6 @@ void meta::Serializer::fromJson(const json &json_context, SerializerTest3 &insta
     fromJson(json_context["serializer_test_1_var_"], instance.serializer_test_1_var_);
     fromJson(json_context["serializer_test_2_var_"], instance.serializer_test_2_var_);
 }
-//-------------------------------------
+/*<----------end*/
 
 #endif // !META_TEST_SERIALIZER_TEST_HPP_

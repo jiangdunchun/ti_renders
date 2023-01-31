@@ -21,8 +21,11 @@ void serializer_test() {
 #include "reflector_test.hpp"
 
 void reflector_test() { 
-    // regist
+    /* regist code for all reflectible classes*/
+    /*start---------->*/
     ReflectorTest1::makeReflectible();
+    /*<----------end*/
+
 
 
     meta::TypeMeta reflector_test_1_t_meta = meta::Reflector::getType("ReflectorTest1");

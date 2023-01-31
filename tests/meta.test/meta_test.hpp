@@ -3,8 +3,8 @@
 
 #include <meta.h>
 
-#define CLASS() class __attribute__((annotate("reflect-class")))
-#define PROPERTY() __attribute__((annotate("reflect-property")))
+#define CLASS() class __attribute__((annotate("reflect-type")))
+#define PROPERTY() __attribute__((annotate("reflect-field")))
 
 namespace MetaTest {
 CLASS() MetaTest1 {

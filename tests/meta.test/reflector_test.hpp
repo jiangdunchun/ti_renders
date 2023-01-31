@@ -26,7 +26,7 @@ public:
 
 
 /* auto generated code */
-//-------------------------------------
+/*start---------->*/
 void ReflectorTest1::makeReflectible() {
     meta::Reflector::registType<ReflectorTest1>("ReflectorTest1")
         .addField("char_var_", &ReflectorTest1::char_var_)
@@ -35,6 +35,6 @@ void ReflectorTest1::makeReflectible() {
         .addMethod("plusCharVar", &ReflectorTest1::plusCharVar)
         .addMethod("plusIntVar", &ReflectorTest1::plusIntVar);
 }
-//-------------------------------------
+/*<----------end*/
 
 #endif // !META_TEST_REFLECTOR_TEST_HPP_
