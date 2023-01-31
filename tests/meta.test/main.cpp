@@ -26,6 +26,8 @@ void reflector_test() {
 
 
     meta::TypeMeta reflector_test_1_t_meta = meta::Reflector::getType("ReflectorTest1");
+
+
     meta::FieldMeta reflector_test_1_char_var_f_meta = reflector_test_1_t_meta.getField("char_var_");
     meta::FieldMeta reflector_test_1_int_var_f_meta = reflector_test_1_t_meta.getField("int_var_");
     meta::FieldMeta reflector_test_1_unsigned_int_var_f_meta = reflector_test_1_t_meta.getField("unsigned_int_var_");
@@ -49,6 +51,16 @@ void reflector_test() {
               << reflector_test_1_int_var_f_meta.get<int>(reflector_test_1_var) << std::endl
               << "reflector_test_1_unsigned_int_var_f_meta.get<unsigned int>(reflector_test_1_var):"
               << reflector_test_1_unsigned_int_var_f_meta.get<unsigned int>(reflector_test_1_var) << std::endl;
+
+
+    meta::MethodMeta reflector_test_1_plus_char_var_m_meta = reflector_test_1_t_meta.getMethod("plusCharVar");
+    meta::MethodMeta reflector_test_1_plus_int_var_m_meta  = reflector_test_1_t_meta.getMethod("plusIntVar");
+
+    std::cout << "reflector_test_1_plus_char_var_m_meta.invoke<char>(reflector_test_1_var, char(1):" 
+              << reflector_test_1_plus_char_var_m_meta.invoke<char>(reflector_test_1_var, char(1)) << std::endl;
+
+    reflector_test_1_plus_int_var_m_meta.invoke(reflector_test_1_var, int(1));
+    std::cout << "reflector_test_1_var.int_var_:" << reflector_test_1_var.int_var_ << std::endl;
 }
 
 int main(int, char **) { 

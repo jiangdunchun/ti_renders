@@ -16,14 +16,25 @@ public:
         unsigned_int_var_ = unsigned_int_var;
     }
     ReflectorTest1() {}
+
+    char plusCharVar(char v) { return char_var_ + v; }
+    void plusIntVar(int v) { int_var_ += v; }
 };
 
+
+
+
+
 /* auto generated code */
+//-------------------------------------
 void ReflectorTest1::makeReflectible() {
     meta::Reflector::registType<ReflectorTest1>("ReflectorTest1")
         .addField("char_var_", &ReflectorTest1::char_var_)
         .addField("int_var_", &ReflectorTest1::int_var_)
-        .addField("unsigned_int_var_", &ReflectorTest1::unsigned_int_var_);
+        .addField("unsigned_int_var_", &ReflectorTest1::unsigned_int_var_)
+        .addMethod("plusCharVar", &ReflectorTest1::plusCharVar)
+        .addMethod("plusIntVar", &ReflectorTest1::plusIntVar);
 }
+//-------------------------------------
 
 #endif // !META_TEST_REFLECTOR_TEST_HPP_

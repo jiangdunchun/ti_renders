@@ -48,7 +48,12 @@ public:
     SerializerTest3() {}
 };
 
+
+
+
+
 /* auto generated code */
+//-------------------------------------
 template<>
 json meta::Serializer::toJson(SerializerTest1 &instance) {
     json::object ret;
@@ -93,5 +98,6 @@ void meta::Serializer::fromJson(const json &json_context, SerializerTest3 &insta
     fromJson(json_context["serializer_test_1_var_"], instance.serializer_test_1_var_);
     fromJson(json_context["serializer_test_2_var_"], instance.serializer_test_2_var_);
 }
+//-------------------------------------
 
 #endif // !META_TEST_SERIALIZER_TEST_HPP_

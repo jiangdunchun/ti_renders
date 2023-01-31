@@ -5,34 +5,104 @@
 #include <functional>
 #include <map>
 #include <vector>
+#include <any>
 
 namespace meta {
 class FieldMeta {
 public:
     FieldMeta() = default;
-    template<typename C, typename T>
-    FieldMeta(std::string getName, T C::*var) : name_(getName) {
-        get_func_ = [var](void *obj) -> void * { return &(static_cast<C *>(obj)->*var); };
-        set_func_ = [var](void *obj, void *val) {
-            C *self    = static_cast<C *>(obj);
-            self->*var = *(static_cast<T *>(val));
+    template<typename T, typename F>
+    explicit FieldMeta(F T::*field, const std::string &name = "") : name_(name) {
+        get_func_ = [field](void *obj) -> void * { return &(static_cast<T *>(obj)->*field); };
+        set_func_ = [field](void *obj, void *val) {
+            T *self    = static_cast<T *>(obj);
+            self->*field = *(static_cast<F *>(val));
         };
     }
 
     const std::string &getName() const { return name_; }
-    template<typename T, typename C>
-    T get(C &c) const {
-        return *(static_cast<T *>(get_func_(&c)));
+    template<typename F, typename T>
+    F get(T &instance) const {
+        return *(static_cast<F *>(get_func_(&instance)));
     }
-    template<typename C, typename T>
-    void set(C &c, T &&val) const {
-        set_func_(&c, &val);
+    template<typename T, typename F>
+    void set(T &instance, F &&val) const {
+        set_func_(&instance, &val);
     }
 
 private:
     std::string                         name_;
     std::function<void *(void *)>       get_func_ = nullptr;
     std::function<void(void *, void *)> set_func_ = nullptr;
+};
+
+class MethodMeta {
+public:
+    MethodMeta() = default;
+    template<typename T, typename R, typename... Args>
+    explicit MethodMeta(R (T::*method)(Args...), const std::string &name = "") : name_(name) {
+        func_ = [this, method](std::any obj_args) -> std::any {
+            using tuple_t = std::tuple<T &, Args...>;
+            auto *tp_ptr = std::any_cast<tuple_t *>(obj_args);
+            return std::apply(method, *tp_ptr);
+        };
+    }
+    template<typename T, typename... Args>
+    explicit MethodMeta(void (T::*method)(Args...), const std::string &name = "") : name_(name) {
+        func_ = [this, method](std::any obj_args) -> std::any {
+            using tuple_t = std::tuple<T &, Args...>;
+            auto *tp_ptr  = std::any_cast<tuple_t *>(obj_args);
+            std::apply(method, *tp_ptr);
+            return std::any {};
+        };
+    }
+    template<typename T, typename R, typename... Args>
+    explicit MethodMeta(R (T::*method)(Args...) const, const std::string &name = "") : name_(name) {
+        func_ = [this, method](std::any obj_args) -> std::any {
+            using tuple_t = std::tuple<const T &, Args...>;
+            auto *tp_ptr = std::any_cast<tuple_t *>(obj_args);
+            return std::apply(method, *tp_ptr);
+        };
+        is_const_ = true;
+    }
+    template<typename T, typename... Args>
+    explicit MethodMeta(void (T::*method)(Args...) const, const std::string &name = "") : name_(name) {
+        func_ = [this, method](std::any obj_args) -> std::any {
+            using tuple_t = std::tuple<const T &, Args...>;
+            auto *tp_ptr  = std::any_cast<tuple_t *>(obj_args);
+            std::apply(method, *tp_ptr);
+            return std::any {};
+        };
+        is_const_ = true;
+    }
+
+    const std::string &getName() const { return name_; }
+    bool isConst() const { return is_const_; }
+    template<typename R, typename T, typename... Args>
+    R invoke(T &instance, Args &&...args) {
+        if (is_const_) {
+            auto tp = std::make_tuple(std::reference_wrapper<const T>(instance), args...);
+            return std::any_cast<R>(func_(&tp));
+        }
+        auto tp = std::make_tuple(std::reference_wrapper<T>(instance), args...);
+        return std::any_cast<R>(func_(&tp));
+    }
+    template<typename T, typename... Args>
+    void invoke(T &instance, Args &&...args) {
+        if (is_const_) {
+            auto tp = std::make_tuple(std::reference_wrapper<const T>(instance), args...);
+            func_(&tp);
+        }
+        auto tp = std::make_tuple(std::reference_wrapper<T>(instance), args...);
+        func_(&tp);
+    }
+
+private:
+    friend class RawTypeDescriptorBuilder;
+
+    std::string                       name_;
+    bool                              is_const_ = false;
+    std::function<std::any(std::any)> func_ = nullptr;
 };
 
 class TypeMeta {
@@ -42,23 +112,38 @@ public:
 
     const std::string &getName() const { return name_; }
     const std::vector<FieldMeta> &getFields() const { return fields_; }
-    FieldMeta getField(std::string v_name) {
-        for (auto &v : fields_)
-            if (v.getName() == v_name) return v;
+    FieldMeta getField(std::string name) {
+        for (auto &f : fields_)
+            if (f.getName() == name) return f;
         return FieldMeta();
     }
-    template<typename C, typename T>
-    bool addField(std::string v_name, T C::*var) {
-        for (auto &v : fields_)
-            if (v.getName() == v_name) return false;
+    template<typename T, typename F>
+    bool addField(std::string name, F T::*field) {
+        for (auto &f : fields_)
+            if (f.getName() == name) return false;
 
-        fields_.push_back(FieldMeta(v_name, var));
+        fields_.push_back(FieldMeta(field, name));
+        return true;
+    }
+    const std::vector<MethodMeta> &getMethods() const { return methods_; }
+    MethodMeta getMethod(std::string name) {
+        for (auto &m : methods_)
+            if (m.getName() == name) return m;
+        return MethodMeta();
+    }
+    template<typename M>
+    bool addMethod(std::string name, M method) {
+        for (auto &m : methods_)
+            if (m.getName() == name) return false;
+
+        methods_.push_back(MethodMeta(method, name));
         return true;
     }
 
 private:
-    std::string            name_;
-    std::vector<FieldMeta> fields_;
+    std::string             name_;
+    std::vector<FieldMeta>  fields_;
+    std::vector<MethodMeta> methods_;
 };
 
 template<typename T>
@@ -67,9 +152,14 @@ public:
     TypeMetaBuilder(const std::string &name) : type_(name) {}
     ~TypeMetaBuilder() { Reflector::regist(type_); }
 
-    template<typename V>
-    TypeMetaBuilder &addField(const std::string &name, V T::*var) {
-        type_.addField(name, var);
+    template<typename F>
+    TypeMetaBuilder &addField(const std::string &name, F T::*field) {
+        type_.addField(name, field);
+        return *this;
+    }
+    template<typename M>
+    TypeMetaBuilder &addMethod(const std::string &name, M method) {
+        type_.addMethod(name, method);
         return *this;
     }
 
