@@ -1,16 +1,28 @@
 #ifndef META_TEST_META_TEST_HPP_
 #define META_TEST_META_TEST_HPP_
 
-#include <meta.h>
-
 #define CLASS(...) class __attribute__((annotate("META;" #__VA_ARGS__)))
 #define PROPERTY(...) __attribute__((annotate("META;" #__VA_ARGS__)))
 #define FUNCTION(...) __attribute__((annotate("META;" #__VA_ARGS__)))
 
+#define META_REFLECTIBLE \
+public:                  \
+    static void makeReflectible();
+
+namespace meta {
+class Serializer;
+}
+#define MEATA_SERIALIZABLE friend class meta::Serializer;
+
+#define META_REFLECTIBLE_AND_SERIALIZABLE \
+    friend class meta::Serializer;        \
+public:                                   \
+    static void makeReflectible();
+
 namespace MetaTest {
-CLASS(REFLECTIBLE; SERIALIZABLE) MetaTest1 {
+CLASS(WHITE_LIST) MetaTest1 {
+    META_REFLECTIBLE_AND_SERIALIZABLE
 public:
-    PROPERTY()
     char         char_var_;
     int          int_var_;
     unsigned int unsigned_int_var_;
