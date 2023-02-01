@@ -3,11 +3,12 @@
 
 #include <meta.h>
 
-#define CLASS() class __attribute__((annotate("reflect-type")))
-#define PROPERTY() __attribute__((annotate("reflect-field")))
+#define CLASS(...) class __attribute__((annotate("META;" #__VA_ARGS__)))
+#define PROPERTY(...) __attribute__((annotate("META;" #__VA_ARGS__)))
+#define FUNCTION(...) __attribute__((annotate("META;" #__VA_ARGS__)))
 
 namespace MetaTest {
-CLASS() MetaTest1 {
+CLASS(REFLECTIBLE; SERIALIZABLE) MetaTest1 {
 public:
     PROPERTY()
     char         char_var_;

@@ -8,21 +8,37 @@ import argparse
 # print(args.input)
 # print(args.proj_dir)
 
-def traverse(node, depth):
-    if node.kind is clang.cindex.CursorKind.NAMESPACE and str(node.get_usr()).__contains__("MetaTest"):
-        for n in node.get_children():
-            traverse_reflect(n, depth + 1)
-    else:        
-        for n in node.get_children():
-            traverse(n, depth + 1)
+def check_meta_property(node):
+    is_reflectible = False
+    is_serializable = False
+    for child in node.get_children():
+        if child.kind == clang.cindex.CursorKind.ANNOTATE_ATTR:
+            attributes = child.displayname.replace(' ', '').split(';')
+            if len(attributes) > 0 and attributes[0] == 'META':
+                for attribute in attributes:
+                    if attribute == 'REFLECTIBLE':
+                        is_reflectible = True
+                    elif attribute == 'SERIALIZABLE':
+                        is_serializable = True
+    return is_reflectible, is_serializable
 
-def traverse_reflect(node, depth):
-    print("%s%s %s" %("|   " * depth, str(node.kind), node.get_usr()))
-    for n in node.get_children():
-        traverse_reflect(n, depth + 1)
+def traverse(node, p_namespace):
+    if node.kind == clang.cindex.CursorKind.NAMESPACE:
+        c_namespace = node.displayname + '::' + p_namespace
+        for child in node.get_children():
+            traverse(child, c_namespace)
+    elif node.kind == clang.cindex.CursorKind.CLASS_DECL:
+        is_reflectible, is_serializable = check_meta_property(node)
+        if is_reflectible:
+            print(p_namespace + node.displayname + " is_reflectible")
+        if is_serializable:
+            print(p_namespace + node.displayname + " is_serializable")
+    else:
+        for child in node.get_children():
+            traverse(child, p_namespace)
 
 clang.cindex.Config.set_library_path("./")
 index = clang.cindex.Index.create()
 parser = index.parse("../../tests/meta.test/meta_test.hpp", ["-ObjC++"])
 cursor = parser.cursor
-traverse(cursor, 0)
+traverse(cursor, '')
