@@ -71,7 +71,7 @@ def traverse(node, p_namespace):
 
 clang.cindex.Config.set_library_path("./")
 index = clang.cindex.Index.create()
-parser = index.parse("../../tests/meta.test/meta_test.hpp", ["-ObjC++"])
+parser = index.parse("../../tests/meta.test/meta_test.hpp", ["-ObjC++", "-D__META_PARSER__"])
 cursor = parser.cursor
 traverse(cursor, '')
 print("type_fields:" + str(type_fields))
