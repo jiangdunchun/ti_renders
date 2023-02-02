@@ -1,73 +1,72 @@
 #include <iostream>
 
-#include "serializer_test.hpp"
+#include "meta_test.hpp"
 
 void serializer_test() { 
     std::cout << "serializer test----->" << std::endl;
 
-	SerializerTest1 serializer_test_1_var(1, 2, 3);
-    SerializerTest2 serializer_test_2_var(1.0f, 2.0, false, "serializer_test_2");
-    SerializerTest3 serializer_test_3_var(serializer_test_1_var, serializer_test_2_var);
+	MetaTest1 test_1_var(1, 2, 3);
+    MetaTest2 test_2_var(1.0f, 2.0, false, "serializer_test_2");
+    MetaTest3 test_3_var(test_1_var, test_2_var);
 
-	json serializer_test_3_var_json = meta::Serializer::toJson(serializer_test_3_var);
-    std::cout << "serializer_test_3_var:" << serializer_test_3_var_json.dump() << std::endl;
+	json test_3_var_json = meta::Serializer::toJson(test_3_var);
+    std::cout << "test_3_var:" << test_3_var_json.dump() << std::endl;
 
-	SerializerTest3 *serializer_test_3_copy_var = new SerializerTest3();
-    meta::Serializer::fromJson(serializer_test_3_var_json, serializer_test_3_copy_var);
-    std::cout << "serializer_test_3_copy_var.serializer_test_1_var_:" 
-              << meta::Serializer::toJson(serializer_test_3_copy_var->serializer_test_1_var_).dump() << std::endl;
-    std::cout << "serializer_test_3_copy_var.serializer_test_2_var_:"
-              << meta::Serializer::toJson(serializer_test_3_copy_var->serializer_test_2_var_).dump() << std::endl;
+	MetaTest3 *test_3_copy_var = new MetaTest3();
+    meta::Serializer::fromJson(test_3_var_json, test_3_copy_var);
+    std::cout << "test_3_copy_var.test_1_var:" 
+              << meta::Serializer::toJson(test_3_copy_var->test_1_var).dump() << std::endl;
+    std::cout << "test_3_copy_var.test_2_var:" 
+              << meta::Serializer::toJson(test_3_copy_var->test_2_var).dump() << std::endl;
 }
 
-#include "reflector_test.hpp"
 
 void reflector_test() { 
-    /* regist code for all reflectible classes*/
-    /*start---------->*/
-    ReflectorTest1::makeReflectible();
-    /*<----------end*/
+    std::cout << "reflector test----->" << std::endl;
+    
+    meta::TypeMeta test_1_t_meta = meta::Reflector::getType("MetaTest1");
+    meta::FieldMeta test_1_char_var_f_meta = test_1_t_meta.getField("char_var");
+    meta::FieldMeta test_1_int_var_f_meta  = test_1_t_meta.getField("int_var");
 
-    std::cout << "serializer test----->" << std::endl;
-    ReflectorTest1 reflector_test_1_var;
-    meta::TypeMeta reflector_test_1_t_meta = meta::Reflector::getType("ReflectorTest1");
+    meta::TypeMeta test_3_t_meta = meta::Reflector::getType("MetaTest3");
+    meta::FieldMeta test_3_test_2_var_f_meta = test_3_t_meta.getField("test_2_var");
+    meta::MethodMeta test_3_get_m_meta = test_3_t_meta.getMethod("get");
+    meta::MethodMeta test_3_plusandset_m_meta = test_3_t_meta.getMethod("plusandset");
 
+    MetaTest3 test_3_var;
 
-    meta::FieldMeta reflector_test_1_char_var_f_meta = reflector_test_1_t_meta.getField("char_var_");
-    meta::FieldMeta reflector_test_1_int_var_f_meta = reflector_test_1_t_meta.getField("int_var_");
-    meta::FieldMeta reflector_test_1_unsigned_int_var_f_meta = reflector_test_1_t_meta.getField("unsigned_int_var_");
+    test_1_char_var_f_meta.set(test_3_var.test_1_var, 'a');
+    test_1_int_var_f_meta.set(test_3_var.test_1_var, 2);
+    MetaTest2 test_2_var_0(1.0f, 2, true, "test_2_var_0");
+    test_3_test_2_var_f_meta.set(test_3_var, test_2_var_0);
 
-    reflector_test_1_char_var_f_meta.set(reflector_test_1_var, 'a');
-    reflector_test_1_int_var_f_meta.set(reflector_test_1_var, 2);
-    reflector_test_1_unsigned_int_var_f_meta.set(reflector_test_1_var, 3);
+    std::cout << "test_3_var.test_1_var.char_var:" << test_3_var.test_1_var.char_var << std::endl
+              << "test_3_var.test_1_var.int_var:" << test_3_var.test_1_var.int_var << std::endl
+              << "test_3_var.test_2_var.float_var:" << test_3_var.test_2_var.float_var << std::endl
+              << "test_3_var.test_2_var.double_var:" << test_3_var.test_2_var.double_var << std::endl
+              << "test_3_var.test_2_var.bool_var:" << test_3_var.test_2_var.bool_var << std::endl
+              << "test_3_var.test_2_var.string_var:" << test_3_var.test_2_var.string_var << std::endl;
 
-    std::cout << "reflector_test_1_var.char_var_:" << reflector_test_1_var.char_var_ << std::endl
-              << "reflector_test_1_var.int_var_:" << reflector_test_1_var.int_var_ << std::endl
-              << "reflector_test_1_var.unsigned_int_var_:" << reflector_test_1_var.unsigned_int_var_ << std::endl;
+    test_3_var.test_1_var.char_var = 'b';
+    test_3_var.test_1_var.int_var = 3;
 
-    reflector_test_1_var.char_var_ = 'b';
-    reflector_test_1_var.int_var_  = 3;
-    reflector_test_1_var.unsigned_int_var_ = 4;
+    std::cout << "test_1_char_var_f_meta.get<char>(test_3_var.test_1_var):" 
+              << test_1_char_var_f_meta.get<char>(test_3_var.test_1_var) << std::endl
+              << "test_1_int_var_f_meta.get<int>(test_3_var.test_1_var):" 
+              << test_1_int_var_f_meta.get<int>(test_3_var.test_1_var) << std::endl;
 
-    std::cout << "reflector_test_1_char_var_f_meta.get<char>(reflector_test_1_var):" 
-              << reflector_test_1_char_var_f_meta.get<char>(reflector_test_1_var) << std::endl
-              << "reflector_test_1_int_var_f_meta.get<int>(reflector_test_1_var):" 
-              << reflector_test_1_int_var_f_meta.get<int>(reflector_test_1_var) << std::endl
-              << "reflector_test_1_unsigned_int_var_f_meta.get<unsigned int>(reflector_test_1_var):"
-              << reflector_test_1_unsigned_int_var_f_meta.get<unsigned int>(reflector_test_1_var) << std::endl;
-
-
-    meta::MethodMeta reflector_test_1_plus_char_var_m_meta = reflector_test_1_t_meta.getMethod("plusCharVar");
-    meta::MethodMeta reflector_test_1_plus_int_var_m_meta  = reflector_test_1_t_meta.getMethod("plusIntVar");
-
-    std::cout << "reflector_test_1_plus_char_var_m_meta.invoke<char>(reflector_test_1_var, char(1):" 
-              << reflector_test_1_plus_char_var_m_meta.invoke<char>(reflector_test_1_var, char(1)) << std::endl;
-    reflector_test_1_plus_int_var_m_meta.invoke(reflector_test_1_var, int(1));
-    std::cout << "reflector_test_1_plus_int_var_m_meta.invoke(reflector_test_1_var, int(1)):" 
-              << reflector_test_1_var.int_var_ << std::endl;
+    test_3_plusandset_m_meta.invoke(test_3_var, char('a'));
+    test_3_plusandset_m_meta.invoke(test_3_var, char(2));
+    std::cout << "test_3_get_m_meta.invoke<char>(test_3_var):" 
+              << test_3_get_m_meta.invoke<char>(test_3_var) << std::endl;
 }
 
 int main(int, char **) { 
+    /* regist code for all reflectible classes*/
+    /*start---------->*/
+    meta::Reflector::registAll();
+    /*<----------end*/
+
 	serializer_test();
     reflector_test();
 }

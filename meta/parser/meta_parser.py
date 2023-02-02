@@ -11,35 +11,60 @@ import argparse
 def check_meta_properties(node):
     is_meta = False
     is_white_list = False
-    is_reflectible = False
-    is_serializable = False
     for child in node.get_children():
         # print(str(child.kind) + child.get_usr())
         if child.kind == clang.cindex.CursorKind.ANNOTATE_ATTR:
-            attributes = child.displayname.replace(' ', '').split(';')
+            attributes = child.spelling.replace(' ', '').split(';')
             if len(attributes) > 0 and attributes[0] == 'META':
                 is_meta = True
                 for attribute in attributes:
                     if attribute == 'WHITE_LIST':
                         is_white_list = True
-        elif child.kind == clang.cindex.CursorKind.FRIEND_DECL:
-            for friend_class in child.get_children():
-                if friend_class.displayname == 'class meta::Serializer':
-                    is_serializable = True
-        elif child.kind == clang.cindex.CursorKind.CXX_METHOD and child.access_specifier.name == 'PUBLIC' and child.is_static_method() and child.displayname == 'makeReflectible()':
-            is_reflectible = True
             
-    return is_meta, is_white_list, is_reflectible, is_serializable
+    return is_meta, is_white_list
+
+def is_meta_field_or_method(t_meta):
+    for child in t_meta.get_children():
+        if child.kind == clang.cindex.CursorKind.ANNOTATE_ATTR:
+            attributes = child.spelling.replace(' ', '').split(';')
+            if len(attributes) > 0 and attributes[0] == 'META':
+                return True
+    return False
+
+def get_fields_and_methods(t_meta, is_white_list):
+    fields = []
+    methods = []
+    for child in t_meta.get_children():
+        if child.kind == clang.cindex.CursorKind.FIELD_DECL and child.access_specifier.name == 'PUBLIC':
+            if not is_white_list:
+                fields.append(child.spelling)
+            else:
+                if is_meta_field_or_method(child):
+                    fields.append(child.spelling)
+        elif child.kind == clang.cindex.CursorKind.CXX_METHOD and child.access_specifier.name == 'PUBLIC':
+            if not is_white_list:
+                methods.append(child.spelling)
+            else:
+                if is_meta_field_or_method(child):
+                    methods.append(child.spelling)
+    return fields, methods
+
+type_fields = {}
+type_methods = {}
 
 def traverse(node, p_namespace):
     if node.kind == clang.cindex.CursorKind.NAMESPACE:
-        c_namespace = p_namespace + node.displayname + '::'
+        c_namespace = p_namespace + node.spelling + '::'
         for child in node.get_children():
             traverse(child, c_namespace)
     elif node.kind == clang.cindex.CursorKind.CLASS_DECL:
-        is_meta, is_white_list, is_reflectible, is_serializable = check_meta_properties(node)
+        is_meta, is_white_list = check_meta_properties(node)
         if is_meta:
-            print(p_namespace + node.displayname + " is_white:" + str(is_white_list) + " is_reflectible:" + str(is_reflectible) + " is_serializable:" + str(is_serializable))
+            fields, methods = get_fields_and_methods(node, is_white_list)
+            if len(fields) != 0:
+                type_fields[p_namespace + node.spelling] = fields
+            if len(methods) != 0:
+                type_methods[p_namespace + node.spelling] = methods
     else:
         for child in node.get_children():
             traverse(child, p_namespace)
@@ -49,3 +74,5 @@ index = clang.cindex.Index.create()
 parser = index.parse("../../tests/meta.test/meta_test.hpp", ["-ObjC++"])
 cursor = parser.cursor
 traverse(cursor, '')
+print("type_fields:" + str(type_fields))
+print("type_methods:" + str(type_methods))
