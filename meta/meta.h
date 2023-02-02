@@ -4,22 +4,14 @@
 #include <serializer.h>
 #include <reflector.h>
 
-#define META_REFLECTIBLE \
-public: \
-    static void makeReflectible(); \
-
-#define MEATA_SERIALIZABLE \
-friend class meta::Serializer; \
-
-#define META_REFLECTIBLE_AND_SERIALIZABLE \
-friend class meta::Serializer; \
-public: \
-    static void makeReflectible(); \
-
 #ifdef __META_PARSER__
-#define META_FIELD(...) __attribute__((annotate("META_FIELD;" #__VA_ARGS__)))
+#define CLASS(...) class __attribute__((annotate("META;" #__VA_ARGS__)))
+#define PROPERTY(...) __attribute__((annotate("META;" #__VA_ARGS__)))
+#define FUNCTION(...) __attribute__((annotate("META;" #__VA_ARGS__)))
 #else
-#define META_FIELD(...)
+#define CLASS(...) class
+#define PROPERTY(...)
+#define FUNCTION(...)
 #endif // __META_PASER__
 
 

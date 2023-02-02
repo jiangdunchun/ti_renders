@@ -150,7 +150,7 @@ template<typename T>
 class TypeMetaBuilder {
 public:
     TypeMetaBuilder(const std::string &name) : type_(name) {}
-    ~TypeMetaBuilder() { Reflector::regist(type_); }
+    ~TypeMetaBuilder();
 
     template<typename F>
     TypeMetaBuilder &addField(const std::string &name, F T::*field) {
@@ -177,10 +177,14 @@ public:
         return TypeMetaBuilder<T>(name);
     }
 
+    static void registAll();
     static bool regist(TypeMeta type);
     static void clear();
     static TypeMeta getType(const std::string &name);
 };
+
+template<typename T>
+TypeMetaBuilder<T>::~TypeMetaBuilder() { Reflector::regist(type_); }
 } // namespace meta
 
 #endif // !META_REFLECTOR_H_
