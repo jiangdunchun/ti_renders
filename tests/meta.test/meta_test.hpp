@@ -5,13 +5,6 @@
 
 #include <string>
 
-// test for meta_parser
-#ifdef __META_PARSER__
-#define CLASS(...) class __attribute__((annotate("META;" #__VA_ARGS__)))
-#define PROPERTY(...) __attribute__((annotate("META;" #__VA_ARGS__)))
-#define FUNCTION(...) __attribute__((annotate("META;" #__VA_ARGS__)))
-#endif
-
 CLASS() MetaTest1 {
 public:
     char         char_var = 0;
@@ -50,9 +43,9 @@ public:
     PROPERTY()
     MetaTest2 test_2_var;
 
-    MetaTest3(MetaTest1 test_1_var, MetaTest2 test_2_var) {
-        test_1_var = test_1_var;
-        test_2_var = test_2_var;
+    MetaTest3(MetaTest1 test_1_val, MetaTest2 test_2_val) {
+        test_1_var = test_1_val;
+        test_2_var = test_2_val;
     }
     MetaTest3() {}
 

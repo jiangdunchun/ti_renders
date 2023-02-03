@@ -49,30 +49,35 @@ def get_fields_and_methods(t_meta, is_white_list):
                     methods.append(child.spelling)
     return fields, methods
 
-type_fields = {}
-type_methods = {}
+meta_type_list = []
 
 def traverse(node, p_namespace):
     if node.kind == clang.cindex.CursorKind.NAMESPACE:
-        c_namespace = p_namespace + node.spelling + '::'
+        if p_namespace == '':
+            c_namespace = node.spelling
+        else:
+            c_namespace = p_namespace + '::' + node.spelling
         for child in node.get_children():
             traverse(child, c_namespace)
     elif node.kind == clang.cindex.CursorKind.CLASS_DECL:
         is_meta, is_white_list = check_meta_properties(node)
         if is_meta:
             fields, methods = get_fields_and_methods(node, is_white_list)
-            if len(fields) != 0:
-                type_fields[p_namespace + node.spelling] = fields
-            if len(methods) != 0:
-                type_methods[p_namespace + node.spelling] = methods
+            if len(fields) != 0 or len(methods) != 0:
+                meta_type = {}
+                meta_type['file'] = node.location.file.name
+                meta_type['namespace'] = p_namespace
+                meta_type['type'] = node.spelling
+                meta_type['fields'] = fields
+                meta_type['methods'] = methods
+                meta_type_list.append(meta_type)
     else:
         for child in node.get_children():
             traverse(child, p_namespace)
 
 clang.cindex.Config.set_library_path("./")
 index = clang.cindex.Index.create()
-parser = index.parse("../../tests/meta.test/meta_test.hpp", ["-ObjC++", "-D__META_PARSER__"])
+parser = index.parse("../../tests/meta.test/meta_test.hpp", ["-ObjC++", "-D__META_PARSER__", '-I../'])
 cursor = parser.cursor
 traverse(cursor, '')
-print("type_fields:" + str(type_fields))
-print("type_methods:" + str(type_methods))
+print("meta_type_list:" + str(meta_type_list))
