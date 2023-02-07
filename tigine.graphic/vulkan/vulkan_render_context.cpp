@@ -287,7 +287,8 @@ void createLogicalDevice(VkPhysicalDevice &physical_device,
                          VkSurfaceKHR     &surface,
                          VkDevice         &device, 
                          VkQueue          &graphics_queue,
-                         VkQueue          &present_queue) {
+                         VkQueue          &present_queue,
+                         uint32_t         &vk_graphics_family) {
     QueueFamilyIndices indices = findQueueFamilies(physical_device, surface);
 
     std::vector<VkDeviceQueueCreateInfo> queue_create_infos;
@@ -326,6 +327,7 @@ void createLogicalDevice(VkPhysicalDevice &physical_device,
 
     vkGetDeviceQueue(device, indices.graphics_family, 0, &graphics_queue);
     vkGetDeviceQueue(device, indices.present_family, 0, &present_queue);
+    vk_graphics_family = indices.graphics_family;
 }
 
 
@@ -459,7 +461,7 @@ VulkanRenderContext::VulkanRenderContext(const RenderContextDescriptor &desc) {
     setupDebugMessenger(vk_instance_, vk_debug_messenger_);
     createSurface(vk_instance_, window_, vk_surface_KHR_);
     pickPhysicalDevice(vk_instance_, vk_surface_KHR_, vk_physicl_device_);
-    createLogicalDevice(vk_physicl_device_, vk_surface_KHR_, vk_device_, vk_graphics_queue_, vk_present_queue_);
+    createLogicalDevice(vk_physicl_device_, vk_surface_KHR_, vk_device_, vk_graphics_queue_, vk_present_queue_, vk_graphics_family_);
     createSwapChain(vk_physicl_device_, vk_surface_KHR_, vk_device_, window_, vk_swapchain_, vk_swapchain_images_, vk_swapchain_image_format_, vk_swapchain_extent_);
     createImageViews(vk_device_, vk_swapchain_image_views_, vk_swapchain_images_, vk_swapchain_image_format_);
 

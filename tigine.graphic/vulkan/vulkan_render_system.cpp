@@ -15,9 +15,8 @@
 
 
 namespace tigine { namespace graphic {
-VulkanRenderSystem::VulkanRenderSystem() { 
-	command_queue_ = new VulkanCommandQueue();
-}
+VulkanRenderSystem::VulkanRenderSystem() {}
+	
 
 VulkanRenderSystem::~VulkanRenderSystem() { 
 	delete command_queue_;
@@ -26,8 +25,11 @@ VulkanRenderSystem::~VulkanRenderSystem() {
 IRenderContext *VulkanRenderSystem::createRenderContext(const RenderContextDescriptor &desc) { 
 	VulkanRenderContext *render_context = new VulkanRenderContext(desc);
 
-	vk_physicl_device_ = render_context->getVkPhysicalDevice();
-    vk_device_         = render_context->getVklDevice();
+	vk_physicl_device_  = render_context->getVkPhysicalDevice();
+    vk_device_          = render_context->getVklDevice();
+    vk_graphics_family_ = render_context->getVKGraphicsFamily();
+
+	command_queue_ = new VulkanCommandQueue(vk_device_, vk_graphics_family_);
 
 	return render_context;
 }
@@ -54,7 +56,7 @@ ICommandQueue   *VulkanRenderSystem::getCommandQueue() { return command_queue_; 
 
 ICommandBuffer *VulkanRenderSystem::createCommandBuffer(const CommandBufferDescriptor &desc) { 
 	assert(vk_device_);
-    return new VulkanCommandBuffer(vk_device_, desc);
+    return new VulkanCommandBuffer(vk_device_, command_queue_->getVkCommandPool(), desc);
 }
 
 ITexture *VulkanRenderSystem::createTexture(const TextureDescriptor &desc) { 

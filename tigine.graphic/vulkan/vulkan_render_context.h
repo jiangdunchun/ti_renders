@@ -28,6 +28,7 @@ public:
     
     VkPhysicalDevice *getVkPhysicalDevice() { return &vk_physicl_device_; }
     VkDevice         *getVklDevice() { return &vk_device_; }
+    uint32_t          getVKGraphicsFamily() { return vk_graphics_family_; }
 
 private:
     GLFWwindow       *window_;
@@ -48,6 +49,7 @@ private:
     VkExtent2D               vk_swapchain_extent_;
     std::vector<VkImageView> vk_swapchain_image_views_;
     VkRenderPass             vk_render_pass_;
+    uint32_t                 vk_graphics_family_;
 };
 }} // namespace tigine::graphic
 

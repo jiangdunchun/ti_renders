@@ -27,8 +27,9 @@ public:
     IPipelineState *createPipelineState(const PipelineStateDescriptor &desc) override;
 
 private:
-    VkPhysicalDevice *vk_physicl_device_ = nullptr;
-    VkDevice         *vk_device_         = nullptr;
+    VkPhysicalDevice *vk_physicl_device_  = nullptr;
+    VkDevice         *vk_device_          = nullptr;
+    uint32_t          vk_graphics_family_ = -1;
 
     VulkanCommandQueue *command_queue_ = nullptr;
     
