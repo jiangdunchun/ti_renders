@@ -21,15 +21,21 @@ VulkanCommandBuffer::~VulkanCommandBuffer() {
 }
 
 void VulkanCommandBuffer::begin() {
+    VkCommandBufferBeginInfo begin_info {};
+    begin_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
 
+    if (vkBeginCommandBuffer(vk_command_buffer_, &begin_info) != VK_SUCCESS) {
+        throw std::runtime_error("failed to begin recording command buffer!");
+    }
 }
 
 void VulkanCommandBuffer::end() {
-
+    if (vkEndCommandBuffer(vk_command_buffer_) != VK_SUCCESS) {
+        throw std::runtime_error("failed to record command buffer!");
+    }
 }
 
 void VulkanCommandBuffer::setViewport(const Viewport &viewport) {
-
 }
 
 void VulkanCommandBuffer::setPipeState(IPipelineState *pipe_state) {
@@ -49,7 +55,7 @@ void VulkanCommandBuffer::endRenderPass() {
 }
 
 void VulkanCommandBuffer::drawArray(TULong num_vertices, TULong first_vertex) {
-
+    vkCmdDraw(vk_command_buffer_, num_vertices, 1, first_vertex, 0);
 }
 
 void VulkanCommandBuffer::clear(TChar clear_flags) {
