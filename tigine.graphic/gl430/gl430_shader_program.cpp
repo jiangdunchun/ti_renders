@@ -5,9 +5,9 @@
 namespace tigine { namespace graphic {
 GL430ShaderProgram::GL430ShaderProgram(const ShaderProgramDescriptor &desc) {
     id_ = glCreateProgram();
-    if (desc.vertex_shader) glAttachShader(id_, static_cast<GL430Shader *>(desc.vertex_shader)->getID());
-    if (desc.fragment_shader) glAttachShader(id_, static_cast<GL430Shader *>(desc.fragment_shader)->getID());
-    if (desc.compute_shader) glAttachShader(id_, static_cast<GL430Shader *>(desc.compute_shader)->getID());
+    if (desc.vertex_shader) glAttachShader(id_, dynamic_cast<GL430Shader *>(desc.vertex_shader)->getID());
+    if (desc.fragment_shader) glAttachShader(id_, dynamic_cast<GL430Shader *>(desc.fragment_shader)->getID());
+    if (desc.compute_shader) glAttachShader(id_, dynamic_cast<GL430Shader *>(desc.compute_shader)->getID());
 
     glLinkProgram(id_);
 

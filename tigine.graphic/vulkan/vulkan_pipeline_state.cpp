@@ -10,10 +10,10 @@
 
 namespace tigine { namespace graphic {
 VulkanPipelineState::VulkanPipelineState(VkDevice *vk_device, const PipelineStateDescriptor &desc) : vk_device_(vk_device) {
-    VulkanShaderProgram *shader_prog = static_cast<VulkanShaderProgram *>(desc.shader_program);
-    VulkanBufferArray   *vertices_array = static_cast<VulkanBufferArray *>(desc.vertices_array);
-    VulkanResourceHeap  *resource_heap  = static_cast<VulkanResourceHeap *>(desc.resource_heap);
-    VulkanRenderPass    *render_pass    = static_cast<VulkanRenderPass *>(desc.render_pass);
+    VulkanShaderProgram *shader_prog    = dynamic_cast<VulkanShaderProgram *>(desc.shader_program);
+    VulkanBufferArray   *vertices_array = dynamic_cast<VulkanBufferArray *>(desc.vertices_array);
+    VulkanResourceHeap  *resource_heap  = dynamic_cast<VulkanResourceHeap *>(desc.resource_heap);
+    VulkanRenderPass    *render_pass    = dynamic_cast<VulkanRenderPass *>(desc.render_pass);
 
     VkPipelineInputAssemblyStateCreateInfo inputAssembly {};
     inputAssembly.sType                  = VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;

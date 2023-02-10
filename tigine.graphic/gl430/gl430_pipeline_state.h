@@ -10,8 +10,8 @@ namespace tigine { namespace graphic {
 class GL430PipelineState : public IPipelineState {
 public:
     GL430PipelineState(const PipelineStateDescriptor &desc) { 
-        shader_program_ = static_cast<GL430ShaderProgram *>(desc.shader_program);
-        render_pass_    = static_cast<GL430RenderPass *>(desc.render_pass);
+        shader_program_ = dynamic_cast<GL430ShaderProgram *>(desc.shader_program);
+        render_pass_    = dynamic_cast<GL430RenderPass *>(desc.render_pass);
         draw_mode_      = desc.draw_mode;
         clear_value_    = desc.clear_value;
     }

@@ -61,7 +61,7 @@ namespace ti_render {
 		for (vector<light_object*>::iterator iter = lights.begin();
 			iter != lights.end();
 			++iter) {
-			if ((*iter)->get_type() == object_type::POINT_LIGHT) point_lights.push_back(static_cast<point_light_object*>(*iter));
+            if ((*iter)->get_type() == object_type::POINT_LIGHT) point_lights.push_back(dynamic_cast<point_light_object *>(*iter));
 		}
 
 		m_frame_buffer->bind();

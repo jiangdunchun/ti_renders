@@ -21,7 +21,7 @@ namespace ti_render {
 			l_iter != lights.end();
 			++l_iter) {
 			if ((*l_iter)->get_type() == object_type::POINT_LIGHT) {
-				point_light_object* p_obj = static_cast<point_light_object*>(*l_iter);
+                point_light_object *p_obj = dynamic_cast<point_light_object *>(*l_iter);
 
 				mat4 projection = perspective(90.0f, 1.0f, p_obj->get_bias(), p_obj->get_radius());
 				vec3 view_position = p_obj->get_world_position();

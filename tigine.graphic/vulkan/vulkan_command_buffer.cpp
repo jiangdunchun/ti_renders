@@ -2,6 +2,8 @@
 
 #include <stdexcept>
 
+#include "vulkan_buffer_array.h"
+
 
 namespace tigine { namespace graphic {
 VulkanCommandBuffer::VulkanCommandBuffer(VkDevice *vk_device, VkCommandPool *vk_command_pool, const CommandBufferDescriptor &desc)
@@ -43,7 +45,7 @@ void VulkanCommandBuffer::setPipeState(IPipelineState *pipe_state) {
 }
 
 void VulkanCommandBuffer::setVertexBufferArray(IBufferArray *buffer_array) {
-
+    VulkanBufferArray *vulkan_buffer_array = dynamic_cast<VulkanBufferArray *>(buffer_array);
 }
 
 void VulkanCommandBuffer::beginRenderPass(IRenderPass *render_pass) {

@@ -109,7 +109,7 @@ VulkanResourceHeap::VulkanResourceHeap(VkDevice *vk_device, const ResourceHeapDe
         write.descriptorCount = 1;
 
         if (uniform.resource->getResourceKind() == ResourceKind::Buffer) {
-            VulkanBuffer *vulkan_buffer = static_cast<VulkanBuffer *>(uniform.resource);
+            VulkanBuffer *vulkan_buffer = dynamic_cast<VulkanBuffer *>(uniform.resource);
 
             VkDescriptorBufferInfo buffer_info {};
             buffer_info.buffer = *(vulkan_buffer->getVkBuffer());
@@ -118,7 +118,7 @@ VulkanResourceHeap::VulkanResourceHeap(VkDevice *vk_device, const ResourceHeapDe
 
             write.pBufferInfo = &buffer_info;
         } else if (uniform.resource->getResourceKind() == ResourceKind::Texture) {
-            VulkanTexture *vulkan_texture = static_cast<VulkanTexture *>(uniform.resource);
+            VulkanTexture *vulkan_texture = dynamic_cast<VulkanTexture *>(uniform.resource);
 
             VkDescriptorImageInfo image_info {};
             image_info.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;

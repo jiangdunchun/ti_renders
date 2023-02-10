@@ -27,14 +27,14 @@ void GL430CommandBuffer::end() {}
 void GL430CommandBuffer::setViewport(const Viewport &viewport) { glViewport(viewport.x, viewport.y, viewport.width, viewport.height); }
 
 void GL430CommandBuffer::setPipeState(IPipelineState *pipe_state) {
-    GL430PipelineState *gl430_pipe_state = static_cast<GL430PipelineState *>(pipe_state);
+    GL430PipelineState *gl430_pipe_state = dynamic_cast<GL430PipelineState *>(pipe_state);
     glUseProgram(gl430_pipe_state->getShaderProgram()->getID());
     ClearValue clear_value = gl430_pipe_state->getClearValue();
     glClearColor(clear_value.color[0], clear_value.color[1], clear_value.color[2], clear_value.color[3]);
 }
 
 void GL430CommandBuffer::setVertexBufferArray(IBufferArray *buffer_array) {
-    glBindVertexArray(static_cast<GL430BufferArray *>(buffer_array)->getID());
+    glBindVertexArray(dynamic_cast<GL430BufferArray *>(buffer_array)->getID());
 }
 
 void GL430CommandBuffer::beginRenderPass(IRenderPass *render_pass) {}
