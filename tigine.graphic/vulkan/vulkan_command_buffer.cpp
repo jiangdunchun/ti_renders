@@ -46,6 +46,8 @@ void VulkanCommandBuffer::setPipeState(IPipelineState *pipe_state) {
 
 void VulkanCommandBuffer::setVertexBufferArray(IBufferArray *buffer_array) {
     VulkanBufferArray *vulkan_buffer_array = dynamic_cast<VulkanBufferArray *>(buffer_array);
+
+    vk_draw_indexed_ = vulkan_buffer_array->hasIndices();
 }
 
 void VulkanCommandBuffer::beginRenderPass(IRenderPass *render_pass) {
@@ -57,7 +59,8 @@ void VulkanCommandBuffer::endRenderPass() {
 }
 
 void VulkanCommandBuffer::drawArray(TULong num_vertices, TULong first_vertex) {
-    vkCmdDraw(vk_command_buffer_, num_vertices, 1, first_vertex, 0);
+    if (vk_draw_indexed_) vkCmdDrawIndexed(vk_command_buffer_, num_vertices, 1, first_vertex, 0, 0);
+    else vkCmdDraw(vk_command_buffer_, num_vertices, 1, first_vertex, 0);
 }
 
 void VulkanCommandBuffer::clear(TChar clear_flags) {

@@ -19,7 +19,10 @@ VkFormat mapDataFormat(DataFormat format) {
 
 VulkanBufferArray::VulkanBufferArray(const BufferArrayDescriptor &desc) {
     vertices_buffer_ = dynamic_cast<VulkanBuffer *>(desc.vertices_buffer);
-    if (desc.indices_buffer) indices_buffer_ = dynamic_cast<VulkanBuffer *>(desc.indices_buffer);
+    if (desc.indices_buffer) {
+        indices_buffer_ = dynamic_cast<VulkanBuffer *>(desc.indices_buffer);
+        has_indices_    = true;
+    }
 
 
     vk_bindings_desc_.resize(desc.bindings_count, {});

@@ -15,12 +15,14 @@ public:
     VulkanBufferArray(const BufferArrayDescriptor &desc);
     ~VulkanBufferArray();
 
+    bool                                  hasIndices() const { return has_indices_; }
     VkPipelineVertexInputStateCreateInfo *getVkPipelineVertexInputStateCreateInfo() { return &vk_pipeline_vertex_input_state_create_info_; }
 
 private:
     VulkanBuffer *vertices_buffer_;
     VulkanBuffer *indices_buffer_ = nullptr;
 
+    bool                                           has_indices_ = false;
     VkPipelineVertexInputStateCreateInfo           vk_pipeline_vertex_input_state_create_info_;
     std::vector<VkVertexInputBindingDescription>   vk_bindings_desc_;
     std::vector<VkVertexInputAttributeDescription> vk_attributes_desc_;
