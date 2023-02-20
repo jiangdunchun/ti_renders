@@ -26,8 +26,9 @@ private:
     VkDevice      *vk_device_;
     VkCommandPool *vk_command_pool_;
 
-    bool            vk_draw_indexed_ = false;
-    VkCommandBuffer vk_command_buffer_;
+    bool                  vk_draw_indexed_ = false;
+    VkCommandBuffer       vk_command_buffer_;
+    VkRenderPassBeginInfo vk_render_pass_info_;
 };
 }} // namespace tigine::graphic
 

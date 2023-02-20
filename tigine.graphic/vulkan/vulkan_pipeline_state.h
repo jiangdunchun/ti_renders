@@ -12,6 +12,8 @@ public:
     VulkanPipelineState(VkDevice *vk_device, const PipelineStateDescriptor &desc);
     ~VulkanPipelineState();
 
+    VkPipeline *getVkPipeline() { return &vk_pipeline_; }
+
 private:
     VkDevice *vk_device_;
 

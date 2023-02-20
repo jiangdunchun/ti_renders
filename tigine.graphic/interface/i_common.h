@@ -67,7 +67,7 @@ struct Extent3D {
 struct ClearValue {
     float color[4] = {0.0f, 0.0f, 0.0f, 1.0f};
     float depth    = 1.0f;
-    int   stencil  = 0;
+    TUInt stencil  = 0;
 };
 }} // namespace tigine::graphic
 

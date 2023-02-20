@@ -8,6 +8,8 @@
 #include "interface/i_buffer_array.h"
 
 namespace tigine { namespace graphic {
+
+
 struct PipelineStateDescriptor {
     IShaderProgram  *shader_program;
     IResourceHeap   *resource_heap;
@@ -17,7 +19,13 @@ struct PipelineStateDescriptor {
     ClearValue       clear_value;
 };
 
-class IPipelineState : public NonCopyable {};
+class IPipelineState : public NonCopyable {
+public:
+    ClearValue get_clear_value() const { return clear_value_; }
+
+protected:
+    ClearValue clear_value_;
+};
 }} // namespace tigine::graphic
 
 #endif // !TIGINE_GRAPHIC_INTERFACE_I_PIPELINE_STATE_H_
