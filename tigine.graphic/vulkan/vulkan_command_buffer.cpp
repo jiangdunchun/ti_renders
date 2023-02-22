@@ -73,8 +73,8 @@ void VulkanCommandBuffer::endRenderPass() {
 }
 
 void VulkanCommandBuffer::drawArray(TULong num_vertices, TULong first_vertex) {
-    if (vk_draw_indexed_) vkCmdDrawIndexed(vk_command_buffer_, num_vertices, 1, first_vertex, 0, 0);
-    else vkCmdDraw(vk_command_buffer_, num_vertices, 1, first_vertex, 0);
+    //if (vk_draw_indexed_) vkCmdDrawIndexed(vk_command_buffer_, num_vertices, 1, first_vertex, 0, 0);
+    //else vkCmdDraw(vk_command_buffer_, num_vertices, 1, first_vertex, 0);
 }
 
 void VulkanCommandBuffer::clear(TChar clear_flags) {

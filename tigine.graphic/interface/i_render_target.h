@@ -38,6 +38,7 @@ public:
     virtual TUInt        getNumColorAttachments() const = 0;
     virtual bool         hasDepthAttachment() const     = 0;
     virtual bool         hasStencilAttachment() const   = 0;
+    virtual bool         isContext() { return false; }
 };
 }} // namespace tigine::graphic
 
