@@ -50,6 +50,11 @@ private:
     std::vector<VkImageView> vk_swapchain_image_views_;
     VkRenderPass             vk_render_pass_;
     uint32_t                 vk_graphics_family_;
+    std::vector<VkSemaphore> vk_image_available_semaphores_;
+    std::vector<VkSemaphore> vk_render_finished_semaphores_;
+    std::vector<VkFence>     vk_in_flight_fences_;
+    std::vector<VkFence>     vk_images_in_flight_;
+    size_t                   current_frame_ = 0;
 };
 }} // namespace tigine::graphic
 

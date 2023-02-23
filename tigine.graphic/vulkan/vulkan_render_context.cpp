@@ -9,6 +9,8 @@
 #include "vulkan/vulkan_surface.h"
 #include "vulkan/vulkan_render_pass.h"
 
+#define MAX_FRAMES_IN_FLIGHT 2
+
 
 namespace tigine { namespace graphic {
 namespace {
@@ -453,6 +455,35 @@ void createImageViews(VkDevice                 &device,
         }
     }
 }
+
+void createSyncObjects(VkDevice                 &device, 
+                       TUInt                     max_frame_in_flight,
+                       std::vector<VkSemaphore> &image_available_semaphores,
+                       std::vector<VkSemaphore> &render_finished_semaphores,
+                       std::vector<VkFence>     &in_flight_fences,
+                       TUInt                     swap_chain_image_size,
+                       std::vector<VkFence>     &images_in_flight
+    ) {
+    image_available_semaphores.resize(max_frame_in_flight);
+    render_finished_semaphores.resize(max_frame_in_flight);
+    in_flight_fences.resize(max_frame_in_flight);
+    images_in_flight.resize(swap_chain_image_size, VK_NULL_HANDLE);
+
+    VkSemaphoreCreateInfo semaphore_info {};
+    semaphore_info.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
+
+    VkFenceCreateInfo fence_info {};
+    fence_info.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
+    fence_info.flags = VK_FENCE_CREATE_SIGNALED_BIT;
+
+    for (size_t i = 0; i < max_frame_in_flight; i++) {
+        if (vkCreateSemaphore(device, &semaphore_info, nullptr, &image_available_semaphores[i]) != VK_SUCCESS
+            || vkCreateSemaphore(device, &semaphore_info, nullptr, &render_finished_semaphores[i]) != VK_SUCCESS
+            || vkCreateFence(device, &fence_info, nullptr, &in_flight_fences[i]) != VK_SUCCESS) {
+            throw std::runtime_error("failed to create synchronization objects for a frame!");
+        }
+    }
+}
 } // namespace
 
 VulkanRenderContext::VulkanRenderContext(const RenderContextDescriptor &desc) {
@@ -464,6 +495,13 @@ VulkanRenderContext::VulkanRenderContext(const RenderContextDescriptor &desc) {
     createLogicalDevice(vk_physicl_device_, vk_surface_KHR_, vk_device_, vk_graphics_queue_, vk_present_queue_, vk_graphics_family_);
     createSwapChain(vk_physicl_device_, vk_surface_KHR_, vk_device_, window_, vk_swapchain_, vk_swapchain_images_, vk_swapchain_image_format_, vk_swapchain_extent_);
     createImageViews(vk_device_, vk_swapchain_image_views_, vk_swapchain_images_, vk_swapchain_image_format_);
+    createSyncObjects(vk_device_,
+                      MAX_FRAMES_IN_FLIGHT,
+                      vk_image_available_semaphores_,
+                      vk_render_finished_semaphores_,
+                      vk_in_flight_fences_,
+                      vk_swapchain_images_.size(),
+                      vk_images_in_flight_);
 
     surface_     = new VulkanSurface(window_);
 
@@ -484,43 +522,43 @@ ISurface *VulkanRenderContext::getSurface() {  return surface_; }
 IRenderPass *VulkanRenderContext::getRenderPass() { return render_pass_; }
 
 void VulkanRenderContext::present() {
-    /*vkWaitForFences(device, 1, &inFlightFences[currentFrame], VK_TRUE, UINT64_MAX);
+    vkWaitForFences(vk_device_, 1, &vk_in_flight_fences_[current_frame_], VK_TRUE, UINT64_MAX);
 
     uint32_t imageIndex;
-    VkResult result
-        = vkAcquireNextImageKHR(device, swapChain, UINT64_MAX, imageAvailableSemaphores[currentFrame], VK_NULL_HANDLE, &imageIndex);
+    VkResult result = vkAcquireNextImageKHR(vk_device_, vk_swapchain_, UINT64_MAX, vk_image_available_semaphores_[current_frame_], VK_NULL_HANDLE, &imageIndex);
 
     if (result == VK_ERROR_OUT_OF_DATE_KHR) {
-        recreateSwapChain();
+        //recreateSwapChain();
         return;
     } else if (result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR) {
         throw std::runtime_error("failed to acquire swap chain image!");
     }
 
-    if (imagesInFlight[imageIndex] != VK_NULL_HANDLE) {
-        vkWaitForFences(device, 1, &imagesInFlight[imageIndex], VK_TRUE, UINT64_MAX);
+    if (vk_images_in_flight_[imageIndex] != VK_NULL_HANDLE) {
+        vkWaitForFences(vk_device_, 1, &vk_images_in_flight_[imageIndex], VK_TRUE, UINT64_MAX);
     }
-    imagesInFlight[imageIndex] = inFlightFences[currentFrame];
+    vk_images_in_flight_[imageIndex] = vk_in_flight_fences_[current_frame_];
 
     VkSubmitInfo submitInfo {};
     submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
 
-    VkSemaphore          waitSemaphores[] = {imageAvailableSemaphores[currentFrame]};
+    VkSemaphore          waitSemaphores[] = {vk_image_available_semaphores_[current_frame_]};
     VkPipelineStageFlags waitStages[]     = {VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT};
     submitInfo.waitSemaphoreCount         = 1;
     submitInfo.pWaitSemaphores            = waitSemaphores;
     submitInfo.pWaitDstStageMask          = waitStages;
 
-    submitInfo.commandBufferCount = 1;
-    submitInfo.pCommandBuffers    = &commandBuffers[imageIndex];
+    submitInfo.commandBufferCount = 0;
+    //submitInfo.commandBufferCount = 1;
+    //submitInfo.pCommandBuffers    = &commandBuffers[imageIndex];
 
-    VkSemaphore signalSemaphores[]  = {renderFinishedSemaphores[currentFrame]};
+    VkSemaphore signalSemaphores[]  = {vk_render_finished_semaphores_[current_frame_]};
     submitInfo.signalSemaphoreCount = 1;
     submitInfo.pSignalSemaphores    = signalSemaphores;
 
-    vkResetFences(device, 1, &inFlightFences[currentFrame]);
+    vkResetFences(vk_device_, 1, &vk_in_flight_fences_[current_frame_]);
 
-    if (vkQueueSubmit(graphicsQueue, 1, &submitInfo, inFlightFences[currentFrame]) != VK_SUCCESS) {
+    if (vkQueueSubmit(vk_graphics_queue_, 1, &submitInfo, vk_in_flight_fences_[current_frame_]) != VK_SUCCESS) {
         throw std::runtime_error("failed to submit draw command buffer!");
     }
 
@@ -530,21 +568,21 @@ void VulkanRenderContext::present() {
     presentInfo.waitSemaphoreCount = 1;
     presentInfo.pWaitSemaphores    = signalSemaphores;
 
-    VkSwapchainKHR swapChains[] = {swapChain};
+    VkSwapchainKHR swapChains[] = {vk_swapchain_};
     presentInfo.swapchainCount  = 1;
     presentInfo.pSwapchains     = swapChains;
 
     presentInfo.pImageIndices = &imageIndex;
 
-    result = vkQueuePresentKHR(presentQueue, &presentInfo);
+    result = vkQueuePresentKHR(vk_present_queue_, &presentInfo);
 
-    if (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR || framebufferResized) {
-        framebufferResized = false;
-        recreateSwapChain();
+    if (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR /*|| framebufferResized*/ ) {
+        //framebufferResized = false;
+        //recreateSwapChain();
     } else if (result != VK_SUCCESS) {
         throw std::runtime_error("failed to present swap chain image!");
     }
 
-    currentFrame = (currentFrame + 1) % MAX_FRAMES_IN_FLIGHT;*/
+    current_frame_ = (current_frame_ + 1) % MAX_FRAMES_IN_FLIGHT;
 }
 }} // namespace tigine::graphic
