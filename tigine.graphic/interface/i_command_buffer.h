@@ -10,7 +10,7 @@ namespace tigine { namespace graphic {
 class IRenderTarget;
 
 struct CommandBufferDescriptor {
-    TUInt buffer_size = 2;
+    TUInt buffer_count = 2;
 };
 
 class ICommandBuffer : public NonCopyable {
