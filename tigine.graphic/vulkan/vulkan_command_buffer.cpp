@@ -7,20 +7,50 @@
 
 
 namespace tigine { namespace graphic {
-VulkanCommandBuffer::VulkanCommandBuffer(VkDevice *vk_device, VkCommandPool *vk_command_pool, const CommandBufferDescriptor &desc)
-    : vk_device_(vk_device), vk_command_pool_(vk_command_pool) {
+VulkanCommandBuffer::VulkanCommandBuffer(VkDevice                      *vk_device,
+                                         VkQueue                       *graphics_queue,
+                                         uint32_t                       queue_family_index,
+                                         const CommandBufferDescriptor &desc)
+    : vk_device_(vk_device) {
+    VkCommandPoolCreateInfo pool_info {};
+    pool_info.sType             = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
+    pool_info.pNext             = nullptr;
+    pool_info.flags             = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
+    pool_info.queueFamilyIndex  = queue_family_index;
+    if (vkCreateCommandPool(*vk_device_, &pool_info, nullptr, &vk_command_pool_) != VK_SUCCESS) {
+        throw std::runtime_error("failed to create command pool!");
+    }
+
+    vk_command_buffers_.resize(desc.buffer_size);
     VkCommandBufferAllocateInfo alloc_info {};
     alloc_info.sType              = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
-    alloc_info.commandPool        = *vk_command_pool_;
+    alloc_info.commandPool        = vk_command_pool_;
     alloc_info.level              = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
-    alloc_info.commandBufferCount = 1;
-    if (vkAllocateCommandBuffers(*vk_device_, &alloc_info, &vk_command_buffer_) != VK_SUCCESS) {
-        throw std::runtime_error("failed to allocate command buffers!");
+    alloc_info.commandBufferCount = desc.buffer_size;
+    if (vkAllocateCommandBuffers(*vk_device_, &alloc_info, vk_command_buffers_.data()) != VK_SUCCESS) {
+        throw std::runtime_error("failed to allocate command buffer!");
+    }
+
+    vk_recording_fences_.resize(desc.buffer_size);
+    VkFenceCreateInfo fence_info {};
+    fence_info.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
+    fence_info.flags = 0;
+    for (size_t i = 0; i < desc.buffer_size; i++) {
+        if (vkCreateFence(*vk_device_, &fence_info, nullptr, &(vk_recording_fences_[i])) != VK_SUCCESS) {
+            throw std::runtime_error("failed to create fence of command buffer!");
+        }
+        vkQueueSubmit(*graphics_queue, 0, nullptr, vk_recording_fences_[i]);
     }
 }
 
 VulkanCommandBuffer::~VulkanCommandBuffer() { 
-    vkFreeCommandBuffers(*vk_device_, *vk_command_pool_, 1, &vk_command_buffer_);
+    for (size_t i = 0; i < vk_recording_fences_.size(); i++) {
+        vkDestroyFence(*vk_device_, vk_recording_fences_[i], nullptr);
+    }
+
+    vkFreeCommandBuffers(*vk_device_, vk_command_pool_, static_cast<uint32_t>(vk_command_buffers_.size()), vk_command_buffers_.data());
+
+    vkDestroyCommandPool(*vk_device_, vk_command_pool_, nullptr);
 }
 
 void VulkanCommandBuffer::begin() {
@@ -64,7 +94,7 @@ void VulkanCommandBuffer::setVertexBufferArray(IBufferArray *buffer_array) {
     vk_draw_indexed_ = vulkan_buffer_array->hasIndices();
 }
 
-void VulkanCommandBuffer::beginRenderPass(IRenderPass *render_pass) {
+void VulkanCommandBuffer::beginRenderPass(IRenderTarget *render_target, IRenderPass *render_pass) {
 
 }
 

@@ -9,17 +9,14 @@
 namespace tigine { namespace graphic {
 class VulkanCommandQueue : public ICommandQueue {
 public:
-    VulkanCommandQueue(VkDevice *vk_device, uint32_t graphics_family);
+    VulkanCommandQueue(VkDevice *vk_device, VkQueue *vk_graphics_queue, uint32_t graphics_family);
     ~VulkanCommandQueue();
 
     void submit(ICommandBuffer *command_buffer) override;
 
-    VkCommandPool *getVkCommandPool() { return &vk_command_pool_; }
-
 private:
-    VkDevice     *vk_device_;
-
-    VkCommandPool vk_command_pool_;
+    VkDevice *vk_device_;
+    VkQueue  *vk_graphics_queue_;
 };
 }} // namespace tigine::graphic
 

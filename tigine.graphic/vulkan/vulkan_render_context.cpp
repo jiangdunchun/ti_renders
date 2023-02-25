@@ -484,6 +484,16 @@ void createSyncObjects(VkDevice                 &device,
         }
     }
 }
+
+void createSyncObjects(VkDevice &device, VkSemaphore &image_available_semaphores, VkSemaphore &render_finished_semaphores) {
+
+    VkSemaphoreCreateInfo semaphore_info {};
+    semaphore_info.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
+    if (vkCreateSemaphore(device, &semaphore_info, nullptr, &image_available_semaphores) != VK_SUCCESS
+        || vkCreateSemaphore(device, &semaphore_info, nullptr, &render_finished_semaphores) != VK_SUCCESS) {
+        throw std::runtime_error("failed to create synchronization objects for a frame!");
+    }
+}
 } // namespace
 
 VulkanRenderContext::VulkanRenderContext(const RenderContextDescriptor &desc) {
@@ -502,12 +512,15 @@ VulkanRenderContext::VulkanRenderContext(const RenderContextDescriptor &desc) {
                       vk_in_flight_fences_,
                       vk_swapchain_images_.size(),
                       vk_images_in_flight_);
+    createSyncObjects(vk_device_, vk_image_available_semaphore_, vk_render_finished_semaphore_);
 
     surface_     = new VulkanSurface(window_);
 
     RenderPassDescriptor render_pass_desc;
     //render_pass_desc.format = VK_FORMAT_R8G8B8A8_SRGB;
     render_pass_ = new VulkanRenderPass(&vk_device_, render_pass_desc);
+
+    acquireNextPresentImage();
 }
 
 VulkanRenderContext::~VulkanRenderContext() {
@@ -522,67 +535,41 @@ ISurface *VulkanRenderContext::getSurface() {  return surface_; }
 IRenderPass *VulkanRenderContext::getRenderPass() { return render_pass_; }
 
 void VulkanRenderContext::present() {
-    vkWaitForFences(vk_device_, 1, &vk_in_flight_fences_[current_frame_], VK_TRUE, UINT64_MAX);
+    VkSemaphore          wait_semaphorse[]   = {vk_image_available_semaphore_};
+    VkPipelineStageFlags wait_stages[]       = {VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT};
+    VkSemaphore          signal_semaphores[] = {vk_render_finished_semaphore_};
 
-    uint32_t imageIndex;
-    VkResult result = vkAcquireNextImageKHR(vk_device_, vk_swapchain_, UINT64_MAX, vk_image_available_semaphores_[current_frame_], VK_NULL_HANDLE, &imageIndex);
-
-    if (result == VK_ERROR_OUT_OF_DATE_KHR) {
-        //recreateSwapChain();
-        return;
-    } else if (result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR) {
-        throw std::runtime_error("failed to acquire swap chain image!");
+    VkSubmitInfo submit_info {};
+    submit_info.sType                = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+    submit_info.pNext                = nullptr;
+    submit_info.waitSemaphoreCount   = 1;
+    submit_info.pWaitSemaphores      = wait_semaphorse;
+    submit_info.pWaitDstStageMask    = wait_stages;
+    submit_info.commandBufferCount   = 0;
+    submit_info.pCommandBuffers      = nullptr;
+    submit_info.signalSemaphoreCount = 1;
+    submit_info.pSignalSemaphores    = signal_semaphores;
+    if (vkQueueSubmit(vk_graphics_queue_, 1, &submit_info, VK_NULL_HANDLE) != VK_SUCCESS) {
+        throw std::runtime_error("failed to submit semaphore to Vulkan graphics queue!");
     }
 
-    if (vk_images_in_flight_[imageIndex] != VK_NULL_HANDLE) {
-        vkWaitForFences(vk_device_, 1, &vk_images_in_flight_[imageIndex], VK_TRUE, UINT64_MAX);
+    VkSwapchainKHR swap_chains[] = {vk_swapchain_};
+
+    VkPresentInfoKHR present_info {};
+    present_info.sType              = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
+    present_info.pNext              = nullptr;
+    present_info.waitSemaphoreCount = 1;
+    present_info.pWaitSemaphores    = signal_semaphores;
+    present_info.swapchainCount     = 1;
+    present_info.pSwapchains        = swap_chains;
+    present_info.pImageIndices      = &present_image_index_;
+    present_info.pResults           = nullptr;
+    if (vkQueuePresentKHR(vk_present_queue_, &present_info) != VK_SUCCESS) {
+        throw std::runtime_error("failed to present Vulkan graphics queue!");
     }
-    vk_images_in_flight_[imageIndex] = vk_in_flight_fences_[current_frame_];
+}
 
-    VkSubmitInfo submitInfo {};
-    submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
-
-    VkSemaphore          waitSemaphores[] = {vk_image_available_semaphores_[current_frame_]};
-    VkPipelineStageFlags waitStages[]     = {VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT};
-    submitInfo.waitSemaphoreCount         = 1;
-    submitInfo.pWaitSemaphores            = waitSemaphores;
-    submitInfo.pWaitDstStageMask          = waitStages;
-
-    submitInfo.commandBufferCount = 0;
-    //submitInfo.commandBufferCount = 1;
-    //submitInfo.pCommandBuffers    = &commandBuffers[imageIndex];
-
-    VkSemaphore signalSemaphores[]  = {vk_render_finished_semaphores_[current_frame_]};
-    submitInfo.signalSemaphoreCount = 1;
-    submitInfo.pSignalSemaphores    = signalSemaphores;
-
-    vkResetFences(vk_device_, 1, &vk_in_flight_fences_[current_frame_]);
-
-    if (vkQueueSubmit(vk_graphics_queue_, 1, &submitInfo, vk_in_flight_fences_[current_frame_]) != VK_SUCCESS) {
-        throw std::runtime_error("failed to submit draw command buffer!");
-    }
-
-    VkPresentInfoKHR presentInfo {};
-    presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
-
-    presentInfo.waitSemaphoreCount = 1;
-    presentInfo.pWaitSemaphores    = signalSemaphores;
-
-    VkSwapchainKHR swapChains[] = {vk_swapchain_};
-    presentInfo.swapchainCount  = 1;
-    presentInfo.pSwapchains     = swapChains;
-
-    presentInfo.pImageIndices = &imageIndex;
-
-    result = vkQueuePresentKHR(vk_present_queue_, &presentInfo);
-
-    if (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR /*|| framebufferResized*/ ) {
-        //framebufferResized = false;
-        //recreateSwapChain();
-    } else if (result != VK_SUCCESS) {
-        throw std::runtime_error("failed to present swap chain image!");
-    }
-
-    current_frame_ = (current_frame_ + 1) % MAX_FRAMES_IN_FLIGHT;
+void VulkanRenderContext::acquireNextPresentImage() {
+    vkAcquireNextImageKHR(vk_device_, vk_swapchain_, UINT64_MAX, vk_image_available_semaphores_[current_frame_], VK_NULL_HANDLE, &present_image_index_);
 }
 }} // namespace tigine::graphic

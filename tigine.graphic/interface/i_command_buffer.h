@@ -7,7 +7,10 @@
 #include "interface/i_render_pass.h"
 
 namespace tigine { namespace graphic {
+class IRenderTarget;
+
 struct CommandBufferDescriptor {
+    TUInt buffer_size = 2;
 };
 
 class ICommandBuffer : public NonCopyable {
@@ -17,7 +20,7 @@ public:
     virtual void setViewport(const Viewport &viewport)               = 0;
     virtual void setPipeState(IPipelineState *pipe_state)            = 0;
     virtual void setVertexBufferArray(IBufferArray *buffer_array)    = 0;
-    virtual void beginRenderPass(IRenderPass *render_pass)           = 0;
+    virtual void beginRenderPass(IRenderTarget *render_target, IRenderPass *render_pass) = 0;
     virtual void endRenderPass()                                     = 0;
     virtual void drawArray(TULong num_vertices, TULong first_vertex) = 0;
     virtual void clear(TChar clear_flags)                            = 0;

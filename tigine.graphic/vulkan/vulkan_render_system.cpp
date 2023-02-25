@@ -27,9 +27,10 @@ IRenderContext *VulkanRenderSystem::createRenderContext(const RenderContextDescr
 
 	vk_physicl_device_  = render_context->getVkPhysicalDevice();
     vk_device_          = render_context->getVklDevice();
+    vk_graphics_queue_  = render_context->getVKGraphicsQueue();
     vk_graphics_family_ = render_context->getVKGraphicsFamily();
 
-	command_queue_ = new VulkanCommandQueue(vk_device_, vk_graphics_family_);
+	command_queue_ = new VulkanCommandQueue(vk_device_, vk_graphics_queue_, vk_graphics_family_);
 
 	return render_context;
 }
@@ -56,7 +57,7 @@ ICommandQueue   *VulkanRenderSystem::getCommandQueue() { return command_queue_; 
 
 ICommandBuffer *VulkanRenderSystem::createCommandBuffer(const CommandBufferDescriptor &desc) { 
 	assert(vk_device_);
-    return new VulkanCommandBuffer(vk_device_, command_queue_->getVkCommandPool(), desc);
+    return new VulkanCommandBuffer(vk_device_, vk_graphics_queue_, vk_graphics_family_, desc);
 }
 
 ITexture *VulkanRenderSystem::createTexture(const TextureDescriptor &desc) { 

@@ -109,7 +109,8 @@ int main() {
             command_buffer->setViewport({0, 0, context->getResolution().width, context->getResolution().height});
             command_buffer->setPipeState(pipeline);
             command_buffer->setVertexBufferArray(vertices_array);
-            command_buffer->beginRenderPass(context->getRenderPass()); {
+            command_buffer->beginRenderPass(context, context->getRenderPass());
+            {
                 command_buffer->clear(CF_Color);
                 command_buffer->drawArray(3, 0);
             }

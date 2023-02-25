@@ -28,7 +28,11 @@ public:
     
     VkPhysicalDevice *getVkPhysicalDevice() { return &vk_physicl_device_; }
     VkDevice         *getVklDevice() { return &vk_device_; }
+    VkQueue          *getVKGraphicsQueue() { return &vk_graphics_queue_; }
     uint32_t          getVKGraphicsFamily() { return vk_graphics_family_; }
+
+private:
+    void acquireNextPresentImage();
 
 private:
     GLFWwindow       *window_;
@@ -55,6 +59,9 @@ private:
     std::vector<VkFence>     vk_in_flight_fences_;
     std::vector<VkFence>     vk_images_in_flight_;
     size_t                   current_frame_ = 0;
+    VkSemaphore vk_image_available_semaphore_;
+    VkSemaphore vk_render_finished_semaphore_;
+    TUInt                    present_image_index_;
 };
 }} // namespace tigine::graphic
 
