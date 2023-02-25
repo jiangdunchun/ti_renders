@@ -567,9 +567,11 @@ void VulkanRenderContext::present() {
     if (vkQueuePresentKHR(vk_present_queue_, &present_info) != VK_SUCCESS) {
         throw std::runtime_error("failed to present Vulkan graphics queue!");
     }
+
+    acquireNextPresentImage();
 }
 
 void VulkanRenderContext::acquireNextPresentImage() {
-    vkAcquireNextImageKHR(vk_device_, vk_swapchain_, UINT64_MAX, vk_image_available_semaphores_[current_frame_], VK_NULL_HANDLE, &present_image_index_);
+    vkAcquireNextImageKHR(vk_device_, vk_swapchain_, UINT64_MAX, vk_image_available_semaphore_, VK_NULL_HANDLE, &present_image_index_);
 }
 }} // namespace tigine::graphic

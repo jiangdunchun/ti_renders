@@ -11,7 +11,7 @@
 namespace tigine { namespace graphic {
 class VulkanCommandBuffer : public ICommandBuffer {
 public:
-    VulkanCommandBuffer(VkDevice *vk_device, VkQueue *graphics_queue, uint32_t queue_family_index, const CommandBufferDescriptor &desc);
+    VulkanCommandBuffer(VkDevice *vk_device, VkQueue *vk_graphics_queue, uint32_t vk_queue_family_index, const CommandBufferDescriptor &desc);
     ~VulkanCommandBuffer();
 
     void begin() override;
@@ -24,20 +24,25 @@ public:
     void drawArray(TULong num_vertices, TULong first_vertex) override;
     void clear(TChar clear_flags) override;
 
-    VkCommandBuffer *getVKCommandBuffer() { return &vk_command_buffer_; }
-    VkFence         *getVKQueueSubmitFence() { return &vk_queue_submit_fence_; }
+    VkCommandBuffer *getVKCommandBuffer() { return vk_now_command_buffer_; }
+    VkFence         *getVKQueueSubmitFence() { return vk_now_fence_; }
+
+private:
+    void acquireNextBuffer();
 
 private:
     VkDevice      *vk_device_;
     
     VkCommandPool                vk_command_pool_;
     std::vector<VkCommandBuffer> vk_command_buffers_;
-    std::vector<VkFence>         vk_recording_fences_;
+    std::vector<VkFence>         vk_fences_;
+    VkRenderPassBeginInfo        vk_render_pass_info_;
+    TUInt                        buffers_count_;
+    TUInt                        buffers_next_index_ = 0;
+    VkCommandBuffer             *vk_now_command_buffer_;
+    VkFence                     *vk_now_fence_;
+    bool                         vk_draw_indexed_ = false;
 
-    bool                  vk_draw_indexed_ = false;
-    VkCommandBuffer       vk_command_buffer_;
-    VkRenderPassBeginInfo vk_render_pass_info_;
-    VkFence               vk_queue_submit_fence_;
 };
 }} // namespace tigine::graphic
 
