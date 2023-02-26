@@ -89,6 +89,7 @@ int main() {
     pipeline_desc.vertices_array = vertices_array;
     pipeline_desc.shader_program = shader_prog;
     pipeline_desc.resource_heap  = resource_heap;
+    //@TODO
     pipeline_desc.render_pass    = context->getRenderPass();
 
     IPipelineState *pipeline = render->createPipelineState(pipeline_desc);

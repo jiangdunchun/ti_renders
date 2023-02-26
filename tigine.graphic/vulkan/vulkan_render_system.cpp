@@ -27,8 +27,8 @@ IRenderContext *VulkanRenderSystem::createRenderContext(const RenderContextDescr
 
 	vk_physicl_device_  = render_context->getVkPhysicalDevice();
     vk_device_          = render_context->getVklDevice();
-    vk_graphics_queue_  = render_context->getVKGraphicsQueue();
-    vk_graphics_family_ = render_context->getVKGraphicsFamily();
+    vk_graphics_queue_  = render_context->getVkGraphicsQueue();
+    vk_graphics_family_ = render_context->getVkGraphicsFamily();
 
 	command_queue_ = new VulkanCommandQueue(vk_device_, vk_graphics_queue_, vk_graphics_family_);
 

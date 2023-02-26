@@ -10,14 +10,15 @@ namespace tigine { namespace graphic {
 class VulkanRenderPass : public IRenderPass {
 public:
     VulkanRenderPass(VkDevice *vk_device, const RenderPassDescriptor &desc);
+    VulkanRenderPass(VkRenderPass *vk_render_pass) { vk_render_pass_ = vk_render_pass; }
     ~VulkanRenderPass();
 
-    VkRenderPass *getVkRenderPass() { return &vk_render_pass_; }
+    VkRenderPass *getVkRenderPass() { return vk_render_pass_; }
 
 private:
     VkDevice *vk_device_;
 
-    VkRenderPass vk_render_pass_;
+    VkRenderPass *vk_render_pass_;
 };
 }} // namespace tigine::graphic
 

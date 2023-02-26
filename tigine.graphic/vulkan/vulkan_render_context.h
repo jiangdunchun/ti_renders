@@ -28,8 +28,10 @@ public:
     
     VkPhysicalDevice *getVkPhysicalDevice() { return &vk_physicl_device_; }
     VkDevice         *getVklDevice() { return &vk_device_; }
-    VkQueue          *getVKGraphicsQueue() { return &vk_graphics_queue_; }
-    uint32_t          getVKGraphicsFamily() { return vk_graphics_family_; }
+    VkQueue          *getVkGraphicsQueue() { return &vk_graphics_queue_; }
+    uint32_t          getVkGraphicsFamily() { return vk_graphics_family_; }
+    VkRenderPass     *getVkRenderPass() { return &vk_render_pass_; }
+    VkFramebuffer    *getVkFrameBuffer() { return &vk_swapchain_frame_buffers_[present_image_index_]; }
 
 private:
     void acquireNextPresentImage();
@@ -47,12 +49,15 @@ private:
     VkDevice                 vk_device_;
     VkQueue                  vk_graphics_queue_;
     VkQueue                  vk_present_queue_;
-    VkSwapchainKHR           vk_swapchain_;
-    std::vector<VkImage>     vk_swapchain_images_;
-    VkFormat                 vk_swapchain_image_format_;
-    VkExtent2D               vk_swapchain_extent_;
-    std::vector<VkImageView> vk_swapchain_image_views_;
-    VkRenderPass             vk_render_pass_;
+
+    VkSwapchainKHR             vk_swapchain_;
+    VkFormat                   vk_swapchain_image_format_;
+    VkExtent2D                 vk_swapchain_extent_;
+    std::vector<VkImage>       vk_swapchain_images_;
+    std::vector<VkImageView>   vk_swapchain_image_views_;
+    VkRenderPass               vk_render_pass_;
+    std::vector<VkFramebuffer> vk_swapchain_frame_buffers_;
+
     uint32_t                 vk_graphics_family_;
     std::vector<VkSemaphore> vk_image_available_semaphores_;
     std::vector<VkSemaphore> vk_render_finished_semaphores_;

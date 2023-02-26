@@ -41,12 +41,12 @@ VulkanRenderPass::VulkanRenderPass(VkDevice *vk_device, const RenderPassDescript
     renderPassInfo.dependencyCount = 1;
     renderPassInfo.pDependencies   = &dependency;
 
-    if (vkCreateRenderPass(*vk_device_, &renderPassInfo, nullptr, &vk_render_pass_) != VK_SUCCESS) {
+    if (vkCreateRenderPass(*vk_device_, &renderPassInfo, nullptr, vk_render_pass_) != VK_SUCCESS) {
         throw std::runtime_error("failed to create render pass!");
     }
 }
 
 VulkanRenderPass::~VulkanRenderPass() { 
-	vkDestroyRenderPass(*vk_device_, vk_render_pass_, nullptr);
+	vkDestroyRenderPass(*vk_device_, *vk_render_pass_, nullptr);
 }
 }} // namespace tigine::graphic

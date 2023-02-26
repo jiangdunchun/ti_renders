@@ -16,6 +16,8 @@ public:
     ~VulkanBufferArray();
 
     bool                                  hasIndices() const { return has_indices_; }
+    VulkanBuffer                         *getVerticesBuffer() { return vertices_buffer_; }
+    VulkanBuffer                         *getIndicesBuffer() { return indices_buffer_; }
     VkPipelineVertexInputStateCreateInfo *getVkPipelineVertexInputStateCreateInfo() { return &vk_pipeline_vertex_input_state_create_info_; }
 
 private:
