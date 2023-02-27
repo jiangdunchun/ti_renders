@@ -6,4 +6,8 @@
 
 #include "interface/i_common.h"
 
+namespace tigine { namespace graphic {
+VkFormat mapVkFormat(DataFormat format);
+}}// namespace tigine::graphic
+
 #endif // !TIGINE_GRAPHIC_VULKAN_VULKAN_COMMON_H_

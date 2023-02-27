@@ -34,11 +34,11 @@ int main() {
 
     std::vector<AttributeInfo> attributes_info(2);
     attributes_info[0].binding  = 0;
-    attributes_info[0].format   = DF_RGB32Float;
+    attributes_info[0].format   = DataFormat::RGB32Float;
     attributes_info[0].location = 0;
     attributes_info[0].offset   = 0;
     attributes_info[1].binding  = 0;
-    attributes_info[1].format   = DF_RGB32Float;
+    attributes_info[1].format   = DataFormat::RGB32Float;
     attributes_info[1].location = 1;
     attributes_info[1].offset   = sizeof(vertices[0]) * 3;
 

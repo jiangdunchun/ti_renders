@@ -4,19 +4,6 @@
 
 
 namespace tigine { namespace graphic {
-namespace {
-VkFormat mapDataFormat(DataFormat format) {
-    switch (format) {
-    case (DF_RGB32Float):
-        return VK_FORMAT_R32G32B32_SFLOAT;
-        break;
-    default:
-        return VK_FORMAT_UNDEFINED;
-        break;
-    }
-}
-} // namespace
-
 VulkanBufferArray::VulkanBufferArray(const BufferArrayDescriptor &desc) {
     vertices_buffer_ = dynamic_cast<VulkanBuffer *>(desc.vertices_buffer);
     if (desc.indices_buffer) {
@@ -40,7 +27,7 @@ VulkanBufferArray::VulkanBufferArray(const BufferArrayDescriptor &desc) {
 
         vk_attributes_desc_[i].binding  = attribute_info.binding;
         vk_attributes_desc_[i].location = attribute_info.location;
-        vk_attributes_desc_[i].format   = mapDataFormat(attribute_info.format);
+        vk_attributes_desc_[i].format   = mapVkFormat(attribute_info.format);
         vk_attributes_desc_[i].offset   = attribute_info.offset;
     }
 
