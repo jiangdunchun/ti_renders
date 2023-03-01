@@ -9,7 +9,7 @@
 namespace tigine { namespace graphic {
 class VulkanPipelineState : public IPipelineState {
 public:
-    VulkanPipelineState(VkDevice *vk_device, const PipelineStateDescriptor &desc);
+    VulkanPipelineState(VkDevice *vk_device, const PipelineStateDesc &desc);
     ~VulkanPipelineState();
 
     VkPipeline *getVkPipeline() { return &vk_pipeline_; }

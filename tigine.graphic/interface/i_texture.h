@@ -25,7 +25,7 @@ enum class SamplerFilter {
     Linear,
 };
 
-struct SamplerDescriptor {
+struct SamplerDesc {
     SamplerAddressMode address_mode_U = SamplerAddressMode::Repeat;
     SamplerAddressMode address_mode_V = SamplerAddressMode::Repeat;
     SamplerAddressMode address_mode_W = SamplerAddressMode::Repeat;
@@ -35,13 +35,13 @@ struct SamplerDescriptor {
     bool mipmapping = true;
 };
 
-struct TextureDescriptor {
+struct TextureDesc {
     TextureKind kind;
     TUShort     format;
     TUInt       width;
     TUInt       height = 1;
     TUInt       depth  = 1;
-    SamplerDescriptor sample_desc;
+    SamplerDesc sample_desc;
 };
 
 class ITexture : public IResource {

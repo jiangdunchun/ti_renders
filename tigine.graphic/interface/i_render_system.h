@@ -17,18 +17,18 @@
 namespace tigine { namespace graphic {
 class IRenderSystem : public NonCopyable {
 public:
-    virtual IRenderContext  *createRenderContext(const RenderContextDescriptor &desc)   = 0;
+    virtual IRenderContext  *createRenderContext(const RenderContextDesc &desc)   = 0;
     virtual ICommandQueue   *getCommandQueue()                                          = 0;
-    virtual ICommandBuffer  *createCommandBuffer(const CommandBufferDescriptor &desc)   = 0;
-    virtual IBuffer         *createBuffer(const BufferDescriptor &desc)                 = 0;
-    virtual IBufferArray    *createBufferArray(const BufferArrayDescriptor &desc)       = 0;
-    virtual IShader         *createShader(const ShaderDescriptor &desc)                 = 0;
-    virtual IShaderProgram  *createShaderProgram(const ShaderProgramDescriptor &desc)   = 0;
-    virtual ITexture        *createTexture(const TextureDescriptor &desc)               = 0;
-    virtual IResourceHeap   *CreateResourceHeap(const ResourceHeapDescriptor &desc)     = 0;
-    virtual IRenderPass     *CreateRenderPass(const RenderPassDescriptor &desc)         = 0;
-    virtual IRenderTarget   *createRenderTarget(const RenderTargetDescriptor &desc)     = 0;
-    virtual IPipelineState  *createPipelineState(const PipelineStateDescriptor &desc)   = 0;
+    virtual ICommandBuffer  *createCommandBuffer(const CommandBufferDesc &desc)   = 0;
+    virtual IBuffer         *createBuffer(const BufferDesc &desc)                 = 0;
+    virtual IBufferArray    *createBufferArray(const BufferArrayDesc &desc)       = 0;
+    virtual IShader         *createShader(const ShaderDesc &desc)                 = 0;
+    virtual IShaderProgram  *createShaderProgram(const ShaderProgramDesc &desc)   = 0;
+    virtual ITexture        *createTexture(const TextureDesc &desc)               = 0;
+    virtual IResourceHeap   *CreateResourceHeap(const ResourceHeapDesc &desc)     = 0;
+    virtual IRenderPass     *CreateRenderPass(const RenderPassDesc &desc)         = 0;
+    virtual IRenderTarget   *createRenderTarget(const RenderTargetDesc &desc)     = 0;
+    virtual IPipelineState  *createPipelineState(const PipelineStateDesc &desc)   = 0;
 };
 }} // namespace tigine::graphic
 

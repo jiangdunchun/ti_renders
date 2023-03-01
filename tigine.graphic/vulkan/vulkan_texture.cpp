@@ -7,7 +7,7 @@ namespace tigine { namespace graphic {
 namespace {
 } // namespace
 
-VulkanTexture::VulkanTexture(VkDevice *vk_device, const TextureDescriptor &desc) 
+VulkanTexture::VulkanTexture(VkDevice *vk_device, const TextureDesc &desc) 
     : vk_device_(vk_device), ITexture(desc.kind, desc.format) {
     VkImageViewCreateInfo imageview_info {};
     imageview_info.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;

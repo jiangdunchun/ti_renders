@@ -11,7 +11,7 @@
 namespace tigine { namespace graphic {
 class VulkanCommandBuffer : public ICommandBuffer {
 public:
-    VulkanCommandBuffer(VkDevice *vk_device, VkQueue *vk_graphics_queue, uint32_t vk_queue_family_index, const CommandBufferDescriptor &desc);
+    VulkanCommandBuffer(VkDevice *vk_device, VkQueue *vk_graphics_queue, uint32_t vk_queue_family_index, const CommandBufferDesc &desc);
     ~VulkanCommandBuffer();
 
     void begin() override;

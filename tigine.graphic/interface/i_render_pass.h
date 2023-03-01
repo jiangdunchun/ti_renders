@@ -6,28 +6,28 @@
 #include <vector>
 
 namespace tigine { namespace graphic {
-enum class AttachmentLoadOption {
+enum class AttachmentLoadOp {
     Undefined,
     Load,
     Clear
 };
 
-enum class AttachmentStoreOption {
+enum class AttachmentStoreOp {
     Undefined,
     Store
 };
 
-struct AttachmentDescriptor {
-    DataFormat            format = DataFormat::Undefined;
-    AttachmentLoadOption  load   = AttachmentLoadOption::Undefined;
-    AttachmentStoreOption store  = AttachmentStoreOption::Undefined;
+struct AttachmentFormat {
+    DataFormat        format = DataFormat::Undefined;
+    AttachmentLoadOp  load   = AttachmentLoadOp::Undefined;
+    AttachmentStoreOp store  = AttachmentStoreOp::Undefined;
 };
 
-struct RenderPassDescriptor {
-    std::vector<AttachmentDescriptor> color_attachments;
-    AttachmentDescriptor              depth_attachment;
-    AttachmentDescriptor              stencil_attachment;
-    TUInt                             samples = 1;
+struct RenderPassDesc {
+    std::vector<AttachmentFormat> color_attachments;
+    AttachmentFormat              depth_attachment;
+    AttachmentFormat              stencil_attachment;
+    TUInt                         samples = 1;
 };
 
 class IRenderPass : public NonCopyable {};

@@ -18,30 +18,30 @@ public:
     GL430RenderSystem() { command_queue_ = new GL430CommandQueue(); }
     ~GL430RenderSystem() { delete command_queue_; }
 
-    IRenderContext  *createRenderContext(const RenderContextDescriptor &desc) override { return new GL430RenderContext(desc); }
+    IRenderContext  *createRenderContext(const RenderContextDesc &desc) override { return new GL430RenderContext(desc); }
     void             release(IRenderContext *render_context) override { delete render_context; }
-    IShader         *createShader(const ShaderDescriptor &desc) override { return new GL430Shader(desc); }
+    IShader         *createShader(const ShaderDesc &desc) override { return new GL430Shader(desc); }
     void             release(IShader *shader) override { delete shader; }
-    IShaderProgram  *createShaderProgram(const ShaderProgramDescriptor &desc) override { return new GL430ShaderProgram(desc); }
+    IShaderProgram  *createShaderProgram(const ShaderProgramDesc &desc) override { return new GL430ShaderProgram(desc); }
     void             release(IShaderProgram *shader_program) override { delete shader_program; }
-    IBuffer         *createBuffer(const BufferDescriptor &desc, void *data) override { return new GL430Buffer(desc, data); }
+    IBuffer         *createBuffer(const BufferDesc &desc, void *data) override { return new GL430Buffer(desc, data); }
     void             release(IBuffer *buffer) override { delete buffer; }
-    IBufferArray    *createBufferArray(const BufferArrayDescriptor &desc) override { return new GL430BufferArray(desc); }
+    IBufferArray    *createBufferArray(const BufferArrayDesc &desc) override { return new GL430BufferArray(desc); }
     void             release(IBufferArray *buffer_array) override { delete buffer_array; }
     ICommandQueue   *getCommandQueue() override { return command_queue_; }
     ICommandBuffer  *createCommandBuffer() override { return new GL430CommandBuffer(); }
     void             release(ICommandBuffer *command_buffer) override { delete command_buffer; }
-    ITexture        *createTexture(const TextureDescriptor &desc) override { return nullptr; }
+    ITexture        *createTexture(const TextureDesc &desc) override { return nullptr; }
     void             release(ITexture *render_target) override {}
-    IResourceHeap   *CreateResourceHeap(const ResourceHeapDescriptor &desc) { return nullptr; }
+    IResourceHeap   *CreateResourceHeap(const ResourceHeapDesc &desc) { return nullptr; }
     void             release(IResourceHeap *resource_heap) {}
-    IRenderPass     *CreateRenderPass(const RenderPassDescriptor &desc) { return nullptr; }
+    IRenderPass     *CreateRenderPass(const RenderPassDesc &desc) { return nullptr; }
     void             release(IRenderPass *render_pass) {}
-    IRenderTarget   *createRenderTarget(const RenderTargetDescriptor &desc) override { return nullptr; }
+    IRenderTarget   *createRenderTarget(const RenderTargetDesc &desc) override { return nullptr; }
     void             release(IRenderTarget *render_target) override {}
     IPipelineLayout *createPipelineLayout(const PipelineLayoutDescriptor &desc) override { return nullptr; }
     void             release(IPipelineLayout *pipeline_layout) override {}
-    IPipelineState  *createPipelineState(const PipelineStateDescriptor &desc) override { return new GL430PipelineState(desc); }
+    IPipelineState  *createPipelineState(const PipelineStateDesc &desc) override { return new GL430PipelineState(desc); }
     void             release(IPipelineState *pipeline) override { delete pipeline; }
 
 private:

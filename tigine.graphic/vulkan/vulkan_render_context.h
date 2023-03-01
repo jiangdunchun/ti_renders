@@ -14,7 +14,7 @@ class VulkanSurface;
 class VulkanRenderPass;
 class VulkanRenderContext : public IRenderContext {
 public:
-    VulkanRenderContext(const RenderContextDescriptor &desc);
+    VulkanRenderContext(const RenderContextDesc &desc);
     ~VulkanRenderContext();
 
     IRenderPass *getRenderPass() override;

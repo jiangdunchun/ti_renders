@@ -9,7 +9,7 @@
 namespace tigine { namespace graphic {
 class IRenderTarget;
 
-struct CommandBufferDescriptor {
+struct CommandBufferDesc {
     TUInt buffer_count = 2;
 };
 

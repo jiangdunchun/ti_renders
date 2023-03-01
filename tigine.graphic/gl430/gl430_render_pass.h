@@ -7,7 +7,7 @@
 namespace tigine { namespace graphic {
 class GL430RenderPass : public IRenderPass {
 public:
-    GL430RenderPass(const RenderPassDescriptor &desc) {}
+    GL430RenderPass(const RenderPassDesc &desc) {}
     ~GL430RenderPass() = default;
 
 private:

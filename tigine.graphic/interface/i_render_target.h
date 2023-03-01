@@ -16,18 +16,18 @@ enum class AttachmentKind {
     Stencil,
 };
 
-struct AttachmentDescriptor__ {
+struct AttachmentDesc {
     AttachmentKind kind;
     ITexture      *texture;
     TUInt          mip_level;
     TUInt          array_layer;
 };
 
-struct RenderTargetDescriptor {
-    IRenderPass                      *render_pass;
-    Extent2D                          resolution;
-    TUInt                             samples = 1;
-    std::vector<AttachmentDescriptor__> attachments;
+struct RenderTargetDesc {
+    IRenderPass                *render_pass;
+    Extent2D                    resolution;
+    TUInt                       samples = 1;
+    std::vector<AttachmentDesc> attachments;
 };
 
 class IRenderTarget : public NonCopyable {

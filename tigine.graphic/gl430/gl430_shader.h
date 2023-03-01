@@ -7,7 +7,7 @@
 namespace tigine { namespace graphic {
 class GL430Shader : public IShader {
 public:
-    GL430Shader(const ShaderDescriptor &desc);
+    GL430Shader(const ShaderDesc &desc);
     ~GL430Shader();
 
     bool        hasError() const;

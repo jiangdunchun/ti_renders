@@ -22,7 +22,7 @@ VulkanRenderSystem::~VulkanRenderSystem() {
 	delete command_queue_;
 }
 
-IRenderContext *VulkanRenderSystem::createRenderContext(const RenderContextDescriptor &desc) { 
+IRenderContext *VulkanRenderSystem::createRenderContext(const RenderContextDesc &desc) { 
 	VulkanRenderContext *render_context = new VulkanRenderContext(desc);
 
 	vk_physicl_device_  = render_context->getVkPhysicalDevice();
@@ -35,46 +35,46 @@ IRenderContext *VulkanRenderSystem::createRenderContext(const RenderContextDescr
 	return render_context;
 }
 
-IShader *VulkanRenderSystem::createShader(const ShaderDescriptor &desc) { 
+IShader *VulkanRenderSystem::createShader(const ShaderDesc &desc) { 
 	assert(vk_device_);
     return new VulkanShader(vk_device_, desc);
 }
 
-IShaderProgram  *VulkanRenderSystem::createShaderProgram(const ShaderProgramDescriptor &desc) { 
+IShaderProgram  *VulkanRenderSystem::createShaderProgram(const ShaderProgramDesc &desc) { 
 	return new VulkanShaderProgram(desc);
 }
 
-IBuffer *VulkanRenderSystem::createBuffer(const BufferDescriptor &desc) { 
+IBuffer *VulkanRenderSystem::createBuffer(const BufferDesc &desc) { 
 	assert(vk_physicl_device_ && vk_device_);
 	return new VulkanBuffer(vk_physicl_device_, vk_device_, desc);
 }
 
-IBufferArray *VulkanRenderSystem::createBufferArray(const BufferArrayDescriptor &desc) { 
+IBufferArray *VulkanRenderSystem::createBufferArray(const BufferArrayDesc &desc) { 
 	return new VulkanBufferArray(desc);
 }
 
 ICommandQueue   *VulkanRenderSystem::getCommandQueue() { return command_queue_; }
 
-ICommandBuffer *VulkanRenderSystem::createCommandBuffer(const CommandBufferDescriptor &desc) { 
+ICommandBuffer *VulkanRenderSystem::createCommandBuffer(const CommandBufferDesc &desc) { 
 	assert(vk_device_);
     return new VulkanCommandBuffer(vk_device_, vk_graphics_queue_, vk_graphics_family_, desc);
 }
 
-ITexture *VulkanRenderSystem::createTexture(const TextureDescriptor &desc) { 
+ITexture *VulkanRenderSystem::createTexture(const TextureDesc &desc) { 
 	assert(vk_device_);
 	return new VulkanTexture(vk_device_, desc);
 }
 
-IResourceHeap  *VulkanRenderSystem::CreateResourceHeap(const ResourceHeapDescriptor &desc) {
+IResourceHeap  *VulkanRenderSystem::CreateResourceHeap(const ResourceHeapDesc &desc) {
     assert(vk_device_);
 	return new VulkanResourceHeap(vk_device_, desc);
 }
 
-IRenderPass     *VulkanRenderSystem::CreateRenderPass(const RenderPassDescriptor &desc) { return nullptr; }
+IRenderPass     *VulkanRenderSystem::CreateRenderPass(const RenderPassDesc &desc) { return nullptr; }
 
-IRenderTarget   *VulkanRenderSystem::createRenderTarget(const RenderTargetDescriptor &desc) { return nullptr; }
+IRenderTarget   *VulkanRenderSystem::createRenderTarget(const RenderTargetDesc &desc) { return nullptr; }
 
-IPipelineState  *VulkanRenderSystem::createPipelineState(const PipelineStateDescriptor &desc) { 
+IPipelineState  *VulkanRenderSystem::createPipelineState(const PipelineStateDesc &desc) { 
 	assert(vk_device_);
 	return new VulkanPipelineState(vk_device_, desc);
 }

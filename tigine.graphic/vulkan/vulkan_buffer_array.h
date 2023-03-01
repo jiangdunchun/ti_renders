@@ -12,7 +12,7 @@ namespace tigine { namespace graphic {
 class VulkanBuffer;
 class VulkanBufferArray : public IBufferArray {
 public:
-    VulkanBufferArray(const BufferArrayDescriptor &desc);
+    VulkanBufferArray(const BufferArrayDesc &desc);
     ~VulkanBufferArray();
 
     bool                                  hasIndices() const { return has_indices_; }

@@ -659,7 +659,7 @@ void createSyncObjects(VkDevice &device, VkSemaphore &image_available_semaphores
 }
 } // namespace
 
-VulkanRenderContext::VulkanRenderContext(const RenderContextDescriptor &desc) {
+VulkanRenderContext::VulkanRenderContext(const RenderContextDesc &desc) {
     createWindow(window_, desc.resolution);
     createInstance(vk_instance_);
     setupDebugMessenger(vk_instance_, vk_debug_messenger_);
@@ -691,7 +691,7 @@ VulkanRenderContext::VulkanRenderContext(const RenderContextDescriptor &desc) {
 
     surface_     = new VulkanSurface(window_);
 
-    RenderPassDescriptor render_pass_desc;
+    RenderPassDesc render_pass_desc;
     //render_pass_desc.format = VK_FORMAT_R8G8B8A8_SRGB;
     render_pass_ = new VulkanRenderPass(&vk_render_pass_);
 

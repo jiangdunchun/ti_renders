@@ -8,7 +8,7 @@
 namespace tigine { namespace graphic {
 class VulkanRenderTarget : public IRenderTarget {
 public:
-    VulkanRenderTarget(VkDevice *vk_device, const RenderTargetDescriptor &desc);
+    VulkanRenderTarget(VkDevice *vk_device, const RenderTargetDesc &desc);
     ~VulkanRenderTarget() {}
 
     virtual IRenderPass *getRenderPass() override { return nullptr; }

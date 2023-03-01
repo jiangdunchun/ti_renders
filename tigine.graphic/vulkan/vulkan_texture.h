@@ -9,7 +9,7 @@
 namespace tigine { namespace graphic {
 class VulkanTexture : public ITexture {
 public:
-    VulkanTexture(VkDevice *vk_device, const TextureDescriptor &desc);
+    VulkanTexture(VkDevice *vk_device, const TextureDesc &desc);
     ~VulkanTexture();
 
     VkImageView *getVKImageview() { return &vk_imageview_; }

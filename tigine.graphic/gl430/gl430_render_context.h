@@ -11,7 +11,7 @@
 namespace tigine { namespace graphic {
 class GL430RenderContext : public IRenderContext {
 public:
-    GL430RenderContext(const RenderContextDescriptor &desc);
+    GL430RenderContext(const RenderContextDesc &desc);
     ~GL430RenderContext();
 
     ISurface* getSurface() override { return surface_; }

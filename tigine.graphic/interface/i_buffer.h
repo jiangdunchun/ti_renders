@@ -10,7 +10,7 @@ enum BufferKind {
     BK_Indices  = 1 << 1,
 };
 
-struct BufferDescriptor {
+struct BufferDesc {
     TUInt  kinds = 0;
     TULong data_size  = 0;
     void  *data  = nullptr;

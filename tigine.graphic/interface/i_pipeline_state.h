@@ -10,7 +10,7 @@
 namespace tigine { namespace graphic {
 
 
-struct PipelineStateDescriptor {
+struct PipelineStateDesc {
     IShaderProgram  *shader_program;
     IResourceHeap   *resource_heap;
     IBufferArray    *vertices_array;

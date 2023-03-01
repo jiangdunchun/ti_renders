@@ -17,7 +17,7 @@ struct AttributeInfo {
     TUInt      offset;
 };
 
-struct BufferArrayDescriptor {
+struct BufferArrayDesc {
     IBuffer       *vertices_buffer;
     IBuffer       *indices_buffer = nullptr;
     TUInt          bindings_count;

@@ -13,7 +13,7 @@ enum class ShaderKind {
     Compute,
 };
 
-struct ShaderDescriptor {
+struct ShaderDesc {
     ShaderKind   kind      = ShaderKind::Undefined;
     const TChar *code      = nullptr;
     TUInt        code_size = 0;;

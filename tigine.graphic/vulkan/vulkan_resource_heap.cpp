@@ -42,7 +42,7 @@ VkShaderStageFlags mapShaderStageFlags(ShaderKind kind) {
 }
 } // namespace
 
-VulkanResourceHeap::VulkanResourceHeap(VkDevice *vk_device, const ResourceHeapDescriptor &desc) : vk_device_(vk_device) {
+VulkanResourceHeap::VulkanResourceHeap(VkDevice *vk_device, const ResourceHeapDesc &desc) : vk_device_(vk_device) {
     std::vector<VkDescriptorSetLayoutBinding> bindings(desc.uniforms_count);
     for (int i = 0; i < desc.uniforms_count; ++i) {
         UniformInfo &uniform = *(desc.uniforms + i);

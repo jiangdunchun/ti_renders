@@ -9,7 +9,7 @@
 namespace tigine { namespace graphic {
 class GL430BufferArray : public IBufferArray {
 public:
-    explicit GL430BufferArray(const BufferArrayDescriptor &desc);
+    explicit GL430BufferArray(const BufferArrayDesc &desc);
     ~GL430BufferArray();
 
     GLuint getID() const { return id_; }

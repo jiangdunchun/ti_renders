@@ -9,7 +9,7 @@
 namespace tigine { namespace graphic {
 class VulkanShader : public IShader {
 public:
-    VulkanShader(VkDevice *vk_device, const ShaderDescriptor &desc);
+    VulkanShader(VkDevice *vk_device, const ShaderDesc &desc);
     ~VulkanShader();
 
     bool        hasError() const override { return has_error_; }

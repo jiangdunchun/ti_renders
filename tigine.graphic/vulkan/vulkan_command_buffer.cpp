@@ -13,7 +13,7 @@ namespace tigine { namespace graphic {
 VulkanCommandBuffer::VulkanCommandBuffer(VkDevice                      *vk_device,
                                          VkQueue                       *vk_graphics_queue,
                                          uint32_t                       vk_queue_family_index,
-                                         const CommandBufferDescriptor &desc)
+                                         const CommandBufferDesc &desc)
     : vk_device_(vk_device), buffers_count_(desc.buffer_count) {
     VkCommandPoolCreateInfo pool_info {};
     pool_info.sType             = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;

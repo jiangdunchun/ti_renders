@@ -9,7 +9,7 @@
 
 
 namespace tigine { namespace graphic {
-VulkanPipelineState::VulkanPipelineState(VkDevice *vk_device, const PipelineStateDescriptor &desc) : vk_device_(vk_device) {
+VulkanPipelineState::VulkanPipelineState(VkDevice *vk_device, const PipelineStateDesc &desc) : vk_device_(vk_device) {
     VulkanShaderProgram *shader_prog    = dynamic_cast<VulkanShaderProgram *>(desc.shader_program);
     VulkanBufferArray   *vertices_array = dynamic_cast<VulkanBufferArray *>(desc.vertices_array);
     VulkanResourceHeap  *resource_heap  = dynamic_cast<VulkanResourceHeap *>(desc.resource_heap);

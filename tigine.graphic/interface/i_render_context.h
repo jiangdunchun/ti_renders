@@ -9,7 +9,7 @@
 #include "interface/i_surface.h"
 
 namespace tigine { namespace graphic {
-struct RenderContextDescriptor {
+struct RenderContextDesc {
     Extent2D resolution;
     TUInt    samples = 1;
 };

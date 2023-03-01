@@ -5,7 +5,7 @@
 #include "interface/i_shader.h"
 
 namespace tigine { namespace graphic {
-struct ShaderProgramDescriptor {
+struct ShaderProgramDesc {
     IShader *vertex_shader   = nullptr;
     IShader *fragment_shader = nullptr;
     IShader *compute_shader  = nullptr;

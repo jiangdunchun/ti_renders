@@ -13,18 +13,18 @@ public:
     VulkanRenderSystem();
     ~VulkanRenderSystem();
 
-    IRenderContext *createRenderContext(const RenderContextDescriptor &desc) override;
-    IShader        *createShader(const ShaderDescriptor &desc) override;
-    IShaderProgram *createShaderProgram(const ShaderProgramDescriptor &desc) override;
-    IBuffer        *createBuffer(const BufferDescriptor &desc) override;
-    IBufferArray   *createBufferArray(const BufferArrayDescriptor &desc) override;
+    IRenderContext *createRenderContext(const RenderContextDesc &desc) override;
+    IShader        *createShader(const ShaderDesc &desc) override;
+    IShaderProgram *createShaderProgram(const ShaderProgramDesc &desc) override;
+    IBuffer        *createBuffer(const BufferDesc &desc) override;
+    IBufferArray   *createBufferArray(const BufferArrayDesc &desc) override;
     ICommandQueue  *getCommandQueue() override;
-    ICommandBuffer *createCommandBuffer(const CommandBufferDescriptor &desc) override;
-    ITexture       *createTexture(const TextureDescriptor &desc) override;
-    IResourceHeap  *CreateResourceHeap(const ResourceHeapDescriptor &desc) override;
-    IRenderPass    *CreateRenderPass(const RenderPassDescriptor &desc) override;
-    IRenderTarget  *createRenderTarget(const RenderTargetDescriptor &desc) override;
-    IPipelineState *createPipelineState(const PipelineStateDescriptor &desc) override;
+    ICommandBuffer *createCommandBuffer(const CommandBufferDesc &desc) override;
+    ITexture       *createTexture(const TextureDesc &desc) override;
+    IResourceHeap  *CreateResourceHeap(const ResourceHeapDesc &desc) override;
+    IRenderPass    *CreateRenderPass(const RenderPassDesc &desc) override;
+    IRenderTarget  *createRenderTarget(const RenderTargetDesc &desc) override;
+    IPipelineState *createPipelineState(const PipelineStateDesc &desc) override;
 
 private:
     VkPhysicalDevice *vk_physicl_device_  = nullptr;

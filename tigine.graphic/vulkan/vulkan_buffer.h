@@ -9,7 +9,7 @@
 namespace tigine { namespace graphic {
 class VulkanBuffer : public IBuffer {
 public:
-    VulkanBuffer(VkPhysicalDevice *vk_physical_device, VkDevice *vk_device, const BufferDescriptor &desc);
+    VulkanBuffer(VkPhysicalDevice *vk_physical_device, VkDevice *vk_device, const BufferDesc &desc);
     ~VulkanBuffer();
     virtual void updateData(TULong data_size, void *data) override;
     TUInt        getDataSize() { return data_size_; }

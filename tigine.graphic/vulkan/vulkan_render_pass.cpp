@@ -5,23 +5,23 @@
 
 namespace tigine { namespace graphic {
 namespace {
-VkAttachmentLoadOp mapAttachmentLoadOption(AttachmentLoadOption loadOp) {
+VkAttachmentLoadOp mapAttachmentLoadOption(AttachmentLoadOp loadOp) {
     switch (loadOp) {
-    case AttachmentLoadOption::Undefined:
+    case AttachmentLoadOp::Undefined:
         return VK_ATTACHMENT_LOAD_OP_DONT_CARE;
-    case AttachmentLoadOption::Load:
+    case AttachmentLoadOp::Load:
         return VK_ATTACHMENT_LOAD_OP_LOAD;
-    case AttachmentLoadOption::Clear:
+    case AttachmentLoadOp::Clear:
         return VK_ATTACHMENT_LOAD_OP_CLEAR;
     }
     // @TODO
     return VK_ATTACHMENT_LOAD_OP_DONT_CARE;
 }
-VkAttachmentStoreOp mapAttachmentStoreOption(AttachmentStoreOption storeOp) {
+VkAttachmentStoreOp mapAttachmentStoreOption(AttachmentStoreOp storeOp) {
     switch (storeOp) {
-    case AttachmentStoreOption::Undefined:
+    case AttachmentStoreOp::Undefined:
         return VK_ATTACHMENT_STORE_OP_DONT_CARE;
-    case AttachmentStoreOption::Store:
+    case AttachmentStoreOp::Store:
         return VK_ATTACHMENT_STORE_OP_STORE;
     }
     // @TODO
@@ -47,7 +47,7 @@ VkFormat GetDepthStencilFormat(const DataFormat depthFormat, const DataFormat &s
     return VK_FORMAT_UNDEFINED;
 }
 }
-VulkanRenderPass::VulkanRenderPass(VkDevice *vk_device, const RenderPassDescriptor &desc) : vk_device_(vk_device) {
+VulkanRenderPass::VulkanRenderPass(VkDevice *vk_device, const RenderPassDesc &desc) : vk_device_(vk_device) {
     std::uint32_t num_colors = static_cast<std::uint32_t>(desc.color_attachments.size());
     std::uint32_t num_all    = num_colors;
     bool has_ds = false;
@@ -59,7 +59,7 @@ VulkanRenderPass::VulkanRenderPass(VkDevice *vk_device, const RenderPassDescript
     std::vector<VkAttachmentDescription> attachments_desc(desc.samples > 1 ? num_all + num_colors : num_all);
     for (rsize_t i = 0; i < num_colors; ++i) {
         VkAttachmentDescription    &vk_desc  = attachments_desc[i];
-        const AttachmentDescriptor &src_desc = desc.color_attachments[i];
+        const AttachmentFormat &src_desc = desc.color_attachments[i];
 
         vk_desc.flags          = 0;
         vk_desc.format         = mapVkFormat(src_desc.format);
@@ -68,13 +68,13 @@ VulkanRenderPass::VulkanRenderPass(VkDevice *vk_device, const RenderPassDescript
         vk_desc.storeOp        = mapAttachmentStoreOption(src_desc.store);
         vk_desc.stencilLoadOp  = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
         vk_desc.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
-        vk_desc.initialLayout  = (src_desc.load == AttachmentLoadOption::Load ? VK_IMAGE_LAYOUT_PRESENT_SRC_KHR : VK_IMAGE_LAYOUT_UNDEFINED);
+        vk_desc.initialLayout  = (src_desc.load == AttachmentLoadOp::Load ? VK_IMAGE_LAYOUT_PRESENT_SRC_KHR : VK_IMAGE_LAYOUT_UNDEFINED);
         vk_desc.finalLayout    = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
     }
     if (has_ds) {
         VkAttachmentDescription    &vk_desc = attachments_desc[num_colors];
-        const AttachmentDescriptor &src_d_desc = desc.depth_attachment;
-        const AttachmentDescriptor &src_s_desc = desc.stencil_attachment;
+        const AttachmentFormat &src_d_desc = desc.depth_attachment;
+        const AttachmentFormat &src_s_desc = desc.stencil_attachment;
 
         vk_desc.flags          = 0;
         vk_desc.format         = GetDepthStencilFormat(src_d_desc.format, src_s_desc.format);
@@ -83,13 +83,13 @@ VulkanRenderPass::VulkanRenderPass(VkDevice *vk_device, const RenderPassDescript
         vk_desc.storeOp        = mapAttachmentStoreOption(src_d_desc.store);
         vk_desc.stencilLoadOp  = mapAttachmentLoadOption(src_s_desc.load);
         vk_desc.stencilStoreOp = mapAttachmentStoreOption(src_s_desc.store);
-        vk_desc.initialLayout  = src_d_desc.load == AttachmentLoadOption::Load || src_s_desc.load == AttachmentLoadOption::Load ? VK_IMAGE_LAYOUT_PRESENT_SRC_KHR : VK_IMAGE_LAYOUT_UNDEFINED;
+        vk_desc.initialLayout  = src_d_desc.load == AttachmentLoadOp::Load || src_s_desc.load == AttachmentLoadOp::Load ? VK_IMAGE_LAYOUT_PRESENT_SRC_KHR : VK_IMAGE_LAYOUT_UNDEFINED;
         vk_desc.finalLayout    = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
     }
     if (desc.samples > 1) {
         for (size_t i = 0; i < num_colors; ++i) {
             VkAttachmentDescription    &vk_desc  = attachments_desc[num_colors + i];
-            const AttachmentDescriptor &src_desc = desc.color_attachments[i];
+            const AttachmentFormat &src_desc = desc.color_attachments[i];
 
             vk_desc.flags          = 0;
             vk_desc.format         = mapVkFormat(src_desc.format);
@@ -98,7 +98,7 @@ VulkanRenderPass::VulkanRenderPass(VkDevice *vk_device, const RenderPassDescript
             vk_desc.storeOp        = mapAttachmentStoreOption(src_desc.store);
             vk_desc.stencilLoadOp  = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
             vk_desc.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
-            vk_desc.initialLayout  = src_desc.load == AttachmentLoadOption::Load ? VK_IMAGE_LAYOUT_PRESENT_SRC_KHR :  VK_IMAGE_LAYOUT_UNDEFINED;
+            vk_desc.initialLayout  = src_desc.load == AttachmentLoadOp::Load ? VK_IMAGE_LAYOUT_PRESENT_SRC_KHR :  VK_IMAGE_LAYOUT_UNDEFINED;
             vk_desc.finalLayout    = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
         }
     }

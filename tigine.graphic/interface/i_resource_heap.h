@@ -14,7 +14,7 @@ struct UniformInfo {
     ShaderKind shader_stage;
 };
 
-struct ResourceHeapDescriptor {
+struct ResourceHeapDesc {
     TUInt        uniforms_count;
     UniformInfo *uniforms;
 };

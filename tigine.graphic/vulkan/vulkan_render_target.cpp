@@ -1,7 +1,7 @@
 #include "vulkan/vulkan_render_target.h"
 
 namespace tigine { namespace graphic {
-VulkanRenderTarget::VulkanRenderTarget(VkDevice *vk_device, const RenderTargetDescriptor &desc) 
+VulkanRenderTarget::VulkanRenderTarget(VkDevice *vk_device, const RenderTargetDesc &desc) 
 	: resolution_(desc.resolution), samples_(desc.samples) {
 	for (auto &attachment : desc.attachments) {
         if (attachment.kind == AttachmentKind::Color) color_attachments_nums_++;

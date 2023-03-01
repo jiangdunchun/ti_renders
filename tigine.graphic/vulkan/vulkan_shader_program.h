@@ -12,7 +12,7 @@
 namespace tigine { namespace graphic {
 class VulkanShaderProgram : public IShaderProgram {
 public:
-    VulkanShaderProgram(const ShaderProgramDescriptor &desc);
+    VulkanShaderProgram(const ShaderProgramDesc &desc);
     ~VulkanShaderProgram();
 
     bool        hasError() const override { return false; }

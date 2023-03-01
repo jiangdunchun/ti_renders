@@ -4,7 +4,7 @@
 
 
 namespace tigine { namespace graphic {
-VulkanBufferArray::VulkanBufferArray(const BufferArrayDescriptor &desc) {
+VulkanBufferArray::VulkanBufferArray(const BufferArrayDesc &desc) {
     vertices_buffer_ = dynamic_cast<VulkanBuffer *>(desc.vertices_buffer);
     if (desc.indices_buffer) {
         indices_buffer_ = dynamic_cast<VulkanBuffer *>(desc.indices_buffer);
