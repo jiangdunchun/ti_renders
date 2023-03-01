@@ -11,19 +11,20 @@ VulkanBufferArray::VulkanBufferArray(const BufferArrayDesc &desc) {
         has_indices_    = true;
     }
 
-
-    vk_bindings_desc_.resize(desc.bindings_count, {});
-    for (int i = 0; i < desc.bindings_count; ++i) {
-        BindingInfo &binding_info = *(desc.bindings + i);
+    size_t num_bindings = desc.bindings.size();
+    vk_bindings_desc_.resize(num_bindings, {});
+    for (size_t i = 0; i < num_bindings; ++i) {
+        const BindingInfo &binding_info = desc.bindings[i];
 
         vk_bindings_desc_[i].binding   = binding_info.binding;
         vk_bindings_desc_[i].stride    = binding_info.stride;
         vk_bindings_desc_[i].inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
     }
 
-    vk_attributes_desc_.resize(desc.attributes_count, {});
-    for (int i = 0; i < desc.attributes_count; ++i) {
-        AttributeInfo &attribute_info = *(desc.attributes + i);
+    size_t num_attributes = desc.attributes.size();
+    vk_attributes_desc_.resize(num_attributes, {});
+    for (size_t i = 0; i < num_attributes; ++i) {
+        const AttributeInfo &attribute_info = desc.attributes[i];
 
         vk_attributes_desc_[i].binding  = attribute_info.binding;
         vk_attributes_desc_[i].location = attribute_info.location;

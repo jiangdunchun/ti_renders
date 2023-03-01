@@ -15,8 +15,8 @@ enum class ShaderKind {
 
 struct ShaderDesc {
     ShaderKind   kind      = ShaderKind::Undefined;
+    TUInt        code_size = 0;
     const TChar *code      = nullptr;
-    TUInt        code_size = 0;;
 };
 
 class IShader : public NonCopyable {

@@ -44,10 +44,8 @@ int main() {
 
     BufferArrayDesc array_desc;
     array_desc.vertices_buffer  = vertices_buffer;
-    array_desc.bindings_count   = bindings_info.size();
-    array_desc.bindings         = bindings_info.data();
-    array_desc.attributes_count = attributes_info.size();
-    array_desc.attributes       = attributes_info.data();
+    array_desc.bindings         = bindings_info;
+    array_desc.attributes       = attributes_info;
 
     IBufferArray *vertices_array = render->createBufferArray(array_desc);
 

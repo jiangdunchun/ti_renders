@@ -4,6 +4,8 @@
 #include "interface/i_common.h"
 #include "interface/i_buffer.h"
 
+#include <vector>
+
 namespace tigine { namespace graphic {
 struct BindingInfo {
     TUInt binding;
@@ -18,12 +20,10 @@ struct AttributeInfo {
 };
 
 struct BufferArrayDesc {
-    IBuffer       *vertices_buffer;
-    IBuffer       *indices_buffer = nullptr;
-    TUInt          bindings_count;
-    BindingInfo   *bindings;
-    TUInt          attributes_count;
-    AttributeInfo *attributes;
+    IBuffer                   *vertices_buffer;
+    IBuffer                   *indices_buffer = nullptr;
+    std::vector<BindingInfo>   bindings;
+    std::vector<AttributeInfo> attributes;
 };
 
 class IBufferArray : public NonCopyable {};
