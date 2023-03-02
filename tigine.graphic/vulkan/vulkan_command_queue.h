@@ -9,7 +9,7 @@
 namespace tigine { namespace graphic {
 class VulkanCommandQueue : public ICommandQueue {
 public:
-    VulkanCommandQueue(VkDevice *vk_device, VkQueue *vk_graphics_queue, uint32_t graphics_family);
+    VulkanCommandQueue(VkDevice *vk_device, VkQueue *vk_graphics_queue);
     ~VulkanCommandQueue();
 
     void submit(ICommandBuffer *command_buffer) override;

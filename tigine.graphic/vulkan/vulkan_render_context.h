@@ -30,7 +30,6 @@ public:
     VkDevice         *getVklDevice() { return &vk_device_; }
     VkQueue          *getVkGraphicsQueue() { return &vk_graphics_queue_; }
     uint32_t          getVkGraphicsFamily() { return vk_graphics_family_; }
-    VkRenderPass     *getVkRenderPass() { return &vk_render_pass_; }
     VkFramebuffer    *getVkFrameBuffer() { return &vk_swapchain_frame_buffers_[present_image_index_]; }
 
 private:
@@ -49,24 +48,19 @@ private:
     VkDevice                 vk_device_;
     VkQueue                  vk_graphics_queue_;
     VkQueue                  vk_present_queue_;
+    uint32_t                 vk_graphics_family_;
 
     VkSwapchainKHR             vk_swapchain_;
     VkFormat                   vk_swapchain_image_format_;
     VkExtent2D                 vk_swapchain_extent_;
     std::vector<VkImage>       vk_swapchain_images_;
     std::vector<VkImageView>   vk_swapchain_image_views_;
-    VkRenderPass               vk_render_pass_;
     std::vector<VkFramebuffer> vk_swapchain_frame_buffers_;
 
-    uint32_t                 vk_graphics_family_;
-    std::vector<VkSemaphore> vk_image_available_semaphores_;
-    std::vector<VkSemaphore> vk_render_finished_semaphores_;
-    std::vector<VkFence>     vk_in_flight_fences_;
-    std::vector<VkFence>     vk_images_in_flight_;
-    size_t                   current_frame_ = 0;
+    
     VkSemaphore vk_image_available_semaphore_;
     VkSemaphore vk_render_finished_semaphore_;
-    TUInt                    present_image_index_;
+    TUInt       present_image_index_;
 };
 }} // namespace tigine::graphic
 

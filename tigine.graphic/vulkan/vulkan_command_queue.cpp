@@ -6,7 +6,7 @@
 
 
 namespace tigine { namespace graphic {
-VulkanCommandQueue::VulkanCommandQueue(VkDevice *vk_device, VkQueue *vk_graphics_queue, uint32_t graphics_family) 
+VulkanCommandQueue::VulkanCommandQueue(VkDevice *vk_device, VkQueue *vk_graphics_queue) 
     : vk_device_(vk_device), vk_graphics_queue_(vk_graphics_queue) {
 }
 
