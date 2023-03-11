@@ -9,12 +9,13 @@ add_subdirectory(./3rdparty)
 
 add_subdirectory(./tigine.core)
 
-add_subdirectory(tigine.graphic)
+set(GRAPHIC_API "vulkan")
+add_subdirectory(rhi)
 
 add_subdirectory(./ti_render)
 
 add_subdirectory(./tests)
 
-add_subdirectory(./meta)
+add_subdirectory(toolkit)
 
 

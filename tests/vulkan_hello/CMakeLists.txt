@@ -6,7 +6,7 @@ include_directories(${Vulkan_INCLUDE_DIR})
 add_executable(vulkan_hello test.cpp)
 
 
-include(../../cmake/ShaderCompile.cmake)
+include(../../cmake/ShaderCompiler.cmake)
 
 file(GLOB_RECURSE SHADER_FILES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/shader/*.vert"
                                             "${CMAKE_CURRENT_SOURCE_DIR}/shader/*.frag"
