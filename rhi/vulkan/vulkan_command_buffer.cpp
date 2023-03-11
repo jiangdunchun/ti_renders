@@ -119,15 +119,16 @@ void VulkanCommandBuffer::setVertexBufferArray(IBufferArray *buffer_array) {
 }
 
 void VulkanCommandBuffer::beginRenderPass(IRenderTarget *render_target, IRenderPass *render_pass) {
+    VulkanRenderPass *vulkan_render_pass = dynamic_cast<VulkanRenderPass *>(render_pass);
     if (render_target->isContext()) {
         VulkanRenderContext *render_context = dynamic_cast<VulkanRenderContext *>(render_target);
-
+        
         VkClearValue          clear_cc = {0, 0, 0, 1};
         VkRenderPassBeginInfo begin_info;
         {
             begin_info.sType             = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
             begin_info.pNext             = nullptr;
-            begin_info.renderPass        = *(dynamic_cast<VulkanRenderPass *>(render_context->getRenderPass())->getVkRenderPass());
+            begin_info.renderPass        = *(vulkan_render_pass->getVkRenderPass());
             begin_info.framebuffer       = *(render_context->getVkFrameBuffer());
             begin_info.renderArea.offset = {0, 0};
             begin_info.renderArea.extent = {render_context->getResolution().width, render_context->getResolution().height};
