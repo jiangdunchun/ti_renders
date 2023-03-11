@@ -1,6 +1,6 @@
-add_executable(tigine.rhi.tests.hello_triangle ./main.cpp)
+add_executable(tigine.rhi.tests.rotate_texture ./main.cpp)
 
-target_link_libraries(tigine.rhi.tests.hello_triangle tigine.rhi)
+target_link_libraries(tigine.rhi.tests.rotate_texture tigine.rhi)
 
 
 include(${PROJECT_SOURCE_DIR}/cmake/ShaderCompiler.cmake)

@@ -2,8 +2,8 @@
 
 #include <iostream>
 
-#include "shader/hello_triangle_frag.h"
-#include "shader/hello_triangle_vert.h"
+#include "shader/rotate_texture_vert.h"
+#include "shader/rotate_texture_frag.h"
 
 using namespace tigine::rhi;
 using namespace std;
@@ -14,7 +14,7 @@ int main() {
     RenderContextDesc context_desc {context_desc.resolution = {600, 600}};
     IRenderContext   *context = render->createRenderContext(context_desc);
     ISurface         *window  = context->getSurface();
-    window->setTitle("hello triangle");
+    window->setTitle("rotate texture");
     window->show();
 
     float vertices[] = {0, -0.5f, 0, 0, 0, 1, 0.5f, 0.5f, 0, 1, 0, 0, -0.5f, 0.5f, 0, 0, 1, 0};

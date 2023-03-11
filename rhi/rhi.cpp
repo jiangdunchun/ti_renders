@@ -10,6 +10,6 @@ namespace tigine { namespace rhi {
 #ifdef USING_VULKAN
 IRenderSystem *CREATE_RENDER_SYSTEM() { return new VulkanRenderSystem(); }
 #else
-IRenderSystem *CREATE_RENDER_SYSTEM() { return new VulkanRenderSystem(); }
+IRenderSystem *CREATE_RENDER_SYSTEM() { return new GL430RenderSystem(); }
 #endif
 }} // namespace tigine::rhi
