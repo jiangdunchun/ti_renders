@@ -5,7 +5,6 @@
 
 #include "vulkan/vulkan_common.h"
 
-
 namespace tigine { namespace rhi {
 class VulkanRenderContext;
 class VulkanRenderPass : public IRenderPass {

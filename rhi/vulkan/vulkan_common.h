@@ -6,6 +6,8 @@
 
 #include "interface/i_common.h"
 
+#define RHI_VULKAN_THROW(msg) RHI_THROW("vulkan " + std::string(msg))
+
 namespace tigine { namespace rhi {
 VkFormat mapVkFormat(DataFormat format);
 }}// namespace tigine::rhi

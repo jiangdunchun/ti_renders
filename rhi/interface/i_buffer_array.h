@@ -1,10 +1,10 @@
 #ifndef TIGINE_RHI_INTERFACE_I_BUFFER_ARRAY_H_
 #define TIGINE_RHI_INTERFACE_I_BUFFER_ARRAY_H_
 
+#include <vector>
+
 #include "interface/i_common.h"
 #include "interface/i_buffer.h"
-
-#include <vector>
 
 namespace tigine { namespace rhi {
 struct BindingInfo {

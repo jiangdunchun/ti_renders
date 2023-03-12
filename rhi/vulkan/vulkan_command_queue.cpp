@@ -1,9 +1,6 @@
 #include "vulkan/vulkan_command_queue.h"
 
-#include <stdexcept>
-
-#include "vulkan_command_buffer.h"
-
+#include "vulkan/vulkan_command_buffer.h"
 
 namespace tigine { namespace rhi {
 VulkanCommandQueue::VulkanCommandQueue(VkDevice *vk_device, VkQueue *vk_graphics_queue) 
@@ -26,7 +23,7 @@ void VulkanCommandQueue::submit(ICommandBuffer* command_buffer) {
     submit_info.signalSemaphoreCount = 0;
     submit_info.pSignalSemaphores    = nullptr;
     if (vkQueueSubmit(*vk_graphics_queue_, 1, &submit_info, *(vulkan_command_buffer->getVKQueueSubmitFence())) != VK_SUCCESS) {
-        throw std::runtime_error("failed to submit command buffer to Vulkan graphics queue!");
+        RHI_VULKAN_THROW("failed to submit command buffer to Vulkan graphics queue!");
     }
 }
 }} // namespace tigine::rhi

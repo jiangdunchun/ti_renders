@@ -3,10 +3,9 @@
 
 #include "interface/i_command_buffer.h"
 
-#include "vulkan/vulkan_common.h"
-
 #include <vector>
 
+#include "vulkan/vulkan_common.h"
 
 namespace tigine { namespace rhi {
 class VulkanCommandBuffer : public ICommandBuffer {

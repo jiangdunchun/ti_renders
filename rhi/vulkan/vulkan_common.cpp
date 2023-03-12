@@ -3,7 +3,6 @@
 namespace tigine { namespace rhi {
 VkFormat mapVkFormat(DataFormat format) {
     switch (format) {
-    /* --- Red channel color formats --- */
     case DataFormat::R8UNorm:
         return VK_FORMAT_R8_UNORM;
     case DataFormat::R8SNorm:
@@ -34,7 +33,6 @@ VkFormat mapVkFormat(DataFormat format) {
     case DataFormat::R64Float:
         return VK_FORMAT_R64_SFLOAT;
 
-    /* --- RG color formats --- */
     case DataFormat::RG8UNorm:
         return VK_FORMAT_R8G8_UNORM;
     case DataFormat::RG8SNorm:
@@ -65,7 +63,6 @@ VkFormat mapVkFormat(DataFormat format) {
     case DataFormat::RG64Float:
         return VK_FORMAT_R64G64_SFLOAT;
 
-    /* --- RGB color formats --- */
     case DataFormat::RGB8UNorm:
         return VK_FORMAT_R8G8B8_UNORM;
     case DataFormat::RGB8UNorm_sRGB:
@@ -98,7 +95,6 @@ VkFormat mapVkFormat(DataFormat format) {
     case DataFormat::RGB64Float:
         return VK_FORMAT_R64G64B64_SFLOAT;
 
-    /* --- RGBA color formats --- */
     case DataFormat::RGBA8UNorm:
         return VK_FORMAT_R8G8B8A8_UNORM;
     case DataFormat::RGBA8UNorm_sRGB:
@@ -131,7 +127,6 @@ VkFormat mapVkFormat(DataFormat format) {
     case DataFormat::RGBA64Float:
         return VK_FORMAT_R64G64B64A64_SFLOAT;
 
-    /* --- BGRA color formats --- */
     case DataFormat::BGRA8UNorm:
         return VK_FORMAT_B8G8R8A8_UNORM;
     case DataFormat::BGRA8UNorm_sRGB:
@@ -143,17 +138,15 @@ VkFormat mapVkFormat(DataFormat format) {
     case DataFormat::BGRA8SInt:
         return VK_FORMAT_B8G8R8A8_SINT;
 
-    /* --- Packed formats --- */
     case DataFormat::RGB10A2UNorm:
-        return VK_FORMAT_A2B10G10R10_UNORM_PACK32; // requires swizzling for CPU access
+        return VK_FORMAT_A2B10G10R10_UNORM_PACK32;
     case DataFormat::RGB10A2UInt:
-        return VK_FORMAT_A2B10G10R10_UINT_PACK32; // requires swizzling for CPU access
+        return VK_FORMAT_A2B10G10R10_UINT_PACK32;
     case DataFormat::RG11B10Float:
-        return VK_FORMAT_B10G11R11_UFLOAT_PACK32; // requires swizzling for CPU access
+        return VK_FORMAT_B10G11R11_UFLOAT_PACK32;
     case DataFormat::RGB9E5Float:
-        return VK_FORMAT_E5B9G9R9_UFLOAT_PACK32; // requires swizzling for CPU access
+        return VK_FORMAT_E5B9G9R9_UFLOAT_PACK32;
 
-    /* --- Depth-stencil formats --- */
     case DataFormat::D16UNorm:
         return VK_FORMAT_D16_UNORM;
     case DataFormat::D32Float:
@@ -163,7 +156,6 @@ VkFormat mapVkFormat(DataFormat format) {
     case DataFormat::D32FloatS8X24UInt:
         return VK_FORMAT_D32_SFLOAT_S8_UINT;
 
-    /* --- Block compression (BC) formats --- */
     case DataFormat::BC1UNorm:
         return VK_FORMAT_BC1_RGBA_UNORM_BLOCK;
     case DataFormat::BC1UNorm_sRGB:

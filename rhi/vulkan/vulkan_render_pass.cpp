@@ -1,13 +1,10 @@
 #include "vulkan/vulkan_render_pass.h"
 
-#include <stdexcept>
-
-
 namespace tigine { namespace rhi {
 namespace {
 VkAttachmentLoadOp mapAttachmentLoadOption(AttachmentLoadOp loadOp) {
     switch (loadOp) {
-    case AttachmentLoadOp::Undefined:
+    case AttachmentLoadOp::DontCare:
         return VK_ATTACHMENT_LOAD_OP_DONT_CARE;
     case AttachmentLoadOp::Load:
         return VK_ATTACHMENT_LOAD_OP_LOAD;
@@ -19,7 +16,7 @@ VkAttachmentLoadOp mapAttachmentLoadOption(AttachmentLoadOp loadOp) {
 }
 VkAttachmentStoreOp mapAttachmentStoreOption(AttachmentStoreOp storeOp) {
     switch (storeOp) {
-    case AttachmentStoreOp::Undefined:
+    case AttachmentStoreOp::DontCare:
         return VK_ATTACHMENT_STORE_OP_DONT_CARE;
     case AttachmentStoreOp::Store:
         return VK_ATTACHMENT_STORE_OP_STORE;
@@ -30,7 +27,9 @@ VkAttachmentStoreOp mapAttachmentStoreOption(AttachmentStoreOp storeOp) {
 
 VkFormat GetDepthStencilFormat(const DataFormat depthFormat, const DataFormat &stencilFormat) {
     if (depthFormat != DataFormat::Undefined && stencilFormat != DataFormat::Undefined) {
-        if (depthFormat != stencilFormat) throw std::invalid_argument("format mismatch between depth and stencil render pass attachments");
+        if (depthFormat != stencilFormat) {
+            RHI_VULKAN_THROW("format mismatch between depth and stencil render pass attachments");
+        }
         return mapVkFormat(depthFormat);
     }
 
@@ -152,7 +151,7 @@ VulkanRenderPass::VulkanRenderPass(VkDevice *vk_device, const RenderPassDesc &de
     renderPassInfo.pDependencies   = &dependency;
 
     if (vkCreateRenderPass(*vk_device_, &renderPassInfo, nullptr, &vk_render_pass_) != VK_SUCCESS) {
-        throw std::runtime_error("failed to create render pass!");
+        RHI_VULKAN_THROW("failed to create render pass!");
     }
 }
 

@@ -1,8 +1,5 @@
 #include "vulkan/vulkan_texture.h"
 
-#include <stdexcept>
-
-
 namespace tigine { namespace rhi { 
 namespace {
 } // namespace
@@ -13,14 +10,14 @@ VulkanTexture::VulkanTexture(VkDevice *vk_device, const TextureDesc &desc)
     imageview_info.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
     // @TODO
     if (vkCreateImageView(*vk_device_, &imageview_info, nullptr, &vk_imageview_) != VK_SUCCESS) {
-        throw std::runtime_error("failed to create texture!");
+        RHI_VULKAN_THROW("failed to create texture!");
     }
 
     VkSamplerCreateInfo sampler_info {};
     sampler_info.sType = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
     // @TODO
     if (vkCreateSampler(*vk_device_, &sampler_info, nullptr, &vk_sampler_) != VK_SUCCESS) {
-        throw std::runtime_error("failed to create texture!");
+        RHI_VULKAN_THROW("failed to create texture!");
     }
 }
 

@@ -5,15 +5,15 @@
 #include "interface/i_resource.h"
 
 namespace tigine { namespace rhi {
-enum BufferKind {
-    BK_Vertices = 1 << 0,
-    BK_Indices  = 1 << 1,
+enum class BufferKind {
+    Vertices,
+    Indices,
 };
 
 struct BufferDesc {
-    TUInt  kinds = 0;
-    TULong data_size  = 0;
-    void  *data  = nullptr;
+    BufferKind kind;
+    TULong     data_size  = 0;
+    void      *data  = nullptr;
 };
 
 class IBuffer : public IResource {

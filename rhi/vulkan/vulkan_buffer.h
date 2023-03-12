@@ -5,7 +5,6 @@
 
 #include "vulkan/vulkan_common.h"
 
-
 namespace tigine { namespace rhi {
 class VulkanBuffer : public IBuffer {
 public:
@@ -16,13 +15,13 @@ public:
     VkBuffer    *getVkBuffer() { return &vk_buffer_; }
 
 private:
-    TUInt data_size_;
-
     VkPhysicalDevice *vk_physical_divece_;
     VkDevice         *vk_device_;
 
     VkBuffer       vk_buffer_;
     VkDeviceMemory vk_device_memory_;
+
+    TUInt          data_size_;
 };
 }} // namespace tigine::rhi
 

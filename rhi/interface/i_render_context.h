@@ -1,8 +1,6 @@
 #ifndef TIGINE_RHI_INTERFACE_I_RENDER_CONTEXT_H_
 #define TIGINE_RHI_INTERFACE_I_RENDER_CONTEXT_H_
 
-#include <string>
-
 #include "interface/i_common.h"
 #include "interface/i_render_pass.h"
 #include "interface/i_render_target.h"

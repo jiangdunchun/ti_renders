@@ -18,7 +18,7 @@ namespace tigine { namespace rhi {
 class IRenderSystem : public NonCopyable {
 public:
     virtual IRenderContext  *createRenderContext(const RenderContextDesc &desc)   = 0;
-    virtual ICommandQueue   *getCommandQueue()                                          = 0;
+    virtual ICommandQueue   *getCommandQueue()                                    = 0;
     virtual ICommandBuffer  *createCommandBuffer(const CommandBufferDesc &desc)   = 0;
     virtual IBuffer         *createBuffer(const BufferDesc &desc)                 = 0;
     virtual IBufferArray    *createBufferArray(const BufferArrayDesc &desc)       = 0;

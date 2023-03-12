@@ -1,6 +1,5 @@
 #include "vulkan/vulkan_render_context.h"
 
-#include <stdexcept>
 #include <vector>
 #include <set>
 #include <string>
@@ -21,7 +20,7 @@ void createWindow(Extent2D resolution, GLFWwindow *&o_window) {
 
     o_window = glfwCreateWindow(resolution.width, resolution.height, "", NULL, NULL);
     if (!o_window) {
-        throw std::runtime_error("can't create vulkan window");
+        RHI_VULKAN_THROW("can't create vulkan window");
     }
 }
 
@@ -89,7 +88,7 @@ void createDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT &createIn
 
 void createInstance(VkInstance &o_instance) {
     if (enable_validation_layers && !checkValidationLayerSupport()) {
-        throw std::runtime_error("validation layers requested, but not available!");
+        RHI_VULKAN_THROW("validation layers requested, but not available!");
     }
 
     VkApplicationInfo app_info {};
@@ -123,7 +122,7 @@ void createInstance(VkInstance &o_instance) {
     }
 
     if (vkCreateInstance(&create_info, nullptr, &o_instance) != VK_SUCCESS) {
-        throw std::runtime_error("failed to create instance!");
+        RHI_VULKAN_THROW("failed to create instance!");
     }
 }
 
@@ -146,14 +145,14 @@ void setupDebugMessenger(VkInstance &instance, VkDebugUtilsMessengerEXT &debug_m
     VkDebugUtilsMessengerCreateInfoEXT create_info;
     createDebugMessengerCreateInfo(create_info);
     if (createDebugUtilsMessengerEXT(instance, &create_info, nullptr, &debug_messenger) != VK_SUCCESS) {
-        throw std::runtime_error("failed to set up debug messenger!");
+        RHI_VULKAN_THROW("failed to set up debug messenger!");
     }
 }
 
 
 void createSurface(VkInstance &instance, GLFWwindow *&window, VkSurfaceKHR &surface) {
     if (glfwCreateWindowSurface(instance, window, nullptr, &surface) != VK_SUCCESS) {
-        throw std::runtime_error("failed to create window surface!");
+        RHI_VULKAN_THROW("failed to create window surface!");
     }
 }
 
@@ -264,7 +263,7 @@ void pickPhysicalDevice(VkInstance &instance, VkSurfaceKHR &surface, VkPhysicalD
     vkEnumeratePhysicalDevices(instance, &device_count, nullptr);
 
     if (device_count == 0) {
-        throw std::runtime_error("failed to find GPUs with Vulkan support!");
+        RHI_VULKAN_THROW("failed to find GPUs with Vulkan support!");
     }
 
     std::vector<VkPhysicalDevice> devices(device_count);
@@ -278,7 +277,7 @@ void pickPhysicalDevice(VkInstance &instance, VkSurfaceKHR &surface, VkPhysicalD
     }
 
     if (physical_device == VK_NULL_HANDLE) {
-        throw std::runtime_error("failed to find a suitable GPU!");
+        RHI_VULKAN_THROW("failed to find a suitable GPU!");
     }
 }
 
@@ -322,7 +321,7 @@ void createLogicalDevice(VkPhysicalDevice &physical_device,
     }
 
     if (vkCreateDevice(physical_device, &device_create_info, nullptr, &device) != VK_SUCCESS) {
-        throw std::runtime_error("failed to create logical device!");
+        RHI_VULKAN_THROW("failed to create logical device!");
     }
 
     vkGetDeviceQueue(device, indices.graphics_family, 0, &graphics_queue);
@@ -409,7 +408,7 @@ void createSwapChain(VkPhysicalDevice     &i_physical_device,
     swapchain_info.clipped        = VK_TRUE;
 
     if (vkCreateSwapchainKHR(i_device, &swapchain_info, nullptr, &o_swapchain) != VK_SUCCESS) {
-        throw std::runtime_error("failed to create swap chain!");
+        RHI_VULKAN_THROW("failed to create swap chain!");
     }
 
     o_swapchain_image_format = surface_format.format;
@@ -442,7 +441,7 @@ void createSwapchainImageViews(VkDevice                 &i_device,
         image_view_info.subresourceRange.layerCount     = 1;
 
         if (vkCreateImageView(i_device, &image_view_info, nullptr, &o_swapchain_image_views[i]) != VK_SUCCESS) {
-            throw std::runtime_error("failed to create image views!");
+            RHI_VULKAN_THROW("failed to create image views!");
         }
     }
 }
@@ -487,7 +486,7 @@ void createRenderPass(VkDevice     &i_device,
     render_pass_info.pDependencies   = &dependency;
 
     if (vkCreateRenderPass(i_device, &render_pass_info, nullptr, &o_render_pass) != VK_SUCCESS) {
-        throw std::runtime_error("failed to create render pass!");
+        RHI_VULKAN_THROW("failed to create render pass!");
     }
 }
 
@@ -510,7 +509,7 @@ void createSwapchainFrameBuffers(VkDevice                   &i_device,
         framebufferInfo.layers          = 1;
 
         if (vkCreateFramebuffer(i_device, &framebufferInfo, nullptr, &o_swapchain_frame_buffers[i]) != VK_SUCCESS) {
-            throw std::runtime_error("failed to create frame buffer!");
+            RHI_VULKAN_THROW("failed to create frame buffer!");
         }
     }
 }
@@ -522,7 +521,7 @@ void createSyncObjects(VkDevice &device, VkSemaphore &image_available_semaphores
     semaphore_info.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
     if (vkCreateSemaphore(device, &semaphore_info, nullptr, &image_available_semaphores) != VK_SUCCESS
         || vkCreateSemaphore(device, &semaphore_info, nullptr, &render_finished_semaphores) != VK_SUCCESS) {
-        throw std::runtime_error("failed to create synchronization objects for a frame!");
+        RHI_VULKAN_THROW("failed to create synchronization objects for a frame!");
     }
 }
 } // namespace
@@ -600,7 +599,7 @@ void VulkanRenderContext::present() {
     submit_info.signalSemaphoreCount = 1;
     submit_info.pSignalSemaphores    = signal_semaphores;
     if (vkQueueSubmit(vk_graphics_queue_, 1, &submit_info, VK_NULL_HANDLE) != VK_SUCCESS) {
-        throw std::runtime_error("failed to submit semaphore to Vulkan graphics queue!");
+        RHI_VULKAN_THROW("failed to submit semaphore to Vulkan graphics queue!");
     }
 
     VkSwapchainKHR swap_chains[] = {vk_swapchain_};
@@ -615,7 +614,7 @@ void VulkanRenderContext::present() {
     present_info.pImageIndices      = &present_image_index_;
     present_info.pResults           = nullptr;
     if (vkQueuePresentKHR(vk_present_queue_, &present_info) != VK_SUCCESS) {
-        throw std::runtime_error("failed to present Vulkan graphics queue!");
+        RHI_VULKAN_THROW("failed to present Vulkan graphics queue!");
     }
 
     acquireNextPresentImage();

@@ -1,26 +1,26 @@
 #ifndef TIGINE_RHI_INTERFACE_I_RENDER_PASS_H_
 #define TIGINE_RHI_INTERFACE_I_RENDER_PASS_H_
 
-#include "interface/i_common.h"
-
 #include <vector>
+
+#include "interface/i_common.h"
 
 namespace tigine { namespace rhi {
 enum class AttachmentLoadOp {
-    Undefined,
+    DontCare,
     Load,
     Clear
 };
 
-enum class AttachmentStoreOp {
-    Undefined,
+enum class AttachmentStoreOp { 
+    DontCare,
     Store
 };
 
 struct AttachmentFormat {
-    DataFormat        format = DataFormat::Undefined;
-    AttachmentLoadOp  load   = AttachmentLoadOp::Undefined;
-    AttachmentStoreOp store  = AttachmentStoreOp::Undefined;
+    DataFormat        format;
+    AttachmentLoadOp  load   = AttachmentLoadOp::DontCare;
+    AttachmentStoreOp store  = AttachmentStoreOp::DontCare;
 };
 
 struct RenderPassDesc {

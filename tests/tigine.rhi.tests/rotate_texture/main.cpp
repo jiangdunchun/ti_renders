@@ -17,62 +17,66 @@ int main() {
     window->setTitle("rotate texture");
     window->show();
 
-    float vertices[] = {0, -0.5f, 0, 0, 0, 1, 0.5f, 0.5f, 0, 1, 0, 0, -0.5f, 0.5f, 0, 0, 1, 0};
+    float vertices[] = {0.5, -0.5f, 0, 1.0, 0.5, 0.5f, 1.0, 1.0, -0.5, 0.5f, 1.0, 0.0, -0.5, -0.5f, 0, 0};
+    int indices[] = {0,1,2,0,2,3};
 
-    BufferDesc buffer_desc;
-    buffer_desc.kinds     = BK_Vertices;
-    buffer_desc.data_size = sizeof(vertices);
-    buffer_desc.data      = vertices;
+    BufferDesc vertices_buffer_desc;
+    vertices_buffer_desc.kinds     = BK_Vertices;
+    vertices_buffer_desc.data_size = sizeof(vertices);
+    vertices_buffer_desc.data      = vertices;
+    IBuffer *vertices_buffer = render->createBuffer(vertices_buffer_desc);
 
-    IBuffer *vertices_buffer = render->createBuffer(buffer_desc);
+    BufferDesc indices_buffer_desc;
+    indices_buffer_desc.kinds     = BK_Indices;
+    indices_buffer_desc.data_size = sizeof(indices);
+    indices_buffer_desc.data      = indices;
+    IBuffer *indices_buffer = render->createBuffer(indices_buffer_desc);
 
     std::vector<BindingInfo> bindings_info(1);
     bindings_info[0].binding = 0;
-    bindings_info[0].stride  = sizeof(vertices[0]) * 6;
+    bindings_info[0].stride  = sizeof(vertices[0]) * 4;
 
     std::vector<AttributeInfo> attributes_info(2);
     attributes_info[0].binding  = 0;
-    attributes_info[0].format   = DataFormat::RGB32Float;
+    attributes_info[0].format   = DataFormat::RG32Float;
     attributes_info[0].location = 0;
     attributes_info[0].offset   = 0;
     attributes_info[1].binding  = 0;
-    attributes_info[1].format   = DataFormat::RGB32Float;
+    attributes_info[1].format   = DataFormat::RG32Float;
     attributes_info[1].location = 1;
-    attributes_info[1].offset   = sizeof(vertices[0]) * 3;
+    attributes_info[1].offset   = sizeof(vertices[0]) * 2;
 
     BufferArrayDesc array_desc;
-    array_desc.vertices_buffer = vertices_buffer;
+    array_desc.vertices_buffer   = vertices_buffer;
+    array_desc.indices_buffer    = indices_buffer;
     array_desc.bindings        = bindings_info;
     array_desc.attributes      = attributes_info;
-
     IBufferArray *vertices_array = render->createBufferArray(array_desc);
 
     ShaderDesc vert_shader_desc;
     vert_shader_desc.kind      = ShaderKind::Vertex;
-    vert_shader_desc.code_size = hello_triangle_vert.size();
-    vert_shader_desc.code      = hello_triangle_vert.data();
-
+    vert_shader_desc.code_size = rotate_texture_vert.size();
+    vert_shader_desc.code      = rotate_texture_vert.data();
     IShader *vert_shader = render->createShader(vert_shader_desc);
     if (vert_shader->hasError()) std::cout << vert_shader->getReport() << std::endl;
 
     ShaderDesc frag_shader_desc;
     frag_shader_desc.kind      = ShaderKind::Fragment;
-    frag_shader_desc.code_size = hello_triangle_frag.size();
-    frag_shader_desc.code      = hello_triangle_frag.data();
-
+    frag_shader_desc.code_size = rotate_texture_frag.size();
+    frag_shader_desc.code      = rotate_texture_frag.data();
     IShader *frag_shader = render->createShader(frag_shader_desc);
     if (frag_shader->hasError()) std::cout << frag_shader->getReport() << std::endl;
 
     ShaderProgramDesc shader_prog_desc;
     shader_prog_desc.vertex_shader   = vert_shader;
     shader_prog_desc.fragment_shader = frag_shader;
-
     IShaderProgram *shader_prog = render->createShaderProgram(shader_prog_desc);
+    if (shader_prog->hasError()) std::cout << shader_prog->getReport() << std::endl;
 
+
+    
     ResourceHeapDesc resource_heap_desc;
-    resource_heap_desc.uniforms_count = 0;
-    resource_heap_desc.uniforms       = nullptr;
-
+    resource_heap_desc.uniforms.resize(2);
     IResourceHeap *resource_heap = render->CreateResourceHeap(resource_heap_desc);
 
     PipelineStateDesc pipeline_desc;

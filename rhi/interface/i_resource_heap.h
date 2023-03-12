@@ -1,8 +1,9 @@
 #ifndef TIGINE_RHI_INTERFACE_I_RESOURCE_HEAP_H_
 #define TIGINE_RHI_INTERFACE_I_RESOURCE_HEAP_H_
 
-#include "interface/i_common.h"
+#include <vector>
 
+#include "interface/i_common.h"
 #include "interface/i_resource.h"
 #include "interface/i_texture.h"
 #include "interface/i_shader.h"
@@ -15,8 +16,7 @@ struct UniformInfo {
 };
 
 struct ResourceHeapDesc {
-    TUInt        uniforms_count;
-    UniformInfo *uniforms;
+    std::vector<UniformInfo> uniforms;
 };
 
 class IResourceHeap : public NonCopyable {};

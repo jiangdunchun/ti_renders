@@ -7,14 +7,13 @@
 
 namespace tigine { namespace rhi {
 enum class ShaderKind {
-    Undefined,
     Vertex,
     Fragment,
     Compute,
 };
 
 struct ShaderDesc {
-    ShaderKind   kind      = ShaderKind::Undefined;
+    ShaderKind   kind;
     TUInt        code_size = 0;
     const TChar *code      = nullptr;
 };

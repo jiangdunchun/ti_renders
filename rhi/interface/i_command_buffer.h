@@ -15,15 +15,15 @@ struct CommandBufferDesc {
 
 class ICommandBuffer : public NonCopyable {
 public:
-    virtual void begin()                                             = 0;
-    virtual void end()                                               = 0;
-    virtual void setViewport(const Viewport &viewport)               = 0;
-    virtual void setPipeState(IPipelineState *pipe_state)            = 0;
-    virtual void setVertexBufferArray(IBufferArray *buffer_array)    = 0;
+    virtual void begin()                                                                 = 0;
+    virtual void end()                                                                   = 0;
+    virtual void setViewport(const Viewport &viewport)                                   = 0;
+    virtual void setPipeState(IPipelineState *pipe_state)                                = 0;
+    virtual void setVertexBufferArray(IBufferArray *buffer_array)                        = 0;
     virtual void beginRenderPass(IRenderTarget *render_target, IRenderPass *render_pass) = 0;
-    virtual void endRenderPass()                                     = 0;
-    virtual void drawArray(TULong num_vertices, TULong first_vertex) = 0;
-    virtual void clear(TChar clear_flags)                            = 0;
+    virtual void endRenderPass()                                                         = 0;
+    virtual void drawArray(TULong num_vertices, TULong first_vertex)                     = 0;
+    virtual void clear(TChar clear_flags)                                                = 0;
 };
 }} // namespace tigine::rhi
 

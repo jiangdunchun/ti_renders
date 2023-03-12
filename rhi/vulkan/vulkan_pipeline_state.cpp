@@ -1,12 +1,9 @@
 #include "vulkan/vulkan_pipeline_state.h"
 
-#include <stdexcept>
-
 #include "vulkan/vulkan_shader_program.h"
 #include "vulkan/vulkan_buffer_array.h"
 #include "vulkan/vulkan_render_pass.h"
 #include "vulkan/vulkan_resource_heap.h"
-
 
 namespace tigine { namespace rhi {
 VulkanPipelineState::VulkanPipelineState(VkDevice *vk_device, const PipelineStateDesc &desc) : vk_device_(vk_device) {
@@ -85,7 +82,7 @@ VulkanPipelineState::VulkanPipelineState(VkDevice *vk_device, const PipelineStat
     pipeline_info.subpass             = 0;
     pipeline_info.basePipelineHandle  = VK_NULL_HANDLE;
     if (vkCreateGraphicsPipelines(*vk_device_, VK_NULL_HANDLE, 1, &pipeline_info, nullptr, &vk_pipeline_) != VK_SUCCESS) {
-        throw std::runtime_error("failed to create graphics pipeline!");
+        RHI_VULKAN_THROW("failed to create graphics pipeline!");
     }
 }
 

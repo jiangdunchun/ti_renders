@@ -8,7 +8,6 @@
 
 #include "vulkan/vulkan_common.h"
 
-
 namespace tigine { namespace rhi {
 class VulkanShaderProgram : public IShaderProgram {
 public:

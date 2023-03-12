@@ -3,8 +3,9 @@
 
 #include "interface/i_shader.h"
 
-#include "vulkan/vulkan_common.h"
+#include <string>
 
+#include "vulkan/vulkan_common.h"
 
 namespace tigine { namespace rhi {
 class VulkanShader : public IShader {

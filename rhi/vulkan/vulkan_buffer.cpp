@@ -1,16 +1,16 @@
 #include "vulkan/vulkan_buffer.h"
 
-#include <string>
-#include <stdexcept>
-
-
 namespace tigine { namespace rhi {
 namespace {
-VkBufferUsageFlags mapBufferKinds(std::uint32_t kinds) {
-    VkBufferUsageFlags type = 0;
-    if ((kinds & BK_Vertices) > 0) type |= VK_BUFFER_USAGE_VERTEX_BUFFER_BIT;
-    if ((kinds & BK_Indices) > 0) type |= VK_BUFFER_USAGE_INDEX_BUFFER_BIT;
-    return type;
+VkBufferUsageFlags mapBufferKind(BufferKind kind) {
+    switch (kind) {
+    case BufferKind::Vertices:
+        return VK_BUFFER_USAGE_VERTEX_BUFFER_BIT;
+    case BufferKind::Indices:
+        return VK_BUFFER_USAGE_INDEX_BUFFER_BIT;
+    default:
+        RHI_VULKAN_THROW("failed to map BufferKind!");
+    }
 }
 
 uint32_t findMemoryType(VkPhysicalDevice *physical_divece, uint32_t type_filter, VkMemoryPropertyFlags properties) {
@@ -23,7 +23,7 @@ uint32_t findMemoryType(VkPhysicalDevice *physical_divece, uint32_t type_filter,
         }
     }
 
-    throw std::runtime_error("failed to find suitable memory type!");
+    RHI_VULKAN_THROW("failed to find suitable memory type!");
 }
 } // namespace
 
@@ -32,7 +32,7 @@ VulkanBuffer::VulkanBuffer(VkPhysicalDevice *vk_physical_device, VkDevice *vk_de
     VkBufferCreateInfo buffer_create_info {};
     buffer_create_info.sType                 = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
     buffer_create_info.pNext                 = NULL;
-    buffer_create_info.usage                 = mapBufferKinds(desc.kinds);
+    buffer_create_info.usage                 = mapBufferKind(desc.kind);
     buffer_create_info.size                  = desc.data_size;
     buffer_create_info.queueFamilyIndexCount = 0;
     buffer_create_info.pQueueFamilyIndices   = NULL;

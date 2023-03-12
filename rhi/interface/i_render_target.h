@@ -4,11 +4,10 @@
 #include <vector>
 
 #include "interface/i_common.h"
+#include "interface/i_render_pass.h"
+#include "interface/i_texture.h"
 
 namespace tigine { namespace rhi {
-class IRenderPass;
-class ITexture;
-
 enum class AttachmentKind {
     Color,
     Depth,

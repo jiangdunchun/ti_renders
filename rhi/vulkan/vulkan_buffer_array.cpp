@@ -2,7 +2,6 @@
 
 #include "vulkan/vulkan_buffer.h"
 
-
 namespace tigine { namespace rhi {
 VulkanBufferArray::VulkanBufferArray(const BufferArrayDesc &desc) {
     vertices_buffer_ = dynamic_cast<VulkanBuffer *>(desc.vertices_buffer);

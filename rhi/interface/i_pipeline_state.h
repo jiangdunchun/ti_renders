@@ -8,8 +8,6 @@
 #include "interface/i_buffer_array.h"
 
 namespace tigine { namespace rhi {
-
-
 struct PipelineStateDesc {
     IShaderProgram  *shader_program;
     IResourceHeap   *resource_heap;

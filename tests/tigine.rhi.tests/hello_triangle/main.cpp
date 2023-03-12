@@ -20,7 +20,7 @@ int main() {
     float vertices[] = {0, -0.5f, 0, 0, 0, 1, 0.5f, 0.5f, 0, 1, 0, 0, -0.5f, 0.5f, 0, 0, 1, 0};
 
     BufferDesc buffer_desc;
-    buffer_desc.kinds     = BK_Vertices;
+    buffer_desc.kind     = BufferKind::Vertices;
     buffer_desc.data_size = sizeof(vertices);
     buffer_desc.data      = vertices;
 
@@ -70,9 +70,6 @@ int main() {
     IShaderProgram *shader_prog = render->createShaderProgram(shader_prog_desc);
 
     ResourceHeapDesc resource_heap_desc;
-    resource_heap_desc.uniforms_count = 0;
-    resource_heap_desc.uniforms       = nullptr;
-
     IResourceHeap *resource_heap = render->CreateResourceHeap(resource_heap_desc);
 
     PipelineStateDesc pipeline_desc;

@@ -1,11 +1,9 @@
 #include "vulkan/vulkan_resource_heap.h"
 
 #include <vector>
-#include <stdexcept>
 
 #include "Vulkan/vulkan_buffer.h"
 #include "vulkan/vulkan_texture.h"
-
 
 namespace tigine { namespace rhi {
 namespace {
@@ -43,9 +41,9 @@ VkShaderStageFlags mapShaderStageFlags(ShaderKind kind) {
 } // namespace
 
 VulkanResourceHeap::VulkanResourceHeap(VkDevice *vk_device, const ResourceHeapDesc &desc) : vk_device_(vk_device) {
-    std::vector<VkDescriptorSetLayoutBinding> bindings(desc.uniforms_count);
-    for (int i = 0; i < desc.uniforms_count; ++i) {
-        UniformInfo &uniform = *(desc.uniforms + i);
+    std::vector<VkDescriptorSetLayoutBinding> bindings(desc.uniforms.size());
+    for (int i = 0; i < desc.uniforms.size(); ++i) {
+        const UniformInfo &uniform = desc.uniforms[i];
 
         VkDescriptorSetLayoutBinding &binding = bindings[i];
 
@@ -61,13 +59,13 @@ VulkanResourceHeap::VulkanResourceHeap(VkDevice *vk_device, const ResourceHeapDe
     layout_info.bindingCount = static_cast<uint32_t>(bindings.size());
     layout_info.pBindings    = bindings.data();
     if (vkCreateDescriptorSetLayout(*vk_device_, &layout_info, nullptr, &vk_descriptor_set_layout_) != VK_SUCCESS) {
-        throw std::runtime_error("failed to create descriptor set layout!");
+        RHI_VULKAN_THROW("failed to create descriptor set layout!");
     }
 
 
-    std::vector<VkDescriptorPoolSize> pool_sizes(desc.uniforms_count);
-    for (int i = 0; i < desc.uniforms_count; ++i) {
-        UniformInfo &uniform = *(desc.uniforms + i);
+    std::vector<VkDescriptorPoolSize> pool_sizes(desc.uniforms.size());
+    for (int i = 0; i < desc.uniforms.size(); ++i) {
+        const UniformInfo &uniform = desc.uniforms[i];
 
         VkDescriptorPoolSize &pool_size = pool_sizes[i];
 
@@ -81,7 +79,7 @@ VulkanResourceHeap::VulkanResourceHeap(VkDevice *vk_device, const ResourceHeapDe
     pool_info.pPoolSizes    = pool_sizes.data();
     pool_info.maxSets       = 1;
     if (vkCreateDescriptorPool(*vk_device_, &pool_info, nullptr, &vk_descriptor_pool_) != VK_SUCCESS) {
-        throw std::runtime_error("failed to create descriptor pool!");
+        RHI_VULKAN_THROW("failed to create descriptor pool!");
     }
 
 
@@ -91,13 +89,13 @@ VulkanResourceHeap::VulkanResourceHeap(VkDevice *vk_device, const ResourceHeapDe
     alloc_info.descriptorSetCount = 1;
     alloc_info.pSetLayouts        = &vk_descriptor_set_layout_;
     if (vkAllocateDescriptorSets(*vk_device_, &alloc_info, &vk_descriptor_set_) != VK_SUCCESS) {
-        throw std::runtime_error("failed to allocate descriptor sets!");
+        RHI_VULKAN_THROW("failed to allocate descriptor sets!");
     }
 
 
-    std::vector<VkWriteDescriptorSet> writes(desc.uniforms_count);
-    for (int i = 0; i < desc.uniforms_count; ++i) {
-        UniformInfo &uniform = *(desc.uniforms + i);
+    std::vector<VkWriteDescriptorSet> writes(desc.uniforms.size());
+    for (int i = 0; i < desc.uniforms.size(); ++i) {
+        const UniformInfo &uniform = desc.uniforms[i];
 
         VkWriteDescriptorSet &write = writes[i];
 
@@ -136,7 +134,7 @@ VulkanResourceHeap::VulkanResourceHeap(VkDevice *vk_device, const ResourceHeapDe
     pipeline_layout_info.setLayoutCount = 1;
     pipeline_layout_info.pSetLayouts    = &vk_descriptor_set_layout_;
     if (vkCreatePipelineLayout(*vk_device_, &pipeline_layout_info, nullptr, &vk_pipeline_layout_) != VK_SUCCESS) {
-        throw std::runtime_error("failed to create pipeline layout!");
+        RHI_VULKAN_THROW("failed to create pipeline layout!");
     }
 }
 

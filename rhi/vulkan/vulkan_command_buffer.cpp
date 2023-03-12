@@ -1,13 +1,10 @@
 #include "vulkan/vulkan_command_buffer.h"
 
-#include <stdexcept>
-
-#include "vulkan_buffer.h"
-#include "vulkan_buffer_array.h"
-#include "vulkan_pipeline_state.h"
-#include "vulkan_render_context.h"
-#include "vulkan_render_pass.h"
-
+#include "vulkan/vulkan_buffer.h"
+#include "vulkan/vulkan_buffer_array.h"
+#include "vulkan/vulkan_pipeline_state.h"
+#include "vulkan/vulkan_render_context.h"
+#include "vulkan/vulkan_render_pass.h"
 
 namespace tigine { namespace rhi {
 VulkanCommandBuffer::VulkanCommandBuffer(VkDevice                      *vk_device,
@@ -21,7 +18,7 @@ VulkanCommandBuffer::VulkanCommandBuffer(VkDevice                      *vk_devic
     pool_info.flags             = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
     pool_info.queueFamilyIndex  = vk_queue_family_index;
     if (vkCreateCommandPool(*vk_device_, &pool_info, nullptr, &vk_command_pool_) != VK_SUCCESS) {
-        throw std::runtime_error("failed to create command pool!");
+        RHI_VULKAN_THROW("failed to create command pool!");
     }
 
     vk_command_buffers_.resize(buffers_count_);
@@ -31,7 +28,7 @@ VulkanCommandBuffer::VulkanCommandBuffer(VkDevice                      *vk_devic
     alloc_info.level              = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
     alloc_info.commandBufferCount = buffers_count_;
     if (vkAllocateCommandBuffers(*vk_device_, &alloc_info, vk_command_buffers_.data()) != VK_SUCCESS) {
-        throw std::runtime_error("failed to allocate command buffer!");
+        RHI_VULKAN_THROW("failed to allocate command buffer!");
     }
 
     vk_fences_.resize(buffers_count_);
@@ -40,7 +37,7 @@ VulkanCommandBuffer::VulkanCommandBuffer(VkDevice                      *vk_devic
     fence_info.flags = 0;
     for (size_t i = 0; i < buffers_count_; i++) {
         if (vkCreateFence(*vk_device_, &fence_info, nullptr, &(vk_fences_[i])) != VK_SUCCESS) {
-            throw std::runtime_error("failed to create fence of command buffer!");
+            RHI_VULKAN_THROW("failed to create fence of command buffer!");
         }
         vkQueueSubmit(*vk_graphics_queue, 0, nullptr, vk_fences_[i]);
     }
@@ -68,7 +65,7 @@ void VulkanCommandBuffer::begin() {
     begin_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
 
     if (vkBeginCommandBuffer(*vk_now_command_buffer_, &begin_info) != VK_SUCCESS) {
-        throw std::runtime_error("failed to begin recording command buffer!");
+        RHI_VULKAN_THROW("failed to begin recording command buffer!");
     }
 
     //vk_render_pass_info_ = {};
@@ -77,7 +74,7 @@ void VulkanCommandBuffer::begin() {
 
 void VulkanCommandBuffer::end() {
     if (vkEndCommandBuffer(*vk_now_command_buffer_) != VK_SUCCESS) {
-        throw std::runtime_error("failed to record command buffer!");
+        RHI_VULKAN_THROW("failed to record command buffer!");
     }
 }
 
