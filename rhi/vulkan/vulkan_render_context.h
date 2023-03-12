@@ -35,7 +35,6 @@ private:
 
 private:
     GLFWwindow       *window_;
-
     VulkanSurface    *surface_;
     VulkanRenderPass *render_pass_;
 

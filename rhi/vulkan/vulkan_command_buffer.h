@@ -40,7 +40,7 @@ private:
     TUInt                        buffers_next_index_ = 0;
     VkCommandBuffer             *vk_now_command_buffer_;
     VkFence                     *vk_now_fence_;
-    bool                         vk_draw_indexed_ = false;
+    bool                         draw_indexed_ = false;
 
 };
 }} // namespace tigine::rhi

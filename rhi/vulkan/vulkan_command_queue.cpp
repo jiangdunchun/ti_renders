@@ -3,9 +3,7 @@
 #include "vulkan/vulkan_command_buffer.h"
 
 namespace tigine { namespace rhi {
-VulkanCommandQueue::VulkanCommandQueue(VkDevice *vk_device, VkQueue *vk_graphics_queue) 
-    : vk_device_(vk_device), vk_graphics_queue_(vk_graphics_queue) {
-}
+VulkanCommandQueue::VulkanCommandQueue(VkQueue *vk_graphics_queue) : vk_graphics_queue_(vk_graphics_queue) {}
 
 VulkanCommandQueue::~VulkanCommandQueue() { }
 

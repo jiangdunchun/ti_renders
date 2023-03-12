@@ -8,13 +8,12 @@
 namespace tigine { namespace rhi {
 class VulkanCommandQueue : public ICommandQueue {
 public:
-    VulkanCommandQueue(VkDevice *vk_device, VkQueue *vk_graphics_queue);
+    VulkanCommandQueue(VkQueue *vk_graphics_queue);
     ~VulkanCommandQueue();
 
     void submit(ICommandBuffer *command_buffer) override;
 
 private:
-    VkDevice *vk_device_;
     VkQueue  *vk_graphics_queue_;
 };
 }} // namespace tigine::rhi

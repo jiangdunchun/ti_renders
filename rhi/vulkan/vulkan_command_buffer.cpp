@@ -105,11 +105,11 @@ void VulkanCommandBuffer::setPipeState(IPipelineState *pipe_state) {
 void VulkanCommandBuffer::setVertexBufferArray(IBufferArray *buffer_array) {
     VulkanBufferArray *vulkan_buffer_array = dynamic_cast<VulkanBufferArray *>(buffer_array);
 
-    vk_draw_indexed_ = vulkan_buffer_array->hasIndices();
+    draw_indexed_ = vulkan_buffer_array->hasIndices();
 
     VkDeviceSize offsets[] = {0};
     vkCmdBindVertexBuffers(*vk_now_command_buffer_, 0, 1, vulkan_buffer_array->getVerticesBuffer()->getVkBuffer(), offsets);
-    if (vk_draw_indexed_) {
+    if (draw_indexed_) {
         //@TODO
         vkCmdBindIndexBuffer(*vk_now_command_buffer_, *(vulkan_buffer_array->getIndicesBuffer()->getVkBuffer()), 0, VK_INDEX_TYPE_UINT16);
     }
@@ -141,7 +141,7 @@ void VulkanCommandBuffer::endRenderPass() {
 }
 
 void VulkanCommandBuffer::drawArray(TULong num_vertices, TULong first_vertex) {
-    if (vk_draw_indexed_) 
+    if (draw_indexed_) 
         vkCmdDrawIndexed(*vk_now_command_buffer_, num_vertices, 1, first_vertex, 0, 0);
     else 
         vkCmdDraw(*vk_now_command_buffer_, num_vertices, 1, first_vertex, 0);

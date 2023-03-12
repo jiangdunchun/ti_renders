@@ -17,6 +17,7 @@ public:
     VkRenderPass *getVkRenderPass() { return &vk_render_pass_; }
 
 private:
+    // only for VulkanRenderContext, the vk_render_pass_ must be created in VulkanRenderContext
     VulkanRenderPass(VkDevice *vk_device) : vk_device_(vk_device) {}
 
     VkDevice *vk_device_;

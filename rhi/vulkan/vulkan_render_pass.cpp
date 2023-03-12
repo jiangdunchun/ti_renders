@@ -10,42 +10,42 @@ VkAttachmentLoadOp mapAttachmentLoadOption(AttachmentLoadOp loadOp) {
         return VK_ATTACHMENT_LOAD_OP_LOAD;
     case AttachmentLoadOp::Clear:
         return VK_ATTACHMENT_LOAD_OP_CLEAR;
+    default:
+        RHI_VULKAN_THROW("fail to map AttachmentLoadOption!");
     }
-    // @TODO
-    return VK_ATTACHMENT_LOAD_OP_DONT_CARE;
 }
+
 VkAttachmentStoreOp mapAttachmentStoreOption(AttachmentStoreOp storeOp) {
     switch (storeOp) {
     case AttachmentStoreOp::DontCare:
         return VK_ATTACHMENT_STORE_OP_DONT_CARE;
     case AttachmentStoreOp::Store:
         return VK_ATTACHMENT_STORE_OP_STORE;
+    default:
+        RHI_VULKAN_THROW("fail to map AttachmentStoreOption!");
     }
-    // @TODO
-    return VK_ATTACHMENT_STORE_OP_DONT_CARE;
 }
 
-VkFormat GetDepthStencilFormat(const DataFormat depthFormat, const DataFormat &stencilFormat) {
+VkFormat getDepthStencilFormat(const DataFormat depthFormat, const DataFormat &stencilFormat) {
     if (depthFormat != DataFormat::Undefined && stencilFormat != DataFormat::Undefined) {
-        if (depthFormat != stencilFormat) {
-            RHI_VULKAN_THROW("format mismatch between depth and stencil render pass attachments");
+        if (depthFormat == stencilFormat) {
+            return mapVkFormat(depthFormat);
+        } else {
+            RHI_VULKAN_THROW("fail to map get DepthStencilFormat, depthFormat and stencilFormat must be same!");
         }
-        return mapVkFormat(depthFormat);
     }
 
     if (depthFormat != DataFormat::Undefined) {
-        /* Get depth-stencil format from depth attachment only */
         return mapVkFormat(depthFormat);
     }
 
     if (stencilFormat != DataFormat::Undefined) {
-        /* Get depth-stencil format from stencil attachment only */
         return mapVkFormat(stencilFormat);
     }
-    //@TODO
-    return VK_FORMAT_UNDEFINED;
+    RHI_VULKAN_THROW("fail to map get DepthStencilFormat!");
 }
-}
+} // namespace
+
 VulkanRenderPass::VulkanRenderPass(VkDevice *vk_device, const RenderPassDesc &desc) : vk_device_(vk_device) {
     std::uint32_t num_colors = static_cast<std::uint32_t>(desc.color_attachments.size());
     std::uint32_t num_all    = num_colors;
@@ -76,7 +76,7 @@ VulkanRenderPass::VulkanRenderPass(VkDevice *vk_device, const RenderPassDesc &de
         const AttachmentFormat &src_s_desc = desc.stencil_attachment;
 
         vk_desc.flags          = 0;
-        vk_desc.format         = GetDepthStencilFormat(src_d_desc.format, src_s_desc.format);
+        vk_desc.format         = getDepthStencilFormat(src_d_desc.format, src_s_desc.format);
         vk_desc.samples        = VkSampleCountFlagBits(desc.samples);
         vk_desc.loadOp         = mapAttachmentLoadOption(src_d_desc.load);
         vk_desc.storeOp        = mapAttachmentStoreOption(src_d_desc.store);

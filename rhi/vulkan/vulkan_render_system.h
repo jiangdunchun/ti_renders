@@ -32,8 +32,6 @@ private:
     uint32_t          vk_graphics_family_ = 0;
 
     VulkanCommandQueue *command_queue_ = nullptr;
-    
-
 };
 }} // namespace tigine::rhi
 

@@ -17,8 +17,7 @@ VkDescriptorType mapDescriptorType(IResource *resource) {
         return VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
         break;
     default:
-        return VK_DESCRIPTOR_TYPE_MAX_ENUM;
-        break;
+        RHI_VULKAN_THROW("fail to map DescriptorType!");
     }
 }
 
@@ -34,8 +33,7 @@ VkShaderStageFlags mapShaderStageFlags(ShaderKind kind) {
         return VK_SHADER_STAGE_COMPUTE_BIT;
         break;
     default:
-        return 0;
-        break;
+        RHI_VULKAN_THROW("fail to map ShaderStageFlags!");
     }
 }
 } // namespace

@@ -2,7 +2,7 @@
 
 namespace tigine { namespace rhi {
 VulkanRenderTarget::VulkanRenderTarget(VkDevice *vk_device, const RenderTargetDesc &desc) 
-	: resolution_(desc.resolution), samples_(desc.samples) {
+	: vk_device_(vk_device), resolution_(desc.resolution), samples_(desc.samples) {
 	for (auto &attachment : desc.attachments) {
         if (attachment.kind == AttachmentKind::Color) color_attachments_nums_++;
         if (attachment.kind == AttachmentKind::Depth || attachment.kind == AttachmentKind::DepthStencil) has_depth_attachment_ = true;
