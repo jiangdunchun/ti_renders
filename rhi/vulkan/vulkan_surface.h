@@ -8,12 +8,16 @@
 namespace tigine { namespace rhi {
 class VulkanSurface : public ISurface {
 public:
+    // only for VulkanRenderContext, the window_ must be created in VulkanRenderContext
+    VulkanSurface() {}
     VulkanSurface(GLFWwindow *window);
     ~VulkanSurface();
 
     void setTitle(const std::string &name) override;
     void show() override;
     bool processEvents() override;
+
+    GLFWwindow *&getWindow() { return window_; }
 
 private:
     GLFWwindow *window_ = nullptr;

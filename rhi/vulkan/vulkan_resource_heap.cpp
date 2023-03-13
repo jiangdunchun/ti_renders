@@ -56,9 +56,8 @@ VulkanResourceHeap::VulkanResourceHeap(VkDevice *vk_device, const ResourceHeapDe
     layout_info.sType        = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
     layout_info.bindingCount = static_cast<uint32_t>(bindings.size());
     layout_info.pBindings    = bindings.data();
-    if (vkCreateDescriptorSetLayout(*vk_device_, &layout_info, nullptr, &vk_descriptor_set_layout_) != VK_SUCCESS) {
-        RHI_VULKAN_THROW("failed to create descriptor set layout!");
-    }
+    RHI_VULKAN_THROW_IF_FAILD(vkCreateDescriptorSetLayout(*vk_device_, &layout_info, nullptr, &vk_descriptor_set_layout_),
+                              "failed to create descriptor set layout!");
 
 
     std::vector<VkDescriptorPoolSize> pool_sizes(desc.uniforms.size());
@@ -76,9 +75,8 @@ VulkanResourceHeap::VulkanResourceHeap(VkDevice *vk_device, const ResourceHeapDe
     pool_info.poolSizeCount = static_cast<uint32_t>(pool_sizes.size());
     pool_info.pPoolSizes    = pool_sizes.data();
     pool_info.maxSets       = 1;
-    if (vkCreateDescriptorPool(*vk_device_, &pool_info, nullptr, &vk_descriptor_pool_) != VK_SUCCESS) {
-        RHI_VULKAN_THROW("failed to create descriptor pool!");
-    }
+    RHI_VULKAN_THROW_IF_FAILD(vkCreateDescriptorPool(*vk_device_, &pool_info, nullptr, &vk_descriptor_pool_),
+                              "failed to create descriptor pool!");
 
 
     VkDescriptorSetAllocateInfo alloc_info {};
@@ -86,9 +84,8 @@ VulkanResourceHeap::VulkanResourceHeap(VkDevice *vk_device, const ResourceHeapDe
     alloc_info.descriptorPool     = vk_descriptor_pool_;
     alloc_info.descriptorSetCount = 1;
     alloc_info.pSetLayouts        = &vk_descriptor_set_layout_;
-    if (vkAllocateDescriptorSets(*vk_device_, &alloc_info, &vk_descriptor_set_) != VK_SUCCESS) {
-        RHI_VULKAN_THROW("failed to allocate descriptor sets!");
-    }
+    RHI_VULKAN_THROW_IF_FAILD(vkAllocateDescriptorSets(*vk_device_, &alloc_info, &vk_descriptor_set_),
+                              "failed to allocate descriptor sets!");
 
 
     std::vector<VkWriteDescriptorSet> writes(desc.uniforms.size());
@@ -131,9 +128,8 @@ VulkanResourceHeap::VulkanResourceHeap(VkDevice *vk_device, const ResourceHeapDe
     pipeline_layout_info.sType          = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
     pipeline_layout_info.setLayoutCount = 1;
     pipeline_layout_info.pSetLayouts    = &vk_descriptor_set_layout_;
-    if (vkCreatePipelineLayout(*vk_device_, &pipeline_layout_info, nullptr, &vk_pipeline_layout_) != VK_SUCCESS) {
-        RHI_VULKAN_THROW("failed to create pipeline layout!");
-    }
+    RHI_VULKAN_THROW_IF_FAILD(vkCreatePipelineLayout(*vk_device_, &pipeline_layout_info, nullptr, &vk_pipeline_layout_),
+                              "failed to create pipeline layout!");
 }
 
 VulkanResourceHeap::~VulkanResourceHeap() { 

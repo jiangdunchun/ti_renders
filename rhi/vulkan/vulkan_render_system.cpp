@@ -55,7 +55,7 @@ ICommandBuffer *VulkanRenderSystem::createCommandBuffer(const CommandBufferDesc 
 }
 
 ITexture *VulkanRenderSystem::createTexture(const TextureDesc &desc) { 
-	return new VulkanTexture(vk_device_, desc);
+	return new VulkanTexture(vk_physicl_device_, vk_device_, desc);
 }
 
 IResourceHeap  *VulkanRenderSystem::CreateResourceHeap(const ResourceHeapDesc &desc) {

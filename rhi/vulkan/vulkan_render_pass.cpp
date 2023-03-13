@@ -150,9 +150,9 @@ VulkanRenderPass::VulkanRenderPass(VkDevice *vk_device, const RenderPassDesc &de
     renderPassInfo.dependencyCount = 1;
     renderPassInfo.pDependencies   = &dependency;
 
-    if (vkCreateRenderPass(*vk_device_, &renderPassInfo, nullptr, &vk_render_pass_) != VK_SUCCESS) {
-        RHI_VULKAN_THROW("failed to create render pass!");
-    }
+    RHI_VULKAN_THROW_IF_FAILD(
+        vkCreateRenderPass(*vk_device_, &renderPassInfo, nullptr, &vk_render_pass_),
+        "failed to create render pass!");
 }
 
 VulkanRenderPass::~VulkanRenderPass() { 

@@ -8,15 +8,13 @@
 #include "vulkan/vulkan_common.h"
 
 namespace tigine { namespace rhi {
-class VulkanSurface;
-class VulkanRenderPass;
 class VulkanRenderContext : public IRenderContext {
 public:
     VulkanRenderContext(const RenderContextDesc &desc);
     ~VulkanRenderContext();
 
-    IRenderPass *getRenderPass() override;
-    ISurface    *getSurface() override;
+    IRenderPass *getRenderPass() override { return render_pass_; }
+    ISurface    *getSurface() override { return surface_; }
     void         present() override;
     Extent2D     getResolution() override { return {600, 600}; }       //@TODO
     TUInt        getSamples() override { return 0; }                   // @TODO
@@ -34,9 +32,8 @@ private:
     void acquireNextPresentImage();
 
 private:
-    GLFWwindow       *window_;
-    VulkanSurface    *surface_;
-    VulkanRenderPass *render_pass_;
+    ISurface    *surface_;
+    IRenderPass *render_pass_;
 
     VkInstance               vk_instance_;
     VkDebugUtilsMessengerEXT vk_debug_messenger_;

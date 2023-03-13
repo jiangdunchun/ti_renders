@@ -81,9 +81,9 @@ VulkanPipelineState::VulkanPipelineState(VkDevice *vk_device, const PipelineStat
     pipeline_info.renderPass          = *(render_pass->getVkRenderPass());
     pipeline_info.subpass             = 0;
     pipeline_info.basePipelineHandle  = VK_NULL_HANDLE;
-    if (vkCreateGraphicsPipelines(*vk_device_, VK_NULL_HANDLE, 1, &pipeline_info, nullptr, &vk_pipeline_) != VK_SUCCESS) {
-        RHI_VULKAN_THROW("failed to create graphics pipeline!");
-    }
+    RHI_VULKAN_THROW_IF_FAILD(
+        vkCreateGraphicsPipelines(*vk_device_, VK_NULL_HANDLE, 1, &pipeline_info, nullptr, &vk_pipeline_),
+        "failed to create graphics pipeline!");
 }
 
 VulkanPipelineState::~VulkanPipelineState() { 

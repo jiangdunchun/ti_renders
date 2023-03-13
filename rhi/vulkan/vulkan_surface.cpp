@@ -3,7 +3,9 @@
 namespace tigine { namespace rhi {
 VulkanSurface::VulkanSurface(GLFWwindow *window) : window_(window) {}
 
-VulkanSurface::~VulkanSurface() {}
+VulkanSurface::~VulkanSurface() {
+    if (window_) glfwDestroyWindow(window_);
+}
 
 void VulkanSurface::setTitle(const std::string &name) {
     glfwSetWindowTitle(window_, name.c_str());

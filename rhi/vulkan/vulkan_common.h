@@ -8,6 +8,9 @@
 
 #define RHI_VULKAN_THROW(msg) RHI_THROW("vulkan " + std::string(msg))
 
+#define RHI_VULKAN_THROW_IF_FAILD(result, msg) \
+    if (result != VK_SUCCESS) RHI_VULKAN_THROW(msg)
+
 namespace tigine { namespace rhi {
 VkFormat mapVkFormat(DataFormat format);
 }}// namespace tigine::rhi

@@ -260,9 +260,8 @@ void createInstance(
         create_info.pNext = nullptr;
     }
 
-    if (vkCreateInstance(&create_info, nullptr, &o_instance) != VK_SUCCESS) {
-        RHI_VULKAN_THROW("failed to create instance!");
-    }
+    RHI_VULKAN_THROW_IF_FAILD(vkCreateInstance(&create_info, nullptr, &o_instance),
+                              "failed to create instance!");
 }
 
 void setupDebugMessenger(
@@ -272,17 +271,15 @@ void setupDebugMessenger(
 
     VkDebugUtilsMessengerCreateInfoEXT create_info;
     createDebugMessengerCreateInfo(create_info);
-    if (createDebugUtilsMessengerEXT(instance, &create_info, nullptr, &o_debug_messenger) != VK_SUCCESS) {
-        RHI_VULKAN_THROW("failed to set up debug messenger!");
-    }
+    RHI_VULKAN_THROW_IF_FAILD(createDebugUtilsMessengerEXT(instance, &create_info, nullptr, &o_debug_messenger),
+                              "failed to set up debug messenger!");
 }
 
 void createSurface(
     VkInstance &instance, GLFWwindow *&window, 
     VkSurfaceKHR &o_surface) {
-    if (glfwCreateWindowSurface(instance, window, nullptr, &o_surface) != VK_SUCCESS) {
-        RHI_VULKAN_THROW("failed to create window surface!");
-    }
+    RHI_VULKAN_THROW_IF_FAILD(glfwCreateWindowSurface(instance, window, nullptr, &o_surface),
+                              "failed to create window surface!");
 }
 
 void pickPhysicalDevice(
@@ -345,9 +342,8 @@ void createLogicalDevice(
         device_create_info.enabledLayerCount = 0;
     }
 
-    if (vkCreateDevice(physical_device, &device_create_info, nullptr, &o_device) != VK_SUCCESS) {
-        RHI_VULKAN_THROW("failed to create logical device!");
-    }
+    RHI_VULKAN_THROW_IF_FAILD(vkCreateDevice(physical_device, &device_create_info, nullptr, &o_device),
+                              "failed to create logical device!");
 
     vkGetDeviceQueue(o_device, indices.graphics_family, 0, &o_graphics_queue);
     vkGetDeviceQueue(o_device, indices.present_family, 0, &o_present_queue);
@@ -391,9 +387,8 @@ void createSwapChain(
     swapchain_info.presentMode    = present_mode;
     swapchain_info.clipped        = VK_TRUE;
 
-    if (vkCreateSwapchainKHR(device, &swapchain_info, nullptr, &o_swapchain) != VK_SUCCESS) {
-        RHI_VULKAN_THROW("failed to create swap chain!");
-    }
+    RHI_VULKAN_THROW_IF_FAILD(vkCreateSwapchainKHR(device, &swapchain_info, nullptr, &o_swapchain),
+                              "failed to create swap chain!");
 
     o_swapchain_image_format = surface_format.format;
     o_swapchain_extent       = extent;
@@ -423,9 +418,8 @@ void createSwapchainImageViews(
         image_view_info.subresourceRange.baseArrayLayer = 0;
         image_view_info.subresourceRange.layerCount     = 1;
 
-        if (vkCreateImageView(device, &image_view_info, nullptr, &o_swapchain_image_views[i]) != VK_SUCCESS) {
-            RHI_VULKAN_THROW("failed to create image views!");
-        }
+        RHI_VULKAN_THROW_IF_FAILD(vkCreateImageView(device, &image_view_info, nullptr, &o_swapchain_image_views[i]),
+                                  "failed to create image views!");
     }
 }
 
@@ -468,9 +462,8 @@ void createRenderPass(
     render_pass_info.dependencyCount = 1;
     render_pass_info.pDependencies   = &dependency;
 
-    if (vkCreateRenderPass(device, &render_pass_info, nullptr, &o_render_pass) != VK_SUCCESS) {
-        RHI_VULKAN_THROW("failed to create render pass!");
-    }
+    RHI_VULKAN_THROW_IF_FAILD(vkCreateRenderPass(device, &render_pass_info, nullptr, &o_render_pass),
+                              "failed to create render pass!");
 }
 
 void createSwapchainFrameBuffers(
@@ -489,9 +482,8 @@ void createSwapchainFrameBuffers(
         framebufferInfo.height          = swapchain_extent.height;
         framebufferInfo.layers          = 1;
 
-        if (vkCreateFramebuffer(device, &framebufferInfo, nullptr, &o_swapchain_frame_buffers[i]) != VK_SUCCESS) {
-            RHI_VULKAN_THROW("failed to create frame buffer!");
-        }
+        RHI_VULKAN_THROW_IF_FAILD(vkCreateFramebuffer(device, &framebufferInfo, nullptr, &o_swapchain_frame_buffers[i]),
+                                  "failed to create frame buffer!");
     }
 }
 
@@ -500,10 +492,10 @@ void createSyncObjects(
      VkSemaphore &o_image_available_semaphore, VkSemaphore &o_render_finished_semaphore) {
     VkSemaphoreCreateInfo semaphore_info {};
     semaphore_info.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
-    if (vkCreateSemaphore(device, &semaphore_info, nullptr, &o_image_available_semaphore) != VK_SUCCESS
-        || vkCreateSemaphore(device, &semaphore_info, nullptr, &o_render_finished_semaphore) != VK_SUCCESS) {
-        RHI_VULKAN_THROW("failed to create synchronization objects for a frame!");
-    }
+    RHI_VULKAN_THROW_IF_FAILD(vkCreateSemaphore(device, &semaphore_info, nullptr, &o_image_available_semaphore),
+                              "failed to create synchronization objects for a frame!");
+    RHI_VULKAN_THROW_IF_FAILD(vkCreateSemaphore(device, &semaphore_info, nullptr, &o_render_finished_semaphore),
+                              "failed to create synchronization objects for a frame!");
 }
 } // namespace
 
@@ -516,10 +508,12 @@ VulkanRenderContext::VulkanRenderContext(const RenderContextDesc &desc) {
     const std::vector<const char *> validation_layers = {"VK_LAYER_KHRONOS_validation"};
     const std::vector<const char *> device_extensions = {VK_KHR_SWAPCHAIN_EXTENSION_NAME};
 
+    VulkanSurface *vulkan_surface = new VulkanSurface();
+    surface_                      = vulkan_surface;
     createWindow(
         desc.resolution,
-        window_);
-    surface_ = new VulkanSurface(window_);
+        vulkan_surface->getWindow());
+    
 
     createInstance(
         enable_validation_layers, validation_layers,
@@ -530,7 +524,7 @@ VulkanRenderContext::VulkanRenderContext(const RenderContextDesc &desc) {
         vk_debug_messenger_);
 
     createSurface(
-        vk_instance_, window_,
+        vk_instance_, vulkan_surface->getWindow(),
         vk_surface_KHR_);
 
     pickPhysicalDevice(vk_instance_, vk_surface_KHR_, device_extensions,
@@ -541,20 +535,21 @@ VulkanRenderContext::VulkanRenderContext(const RenderContextDesc &desc) {
         vk_device_, vk_graphics_queue_, vk_present_queue_, vk_graphics_family_);
     
     createSwapChain(
-        vk_physicl_device_, vk_device_, window_, vk_surface_KHR_,
+        vk_physicl_device_, vk_device_, vulkan_surface->getWindow(), vk_surface_KHR_,
         vk_swapchain_, vk_swapchain_image_format_, vk_swapchain_extent_, vk_swapchain_images_);
 
     createSwapchainImageViews(
         vk_device_, vk_swapchain_image_format_, vk_swapchain_images_, 
         vk_swapchain_image_views_);
 
-    render_pass_ = new VulkanRenderPass(&vk_device_);
+    VulkanRenderPass *vulkan_render_pass = new VulkanRenderPass(&vk_device_);
+    render_pass_                         = vulkan_render_pass;
     createRenderPass(
         vk_device_, vk_swapchain_image_format_, 
-        render_pass_->vk_render_pass_);
+        *vulkan_render_pass->getVkRenderPass());
 
     createSwapchainFrameBuffers(
-        vk_device_, render_pass_->vk_render_pass_, vk_swapchain_extent_, vk_swapchain_image_views_, 
+        vk_device_, *vulkan_render_pass->getVkRenderPass(), vk_swapchain_extent_, vk_swapchain_image_views_, 
         vk_swapchain_frame_buffers_);
 
     createSyncObjects(
@@ -566,15 +561,10 @@ VulkanRenderContext::VulkanRenderContext(const RenderContextDesc &desc) {
 }
 
 VulkanRenderContext::~VulkanRenderContext() {
-    if (window_) glfwDestroyWindow(window_);
     delete surface_;
     delete render_pass_;
     glfwTerminate();
 }
-
-ISurface *VulkanRenderContext::getSurface() {  return surface_; }
-
-IRenderPass *VulkanRenderContext::getRenderPass() { return render_pass_; }
 
 void VulkanRenderContext::present() {
     VkSemaphore          wait_semaphorse[]   = {vk_image_available_semaphore_};
@@ -591,9 +581,8 @@ void VulkanRenderContext::present() {
     submit_info.pCommandBuffers      = nullptr;
     submit_info.signalSemaphoreCount = 1;
     submit_info.pSignalSemaphores    = signal_semaphores;
-    if (vkQueueSubmit(vk_graphics_queue_, 1, &submit_info, VK_NULL_HANDLE) != VK_SUCCESS) {
-        RHI_VULKAN_THROW("failed to submit semaphore to Vulkan graphics queue!");
-    }
+    RHI_VULKAN_THROW_IF_FAILD(vkQueueSubmit(vk_graphics_queue_, 1, &submit_info, VK_NULL_HANDLE),
+                              "failed to submit semaphore to Vulkan graphics queue!");
 
     VkSwapchainKHR swap_chains[] = {vk_swapchain_};
 
@@ -606,9 +595,8 @@ void VulkanRenderContext::present() {
     present_info.pSwapchains        = swap_chains;
     present_info.pImageIndices      = &present_image_index_;
     present_info.pResults           = nullptr;
-    if (vkQueuePresentKHR(vk_present_queue_, &present_info) != VK_SUCCESS) {
-        RHI_VULKAN_THROW("failed to present Vulkan graphics queue!");
-    }
+    RHI_VULKAN_THROW_IF_FAILD(vkQueuePresentKHR(vk_present_queue_, &present_info),
+                              "failed to present Vulkan graphics queue!");
 
     acquireNextPresentImage();
 }

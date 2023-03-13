@@ -17,7 +17,7 @@ public:
     VkBuffer    *getVkBuffer() { return &vk_buffer_; }
 
 private:
-    VkPhysicalDevice *vk_physical_divece_;
+    VkPhysicalDevice *vk_physical_device_;
     VkDevice         *vk_device_;
 
     VkBuffer       vk_buffer_;

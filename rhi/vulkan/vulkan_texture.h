@@ -8,17 +8,20 @@
 namespace tigine { namespace rhi {
 class VulkanTexture : public ITexture {
 public:
-    VulkanTexture(VkDevice *vk_device, const TextureDesc &desc);
+    VulkanTexture(VkPhysicalDevice *vk_physical_device, VkDevice *vk_device, const TextureDesc &desc);
     ~VulkanTexture();
 
     VkImageView *getVKImageview() { return &vk_imageview_; }
     VkSampler   *getVKSampler() { return &vk_sampler_; }
 
 private:
-    VkDevice *vk_device_;
+    VkPhysicalDevice *vk_physical_device_;
+    VkDevice         *vk_device_;
 
-    VkImageView vk_imageview_;
-    VkSampler   vk_sampler_;
+    VkImage        vk_image_;
+    VkDeviceMemory vk_device_memory_;
+    VkImageView    vk_imageview_;
+    VkSampler      vk_sampler_;
 };
 }} // namespace tigine::rhi
 

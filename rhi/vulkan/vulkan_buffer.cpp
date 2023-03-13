@@ -2,7 +2,7 @@
 
 namespace tigine { namespace rhi {
 namespace {
-VkBufferUsageFlags mapBufferKind(BufferKind kind) {
+VkBufferUsageFlags mapVkBufferKind(BufferKind kind) {
     switch (kind) {
     case BufferKind::Vertices:
         return VK_BUFFER_USAGE_VERTEX_BUFFER_BIT;
@@ -28,11 +28,11 @@ uint32_t findMemoryType(VkPhysicalDevice *physical_divece, uint32_t type_filter,
 } // namespace
 
 VulkanBuffer::VulkanBuffer(VkPhysicalDevice *vk_physical_device, VkDevice *vk_device, const BufferDesc &desc) 
-    : data_size_(desc.data_size), vk_physical_divece_(vk_physical_device), vk_device_(vk_device) {
+    : data_size_(desc.data_size), vk_physical_device_(vk_physical_device), vk_device_(vk_device) {
     VkBufferCreateInfo buffer_create_info {};
     buffer_create_info.sType                 = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
     buffer_create_info.pNext                 = NULL;
-    buffer_create_info.usage                 = mapBufferKind(desc.kind);
+    buffer_create_info.usage                 = mapVkBufferKind(desc.kind);
     buffer_create_info.size                  = desc.data_size;
     buffer_create_info.queueFamilyIndexCount = 0;
     buffer_create_info.pQueueFamilyIndices   = NULL;
@@ -42,13 +42,13 @@ VulkanBuffer::VulkanBuffer(VkPhysicalDevice *vk_physical_device, VkDevice *vk_de
 
 
     VkMemoryRequirements mem_requirements {};
-    vkGetBufferMemoryRequirements(*vk_device, vk_buffer_, &mem_requirements);
+    vkGetBufferMemoryRequirements(*vk_device_, vk_buffer_, &mem_requirements);
     VkMemoryPropertyFlags properties = VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT;
 
     VkMemoryAllocateInfo memory_allocate_info {};
     memory_allocate_info.sType           = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
     memory_allocate_info.allocationSize  = mem_requirements.size;
-    memory_allocate_info.memoryTypeIndex = findMemoryType(vk_physical_divece_, mem_requirements.memoryTypeBits, properties);
+    memory_allocate_info.memoryTypeIndex = findMemoryType(vk_physical_device_, mem_requirements.memoryTypeBits, properties);
     vkAllocateMemory(*vk_device_, &memory_allocate_info, nullptr, &vk_device_memory_);
 
 

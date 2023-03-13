@@ -32,15 +32,15 @@ struct SamplerDesc {
     SamplerFilter min_filter = SamplerFilter::Linear;
     SamplerFilter mag_filter = SamplerFilter::Linear;
     SamplerFilter mipmap_filter = SamplerFilter::Linear;
-    bool mipmapping = true;
 };
 
 struct TextureDesc {
     TextureKind kind;
-    TUShort     format;
+    DataFormat  format;
     TUInt       width;
     TUInt       height = 1;
     TUInt       depth  = 1;
+    TUInt       mip_levels = 1;
     SamplerDesc sample_desc;
 };
 
@@ -48,14 +48,14 @@ class ITexture : public IResource {
 public:
     ResourceKind getResourceKind() const override final { return ResourceKind::Texture; }
     TextureKind  getTextureKind() const { return kind_; }
-    TUShort      getFormat() const { return format_; }
+    DataFormat   getFormat() const { return format_; }
 
 protected:
-    ITexture(TextureKind kind, TUShort format) : kind_(kind), format_(format) {}
+    ITexture(TextureKind kind, DataFormat format) : kind_(kind), format_(format) {}
 
 private: 
     TextureKind kind_;
-    TUShort     format_;
+    DataFormat  format_;
 };
 }} // namespace tigine::rhi
 
