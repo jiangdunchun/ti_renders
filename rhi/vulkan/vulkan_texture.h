@@ -11,6 +11,8 @@ public:
     VulkanTexture(VkPhysicalDevice *vk_physical_device, VkDevice *vk_device, const TextureDesc &desc);
     ~VulkanTexture();
 
+    virtual void updateData(TULong data_size, void *data, TUInt mip_level = 0) override;
+
     VkImageView *getVKImageview() { return &vk_imageview_; }
     VkSampler   *getVKSampler() { return &vk_sampler_; }
 

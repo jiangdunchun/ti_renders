@@ -29,31 +29,29 @@ uint32_t findMemoryType(VkPhysicalDevice *physical_divece, uint32_t type_filter,
 
 VulkanBuffer::VulkanBuffer(VkPhysicalDevice *vk_physical_device, VkDevice *vk_device, const BufferDesc &desc) 
     : data_size_(desc.data_size), vk_physical_device_(vk_physical_device), vk_device_(vk_device) {
-    VkBufferCreateInfo buffer_create_info {};
-    buffer_create_info.sType                 = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
-    buffer_create_info.pNext                 = NULL;
-    buffer_create_info.usage                 = mapVkBufferKind(desc.kind);
-    buffer_create_info.size                  = desc.data_size;
-    buffer_create_info.queueFamilyIndexCount = 0;
-    buffer_create_info.pQueueFamilyIndices   = NULL;
-    buffer_create_info.sharingMode           = VK_SHARING_MODE_EXCLUSIVE;
-    buffer_create_info.flags                 = 0;
-    vkCreateBuffer(*vk_device_, &buffer_create_info, NULL, &vk_buffer_);
-
+    VkBufferCreateInfo create_info {};
+    create_info.sType                 = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
+    create_info.pNext                 = NULL;
+    create_info.usage                 = mapVkBufferKind(desc.kind);
+    create_info.size                  = desc.data_size;
+    create_info.queueFamilyIndexCount = 0;
+    create_info.pQueueFamilyIndices   = NULL;
+    create_info.sharingMode           = VK_SHARING_MODE_EXCLUSIVE;
+    create_info.flags                 = 0;
+    RHI_VULKAN_THROW_IF_FAILD(vkCreateBuffer(*vk_device_, &create_info, NULL, &vk_buffer_), 
+        "failed to create buffer!");
 
     VkMemoryRequirements mem_requirements {};
     vkGetBufferMemoryRequirements(*vk_device_, vk_buffer_, &mem_requirements);
-    VkMemoryPropertyFlags properties = VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT;
-
-    VkMemoryAllocateInfo memory_allocate_info {};
-    memory_allocate_info.sType           = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
-    memory_allocate_info.allocationSize  = mem_requirements.size;
-    memory_allocate_info.memoryTypeIndex = findMemoryType(vk_physical_device_, mem_requirements.memoryTypeBits, properties);
-    vkAllocateMemory(*vk_device_, &memory_allocate_info, nullptr, &vk_device_memory_);
-
+    VkMemoryPropertyFlags mem_properties = VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT;
+    VkMemoryAllocateInfo alloc_info {};
+    alloc_info.sType           = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+    alloc_info.allocationSize  = mem_requirements.size;
+    alloc_info.memoryTypeIndex = findMemoryType(vk_physical_device_, mem_requirements.memoryTypeBits, mem_properties);
+    RHI_VULKAN_THROW_IF_FAILD(vkAllocateMemory(*vk_device_, &alloc_info, nullptr, &vk_device_memory_), 
+        "failed to allocate memory!");
 
     vkBindBufferMemory(*vk_device_, vk_buffer_, vk_device_memory_, 0);
-
 
     if (desc.data) {
         updateData(desc.data_size, desc.data);

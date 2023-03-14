@@ -18,16 +18,16 @@ int main() {
     window->show();
 
     float vertices[] = {0.5, -0.5f, 0, 1.0, 0.5, 0.5f, 1.0, 1.0, -0.5, 0.5f, 1.0, 0.0, -0.5, -0.5f, 0, 0};
-    int indices[] = {0,1,2,0,2,3};
+    uint16_t indices[] = {0,1,2,0,2,3};
 
     BufferDesc vertices_buffer_desc;
-    vertices_buffer_desc.kinds     = BK_Vertices;
+    vertices_buffer_desc.kind     = BufferKind::Vertices;
     vertices_buffer_desc.data_size = sizeof(vertices);
     vertices_buffer_desc.data      = vertices;
     IBuffer *vertices_buffer = render->createBuffer(vertices_buffer_desc);
 
     BufferDesc indices_buffer_desc;
-    indices_buffer_desc.kinds     = BK_Indices;
+    indices_buffer_desc.kind      = BufferKind::Indices;
     indices_buffer_desc.data_size = sizeof(indices);
     indices_buffer_desc.data      = indices;
     IBuffer *indices_buffer = render->createBuffer(indices_buffer_desc);
@@ -74,9 +74,26 @@ int main() {
     if (shader_prog->hasError()) std::cout << shader_prog->getReport() << std::endl;
 
 
-    
+    BufferDesc angle_buffer_desc;
+    angle_buffer_desc.kind         = BufferKind::Vertices;
+    angle_buffer_desc.data_size    = sizeof(float);
+    IBuffer *angle_buffer = render->createBuffer(angle_buffer_desc);
+
+    TextureDesc texture_desc;
+    texture_desc.kind = TextureKind::Texture2D;
+    texture_desc.format = DataFormat::RGBA8UNorm_sRGB;
+    texture_desc.width  = 100;
+    texture_desc.height = 100;
+    ITexture *texture   = render->createTexture(texture_desc);
+
     ResourceHeapDesc resource_heap_desc;
     resource_heap_desc.uniforms.resize(2);
+    resource_heap_desc.uniforms[0].binding = 0;
+    resource_heap_desc.uniforms[0].resource = angle_buffer;
+    resource_heap_desc.uniforms[0].shader_stage = ShaderKind::Vertex;
+    resource_heap_desc.uniforms[1].binding      = 1;
+    resource_heap_desc.uniforms[1].resource     = texture;
+    resource_heap_desc.uniforms[1].shader_stage = ShaderKind::Fragment;
     IResourceHeap *resource_heap = render->CreateResourceHeap(resource_heap_desc);
 
     PipelineStateDesc pipeline_desc;
@@ -101,7 +118,7 @@ int main() {
             command_buffer->beginRenderPass(context, context->getRenderPass());
             {
                 command_buffer->clear(CF_Color);
-                command_buffer->drawArray(3, 0);
+                command_buffer->drawArray(6, 0);
             }
             command_buffer->endRenderPass();
         }

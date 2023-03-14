@@ -49,6 +49,7 @@ public:
     ResourceKind getResourceKind() const override final { return ResourceKind::Texture; }
     TextureKind  getTextureKind() const { return kind_; }
     DataFormat   getFormat() const { return format_; }
+    virtual void updateData(TULong data_size, void *data, TUInt mip_level = 0) = 0;
 
 protected:
     ITexture(TextureKind kind, DataFormat format) : kind_(kind), format_(format) {}

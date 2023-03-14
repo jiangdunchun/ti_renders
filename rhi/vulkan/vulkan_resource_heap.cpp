@@ -39,10 +39,11 @@ VkShaderStageFlags mapShaderStageFlags(ShaderKind kind) {
 } // namespace
 
 VulkanResourceHeap::VulkanResourceHeap(VkDevice *vk_device, const ResourceHeapDesc &desc) : vk_device_(vk_device) {
-    std::vector<VkDescriptorSetLayoutBinding> bindings(desc.uniforms.size());
-    for (int i = 0; i < desc.uniforms.size(); ++i) {
-        const UniformInfo &uniform = desc.uniforms[i];
+    size_t num_uniforms = desc.uniforms.size();
 
+    std::vector<VkDescriptorSetLayoutBinding> bindings(num_uniforms);
+    for (size_t i = 0; i < num_uniforms; ++i) {
+        const UniformInfo &uniform            = desc.uniforms[i];
         VkDescriptorSetLayoutBinding &binding = bindings[i];
 
         binding.binding            = uniform.binding;
@@ -57,13 +58,12 @@ VulkanResourceHeap::VulkanResourceHeap(VkDevice *vk_device, const ResourceHeapDe
     layout_info.bindingCount = static_cast<uint32_t>(bindings.size());
     layout_info.pBindings    = bindings.data();
     RHI_VULKAN_THROW_IF_FAILD(vkCreateDescriptorSetLayout(*vk_device_, &layout_info, nullptr, &vk_descriptor_set_layout_),
-                              "failed to create descriptor set layout!");
+        "failed to create descriptor set layout!");
 
 
-    std::vector<VkDescriptorPoolSize> pool_sizes(desc.uniforms.size());
-    for (int i = 0; i < desc.uniforms.size(); ++i) {
-        const UniformInfo &uniform = desc.uniforms[i];
-
+    std::vector<VkDescriptorPoolSize> pool_sizes(num_uniforms);
+    for (size_t i = 0; i < num_uniforms; ++i) {
+        const UniformInfo &uniform      = desc.uniforms[i];
         VkDescriptorPoolSize &pool_size = pool_sizes[i];
 
         pool_size.type            = mapDescriptorType(uniform.resource);
@@ -76,7 +76,7 @@ VulkanResourceHeap::VulkanResourceHeap(VkDevice *vk_device, const ResourceHeapDe
     pool_info.pPoolSizes    = pool_sizes.data();
     pool_info.maxSets       = 1;
     RHI_VULKAN_THROW_IF_FAILD(vkCreateDescriptorPool(*vk_device_, &pool_info, nullptr, &vk_descriptor_pool_),
-                              "failed to create descriptor pool!");
+        "failed to create descriptor pool!");
 
 
     VkDescriptorSetAllocateInfo alloc_info {};
@@ -85,43 +85,47 @@ VulkanResourceHeap::VulkanResourceHeap(VkDevice *vk_device, const ResourceHeapDe
     alloc_info.descriptorSetCount = 1;
     alloc_info.pSetLayouts        = &vk_descriptor_set_layout_;
     RHI_VULKAN_THROW_IF_FAILD(vkAllocateDescriptorSets(*vk_device_, &alloc_info, &vk_descriptor_set_),
-                              "failed to allocate descriptor sets!");
+        "failed to allocate descriptor sets!");
 
 
-    std::vector<VkWriteDescriptorSet> writes(desc.uniforms.size());
-    for (int i = 0; i < desc.uniforms.size(); ++i) {
-        const UniformInfo &uniform = desc.uniforms[i];
-
+    std::vector<VkWriteDescriptorSet> writes(num_uniforms);
+    for (size_t i = 0; i < num_uniforms; ++i) {
+        const UniformInfo &uniform  = desc.uniforms[i];
         VkWriteDescriptorSet &write = writes[i];
 
         write.sType           = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
         write.dstSet          = vk_descriptor_set_;
-        write.dstBinding      = 0;
+        write.dstBinding      = uniform.binding;
         write.dstArrayElement = 0;
         write.descriptorType  = mapDescriptorType(uniform.resource);
         write.descriptorCount = 1;
 
         if (uniform.resource->getResourceKind() == ResourceKind::Buffer) {
-            VulkanBuffer *vulkan_buffer = dynamic_cast<VulkanBuffer *>(uniform.resource);
+            VulkanBuffer *vulkan_buffer         = dynamic_cast<VulkanBuffer *>(uniform.resource);
+            VkDescriptorBufferInfo *buffer_info = new VkDescriptorBufferInfo({});
 
-            VkDescriptorBufferInfo buffer_info {};
-            buffer_info.buffer = *(vulkan_buffer->getVkBuffer());
-            buffer_info.offset = 0;
-            buffer_info.range  = vulkan_buffer->getDataSize();
+            buffer_info->buffer = *(vulkan_buffer->getVkBuffer());
+            buffer_info->offset = 0;
+            buffer_info->range  = vulkan_buffer->getDataSize();
 
-            write.pBufferInfo = &buffer_info;
+            write.pBufferInfo = buffer_info;
         } else if (uniform.resource->getResourceKind() == ResourceKind::Texture) {
             VulkanTexture *vulkan_texture = dynamic_cast<VulkanTexture *>(uniform.resource);
+            VkDescriptorImageInfo *image_info = new VkDescriptorImageInfo({});
 
-            VkDescriptorImageInfo image_info {};
-            image_info.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-            image_info.imageView   = *(vulkan_texture->getVKImageview());
-            image_info.sampler     = *(vulkan_texture->getVKSampler());
+            image_info->imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+            image_info->imageView   = *(vulkan_texture->getVKImageview());
+            image_info->sampler     = *(vulkan_texture->getVKSampler());
 
-            write.pImageInfo = &image_info;
+            write.pImageInfo = image_info;
         }
     }
     vkUpdateDescriptorSets(*vk_device_, static_cast<uint32_t>(writes.size()), writes.data(), 0, nullptr);
+    for (size_t i = 0; i < num_uniforms; ++i) {
+        VkWriteDescriptorSet &write = writes[i];
+        if (write.pBufferInfo) delete write.pBufferInfo;
+        if (write.pImageInfo) delete write.pImageInfo;
+    }
 
 
     VkPipelineLayoutCreateInfo pipeline_layout_info {};
@@ -129,7 +133,7 @@ VulkanResourceHeap::VulkanResourceHeap(VkDevice *vk_device, const ResourceHeapDe
     pipeline_layout_info.setLayoutCount = 1;
     pipeline_layout_info.pSetLayouts    = &vk_descriptor_set_layout_;
     RHI_VULKAN_THROW_IF_FAILD(vkCreatePipelineLayout(*vk_device_, &pipeline_layout_info, nullptr, &vk_pipeline_layout_),
-                              "failed to create pipeline layout!");
+        "failed to create pipeline layout!");
 }
 
 VulkanResourceHeap::~VulkanResourceHeap() { 

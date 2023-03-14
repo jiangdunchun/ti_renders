@@ -582,7 +582,7 @@ void VulkanRenderContext::present() {
     submit_info.signalSemaphoreCount = 1;
     submit_info.pSignalSemaphores    = signal_semaphores;
     RHI_VULKAN_THROW_IF_FAILD(vkQueueSubmit(vk_graphics_queue_, 1, &submit_info, VK_NULL_HANDLE),
-                              "failed to submit semaphore to Vulkan graphics queue!");
+        "failed to submit semaphore to Vulkan graphics queue!");
 
     VkSwapchainKHR swap_chains[] = {vk_swapchain_};
 
@@ -596,7 +596,7 @@ void VulkanRenderContext::present() {
     present_info.pImageIndices      = &present_image_index_;
     present_info.pResults           = nullptr;
     RHI_VULKAN_THROW_IF_FAILD(vkQueuePresentKHR(vk_present_queue_, &present_info),
-                              "failed to present Vulkan graphics queue!");
+        "failed to present Vulkan graphics queue!");
 
     acquireNextPresentImage();
 }

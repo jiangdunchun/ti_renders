@@ -17,6 +17,7 @@ VulkanPipelineState::VulkanPipelineState(VkDevice *vk_device, const PipelineStat
     inputAssembly.topology               = VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
     inputAssembly.primitiveRestartEnable = VK_FALSE;
 
+    // @TODO
     VkViewport viewport {};
     viewport.x        = 0.0f;
     viewport.y        = 0.0f;
@@ -81,8 +82,7 @@ VulkanPipelineState::VulkanPipelineState(VkDevice *vk_device, const PipelineStat
     pipeline_info.renderPass          = *(render_pass->getVkRenderPass());
     pipeline_info.subpass             = 0;
     pipeline_info.basePipelineHandle  = VK_NULL_HANDLE;
-    RHI_VULKAN_THROW_IF_FAILD(
-        vkCreateGraphicsPipelines(*vk_device_, VK_NULL_HANDLE, 1, &pipeline_info, nullptr, &vk_pipeline_),
+    RHI_VULKAN_THROW_IF_FAILD(vkCreateGraphicsPipelines(*vk_device_, VK_NULL_HANDLE, 1, &pipeline_info, nullptr, &vk_pipeline_),
         "failed to create graphics pipeline!");
 }
 

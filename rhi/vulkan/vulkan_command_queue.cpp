@@ -21,6 +21,6 @@ void VulkanCommandQueue::submit(ICommandBuffer* command_buffer) {
     submit_info.signalSemaphoreCount = 0;
     submit_info.pSignalSemaphores    = nullptr;
     RHI_VULKAN_THROW_IF_FAILD(vkQueueSubmit(*vk_graphics_queue_, 1, &submit_info, *(vulkan_command_buffer->getVKQueueSubmitFence())),
-                              "failed to submit command buffer to Vulkan graphics queue!");
+        "failed to submit command buffer to Vulkan graphics queue!");
 }
 }} // namespace tigine::rhi

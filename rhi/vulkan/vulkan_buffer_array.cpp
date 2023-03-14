@@ -14,21 +14,23 @@ VulkanBufferArray::VulkanBufferArray(const BufferArrayDesc &desc) {
     vk_bindings_desc_.resize(num_bindings, {});
     for (size_t i = 0; i < num_bindings; ++i) {
         const BindingInfo &binding_info = desc.bindings[i];
+        VkVertexInputBindingDescription &bindings_desc = vk_bindings_desc_[i];
 
-        vk_bindings_desc_[i].binding   = binding_info.binding;
-        vk_bindings_desc_[i].stride    = binding_info.stride;
-        vk_bindings_desc_[i].inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
+        bindings_desc.binding   = binding_info.binding;
+        bindings_desc.stride    = binding_info.stride;
+        bindings_desc.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
     }
 
     size_t num_attributes = desc.attributes.size();
     vk_attributes_desc_.resize(num_attributes, {});
     for (size_t i = 0; i < num_attributes; ++i) {
         const AttributeInfo &attribute_info = desc.attributes[i];
+        VkVertexInputAttributeDescription &attributes_desc = vk_attributes_desc_[i];
 
-        vk_attributes_desc_[i].binding  = attribute_info.binding;
-        vk_attributes_desc_[i].location = attribute_info.location;
-        vk_attributes_desc_[i].format   = mapVkFormat(attribute_info.format);
-        vk_attributes_desc_[i].offset   = attribute_info.offset;
+        attributes_desc.binding  = attribute_info.binding;
+        attributes_desc.location = attribute_info.location;
+        attributes_desc.format   = mapVkFormat(attribute_info.format);
+        attributes_desc.offset   = attribute_info.offset;
     }
 
     vk_pipeline_vertex_input_state_create_info_                                 = {};

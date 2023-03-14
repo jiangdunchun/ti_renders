@@ -18,7 +18,7 @@ VulkanCommandBuffer::VulkanCommandBuffer(VkDevice                      *vk_devic
     pool_info.flags             = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
     pool_info.queueFamilyIndex  = vk_queue_family_index;
     RHI_VULKAN_THROW_IF_FAILD(vkCreateCommandPool(*vk_device_, &pool_info, nullptr, &vk_command_pool_) != VK_SUCCESS,
-                              "failed to create command pool!");
+        "failed to create command pool!");
 
     vk_command_buffers_.resize(buffers_count_);
     VkCommandBufferAllocateInfo alloc_info {};
@@ -27,7 +27,7 @@ VulkanCommandBuffer::VulkanCommandBuffer(VkDevice                      *vk_devic
     alloc_info.level              = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
     alloc_info.commandBufferCount = buffers_count_;
     RHI_VULKAN_THROW_IF_FAILD(vkAllocateCommandBuffers(*vk_device_, &alloc_info, vk_command_buffers_.data()),
-                              "failed to allocate command buffer!");
+        "failed to allocate command buffer!");
 
     vk_fences_.resize(buffers_count_);
     VkFenceCreateInfo fence_info {};
@@ -35,7 +35,7 @@ VulkanCommandBuffer::VulkanCommandBuffer(VkDevice                      *vk_devic
     fence_info.flags = 0;
     for (size_t i = 0; i < buffers_count_; i++) {
         RHI_VULKAN_THROW_IF_FAILD(vkCreateFence(*vk_device_, &fence_info, nullptr, &(vk_fences_[i])),
-                                  "failed to create fence of command buffer!");
+            "failed to create fence of command buffer!");
         vkQueueSubmit(*vk_graphics_queue, 0, nullptr, vk_fences_[i]);
     }
 
@@ -46,9 +46,7 @@ VulkanCommandBuffer::~VulkanCommandBuffer() {
     for (size_t i = 0; i < vk_fences_.size(); i++) {
         vkDestroyFence(*vk_device_, vk_fences_[i], nullptr);
     }
-
     vkFreeCommandBuffers(*vk_device_, vk_command_pool_, static_cast<uint32_t>(vk_command_buffers_.size()), vk_command_buffers_.data());
-
     vkDestroyCommandPool(*vk_device_, vk_command_pool_, nullptr);
 }
 
@@ -62,7 +60,7 @@ void VulkanCommandBuffer::begin() {
     begin_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
 
     RHI_VULKAN_THROW_IF_FAILD(vkBeginCommandBuffer(*vk_now_command_buffer_, &begin_info),
-                              "failed to begin recording command buffer!");
+        "failed to begin recording command buffer!");
 
     //vk_render_pass_info_ = {};
     //vk_render_pass_info_.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
@@ -70,7 +68,7 @@ void VulkanCommandBuffer::begin() {
 
 void VulkanCommandBuffer::end() {
     RHI_VULKAN_THROW_IF_FAILD(vkEndCommandBuffer(*vk_now_command_buffer_),
-                              "failed to record command buffer!");
+        "failed to record command buffer!");
 }
 
 void VulkanCommandBuffer::setViewport(const Viewport &viewport) { 
@@ -115,6 +113,7 @@ void VulkanCommandBuffer::beginRenderPass(IRenderTarget *render_target, IRenderP
     if (render_target->isContext()) {
         VulkanRenderContext *render_context = dynamic_cast<VulkanRenderContext *>(render_target);
         
+        // @TODO
         VkClearValue          clear_cc = {0, 0, 0, 1};
         VkRenderPassBeginInfo begin_info;
         {
@@ -136,10 +135,11 @@ void VulkanCommandBuffer::endRenderPass() {
 }
 
 void VulkanCommandBuffer::drawArray(TULong num_vertices, TULong first_vertex) {
-    if (draw_indexed_) 
+    if (draw_indexed_) {
         vkCmdDrawIndexed(*vk_now_command_buffer_, num_vertices, 1, first_vertex, 0, 0);
-    else 
-        vkCmdDraw(*vk_now_command_buffer_, num_vertices, 1, first_vertex, 0);
+    } else {
+        vkCmdDraw(*vk_now_command_buffer_, num_vertices, 1, first_vertex, 0); 
+    }
 }
 
 void VulkanCommandBuffer::clear(TChar clear_flags) {
