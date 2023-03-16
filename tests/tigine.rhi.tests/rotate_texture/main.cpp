@@ -47,8 +47,9 @@ int main() {
     attributes_info[1].offset   = sizeof(vertices[0]) * 2;
 
     BufferArrayDesc array_desc;
-    array_desc.vertices_buffer   = vertices_buffer;
-    array_desc.indices_buffer    = indices_buffer;
+    array_desc.vertices_buffer = vertices_buffer;
+    array_desc.indices_buffer  = indices_buffer;
+    array_desc.index_kind      = IndexKind::IK_UINT16;
     array_desc.bindings        = bindings_info;
     array_desc.attributes      = attributes_info;
     IBufferArray *vertices_array = render->createBufferArray(array_desc);
@@ -109,7 +110,18 @@ int main() {
     CommandBufferDesc command_buffer_desc;
     ICommandBuffer   *command_buffer = render->createCommandBuffer(command_buffer_desc);
 
+#ifndef M_PI
+#define M_PI 3.1415926
+#endif // !M_PI
+    float angle = 0;
+
     while (window->processEvents()) {
+        angle += 0.0001;
+        if (angle > 2 * M_PI) {
+            angle -= 2 * M_PI;
+        }
+        angle_buffer->updateData(sizeof(angle), &angle);
+
         command_buffer->begin();
         {
             command_buffer->setViewport({0, 0, context->getResolution().width, context->getResolution().height});

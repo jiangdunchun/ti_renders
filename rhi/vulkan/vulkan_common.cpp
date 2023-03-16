@@ -1,6 +1,21 @@
 #include "vulkan_common.h"
 
 namespace tigine { namespace rhi {
+namespace {
+uint32_t findMemoryType(VkPhysicalDevice *physical_divece, uint32_t type_filter, VkMemoryPropertyFlags properties) {
+    VkPhysicalDeviceMemoryProperties mem_properties;
+    vkGetPhysicalDeviceMemoryProperties(*physical_divece, &mem_properties);
+
+    for (uint32_t i = 0; i < mem_properties.memoryTypeCount; i++) {
+        if ((type_filter & (1 << i)) && (mem_properties.memoryTypes[i].propertyFlags & properties) == properties) {
+            return i;
+        }
+    }
+
+    RHI_VULKAN_THROW("failed to find suitable memory type!");
+}
+} // namespace
+
 VkFormat mapVkFormat(DataFormat format) {
     switch (format) {
     case DataFormat::R8UNorm:
@@ -178,5 +193,36 @@ VkFormat mapVkFormat(DataFormat format) {
         return VK_FORMAT_BC5_SNORM_BLOCK;
     }
     return VK_FORMAT_UNDEFINED;
+}
+
+void createVkBuffer(VkPhysicalDevice     *physical_divece,
+                    VkDevice             *device,
+                    VkDeviceSize          size,
+                    VkBufferUsageFlags    usage,
+                    VkMemoryPropertyFlags properties,
+                    VkBuffer             &o_buffer,
+                    VkDeviceMemory       &o_memory) {
+    VkBufferCreateInfo buffer_info {};
+    buffer_info.sType       = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
+    buffer_info.size        = size;
+    buffer_info.usage       = usage;
+    buffer_info.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
+    RHI_VULKAN_THROW_IF_FAILD(vkCreateBuffer(*device, &buffer_info, nullptr, &o_buffer), 
+        "failed to create buffer!");
+
+
+    VkMemoryRequirements mem_requirements;
+    vkGetBufferMemoryRequirements(*device, o_buffer, &mem_requirements);
+    uint32_t mem_type_index = findMemoryType(physical_divece, mem_requirements.memoryTypeBits, properties);
+
+    VkMemoryAllocateInfo alloc_info {};
+    alloc_info.sType           = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+    alloc_info.allocationSize  = mem_requirements.size;
+    alloc_info.memoryTypeIndex = mem_type_index;
+    RHI_VULKAN_THROW_IF_FAILD(vkAllocateMemory(*device, &alloc_info, nullptr, &o_memory),
+        "failed to allocate buffer memory!");
+
+
+    vkBindBufferMemory(*device, o_buffer, o_memory, 0);
 }
 }} // namespace tigine::rhi

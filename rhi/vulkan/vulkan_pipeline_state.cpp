@@ -9,7 +9,7 @@ namespace tigine { namespace rhi {
 VulkanPipelineState::VulkanPipelineState(VkDevice *vk_device, const PipelineStateDesc &desc) : vk_device_(vk_device) {
     VulkanShaderProgram *shader_prog    = dynamic_cast<VulkanShaderProgram *>(desc.shader_program);
     VulkanBufferArray   *vertices_array = dynamic_cast<VulkanBufferArray *>(desc.vertices_array);
-    VulkanResourceHeap  *resource_heap  = dynamic_cast<VulkanResourceHeap *>(desc.resource_heap);
+    vulkan_resource_heap_               = dynamic_cast<VulkanResourceHeap *>(desc.resource_heap);
     VulkanRenderPass    *render_pass    = dynamic_cast<VulkanRenderPass *>(desc.render_pass);
 
     VkPipelineInputAssemblyStateCreateInfo inputAssembly {};
@@ -78,7 +78,7 @@ VulkanPipelineState::VulkanPipelineState(VkDevice *vk_device, const PipelineStat
     pipeline_info.pRasterizationState = &rasterizer;
     pipeline_info.pMultisampleState   = &multisampling;
     pipeline_info.pColorBlendState    = &colorBlending;
-    pipeline_info.layout              = *(resource_heap->getVkPipelineLayout());
+    pipeline_info.layout              = *(vulkan_resource_heap_->getVkPipelineLayout());
     pipeline_info.renderPass          = *(render_pass->getVkRenderPass());
     pipeline_info.subpass             = 0;
     pipeline_info.basePipelineHandle  = VK_NULL_HANDLE;

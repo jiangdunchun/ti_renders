@@ -6,13 +6,14 @@
 
 namespace tigine { namespace rhi {
 enum class BufferKind {
+    Uniform,
     Vertices,
     Indices,
 };
 
 struct BufferDesc {
     BufferKind kind;
-    TULong     data_size  = 0;
+    TULong     data_size;
     void      *data  = nullptr;
 };
 

@@ -17,6 +17,7 @@ public:
     bool                                  hasIndices() const { return has_indices_; }
     VulkanBuffer                         *getVerticesBuffer() { return vertices_buffer_; }
     VulkanBuffer                         *getIndicesBuffer() { return indices_buffer_; }
+    IndexKind                             GetIndexKind() { return index_kind_; }
     VkPipelineVertexInputStateCreateInfo *getVkPipelineVertexInputStateCreateInfo() { return &vk_pipeline_vertex_input_state_create_info_; }
 
 private:
@@ -27,6 +28,7 @@ private:
     std::vector<VkVertexInputBindingDescription>   vk_bindings_desc_;
     std::vector<VkVertexInputAttributeDescription> vk_attributes_desc_;
     bool                                           has_indices_ = false;
+    IndexKind                                      index_kind_;
 };
 }} // namespace tigine::rhi
 

@@ -6,15 +6,19 @@
 #include "vulkan/vulkan_common.h"
 
 namespace tigine { namespace rhi {
+class VulkanResourceHeap;
 class VulkanPipelineState : public IPipelineState {
 public:
     VulkanPipelineState(VkDevice *vk_device, const PipelineStateDesc &desc);
     ~VulkanPipelineState();
 
     VkPipeline *getVkPipeline() { return &vk_pipeline_; }
+    VulkanResourceHeap *getVulkanResourceHeap() { return vulkan_resource_heap_; }
 
 private:
     VkDevice *vk_device_;
+
+    VulkanResourceHeap *vulkan_resource_heap_;
 
     VkPipeline vk_pipeline_;
 };

@@ -5,8 +5,21 @@
 #include "vulkan/vulkan_pipeline_state.h"
 #include "vulkan/vulkan_render_context.h"
 #include "vulkan/vulkan_render_pass.h"
+#include "vulkan/vulkan_resource_heap.h"
 
 namespace tigine { namespace rhi {
+namespace {
+VkIndexType mapVkIndexType(IndexKind kind) {
+    switch (kind) {
+    case IndexKind::IK_UINT16:
+        return VK_INDEX_TYPE_UINT16;
+    case IndexKind::IK_UINT32:
+        return VK_INDEX_TYPE_UINT32;
+    default:
+        RHI_VULKAN_THROW("faild to map VkIndexType!");
+    }
+}
+} // namespace
 VulkanCommandBuffer::VulkanCommandBuffer(VkDevice                      *vk_device,
                                          VkQueue                       *vk_graphics_queue,
                                          uint32_t                       vk_queue_family_index,
@@ -58,7 +71,6 @@ void VulkanCommandBuffer::begin() {
 
     VkCommandBufferBeginInfo begin_info {};
     begin_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
-
     RHI_VULKAN_THROW_IF_FAILD(vkBeginCommandBuffer(*vk_now_command_buffer_, &begin_info),
         "failed to begin recording command buffer!");
 
@@ -92,7 +104,23 @@ void VulkanCommandBuffer::setPipeState(IPipelineState *pipe_state) {
 
 
     VulkanPipelineState *vulkan_pipeline_state = dynamic_cast<VulkanPipelineState *>(pipe_state);
-    vkCmdBindPipeline(*vk_now_command_buffer_, VK_PIPELINE_BIND_POINT_GRAPHICS, *(vulkan_pipeline_state->getVkPipeline()));
+    VkPipeline          *vk_pipeline           = vulkan_pipeline_state->getVkPipeline();
+
+    vkCmdBindPipeline(*vk_now_command_buffer_, VK_PIPELINE_BIND_POINT_GRAPHICS, *(vk_pipeline));
+
+
+    VulkanResourceHeap *vulkan_resource_heap = vulkan_pipeline_state->getVulkanResourceHeap();
+    VkPipelineLayout   *vk_pipeline_layout   = vulkan_resource_heap->getVkPipelineLayout();
+    VkDescriptorSet    *vk_descriptor_set    = vulkan_resource_heap->getVkDescriptorSet();
+
+    vkCmdBindDescriptorSets(*vk_now_command_buffer_,
+                             VK_PIPELINE_BIND_POINT_GRAPHICS,
+                            *vk_pipeline_layout,
+                             0,
+                             1,
+                             vk_descriptor_set,
+                             0,
+                             nullptr);
 }
 
 void VulkanCommandBuffer::setVertexBufferArray(IBufferArray *buffer_array) {
@@ -100,11 +128,14 @@ void VulkanCommandBuffer::setVertexBufferArray(IBufferArray *buffer_array) {
 
     draw_indexed_ = vulkan_buffer_array->hasIndices();
 
-    VkDeviceSize offsets[] = {0};
-    vkCmdBindVertexBuffers(*vk_now_command_buffer_, 0, 1, vulkan_buffer_array->getVerticesBuffer()->getVkBuffer(), offsets);
+    VkBuffer    *vertices_buffer = vulkan_buffer_array->getVerticesBuffer()->getVkBuffer();
+    VkDeviceSize offsets[]       = {0};
+    vkCmdBindVertexBuffers(*vk_now_command_buffer_, 0, 1, vertices_buffer, offsets);
+
     if (draw_indexed_) {
-        //@TODO
-        vkCmdBindIndexBuffer(*vk_now_command_buffer_, *(vulkan_buffer_array->getIndicesBuffer()->getVkBuffer()), 0, VK_INDEX_TYPE_UINT16);
+        VkBuffer *indices_buffer = vulkan_buffer_array->getIndicesBuffer()->getVkBuffer();
+        VkIndexType index_type   = mapVkIndexType(vulkan_buffer_array->GetIndexKind());
+        vkCmdBindIndexBuffer(*vk_now_command_buffer_, *indices_buffer, 0, index_type);
     }
 }
 

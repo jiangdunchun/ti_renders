@@ -7,6 +7,12 @@
 #include "interface/i_buffer.h"
 
 namespace tigine { namespace rhi {
+enum class IndexKind {
+    IK_UINT16,
+    IK_UINT32,
+};
+
+
 struct BindingInfo {
     TUInt binding;
     TUInt stride;
@@ -22,6 +28,7 @@ struct AttributeInfo {
 struct BufferArrayDesc {
     IBuffer                   *vertices_buffer;
     IBuffer                   *indices_buffer = nullptr;
+    IndexKind                  index_kind     = IndexKind::IK_UINT32;
     std::vector<BindingInfo>   bindings;
     std::vector<AttributeInfo> attributes;
 };

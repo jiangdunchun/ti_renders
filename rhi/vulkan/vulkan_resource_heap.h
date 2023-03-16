@@ -12,6 +12,7 @@ public:
     ~VulkanResourceHeap();
 
     VkPipelineLayout *getVkPipelineLayout() { return &vk_pipeline_layout_; }
+    VkDescriptorSet  *getVkDescriptorSet() { return &vk_descriptor_set_; }
 
 private:
     VkDevice *vk_device_;
