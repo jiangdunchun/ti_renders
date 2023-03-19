@@ -5,6 +5,9 @@
 #include "shader/rotate_texture_vert.h"
 #include "shader/rotate_texture_frag.h"
 
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb/stb_image.h>
+
 using namespace tigine::rhi;
 using namespace std;
 
@@ -80,12 +83,16 @@ int main() {
     angle_buffer_desc.data_size    = sizeof(float);
     IBuffer *angle_buffer = render->createBuffer(angle_buffer_desc);
 
+    int      tex_width, tex_height, tex_channels;
+    stbi_uc *pixels = stbi_load("E:/A.jpg", &tex_width, &tex_height, &tex_channels, STBI_rgb_alpha);
     TextureDesc texture_desc;
     texture_desc.kind = TextureKind::Texture2D;
     texture_desc.format = DataFormat::RGBA8UNorm_sRGB;
-    texture_desc.width  = 100;
-    texture_desc.height = 100;
+    texture_desc.width  = tex_width;
+    texture_desc.height = tex_height;
     ITexture *texture   = render->createTexture(texture_desc);
+    texture->updateData(tex_width, tex_height, DataFormat::RGBA8SNorm, pixels);
+    stbi_image_free(pixels);
 
     ResourceHeapDesc resource_heap_desc;
     resource_heap_desc.uniforms.resize(2);

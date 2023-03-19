@@ -20,7 +20,7 @@ VulkanBuffer::VulkanBuffer(VkPhysicalDevice *vk_physical_device, VkDevice *vk_de
     : data_size_(desc.data_size), vk_physical_device_(vk_physical_device), vk_device_(vk_device) {
     VkBufferUsageFlags vk_usage = mapVkBufferKind(desc.kind);
     VkMemoryPropertyFlags mem_properties = VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT;
-    createVkBuffer(vk_physical_device_, vk_device, desc.data_size, vk_usage, mem_properties, vk_buffer_, vk_device_memory_);
+    createVkBufferandDeviceMemory(vk_physical_device_, vk_device, desc.data_size, vk_usage, mem_properties, vk_buffer_, vk_device_memory_);
 
     if (desc.data) {
         updateData(desc.data_size, desc.data);

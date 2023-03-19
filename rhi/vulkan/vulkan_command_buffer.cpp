@@ -25,22 +25,12 @@ VulkanCommandBuffer::VulkanCommandBuffer(VkDevice                      *vk_devic
                                          uint32_t                       vk_queue_family_index,
                                          const CommandBufferDesc &desc)
     : vk_device_(vk_device), buffers_count_(desc.buffer_count) {
-    VkCommandPoolCreateInfo pool_info {};
-    pool_info.sType             = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
-    pool_info.pNext             = nullptr;
-    pool_info.flags             = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
-    pool_info.queueFamilyIndex  = vk_queue_family_index;
-    RHI_VULKAN_THROW_IF_FAILD(vkCreateCommandPool(*vk_device_, &pool_info, nullptr, &vk_command_pool_) != VK_SUCCESS,
-        "failed to create command pool!");
-
     vk_command_buffers_.resize(buffers_count_);
-    VkCommandBufferAllocateInfo alloc_info {};
-    alloc_info.sType              = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
-    alloc_info.commandPool        = vk_command_pool_;
-    alloc_info.level              = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
-    alloc_info.commandBufferCount = buffers_count_;
-    RHI_VULKAN_THROW_IF_FAILD(vkAllocateCommandBuffers(*vk_device_, &alloc_info, vk_command_buffers_.data()),
-        "failed to allocate command buffer!");
+    createVkCommandPoolandCommandBuffers(vk_device_, 
+                                         vk_queue_family_index, 
+                                         buffers_count_, 
+                                         vk_command_pool_, 
+                                         vk_command_buffers_.data());
 
     vk_fences_.resize(buffers_count_);
     VkFenceCreateInfo fence_info {};

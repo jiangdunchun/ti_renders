@@ -2,9 +2,9 @@
 
 namespace tigine { namespace rhi {
 namespace {
-uint32_t findMemoryType(VkPhysicalDevice *physical_divece, uint32_t type_filter, VkMemoryPropertyFlags properties) {
+uint32_t findMemoryType(VkPhysicalDevice *physical_device, uint32_t type_filter, VkMemoryPropertyFlags properties) {
     VkPhysicalDeviceMemoryProperties mem_properties;
-    vkGetPhysicalDeviceMemoryProperties(*physical_divece, &mem_properties);
+    vkGetPhysicalDeviceMemoryProperties(*physical_device, &mem_properties);
 
     for (uint32_t i = 0; i < mem_properties.memoryTypeCount; i++) {
         if ((type_filter & (1 << i)) && (mem_properties.memoryTypes[i].propertyFlags & properties) == properties) {
@@ -195,13 +195,13 @@ VkFormat mapVkFormat(DataFormat format) {
     return VK_FORMAT_UNDEFINED;
 }
 
-void createVkBuffer(VkPhysicalDevice     *physical_divece,
-                    VkDevice             *device,
-                    VkDeviceSize          size,
-                    VkBufferUsageFlags    usage,
-                    VkMemoryPropertyFlags properties,
-                    VkBuffer             &o_buffer,
-                    VkDeviceMemory       &o_memory) {
+void createVkBufferandDeviceMemory(VkPhysicalDevice     *physical_device,
+                                   VkDevice             *device,
+                                   VkDeviceSize          size,
+                                   VkBufferUsageFlags    usage,
+                                   VkMemoryPropertyFlags properties,
+                                   VkBuffer             &o_buffer,
+                                   VkDeviceMemory       &o_device_memory) {
     VkBufferCreateInfo buffer_info {};
     buffer_info.sType       = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
     buffer_info.size        = size;
@@ -213,16 +213,38 @@ void createVkBuffer(VkPhysicalDevice     *physical_divece,
 
     VkMemoryRequirements mem_requirements;
     vkGetBufferMemoryRequirements(*device, o_buffer, &mem_requirements);
-    uint32_t mem_type_index = findMemoryType(physical_divece, mem_requirements.memoryTypeBits, properties);
+    uint32_t mem_type_index = findMemoryType(physical_device, mem_requirements.memoryTypeBits, properties);
 
     VkMemoryAllocateInfo alloc_info {};
     alloc_info.sType           = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
     alloc_info.allocationSize  = mem_requirements.size;
     alloc_info.memoryTypeIndex = mem_type_index;
-    RHI_VULKAN_THROW_IF_FAILD(vkAllocateMemory(*device, &alloc_info, nullptr, &o_memory),
+    RHI_VULKAN_THROW_IF_FAILD(vkAllocateMemory(*device, &alloc_info, nullptr, &o_device_memory),
         "failed to allocate buffer memory!");
 
 
-    vkBindBufferMemory(*device, o_buffer, o_memory, 0);
+    vkBindBufferMemory(*device, o_buffer, o_device_memory, 0);
+}
+
+void createVkCommandPoolandCommandBuffers(VkDevice        *device,
+                                         uint32_t         queue_family_index,
+                                         uint32_t         buffers_count,
+                                         VkCommandPool   &o_command_pool,
+                                         VkCommandBuffer *o_command_buffers) {
+    VkCommandPoolCreateInfo pool_info {};
+    pool_info.sType            = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
+    pool_info.pNext            = nullptr;
+    pool_info.flags            = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
+    pool_info.queueFamilyIndex = queue_family_index;
+    RHI_VULKAN_THROW_IF_FAILD(vkCreateCommandPool(*device, &pool_info, nullptr, &o_command_pool),
+       "failed to create command pool!");
+
+    VkCommandBufferAllocateInfo alloc_info {};
+    alloc_info.sType              = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+    alloc_info.commandPool        = o_command_pool;
+    alloc_info.level              = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+    alloc_info.commandBufferCount = buffers_count;
+    RHI_VULKAN_THROW_IF_FAILD(vkAllocateCommandBuffers(*device, &alloc_info, o_command_buffers),
+        "failed to allocate command buffer!");
 }
 }} // namespace tigine::rhi

@@ -14,13 +14,19 @@
 namespace tigine { namespace rhi {
 VkFormat mapVkFormat(DataFormat format);
 
-void createVkBuffer(VkPhysicalDevice     *physical_divece,
-                    VkDevice             *device,
-                    VkDeviceSize          size,
-                    VkBufferUsageFlags    usage,
-                    VkMemoryPropertyFlags properties,
-                    VkBuffer             &o_buffer,
-                    VkDeviceMemory       &o_memory);
+void createVkBufferandDeviceMemory(VkPhysicalDevice     *physical_divece,
+                                   VkDevice             *device,
+                                   VkDeviceSize          size,
+                                   VkBufferUsageFlags    usage,
+                                   VkMemoryPropertyFlags properties,
+                                   VkBuffer             &o_buffer,
+                                   VkDeviceMemory       &o_device_memory);
+
+void createVkCommandPoolandCommandBuffers(VkDevice        *device,
+                                          uint32_t         queue_family_index,
+                                          uint32_t         buffer_count,
+                                          VkCommandPool   &o_command_pool,
+                                          VkCommandBuffer *o_command_buffers);
 }}// namespace tigine::rhi
 
 #endif // !TIGINE_RHI_VULKAN_VULKAN_COMMON_H_

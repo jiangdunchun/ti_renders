@@ -8,17 +8,26 @@
 namespace tigine { namespace rhi {
 class VulkanTexture : public ITexture {
 public:
-    VulkanTexture(VkPhysicalDevice *vk_physical_device, VkDevice *vk_device, const TextureDesc &desc);
+    VulkanTexture(VkPhysicalDevice *vk_physical_device,
+                  VkQueue          *vk_graphics_queue,
+                  uint32_t          vk_queue_family_index, 
+                  VkDevice         *vk_device,
+                  const TextureDesc &desc);
     ~VulkanTexture();
 
-    virtual void updateData(TULong data_size, void *data, TUInt mip_level = 0) override;
+    virtual void updateData(TUInt width, TUInt height, DataFormat formate, void *data, TUInt mip_level = 0) override;
 
     VkImageView *getVKImageview() { return &vk_imageview_; }
     VkSampler   *getVKSampler() { return &vk_sampler_; }
 
 private:
     VkPhysicalDevice *vk_physical_device_;
+    VkQueue          *vk_graphics_queue_;
     VkDevice         *vk_device_;
+
+    static bool            need_init_static_;
+    static VkCommandPool   vk_command_pool_;
+    static VkCommandBuffer vk_command_buffer_;
 
     VkImage        vk_image_;
     VkDeviceMemory vk_device_memory_;

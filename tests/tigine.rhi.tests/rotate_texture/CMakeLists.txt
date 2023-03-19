@@ -1,5 +1,7 @@
 add_executable(tigine.rhi.tests.rotate_texture ./main.cpp)
 
+include_directories(${STB_INCLUDE_DIR})
+
 target_link_libraries(tigine.rhi.tests.rotate_texture tigine.rhi)
 
 
