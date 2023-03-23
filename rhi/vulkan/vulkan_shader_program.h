@@ -11,7 +11,7 @@
 namespace tigine { namespace rhi {
 class VulkanShaderProgram : public IShaderProgram {
 public:
-    VulkanShaderProgram(const ShaderProgramDesc &desc);
+    VulkanShaderProgram(const VulkanContextInfo &context, const ShaderProgramDesc &desc);
     ~VulkanShaderProgram();
 
     bool        hasError() const override { return false; }

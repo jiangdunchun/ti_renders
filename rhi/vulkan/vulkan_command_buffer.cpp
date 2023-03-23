@@ -20,14 +20,11 @@ VkIndexType mapVkIndexType(IndexKind kind) {
     }
 }
 } // namespace
-VulkanCommandBuffer::VulkanCommandBuffer(VkDevice                      *vk_device,
-                                         VkQueue                       *vk_graphics_queue,
-                                         uint32_t                       vk_queue_family_index,
-                                         const CommandBufferDesc &desc)
-    : vk_device_(vk_device), buffers_count_(desc.buffer_count) {
+VulkanCommandBuffer::VulkanCommandBuffer(const VulkanContextInfo &context, const CommandBufferDesc &desc)
+    : vk_device_(context.vk_device), buffers_count_(desc.buffer_count) {
     vk_command_buffers_.resize(buffers_count_);
-    createVkCommandPoolandCommandBuffers(vk_device_, 
-                                         vk_queue_family_index, 
+    createVkCommandPoolandCommandBuffers(context.vk_device, 
+                                         context.vk_graphics_family, 
                                          buffers_count_, 
                                          vk_command_pool_, 
                                          vk_command_buffers_.data());
@@ -39,7 +36,7 @@ VulkanCommandBuffer::VulkanCommandBuffer(VkDevice                      *vk_devic
     for (size_t i = 0; i < buffers_count_; i++) {
         RHI_VULKAN_THROW_IF_FAILD(vkCreateFence(*vk_device_, &fence_info, nullptr, &(vk_fences_[i])),
             "failed to create fence of command buffer!");
-        vkQueueSubmit(*vk_graphics_queue, 0, nullptr, vk_fences_[i]);
+        vkQueueSubmit(*context.vk_graphics_queue, 0, nullptr, vk_fences_[i]);
     }
 
     acquireNextBuffer();

@@ -8,11 +8,7 @@
 namespace tigine { namespace rhi {
 class VulkanTexture : public ITexture {
 public:
-    VulkanTexture(VkPhysicalDevice *vk_physical_device,
-                  VkQueue          *vk_graphics_queue,
-                  uint32_t          vk_queue_family_index, 
-                  VkDevice         *vk_device,
-                  const TextureDesc &desc);
+    VulkanTexture(const VulkanContextInfo &context, const TextureDesc &desc);
     ~VulkanTexture();
 
     virtual void updateData(TUInt width, TUInt height, DataFormat formate, void *data, TUInt mip_level = 0) override;

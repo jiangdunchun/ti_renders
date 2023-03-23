@@ -499,7 +499,7 @@ void createSyncObjects(
 }
 } // namespace
 
-VulkanRenderContext::VulkanRenderContext(const RenderContextDesc &desc) {
+VulkanRenderContext::VulkanRenderContext(const RenderContextDesc &desc, VulkanContextInfo &o_context) {
 #ifdef NDEBUG
     const bool enable_validation_layers = false;
 #else
@@ -558,6 +558,8 @@ VulkanRenderContext::VulkanRenderContext(const RenderContextDesc &desc) {
 
 
     acquireNextPresentImage();
+
+    o_context = {&vk_physicl_device_, &vk_device_, &vk_graphics_queue_, vk_graphics_family_};
 }
 
 VulkanRenderContext::~VulkanRenderContext() {

@@ -26,10 +26,7 @@ public:
     IPipelineState *createPipelineState(const PipelineStateDesc &desc) override;
 
 private:
-    VkPhysicalDevice *vk_physicl_device_  = nullptr;
-    VkDevice         *vk_device_          = nullptr;
-    VkQueue          *vk_graphics_queue_  = nullptr;
-    uint32_t          vk_graphics_family_ = 0;
+    VulkanContextInfo context_info_;
 
     VulkanCommandQueue *command_queue_ = nullptr;
 };

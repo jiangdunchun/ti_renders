@@ -10,7 +10,7 @@
 namespace tigine { namespace rhi {
 class VulkanRenderContext : public IRenderContext {
 public:
-    VulkanRenderContext(const RenderContextDesc &desc);
+    VulkanRenderContext(const RenderContextDesc &desc, VulkanContextInfo &o_context);
     ~VulkanRenderContext();
 
     IRenderPass *getRenderPass() override { return render_pass_; }

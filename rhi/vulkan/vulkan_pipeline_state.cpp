@@ -6,7 +6,8 @@
 #include "vulkan/vulkan_resource_heap.h"
 
 namespace tigine { namespace rhi {
-VulkanPipelineState::VulkanPipelineState(VkDevice *vk_device, const PipelineStateDesc &desc) : vk_device_(vk_device) {
+VulkanPipelineState::VulkanPipelineState(const VulkanContextInfo &context, const PipelineStateDesc &desc) 
+    : vk_device_(context.vk_device) {
     VulkanShaderProgram *shader_prog    = dynamic_cast<VulkanShaderProgram *>(desc.shader_program);
     VulkanBufferArray   *vertices_array = dynamic_cast<VulkanBufferArray *>(desc.vertices_array);
     vulkan_resource_heap_               = dynamic_cast<VulkanResourceHeap *>(desc.resource_heap);

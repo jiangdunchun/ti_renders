@@ -3,7 +3,7 @@
 #include "vulkan/vulkan_shader.h"
 
 namespace tigine { namespace rhi {
-VulkanShaderProgram::VulkanShaderProgram(const ShaderProgramDesc &desc) {
+VulkanShaderProgram::VulkanShaderProgram(const VulkanContextInfo &context, const ShaderProgramDesc &desc) {
     if (desc.vertex_shader) {
         VkPipelineShaderStageCreateInfo shaderStageInfo {};
         shaderStageInfo.sType  = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;

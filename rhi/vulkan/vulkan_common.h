@@ -12,9 +12,17 @@
     if (result != VK_SUCCESS) RHI_VULKAN_THROW(msg)
 
 namespace tigine { namespace rhi {
+struct VulkanContextInfo {
+    VkPhysicalDevice *vk_physical_device  = nullptr;
+    VkDevice         *vk_device           = nullptr;
+    VkQueue          *vk_graphics_queue   = nullptr;
+    uint32_t          vk_graphics_family  = 0;
+};
+
+
 VkFormat mapVkFormat(DataFormat format);
 
-void createVkBufferandDeviceMemory(VkPhysicalDevice     *physical_divece,
+void createVkBufferandDeviceMemory(VkPhysicalDevice     *physical_device,
                                    VkDevice             *device,
                                    VkDeviceSize          size,
                                    VkBufferUsageFlags    usage,

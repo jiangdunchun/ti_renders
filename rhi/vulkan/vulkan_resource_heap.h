@@ -8,7 +8,7 @@
 namespace tigine { namespace rhi {
 class VulkanResourceHeap : public IResourceHeap {
 public:
-    VulkanResourceHeap(VkDevice *vk_device, const ResourceHeapDesc &desc);
+    VulkanResourceHeap(const VulkanContextInfo &context, const ResourceHeapDesc &desc);
     ~VulkanResourceHeap();
 
     VkPipelineLayout *getVkPipelineLayout() { return &vk_pipeline_layout_; }

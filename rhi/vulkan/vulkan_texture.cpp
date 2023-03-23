@@ -16,9 +16,9 @@ VkImageType mapVkImageType(TextureKind kind) {
     }
 }
 
-uint32_t findMemoryType(VkPhysicalDevice *physical_divece, uint32_t type_filter, VkMemoryPropertyFlags properties) {
+uint32_t findMemoryType(VkPhysicalDevice *physical_device, uint32_t type_filter, VkMemoryPropertyFlags properties) {
     VkPhysicalDeviceMemoryProperties mem_properties;
-    vkGetPhysicalDeviceMemoryProperties(*physical_divece, &mem_properties);
+    vkGetPhysicalDeviceMemoryProperties(*physical_device, &mem_properties);
 
     for (uint32_t i = 0; i < mem_properties.memoryTypeCount; i++) {
         if ((type_filter & (1 << i)) && (mem_properties.memoryTypes[i].propertyFlags & properties) == properties) {
@@ -34,15 +34,11 @@ bool            VulkanTexture::need_init_static_  = true;
 VkCommandPool   VulkanTexture::vk_command_pool_   = {};
 VkCommandBuffer VulkanTexture::vk_command_buffer_ = {};
 
-VulkanTexture::VulkanTexture(VkPhysicalDevice  *vk_physical_device,
-                             VkQueue           *vk_graphics_queue,
-                             uint32_t           vk_queue_family_index,
-                             VkDevice          *vk_device,
-                             const TextureDesc &desc) 
-    : vk_physical_device_(vk_physical_device), vk_graphics_queue_(vk_graphics_queue), vk_device_(vk_device),
+VulkanTexture::VulkanTexture(const VulkanContextInfo &context, const TextureDesc &desc) 
+    : vk_physical_device_(context.vk_physical_device), vk_graphics_queue_(context.vk_graphics_queue), vk_device_(context.vk_device),
       ITexture(desc.kind, desc.format) {
     if (need_init_static_) {
-        createVkCommandPoolandCommandBuffers(vk_device_, vk_queue_family_index, 1, vk_command_pool_, &vk_command_buffer_);
+        createVkCommandPoolandCommandBuffers(vk_device_, context.vk_graphics_family, 1, vk_command_pool_, &vk_command_buffer_);
         need_init_static_ = false;
     }
 

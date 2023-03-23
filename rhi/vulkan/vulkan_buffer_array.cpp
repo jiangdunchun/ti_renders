@@ -3,7 +3,8 @@
 #include "vulkan/vulkan_buffer.h"
 
 namespace tigine { namespace rhi {
-VulkanBufferArray::VulkanBufferArray(const BufferArrayDesc &desc) : index_kind_(desc.index_kind) {
+VulkanBufferArray::VulkanBufferArray(const VulkanContextInfo &context, const BufferArrayDesc &desc) 
+    : index_kind_(desc.index_kind) {
     vertices_buffer_ = dynamic_cast<VulkanBuffer *>(desc.vertices_buffer);
     if (desc.indices_buffer) {
         indices_buffer_ = dynamic_cast<VulkanBuffer *>(desc.indices_buffer);

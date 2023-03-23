@@ -8,7 +8,7 @@
 namespace tigine { namespace rhi {
 class VulkanCommandQueue : public ICommandQueue {
 public:
-    VulkanCommandQueue(VkQueue *vk_graphics_queue);
+    VulkanCommandQueue(const VulkanContextInfo &context);
     ~VulkanCommandQueue();
 
     void submit(ICommandBuffer *command_buffer) override;

@@ -11,7 +11,7 @@ namespace tigine { namespace rhi {
 class VulkanBuffer;
 class VulkanBufferArray : public IBufferArray {
 public:
-    VulkanBufferArray(const BufferArrayDesc &desc);
+    VulkanBufferArray(const VulkanContextInfo &context, const BufferArrayDesc &desc);
     ~VulkanBufferArray();
 
     bool                                  hasIndices() const { return has_indices_; }

@@ -1,12 +1,13 @@
 #include "vulkan/vulkan_shader.h"
 
 namespace tigine { namespace rhi {
-VulkanShader::VulkanShader(VkDevice *vk_device, const ShaderDesc &desc) : vk_device_(vk_device) {
+VulkanShader::VulkanShader(const VulkanContextInfo &context, const ShaderDesc &desc) 
+    : vk_device_(context.vk_device) {
     VkShaderModuleCreateInfo create_info {};
     create_info.sType    = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
     create_info.pCode    = reinterpret_cast<const uint32_t *>(desc.code);
     create_info.codeSize = desc.code_size;
-    if (vkCreateShaderModule(*vk_device_, &create_info, nullptr, &vk_shader_) != VK_SUCCESS) {
+    if (vkCreateShaderModule(*context.vk_device, &create_info, nullptr, &vk_shader_) != VK_SUCCESS) {
         has_error_ = true;
     }
 }
