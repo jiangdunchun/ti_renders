@@ -14,9 +14,11 @@ struct RenderContextDesc {
 
 class IRenderContext : public IRenderTarget {
 public:
+    virtual bool isContext() override final { return true; }
+
     virtual ISurface *getSurface() = 0;
     virtual void      present()    = 0;
-    virtual bool      isContext() override final { return true; }
+    
 };
 }} // namespace tigine::rhi
 

@@ -17,13 +17,7 @@ struct PipelineStateDesc {
     ClearValue       clear_value;
 };
 
-class IPipelineState : public NonCopyable {
-public:
-    ClearValue get_clear_value() const { return clear_value_; }
-
-protected:
-    ClearValue clear_value_;
-};
+class IPipelineState : public NonCopyable {};
 }} // namespace tigine::rhi
 
 #endif // !TIGINE_RHI_INTERFACE_I_PIPELINE_STATE_H_

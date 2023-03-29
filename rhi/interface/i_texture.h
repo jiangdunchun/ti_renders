@@ -47,16 +47,8 @@ struct TextureDesc {
 class ITexture : public IResource {
 public:
     ResourceKind getResourceKind() const override final { return ResourceKind::Texture; }
-    TextureKind  getTextureKind() const { return kind_; }
-    DataFormat   getFormat() const { return format_; }
+
     virtual void updateData(TUInt width, TUInt height, DataFormat formate, void *data, TUInt mip_level = 0) = 0;
-
-protected:
-    ITexture(TextureKind kind, DataFormat format) : kind_(kind), format_(format) {}
-
-private: 
-    TextureKind kind_;
-    DataFormat  format_;
 };
 }} // namespace tigine::rhi
 

@@ -35,8 +35,7 @@ VkCommandPool   VulkanTexture::vk_command_pool_   = {};
 VkCommandBuffer VulkanTexture::vk_command_buffer_ = {};
 
 VulkanTexture::VulkanTexture(const VulkanContextInfo &context, const TextureDesc &desc) 
-    : vk_physical_device_(context.vk_physical_device), vk_graphics_queue_(context.vk_graphics_queue), vk_device_(context.vk_device),
-      ITexture(desc.kind, desc.format) {
+    : vk_physical_device_(context.vk_physical_device), vk_graphics_queue_(context.vk_graphics_queue), vk_device_(context.vk_device){
     if (need_init_static_) {
         createVkCommandPoolandCommandBuffers(vk_device_, context.vk_graphics_family, 1, vk_command_pool_, &vk_command_buffer_);
         need_init_static_ = false;

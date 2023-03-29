@@ -20,6 +20,7 @@ struct BufferDesc {
 class IBuffer : public IResource {
 public:
     ResourceKind getResourceKind() const override final { return ResourceKind::Buffer; }
+
     virtual void updateData(TULong data_size, void *data) = 0;
 };
 }} // namespace tigine::rhi

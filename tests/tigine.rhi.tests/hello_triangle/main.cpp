@@ -11,20 +11,22 @@ using namespace std;
 int main() {
     IRenderSystem *render = CREATE_RENDER_SYSTEM();
 
-    RenderContextDesc context_desc {context_desc.resolution = {600, 600}};
+
+    RenderContextDesc context_desc;
+    context_desc.resolution = {600, 600};
     IRenderContext   *context = render->createRenderContext(context_desc);
     ISurface         *window  = context->getSurface();
     window->setTitle("hello triangle");
     window->show();
 
+
     float vertices[] = {0, -0.5f, 0, 0, 0, 1, 0.5f, 0.5f, 0, 1, 0, 0, -0.5f, 0.5f, 0, 0, 1, 0};
 
-    BufferDesc buffer_desc;
-    buffer_desc.kind     = BufferKind::Vertices;
-    buffer_desc.data_size = sizeof(vertices);
-    buffer_desc.data      = vertices;
-
-    IBuffer *vertices_buffer = render->createBuffer(buffer_desc);
+    BufferDesc vertices_buffer_desc;
+    vertices_buffer_desc.kind      = BufferKind::Vertices;
+    vertices_buffer_desc.data_size = sizeof(vertices);
+    vertices_buffer_desc.data      = vertices;
+    IBuffer *vertices_buffer = render->createBuffer(vertices_buffer_desc);
 
     std::vector<BindingInfo> bindings_info(1);
     bindings_info[0].binding = 0;
@@ -44,14 +46,13 @@ int main() {
     array_desc.vertices_buffer = vertices_buffer;
     array_desc.bindings        = bindings_info;
     array_desc.attributes      = attributes_info;
-
     IBufferArray *vertices_array = render->createBufferArray(array_desc);
+
 
     ShaderDesc vert_shader_desc;
     vert_shader_desc.kind      = ShaderKind::Vertex;
     vert_shader_desc.code_size = hello_triangle_vert.size();
     vert_shader_desc.code      = hello_triangle_vert.data();
-
     IShader *vert_shader = render->createShader(vert_shader_desc);
     if (vert_shader->hasError()) std::cout << vert_shader->getReport() << std::endl;
 
@@ -59,15 +60,14 @@ int main() {
     frag_shader_desc.kind      = ShaderKind::Fragment;
     frag_shader_desc.code_size = hello_triangle_frag.size();
     frag_shader_desc.code      = hello_triangle_frag.data();
-
     IShader *frag_shader = render->createShader(frag_shader_desc);
     if (frag_shader->hasError()) std::cout << frag_shader->getReport() << std::endl;
 
     ShaderProgramDesc shader_prog_desc;
     shader_prog_desc.vertex_shader   = vert_shader;
     shader_prog_desc.fragment_shader = frag_shader;
-
     IShaderProgram *shader_prog = render->createShaderProgram(shader_prog_desc);
+
 
     ResourceHeapDesc resource_heap_desc;
     IResourceHeap *resource_heap = render->CreateResourceHeap(resource_heap_desc);
@@ -77,7 +77,6 @@ int main() {
     pipeline_desc.shader_program = shader_prog;
     pipeline_desc.resource_heap  = resource_heap;
     pipeline_desc.render_pass = context->getRenderPass();
-
     IPipelineState *pipeline = render->createPipelineState(pipeline_desc);
 
     ICommandQueue *queue = render->getCommandQueue();
