@@ -17,19 +17,19 @@ VkBufferUsageFlags mapVkBufferKind(BufferKind kind) {
 } // namespace
 
 VulkanBuffer::VulkanBuffer(const VulkanContextInfo &context, const BufferDesc &desc) 
-    : vk_device_(context.vk_device), data_size_(desc.data_size) {
+    : vk_device_(context.vk_device), buffer_size_(desc.buffer_size) {
     VkBufferUsageFlags vk_usage = mapVkBufferKind(desc.kind);
     VkMemoryPropertyFlags mem_properties = VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT;
     createVkBufferandDeviceMemory(context.vk_physical_device, 
                                   context.vk_device, 
-                                  desc.data_size, 
+                                  desc.buffer_size, 
                                   vk_usage, 
                                   mem_properties,
                                   vk_buffer_,
                                   vk_device_memory_);
 
-    if (desc.data) {
-        updateData(desc.data_size, desc.data);
+    if (desc.data_desc.data) {
+        updateData(desc.data_desc);
     }
 }
 
@@ -38,10 +38,10 @@ VulkanBuffer::~VulkanBuffer() {
     vkDestroyBuffer(*vk_device_, vk_buffer_, nullptr);
 }
 
-void VulkanBuffer::updateData(TULong data_size, void *data) {
+void VulkanBuffer::updateData(const BufferDataDesc &desc) {
     void *dst_ptr;
-    vkMapMemory(*vk_device_, vk_device_memory_, 0, data_size, 0, &dst_ptr);
-    memcpy(dst_ptr, data, (size_t)data_size);
+    vkMapMemory(*vk_device_, vk_device_memory_, 0, desc.buffer_size, 0, &dst_ptr);
+    memcpy(dst_ptr, desc.data, (size_t)desc.buffer_size);
     vkUnmapMemory(*vk_device_, vk_device_memory_);
 }
 }} // namespace tigine::rhi

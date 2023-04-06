@@ -11,17 +11,17 @@ public:
     VulkanBuffer(const VulkanContextInfo& context, const BufferDesc &desc);
     ~VulkanBuffer();
 
-    virtual void updateData(TULong data_size, void *data) override;
+    virtual void updateData(const BufferDataDesc &desc) override;
 
-    TUInt        getDataSize() { return data_size_; }
+    TUInt     getDataSize() { return buffer_size_; }
     VkBuffer    *getVkBuffer() { return &vk_buffer_; }
 
 private:
-    VkDevice         *vk_device_;
+    VkDevice *vk_device_;
 
     VkBuffer       vk_buffer_;
     VkDeviceMemory vk_device_memory_;
-    TUInt          data_size_;
+    TUInt          buffer_size_;
 };
 }} // namespace tigine::rhi
 

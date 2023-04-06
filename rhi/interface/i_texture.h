@@ -34,21 +34,28 @@ struct SamplerDesc {
     SamplerFilter mipmap_filter = SamplerFilter::Linear;
 };
 
+struct TextureDataDesc {
+    DataFormat format;
+    Extent3D   texture_size = {1,1,1};
+    void      *data = nullptr;
+    TUInt      array_layer = 0;
+    TUInt      mip_level = 0;
+};
+
 struct TextureDesc {
     TextureKind kind;
     DataFormat  format;
-    TUInt       width;
-    TUInt       height = 1;
-    TUInt       depth  = 1;
+    Extent3D    texture_size = {1, 1, 1};
     TUInt       mip_levels = 1;
     SamplerDesc sample_desc;
+    TextureDataDesc data_desc;
 };
 
 class ITexture : public IResource {
 public:
     ResourceKind getResourceKind() const override final { return ResourceKind::Texture; }
 
-    virtual void updateData(TUInt width, TUInt height, DataFormat formate, void *data, TUInt mip_level = 0) = 0;
+    virtual void updateData(const TextureDataDesc &desc) = 0;
 };
 }} // namespace tigine::rhi
 

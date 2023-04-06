@@ -16,8 +16,7 @@ public:
     VulkanResourceHeap *getVulkanResourceHeap() { return vulkan_resource_heap_; }
 
 private:
-    VkDevice *vk_device_;
-
+    VkDevice           *vk_device_;
     VulkanResourceHeap *vulkan_resource_heap_;
 
     VkPipeline vk_pipeline_;

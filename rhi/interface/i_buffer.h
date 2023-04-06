@@ -11,17 +11,22 @@ enum class BufferKind {
     Indices,
 };
 
+struct BufferDataDesc {
+    TULong buffer_size = 0;
+    void  *data        = nullptr;
+};
+
 struct BufferDesc {
-    BufferKind kind;
-    TULong     data_size;
-    void      *data  = nullptr;
+    BufferKind     kind;
+    TULong         buffer_size;
+    BufferDataDesc data_desc;
 };
 
 class IBuffer : public IResource {
 public:
     ResourceKind getResourceKind() const override final { return ResourceKind::Buffer; }
 
-    virtual void updateData(TULong data_size, void *data) = 0;
+    virtual void updateData(const BufferDataDesc &desc) = 0;
 };
 }} // namespace tigine::rhi
 

@@ -34,8 +34,8 @@ bool            VulkanTexture::need_init_static_  = true;
 VkCommandPool   VulkanTexture::vk_command_pool_   = {};
 VkCommandBuffer VulkanTexture::vk_command_buffer_ = {};
 
-VulkanTexture::VulkanTexture(const VulkanContextInfo &context, const TextureDesc &desc) 
-    : vk_physical_device_(context.vk_physical_device), vk_graphics_queue_(context.vk_graphics_queue), vk_device_(context.vk_device){
+VulkanTexture::VulkanTexture(const VulkanContextInfo &context, const TextureDesc &desc)
+    : vk_physical_device_(context.vk_physical_device), vk_graphics_queue_(context.vk_graphics_queue), vk_device_(context.vk_device) {
     if (need_init_static_) {
         createVkCommandPoolandCommandBuffers(vk_device_, context.vk_graphics_family, 1, vk_command_pool_, &vk_command_buffer_);
         need_init_static_ = false;
@@ -44,11 +44,11 @@ VulkanTexture::VulkanTexture(const VulkanContextInfo &context, const TextureDesc
     VkImageCreateInfo image_info {};
     image_info.sType         = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
     image_info.imageType     = mapVkImageType(desc.kind);
-    image_info.extent.width  = desc.width;
-    image_info.extent.height = desc.height;
-    image_info.extent.depth  = desc.depth;
+    image_info.extent.width  = desc.texture_size.width;
+    image_info.extent.height = desc.texture_size.height;
+    image_info.extent.depth  = desc.texture_size.depth;
     image_info.mipLevels     = desc.mip_levels;
-    image_info.arrayLayers   = desc.kind == TextureKind::TextureCube? 6 : 1;
+    image_info.arrayLayers   = desc.kind == TextureKind::TextureCube ? 6 : 1;
     image_info.format        = mapVkFormat(desc.format);
     image_info.tiling        = VK_IMAGE_TILING_OPTIMAL;
     image_info.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
@@ -58,18 +58,16 @@ VulkanTexture::VulkanTexture(const VulkanContextInfo &context, const TextureDesc
     if (desc.kind == TextureKind::TextureCube) {
         image_info.flags = VK_IMAGE_CREATE_CUBE_COMPATIBLE_BIT;
     }
-    RHI_VULKAN_THROW_IF_FAILD(vkCreateImage(*vk_device_, &image_info, nullptr, &vk_image_), 
-        "failed to create image!");
+    RHI_VULKAN_THROW_IF_FAILD(vkCreateImage(*vk_device_, &image_info, nullptr, &vk_image_), "failed to create image!");
 
     VkMemoryRequirements mem_requirements {};
     vkGetImageMemoryRequirements(*vk_device_, vk_image_, &mem_requirements);
     VkMemoryPropertyFlags properties = VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT;
-    VkMemoryAllocateInfo alloc_info {};
+    VkMemoryAllocateInfo  alloc_info {};
     alloc_info.sType           = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
     alloc_info.allocationSize  = mem_requirements.size;
     alloc_info.memoryTypeIndex = findMemoryType(vk_physical_device_, mem_requirements.memoryTypeBits, properties);
-    RHI_VULKAN_THROW_IF_FAILD(vkAllocateMemory(*vk_device_, &alloc_info, nullptr, &vk_device_memory_),
-        "failed to allocate image memory!");
+    RHI_VULKAN_THROW_IF_FAILD(vkAllocateMemory(*vk_device_, &alloc_info, nullptr, &vk_device_memory_), "failed to allocate image memory!");
 
     vkBindImageMemory(*vk_device_, vk_image_, vk_device_memory_, 0);
 
@@ -83,13 +81,12 @@ VulkanTexture::VulkanTexture(const VulkanContextInfo &context, const TextureDesc
     imageview_info.subresourceRange.levelCount     = 1;
     imageview_info.subresourceRange.baseArrayLayer = 0;
     imageview_info.subresourceRange.layerCount     = 1;
-    RHI_VULKAN_THROW_IF_FAILD(vkCreateImageView(*vk_device_, &imageview_info, nullptr, &vk_imageview_),
-        "failed to create image viewer!");
+    RHI_VULKAN_THROW_IF_FAILD(vkCreateImageView(*vk_device_, &imageview_info, nullptr, &vk_imageview_), "failed to create image viewer!");
 
     VkPhysicalDeviceProperties device_properties {};
     vkGetPhysicalDeviceProperties(*vk_physical_device_, &device_properties);
     VkSamplerCreateInfo sampler_info {};
-    sampler_info.sType = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
+    sampler_info.sType                   = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
     sampler_info.sType                   = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
     sampler_info.magFilter               = VK_FILTER_LINEAR;
     sampler_info.minFilter               = VK_FILTER_LINEAR;
@@ -103,8 +100,11 @@ VulkanTexture::VulkanTexture(const VulkanContextInfo &context, const TextureDesc
     sampler_info.compareEnable           = VK_FALSE;
     sampler_info.compareOp               = VK_COMPARE_OP_ALWAYS;
     sampler_info.mipmapMode              = VK_SAMPLER_MIPMAP_MODE_LINEAR;
-    RHI_VULKAN_THROW_IF_FAILD(vkCreateSampler(*vk_device_, &sampler_info, nullptr, &vk_sampler_),
-        "failed to create sampler!");
+    RHI_VULKAN_THROW_IF_FAILD(vkCreateSampler(*vk_device_, &sampler_info, nullptr, &vk_sampler_), "failed to create sampler!");
+
+    if (desc.data_desc.data) {
+        updateData(desc.data_desc);
+    }
 }
 
 VulkanTexture::~VulkanTexture() { 
@@ -216,8 +216,8 @@ void copyBufferToImage(VkQueue       &graphicsQueue,
     endSingleTimeCommands(graphicsQueue, device, commandPool, commandBuffer);
 }
 
-void VulkanTexture::updateData(TUInt width, TUInt height, DataFormat formate, void *data, TUInt mip_level) {
-    uint32_t       image_size = width * height * 4;
+void VulkanTexture::updateData(const TextureDataDesc &desc) {
+    uint32_t       image_size = desc.texture_size.width * desc.texture_size.height * 4;
     VkBuffer       temp_buffer;
     VkDeviceMemory temp_memory;
     createVkBufferandDeviceMemory(vk_physical_device_,
@@ -230,18 +230,23 @@ void VulkanTexture::updateData(TUInt width, TUInt height, DataFormat formate, vo
 
     void *temp_memory_ptr;
     vkMapMemory(*vk_device_, temp_memory, 0, image_size, 0, &temp_memory_ptr);
-    memcpy(temp_memory_ptr, data, static_cast<size_t>(image_size));
+    memcpy(temp_memory_ptr, desc.data, static_cast<size_t>(image_size));
     vkUnmapMemory(*vk_device_, temp_memory);
 
-    transitionImageLayout(
-        *vk_graphics_queue_, *vk_device_, vk_command_pool_,vk_image_, VK_FORMAT_R8G8B8A8_SRGB, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL);
+    transitionImageLayout(*vk_graphics_queue_,
+                          *vk_device_,
+                          vk_command_pool_,
+                          vk_image_,
+                          VK_FORMAT_R8G8B8A8_SRGB,
+                          VK_IMAGE_LAYOUT_UNDEFINED,
+                          VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL);
     copyBufferToImage(*vk_graphics_queue_,
                       *vk_device_,
                       vk_command_pool_,
                       temp_buffer,
                       vk_image_,
-                      static_cast<uint32_t>(width),
-                      static_cast<uint32_t>(height));
+                      static_cast<uint32_t>(desc.texture_size.width),
+                      static_cast<uint32_t>(desc.texture_size.height));
     transitionImageLayout(*vk_graphics_queue_,
                           *vk_device_,
                           vk_command_pool_,
@@ -252,6 +257,5 @@ void VulkanTexture::updateData(TUInt width, TUInt height, DataFormat formate, vo
 
     vkDestroyBuffer(*vk_device_, temp_buffer, nullptr);
     vkFreeMemory(*vk_device_, temp_memory, nullptr);
-
 }
 }} // namespace tigine::rhi

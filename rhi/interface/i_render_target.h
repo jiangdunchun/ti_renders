@@ -23,9 +23,9 @@ struct AttachmentDesc {
 };
 
 struct RenderTargetDesc {
-    IRenderPass                *render_pass;
     Extent2D                    resolution;
     TUInt                       samples = 1;
+    IRenderPass                *render_pass;
     std::vector<AttachmentDesc> attachments;
 };
 

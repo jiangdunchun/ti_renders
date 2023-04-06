@@ -24,8 +24,8 @@ private:
     Extent2D resolution_;
     TUInt    samples_;
     TUInt    color_attachments_nums_ = 0;
-    bool    has_depth_attachment_    = false;
-    bool    has_stencil_attachment_  = false;
+    bool     has_depth_attachment_    = false;
+    bool     has_stencil_attachment_  = false;
 };
 }} // namespace tigine::rhi
 

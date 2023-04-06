@@ -25,14 +25,16 @@ int main() {
 
     BufferDesc vertices_buffer_desc;
     vertices_buffer_desc.kind     = BufferKind::Vertices;
-    vertices_buffer_desc.data_size = sizeof(vertices);
-    vertices_buffer_desc.data      = vertices;
+    vertices_buffer_desc.buffer_size = sizeof(vertices);
+    vertices_buffer_desc.data_desc.buffer_size = sizeof(vertices);
+    vertices_buffer_desc.data_desc.data        = vertices;
     IBuffer *vertices_buffer = render->createBuffer(vertices_buffer_desc);
 
     BufferDesc indices_buffer_desc;
     indices_buffer_desc.kind      = BufferKind::Indices;
-    indices_buffer_desc.data_size = sizeof(indices);
-    indices_buffer_desc.data      = indices;
+    indices_buffer_desc.buffer_size = sizeof(indices);
+    indices_buffer_desc.data_desc.buffer_size = sizeof(indices);
+    indices_buffer_desc.data_desc.data        = indices;
     IBuffer *indices_buffer = render->createBuffer(indices_buffer_desc);
 
     std::vector<BindingInfo> bindings_info(1);
@@ -80,7 +82,7 @@ int main() {
 
     BufferDesc angle_buffer_desc;
     angle_buffer_desc.kind         = BufferKind::Vertices;
-    angle_buffer_desc.data_size    = sizeof(float);
+    angle_buffer_desc.buffer_size    = sizeof(float);
     IBuffer *angle_buffer = render->createBuffer(angle_buffer_desc);
 
     int      tex_width, tex_height, tex_channels;
@@ -88,10 +90,13 @@ int main() {
     TextureDesc texture_desc;
     texture_desc.kind = TextureKind::Texture2D;
     texture_desc.format = DataFormat::RGBA8UNorm_sRGB;
-    texture_desc.width  = tex_width;
-    texture_desc.height = tex_height;
+    texture_desc.texture_size.width = tex_width;
+    texture_desc.texture_size.height = tex_height;
+    texture_desc.data_desc.format    = DataFormat::RGBA8UNorm_sRGB;
+    texture_desc.data_desc.texture_size.width = tex_width;
+    texture_desc.data_desc.texture_size.height = tex_height;
+    texture_desc.data_desc.data                = pixels;
     ITexture *texture   = render->createTexture(texture_desc);
-    texture->updateData(tex_width, tex_height, DataFormat::RGBA8SNorm, pixels);
     stbi_image_free(pixels);
 
     ResourceHeapDesc resource_heap_desc;
@@ -121,20 +126,23 @@ int main() {
 #define M_PI 3.1415926
 #endif // !M_PI
     float angle = 0;
+    BufferDataDesc uniform_data_desc;
+    uniform_data_desc.buffer_size = sizeof(angle);
+    uniform_data_desc.data        = &angle;
 
     while (window->processEvents()) {
         angle += 0.0001;
         if (angle > 2 * M_PI) {
             angle -= 2 * M_PI;
         }
-        angle_buffer->updateData(sizeof(angle), &angle);
+        angle_buffer->updateData(uniform_data_desc);
 
         command_buffer->begin();
         {
             command_buffer->setViewport({0, 0, context->getResolution().width, context->getResolution().height});
             command_buffer->setPipeState(pipeline);
             command_buffer->setVertexBufferArray(vertices_array);
-            command_buffer->beginRenderPass(context, context->getRenderPass());
+            command_buffer->beginRenderPass(context);
             {
                 command_buffer->clear(CF_Color);
                 command_buffer->drawArray(6, 0);

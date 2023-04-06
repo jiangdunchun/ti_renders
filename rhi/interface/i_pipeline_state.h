@@ -8,13 +8,23 @@
 #include "interface/i_buffer_array.h"
 
 namespace tigine { namespace rhi {
+enum class DrawMode {
+    Triangles,
+};
+
+struct ClearValue {
+    float color[4];
+    float depth;
+    TUInt stencil;
+};
+
 struct PipelineStateDesc {
     IShaderProgram  *shader_program;
     IResourceHeap   *resource_heap;
     IBufferArray    *vertices_array;
     IRenderPass     *render_pass;
-    DrawMode         draw_mode = DrawMode::Triangles;
-    ClearValue       clear_value;
+    DrawMode         draw_mode   = DrawMode::Triangles;
+    ClearValue       clear_value = {{0.0f, 0.0f, 0.0f, 1.0f}, 1.0f, 0};
 };
 
 class IPipelineState : public NonCopyable {};

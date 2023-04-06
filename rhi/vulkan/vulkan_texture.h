@@ -11,7 +11,7 @@ public:
     VulkanTexture(const VulkanContextInfo &context, const TextureDesc &desc);
     ~VulkanTexture();
 
-    virtual void updateData(TUInt width, TUInt height, DataFormat formate, void *data, TUInt mip_level = 0) override;
+    virtual void updateData(const TextureDataDesc &desc) override;
 
     VkImageView *getVKImageview() { return &vk_imageview_; }
     VkSampler   *getVKSampler() { return &vk_sampler_; }

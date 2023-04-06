@@ -21,7 +21,7 @@ VkIndexType mapVkIndexType(IndexKind kind) {
 }
 } // namespace
 VulkanCommandBuffer::VulkanCommandBuffer(const VulkanContextInfo &context, const CommandBufferDesc &desc)
-    : vk_device_(context.vk_device), buffers_count_(desc.buffer_count) {
+    : vk_device_(context.vk_device), buffers_count_(2) {
     vk_command_buffers_.resize(buffers_count_);
     createVkCommandPoolandCommandBuffers(context.vk_device, 
                                          context.vk_graphics_family, 
@@ -126,8 +126,8 @@ void VulkanCommandBuffer::setVertexBufferArray(IBufferArray *buffer_array) {
     }
 }
 
-void VulkanCommandBuffer::beginRenderPass(IRenderTarget *render_target, IRenderPass *render_pass) {
-    VulkanRenderPass *vulkan_render_pass = dynamic_cast<VulkanRenderPass *>(render_pass);
+void VulkanCommandBuffer::beginRenderPass(IRenderTarget *render_target) {
+    VulkanRenderPass *vulkan_render_pass = dynamic_cast<VulkanRenderPass *>(render_target->getRenderPass());
     if (render_target->isContext()) {
         VulkanRenderContext *render_context = dynamic_cast<VulkanRenderContext *>(render_target);
         

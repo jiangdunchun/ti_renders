@@ -18,7 +18,7 @@ public:
     void setViewport(const Viewport &viewport) override;
     void setPipeState(IPipelineState *pipe_state) override;
     void setVertexBufferArray(IBufferArray *buffer_array) override;
-    void beginRenderPass(IRenderTarget *render_target, IRenderPass *render_pass) override;
+    void beginRenderPass(IRenderTarget *render_target) override;
     void endRenderPass() override;
     void drawArray(TULong num_vertices, TULong first_vertex) override;
     void clear(TChar clear_flags) override;

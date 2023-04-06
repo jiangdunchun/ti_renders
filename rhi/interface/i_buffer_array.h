@@ -12,7 +12,6 @@ enum class IndexKind {
     IK_UINT32,
 };
 
-
 struct BindingInfo {
     TUInt binding;
     TUInt stride;

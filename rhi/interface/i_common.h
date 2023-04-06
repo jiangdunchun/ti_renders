@@ -115,10 +115,6 @@ enum ClearFlag : TChar {
     CF_Stencil = 1 << 2
 };
 
-enum class DrawMode {
-    Triangles,
-};
-
 struct Viewport {
     TUInt x;
     TUInt y;
@@ -127,20 +123,14 @@ struct Viewport {
 };
 
 struct Extent2D {
-    TUInt width  = 0;
-    TUInt height = 0;
+    TUInt width;
+    TUInt height;
 };
 
 struct Extent3D {
-    TUInt width  = 0;
-    TUInt height = 0;
-    TUInt depth  = 0;
-};
-
-struct ClearValue {
-    float color[4] = {0.0f, 0.0f, 0.0f, 1.0f};
-    float depth    = 1.0f;
-    TUInt stencil  = 0;
+    TUInt width;
+    TUInt height;
+    TUInt depth;
 };
 }} // namespace tigine::rhi
 
