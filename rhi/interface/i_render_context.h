@@ -14,6 +14,8 @@ struct RenderContextDesc {
 
 class IRenderContext : public IRenderTarget {
 public:
+    virtual ~IRenderContext() = default;
+
     virtual bool isContext() override final { return true; }
 
     virtual ISurface *getSurface() = 0;

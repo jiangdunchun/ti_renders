@@ -11,6 +11,8 @@ enum class ResourceKind {
 
 class IResource : public NonCopyable {
 public:
+    virtual ~IResource() = default;
+
     virtual ResourceKind getResourceKind() const = 0;
 };
 }} // namespace tigine::rhi

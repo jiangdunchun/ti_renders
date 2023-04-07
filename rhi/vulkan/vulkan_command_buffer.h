@@ -3,8 +3,6 @@
 
 #include "interface/i_command_buffer.h"
 
-#include <vector>
-
 #include "vulkan/vulkan_common.h"
 
 namespace tigine { namespace rhi {

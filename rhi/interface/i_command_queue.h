@@ -7,6 +7,8 @@
 namespace tigine { namespace rhi {
 class ICommandQueue : public NonCopyable {
 public:
+    virtual ~ICommandQueue() = default;
+
     virtual void submit(ICommandBuffer *command_buffer) = 0;
 };
 }} // namespace tigine::rhi

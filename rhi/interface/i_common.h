@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <stdexcept>
 #include <string>
+#include <vector>
 
 #define RHI_THROW(msg) throw std::runtime_error("tigine::rhi " + std::string(msg))
 
@@ -125,12 +126,6 @@ struct Viewport {
 struct Extent2D {
     TUInt width;
     TUInt height;
-};
-
-struct Extent3D {
-    TUInt width;
-    TUInt height;
-    TUInt depth;
 };
 }} // namespace tigine::rhi
 

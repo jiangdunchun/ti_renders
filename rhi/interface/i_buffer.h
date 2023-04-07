@@ -12,18 +12,20 @@ enum class BufferKind {
 };
 
 struct BufferDataDesc {
-    TULong buffer_size = 0;
-    void  *data        = nullptr;
+    TULong buffer_size;
+    void  *data;
 };
 
 struct BufferDesc {
     BufferKind     kind;
     TULong         buffer_size;
-    BufferDataDesc data_desc;
+    BufferDataDesc data_desc = { 0, nullptr };
 };
 
 class IBuffer : public IResource {
 public:
+    virtual ~IBuffer() = default;
+
     ResourceKind getResourceKind() const override final { return ResourceKind::Buffer; }
 
     virtual void updateData(const BufferDataDesc &desc) = 0;

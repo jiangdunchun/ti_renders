@@ -13,6 +13,8 @@ struct ShaderProgramDesc {
 
 class IShaderProgram : public NonCopyable {
 public:
+    virtual ~IShaderProgram() = default;
+
     virtual bool        hasError() const  = 0;
     virtual std::string getReport() const = 0;
 };

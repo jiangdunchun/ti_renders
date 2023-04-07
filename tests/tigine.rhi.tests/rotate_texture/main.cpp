@@ -54,7 +54,7 @@ int main() {
     BufferArrayDesc array_desc;
     array_desc.vertices_buffer = vertices_buffer;
     array_desc.indices_buffer  = indices_buffer;
-    array_desc.index_kind      = IndexKind::IK_UINT16;
+    array_desc.index_kind      = IndexKind::UINT16;
     array_desc.bindings        = bindings_info;
     array_desc.attributes      = attributes_info;
     IBufferArray *vertices_array = render->createBufferArray(array_desc);
@@ -88,14 +88,12 @@ int main() {
     int      tex_width, tex_height, tex_channels;
     stbi_uc *pixels = stbi_load("E:/A.jpg", &tex_width, &tex_height, &tex_channels, STBI_rgb_alpha);
     TextureDesc texture_desc;
-    texture_desc.kind = TextureKind::Texture2D;
-    texture_desc.format = DataFormat::RGBA8UNorm_sRGB;
-    texture_desc.texture_size.width = tex_width;
-    texture_desc.texture_size.height = tex_height;
-    texture_desc.data_desc.format    = DataFormat::RGBA8UNorm_sRGB;
-    texture_desc.data_desc.texture_size.width = tex_width;
-    texture_desc.data_desc.texture_size.height = tex_height;
-    texture_desc.data_desc.data                = pixels;
+    texture_desc.kind                   = TextureKind::Texture2D;
+    texture_desc.format                 = DataFormat::RGBA8UNorm_sRGB;
+    texture_desc.texture_size           = {static_cast<TUInt>(tex_width), static_cast<TUInt>(tex_height)};
+    texture_desc.data_desc.format       = DataFormat::RGBA8UNorm_sRGB;
+    texture_desc.data_desc.texture_size = {static_cast<TUInt>(tex_width), static_cast<TUInt>(tex_height)};
+    texture_desc.data_desc.data         = pixels;
     ITexture *texture   = render->createTexture(texture_desc);
     stbi_image_free(pixels);
 
@@ -113,7 +111,8 @@ int main() {
     pipeline_desc.vertices_array = vertices_array;
     pipeline_desc.shader_program = shader_prog;
     pipeline_desc.resource_heap  = resource_heap;
-    pipeline_desc.render_pass = context->getRenderPass();
+    pipeline_desc.render_pass    = context->getRenderPass();
+    pipeline_desc.draw_mode      = DrawMode::Triangles;
 
     IPipelineState *pipeline = render->createPipelineState(pipeline_desc);
 

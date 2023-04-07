@@ -1,8 +1,6 @@
 #ifndef TIGINE_RHI_INTERFACE_I_RENDER_TARGET_H_
 #define TIGINE_RHI_INTERFACE_I_RENDER_TARGET_H_
 
-#include <vector>
-
 #include "interface/i_common.h"
 #include "interface/i_render_pass.h"
 #include "interface/i_texture.h"
@@ -18,8 +16,8 @@ enum class AttachmentKind {
 struct AttachmentDesc {
     AttachmentKind kind;
     ITexture      *texture;
-    TUInt          mip_level;
-    TUInt          array_layer;
+    TUInt          mip_level   = 0;
+    TUInt          array_layer = 0;
 };
 
 struct RenderTargetDesc {
@@ -31,6 +29,8 @@ struct RenderTargetDesc {
 
 class IRenderTarget : public NonCopyable {
 public:
+    virtual ~IRenderTarget() = default;
+
     virtual bool isContext() { return false; }
 
     virtual IRenderPass *getRenderPass()                = 0;

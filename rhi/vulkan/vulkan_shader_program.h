@@ -3,9 +3,6 @@
 
 #include "interface/i_shader_program.h"
 
-#include <string>
-#include <vector>
-
 #include "vulkan/vulkan_common.h"
 
 namespace tigine { namespace rhi {

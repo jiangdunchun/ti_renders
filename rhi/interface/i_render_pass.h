@@ -1,8 +1,6 @@
 #ifndef TIGINE_RHI_INTERFACE_I_RENDER_PASS_H_
 #define TIGINE_RHI_INTERFACE_I_RENDER_PASS_H_
 
-#include <vector>
-
 #include "interface/i_common.h"
 
 namespace tigine { namespace rhi {
@@ -30,7 +28,10 @@ struct RenderPassDesc {
     TUInt                         samples = 1;
 };
 
-class IRenderPass : public NonCopyable {};
+class IRenderPass : public NonCopyable {
+public:
+    virtual ~IRenderPass() = default;
+};
 }} // namespace tigine::rhi
 
 #endif // !TIGINE_RHI_INTERFACE_I_RENDER_PASS_H_

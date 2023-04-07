@@ -11,9 +11,9 @@ namespace tigine { namespace rhi {
 namespace {
 VkIndexType mapVkIndexType(IndexKind kind) {
     switch (kind) {
-    case IndexKind::IK_UINT16:
+    case IndexKind::UINT16:
         return VK_INDEX_TYPE_UINT16;
-    case IndexKind::IK_UINT32:
+    case IndexKind::UINT32:
         return VK_INDEX_TYPE_UINT32;
     default:
         RHI_VULKAN_THROW("faild to map VkIndexType!");
@@ -121,7 +121,7 @@ void VulkanCommandBuffer::setVertexBufferArray(IBufferArray *buffer_array) {
 
     if (draw_indexed_) {
         VkBuffer *indices_buffer = vulkan_buffer_array->getIndicesBuffer()->getVkBuffer();
-        VkIndexType index_type   = mapVkIndexType(vulkan_buffer_array->GetIndexKind());
+        VkIndexType index_type   = mapVkIndexType(vulkan_buffer_array->getIndexKind());
         vkCmdBindIndexBuffer(*vk_now_command_buffer_, *indices_buffer, 0, index_type);
     }
 }

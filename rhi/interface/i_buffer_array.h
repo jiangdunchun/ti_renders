@@ -1,15 +1,13 @@
 #ifndef TIGINE_RHI_INTERFACE_I_BUFFER_ARRAY_H_
 #define TIGINE_RHI_INTERFACE_I_BUFFER_ARRAY_H_
 
-#include <vector>
-
 #include "interface/i_common.h"
 #include "interface/i_buffer.h"
 
 namespace tigine { namespace rhi {
 enum class IndexKind {
-    IK_UINT16,
-    IK_UINT32,
+    UINT16,
+    UINT32,
 };
 
 struct BindingInfo {
@@ -27,12 +25,15 @@ struct AttributeInfo {
 struct BufferArrayDesc {
     IBuffer                   *vertices_buffer;
     IBuffer                   *indices_buffer = nullptr;
-    IndexKind                  index_kind     = IndexKind::IK_UINT32;
+    IndexKind                  index_kind;
     std::vector<BindingInfo>   bindings;
     std::vector<AttributeInfo> attributes;
 };
 
-class IBufferArray : public NonCopyable {};
+class IBufferArray : public NonCopyable {
+public:
+    virtual ~IBufferArray() = default;
+};
 }} // namespace tigine::rhi
 
 #endif // !TIGINE_RHI_INTERFACE_I_BUFFER_ARRAY_H_

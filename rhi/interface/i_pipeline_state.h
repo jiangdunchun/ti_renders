@@ -23,11 +23,14 @@ struct PipelineStateDesc {
     IResourceHeap   *resource_heap;
     IBufferArray    *vertices_array;
     IRenderPass     *render_pass;
-    DrawMode         draw_mode   = DrawMode::Triangles;
-    ClearValue       clear_value = {{0.0f, 0.0f, 0.0f, 1.0f}, 1.0f, 0};
+    DrawMode         draw_mode;
+    ClearValue       clear_value = { { 0.0f, 0.0f, 0.0f, 1.0f }, 1.0f, 0 };
 };
 
-class IPipelineState : public NonCopyable {};
+class IPipelineState : public NonCopyable {
+public:
+    virtual ~IPipelineState() = default;
+};
 }} // namespace tigine::rhi
 
 #endif // !TIGINE_RHI_INTERFACE_I_PIPELINE_STATE_H_

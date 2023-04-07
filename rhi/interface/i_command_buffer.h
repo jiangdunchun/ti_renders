@@ -12,6 +12,8 @@ struct CommandBufferDesc {
 
 class ICommandBuffer : public NonCopyable {
 public:
+    virtual ~ICommandBuffer() = default;
+
     virtual void begin()                                             = 0;
     virtual void end()                                               = 0;
     virtual void setViewport(const Viewport &viewport)               = 0;
