@@ -42,7 +42,7 @@ struct SamplerDesc {
 
 struct TextureDataDesc {
     DataFormat format;
-    Extent3D   texture_size;
+    Extent3D   data_size;
     void      *data;
     TUInt      array_layer = 0;
     TUInt      mip_level = 0;

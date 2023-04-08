@@ -14,11 +14,11 @@ public:
     bool        hasError() const override { return false; }
     std::string getReport() const override { return "getReport() is not support in vulkan"; }
 
-    TUInt                            getVKShaderStageCreateInfosCount() { return vk_shader_stage_create_info_.size(); }
-    VkPipelineShaderStageCreateInfo *getVKShaderStageCreateInfos() { return vk_shader_stage_create_info_.data(); }
+    TUInt                            getVKShaderStageCreateInfosCount() { return vk_shader_stage_create_infos_.size(); }
+    VkPipelineShaderStageCreateInfo *getVKShaderStageCreateInfos() { return vk_shader_stage_create_infos_.data(); }
 
 private:
-    std::vector<VkPipelineShaderStageCreateInfo> vk_shader_stage_create_info_;
+    std::vector<VkPipelineShaderStageCreateInfo> vk_shader_stage_create_infos_;
 };
 
 }} // namespace tigine::rhi

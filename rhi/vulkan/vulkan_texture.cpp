@@ -217,7 +217,7 @@ void copyBufferToImage(VkQueue       &graphicsQueue,
 }
 
 void VulkanTexture::updateData(const TextureDataDesc &desc) {
-    uint32_t       image_size = desc.texture_size.width * desc.texture_size.height * 4;
+    uint32_t       image_size = desc.data_size.width * desc.data_size.height * 4;
     VkBuffer       temp_buffer;
     VkDeviceMemory temp_memory;
     createVkBufferandDeviceMemory(vk_physical_device_,
@@ -245,8 +245,8 @@ void VulkanTexture::updateData(const TextureDataDesc &desc) {
                       vk_command_pool_,
                       temp_buffer,
                       vk_image_,
-                      static_cast<uint32_t>(desc.texture_size.width),
-                      static_cast<uint32_t>(desc.texture_size.height));
+                      static_cast<uint32_t>(desc.data_size.width),
+                      static_cast<uint32_t>(desc.data_size.height));
     transitionImageLayout(*vk_graphics_queue_,
                           *vk_device_,
                           vk_command_pool_,

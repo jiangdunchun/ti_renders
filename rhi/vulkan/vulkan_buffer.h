@@ -13,7 +13,7 @@ public:
 
     virtual void updateData(const BufferDataDesc &desc) override;
 
-    TUInt     getDataSize() { return buffer_size_; }
+    TUInt     getBufferSize() { return buffer_size_; }
     VkBuffer *getVkBuffer() { return &vk_buffer_; }
 
 private:

@@ -106,7 +106,7 @@ VulkanResourceHeap::VulkanResourceHeap(const VulkanContextInfo &context, const R
 
             buffer_info->buffer = *(vulkan_buffer->getVkBuffer());
             buffer_info->offset = 0;
-            buffer_info->range  = vulkan_buffer->getDataSize();
+            buffer_info->range  = vulkan_buffer->getBufferSize();
 
             write.pBufferInfo = buffer_info;
         } else if (uniform.resource->getResourceKind() == ResourceKind::Texture) {

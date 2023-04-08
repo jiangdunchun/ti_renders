@@ -93,7 +93,7 @@ int main() {
     texture_desc.texture_size           = {static_cast<TUInt>(tex_width), static_cast<TUInt>(tex_height)};
     texture_desc.src_data.resize(1);
     texture_desc.src_data[0].format     = DataFormat::RGBA8UNorm_sRGB;
-    texture_desc.src_data[0].texture_size = {static_cast<TUInt>(tex_width), static_cast<TUInt>(tex_height)};
+    texture_desc.src_data[0].data_size = {static_cast<TUInt>(tex_width), static_cast<TUInt>(tex_height)};
     texture_desc.src_data[0].data          = pixels;
     ITexture *texture   = render->createTexture(texture_desc);
     stbi_image_free(pixels);

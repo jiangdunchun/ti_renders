@@ -19,12 +19,12 @@ VkBufferUsageFlags mapVkBufferKind(BufferKind kind) {
 VulkanBuffer::VulkanBuffer(const VulkanContextInfo &context, const BufferDesc &desc) 
     : vk_device_(context.vk_device), buffer_size_(desc.buffer_size) {
     VkBufferUsageFlags vk_usage = mapVkBufferKind(desc.kind);
-    VkMemoryPropertyFlags mem_properties = VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT;
+    VkMemoryPropertyFlags vk_mem_props = VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT;
     createVkBufferandDeviceMemory(context.vk_physical_device, 
                                   context.vk_device, 
                                   desc.buffer_size, 
                                   vk_usage, 
-                                  mem_properties,
+                                  vk_mem_props,
                                   vk_buffer_,
                                   vk_device_memory_);
 
