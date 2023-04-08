@@ -20,8 +20,8 @@ class IShader : public NonCopyable {
 public:
     virtual ~IShader() = default;
 
-    virtual bool        hasError() const  = 0;
-    virtual std::string getReport() const = 0;
+    virtual bool    hasError() const  = 0;
+    virtual TString getReport() const = 0;
 };
 }} // namespace tigine::rhi
 

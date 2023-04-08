@@ -43,96 +43,96 @@ VulkanResourceHeap::VulkanResourceHeap(const VulkanContextInfo &context, const R
 
     std::vector<VkDescriptorSetLayoutBinding> bindings(num_uniforms);
     for (size_t i = 0; i < num_uniforms; ++i) {
-        const UniformDesc            &uniform = desc.uniforms[i];
-        VkDescriptorSetLayoutBinding &binding = bindings[i];
+        const UniformDesc            &uniform    = desc.uniforms[i];
+        VkDescriptorSetLayoutBinding &vk_binding = bindings[i];
 
-        binding.binding            = uniform.binding;
-        binding.descriptorCount    = 1;
-        binding.descriptorType     = mapDescriptorType(uniform.resource);
-        binding.pImmutableSamplers = nullptr;
-        binding.stageFlags         = mapShaderStageFlags(uniform.shader_stage);
+        vk_binding.binding            = static_cast<uint32_t>(uniform.binding);
+        vk_binding.descriptorCount    = 1;
+        vk_binding.descriptorType     = mapDescriptorType(uniform.resource);
+        vk_binding.pImmutableSamplers = nullptr;
+        vk_binding.stageFlags         = mapShaderStageFlags(uniform.shader_stage);
     }
 
-    VkDescriptorSetLayoutCreateInfo layout_info {};
-    layout_info.sType        = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
-    layout_info.bindingCount = static_cast<uint32_t>(bindings.size());
-    layout_info.pBindings    = bindings.data();
-    RHI_VULKAN_THROW_IF_FAILD(vkCreateDescriptorSetLayout(*vk_device_, &layout_info, nullptr, &vk_descriptor_set_layout_),
+    VkDescriptorSetLayoutCreateInfo vk_layout_info {};
+    vk_layout_info.sType        = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
+    vk_layout_info.bindingCount = static_cast<uint32_t>(bindings.size());
+    vk_layout_info.pBindings    = bindings.data();
+    RHI_VULKAN_THROW_IF_FAILD(vkCreateDescriptorSetLayout(*vk_device_, &vk_layout_info, nullptr, &vk_descriptor_set_layout_),
         "failed to create descriptor set layout!");
 
 
-    std::vector<VkDescriptorPoolSize> pool_sizes(num_uniforms);
+    std::vector<VkDescriptorPoolSize> vk_pool_sizes(num_uniforms);
     for (size_t i = 0; i < num_uniforms; ++i) {
         const UniformDesc    &uniform   = desc.uniforms[i];
-        VkDescriptorPoolSize &pool_size = pool_sizes[i];
+        VkDescriptorPoolSize &vk_pool_size = vk_pool_sizes[i];
 
-        pool_size.type            = mapDescriptorType(uniform.resource);
-        pool_size.descriptorCount = 1;
+        vk_pool_size.type            = mapDescriptorType(uniform.resource);
+        vk_pool_size.descriptorCount = 1;
     }
 
-    VkDescriptorPoolCreateInfo pool_info {};
-    pool_info.sType         = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
-    pool_info.poolSizeCount = static_cast<uint32_t>(pool_sizes.size());
-    pool_info.pPoolSizes    = pool_sizes.data();
-    pool_info.maxSets       = 1;
-    RHI_VULKAN_THROW_IF_FAILD(vkCreateDescriptorPool(*vk_device_, &pool_info, nullptr, &vk_descriptor_pool_),
+    VkDescriptorPoolCreateInfo vk_pool_info {};
+    vk_pool_info.sType         = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
+    vk_pool_info.poolSizeCount = static_cast<uint32_t>(vk_pool_sizes.size());
+    vk_pool_info.pPoolSizes    = vk_pool_sizes.data();
+    vk_pool_info.maxSets       = 1;
+    RHI_VULKAN_THROW_IF_FAILD(vkCreateDescriptorPool(*vk_device_, &vk_pool_info, nullptr, &vk_descriptor_pool_),
         "failed to create descriptor pool!");
 
 
-    VkDescriptorSetAllocateInfo alloc_info {};
-    alloc_info.sType              = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
-    alloc_info.descriptorPool     = vk_descriptor_pool_;
-    alloc_info.descriptorSetCount = 1;
-    alloc_info.pSetLayouts        = &vk_descriptor_set_layout_;
-    RHI_VULKAN_THROW_IF_FAILD(vkAllocateDescriptorSets(*vk_device_, &alloc_info, &vk_descriptor_set_),
+    VkDescriptorSetAllocateInfo vk_alloc_info {};
+    vk_alloc_info.sType              = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
+    vk_alloc_info.descriptorPool     = vk_descriptor_pool_;
+    vk_alloc_info.descriptorSetCount = 1;
+    vk_alloc_info.pSetLayouts        = &vk_descriptor_set_layout_;
+    RHI_VULKAN_THROW_IF_FAILD(vkAllocateDescriptorSets(*vk_device_, &vk_alloc_info, &vk_descriptor_set_),
         "failed to allocate descriptor sets!");
 
 
-    std::vector<VkWriteDescriptorSet> writes(num_uniforms);
+    std::vector<VkWriteDescriptorSet> vk_writes(num_uniforms);
     for (size_t i = 0; i < num_uniforms; ++i) {
-        const UniformDesc    &uniform = desc.uniforms[i];
-        VkWriteDescriptorSet &write = writes[i];
+        const UniformDesc    &uniform  = desc.uniforms[i];
+        VkWriteDescriptorSet &vk_write = vk_writes[i];
 
-        write.sType           = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-        write.dstSet          = vk_descriptor_set_;
-        write.dstBinding      = uniform.binding;
-        write.dstArrayElement = 0;
-        write.descriptorType  = mapDescriptorType(uniform.resource);
-        write.descriptorCount = 1;
+        vk_write.sType        = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+        vk_write.dstSet       = vk_descriptor_set_;
+        vk_write.dstBinding   = static_cast<uint32_t>(uniform.binding);
+        vk_write.dstArrayElement = 0;
+        vk_write.descriptorType  = mapDescriptorType(uniform.resource);
+        vk_write.descriptorCount = 1;
 
         if (uniform.resource->getResourceKind() == ResourceKind::Buffer) {
-            VulkanBuffer *vulkan_buffer         = dynamic_cast<VulkanBuffer *>(uniform.resource);
-            VkDescriptorBufferInfo *buffer_info = new VkDescriptorBufferInfo({});
+            VulkanBuffer *vulkan_buffer            = dynamic_cast<VulkanBuffer *>(uniform.resource);
+            VkDescriptorBufferInfo *vk_buffer_info = new VkDescriptorBufferInfo({});
 
-            buffer_info->buffer = *(vulkan_buffer->getVkBuffer());
-            buffer_info->offset = 0;
-            buffer_info->range  = vulkan_buffer->getBufferSize();
+            vk_buffer_info->buffer = *(vulkan_buffer->getVkBuffer());
+            vk_buffer_info->offset = 0;
+            vk_buffer_info->range  = static_cast<VkDeviceSize>(vulkan_buffer->getBufferSize());
 
-            write.pBufferInfo = buffer_info;
+            vk_write.pBufferInfo = vk_buffer_info;
         } else if (uniform.resource->getResourceKind() == ResourceKind::Texture) {
-            VulkanTexture *vulkan_texture = dynamic_cast<VulkanTexture *>(uniform.resource);
-            VkDescriptorImageInfo *image_info = new VkDescriptorImageInfo({});
+            VulkanTexture *vulkan_texture     = dynamic_cast<VulkanTexture *>(uniform.resource);
+            VkDescriptorImageInfo *vk_image_info = new VkDescriptorImageInfo({});
 
-            image_info->imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-            image_info->imageView   = *(vulkan_texture->getVKImageview());
-            image_info->sampler     = *(vulkan_texture->getVKSampler());
+            vk_image_info->imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+            vk_image_info->imageView   = *(vulkan_texture->getVKImageview());
+            vk_image_info->sampler     = *(vulkan_texture->getVKSampler());
 
-            write.pImageInfo = image_info;
+            vk_write.pImageInfo = vk_image_info;
         }
     }
-    vkUpdateDescriptorSets(*vk_device_, static_cast<uint32_t>(writes.size()), writes.data(), 0, nullptr);
+    vkUpdateDescriptorSets(*vk_device_, static_cast<uint32_t>(vk_writes.size()), vk_writes.data(), 0, nullptr);
     for (size_t i = 0; i < num_uniforms; ++i) {
-        VkWriteDescriptorSet &write = writes[i];
-        if (write.pBufferInfo) delete write.pBufferInfo;
-        if (write.pImageInfo) delete write.pImageInfo;
+        VkWriteDescriptorSet &vk_write = vk_writes[i];
+        if (vk_write.pBufferInfo) delete vk_write.pBufferInfo;
+        if (vk_write.pImageInfo) delete vk_write.pImageInfo;
     }
 
 
-    VkPipelineLayoutCreateInfo pipeline_layout_info {};
-    pipeline_layout_info.sType          = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
-    pipeline_layout_info.setLayoutCount = 1;
-    pipeline_layout_info.pSetLayouts    = &vk_descriptor_set_layout_;
-    RHI_VULKAN_THROW_IF_FAILD(vkCreatePipelineLayout(*vk_device_, &pipeline_layout_info, nullptr, &vk_pipeline_layout_),
+    VkPipelineLayoutCreateInfo vk_pipeline_layout_info {};
+    vk_pipeline_layout_info.sType          = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
+    vk_pipeline_layout_info.setLayoutCount = 1;
+    vk_pipeline_layout_info.pSetLayouts    = &vk_descriptor_set_layout_;
+    RHI_VULKAN_THROW_IF_FAILD(vkCreatePipelineLayout(*vk_device_, &vk_pipeline_layout_info, nullptr, &vk_pipeline_layout_),
         "failed to create pipeline layout!");
 }
 

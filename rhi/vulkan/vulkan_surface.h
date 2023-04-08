@@ -13,7 +13,7 @@ public:
     VulkanSurface(GLFWwindow *window);
     ~VulkanSurface();
 
-    void setTitle(const std::string &name) override;
+    void setTitle(const TString &name) override;
     void show() override;
     bool processEvents() override;
 

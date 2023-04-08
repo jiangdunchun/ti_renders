@@ -10,5 +10,7 @@ VulkanRenderTarget::VulkanRenderTarget(VkDevice *vk_device, const RenderTargetDe
         if (texture.kind == RenderTargetTextureKind::Stencil || texture.kind == RenderTargetTextureKind::DepthStencil)
             has_stencil_attachment_ = true;
 	}
+
+    // @TODO
 }
 }} // namespace tigine::rhi

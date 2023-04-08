@@ -55,50 +55,51 @@ VulkanRenderPass::VulkanRenderPass(VkDevice *vk_device, const RenderPassDesc &de
         has_ds = true;
     }
 
-    std::vector<VkAttachmentDescription> attachments_desc(desc.samples > 1 ? num_all + num_colors : num_all);
+    std::vector<VkAttachmentDescription> vk_attachments_desc(desc.samples > 1 ? num_all + num_colors : num_all);
     for (rsize_t i = 0; i < num_colors; ++i) {
-        VkAttachmentDescription    &vk_desc  = attachments_desc[i];
-        const AttachmentDesc &src_desc = desc.color_attachments[i];
-
-        vk_desc.flags          = 0;
-        vk_desc.format         = mapVkFormat(src_desc.format);
-        vk_desc.samples        = VK_SAMPLE_COUNT_1_BIT;
-        vk_desc.loadOp         = mapAttachmentLoadOption(src_desc.load);
-        vk_desc.storeOp        = mapAttachmentStoreOption(src_desc.store);
-        vk_desc.stencilLoadOp  = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
-        vk_desc.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
-        vk_desc.initialLayout  = (src_desc.load == AttachmentLoadOp::Load ? VK_IMAGE_LAYOUT_PRESENT_SRC_KHR : VK_IMAGE_LAYOUT_UNDEFINED);
-        vk_desc.finalLayout    = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
+        const AttachmentDesc    &attachment_desc = desc.color_attachments[i];
+        VkAttachmentDescription &vk_attachment_desc  = vk_attachments_desc[i];
+        
+        vk_attachment_desc.flags          = 0;
+        vk_attachment_desc.format         = mapVkFormat(attachment_desc.format);
+        vk_attachment_desc.samples        = VK_SAMPLE_COUNT_1_BIT;
+        vk_attachment_desc.loadOp         = mapAttachmentLoadOption(attachment_desc.load);
+        vk_attachment_desc.storeOp        = mapAttachmentStoreOption(attachment_desc.store);
+        vk_attachment_desc.stencilLoadOp  = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+        vk_attachment_desc.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
+        vk_attachment_desc.initialLayout  = (attachment_desc.load == AttachmentLoadOp::Load ? VK_IMAGE_LAYOUT_PRESENT_SRC_KHR : VK_IMAGE_LAYOUT_UNDEFINED);
+        vk_attachment_desc.finalLayout    = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
     }
     if (has_ds) {
-        VkAttachmentDescription    &vk_desc = attachments_desc[num_colors];
-        const AttachmentDesc &src_d_desc = desc.depth_attachment;
-        const AttachmentDesc &src_s_desc = desc.stencil_attachment;
+        const AttachmentDesc    &depth_attachment_desc = desc.depth_attachment;
+        const AttachmentDesc    &stencil_attachment_desc = desc.stencil_attachment;
+        VkAttachmentDescription    &vk_attachment_desc = vk_attachments_desc[num_colors];
 
-        vk_desc.flags          = 0;
-        vk_desc.format         = getDepthStencilFormat(src_d_desc.format, src_s_desc.format);
-        vk_desc.samples        = VkSampleCountFlagBits(desc.samples);
-        vk_desc.loadOp         = mapAttachmentLoadOption(src_d_desc.load);
-        vk_desc.storeOp        = mapAttachmentStoreOption(src_d_desc.store);
-        vk_desc.stencilLoadOp  = mapAttachmentLoadOption(src_s_desc.load);
-        vk_desc.stencilStoreOp = mapAttachmentStoreOption(src_s_desc.store);
-        vk_desc.initialLayout  = src_d_desc.load == AttachmentLoadOp::Load || src_s_desc.load == AttachmentLoadOp::Load ? VK_IMAGE_LAYOUT_PRESENT_SRC_KHR : VK_IMAGE_LAYOUT_UNDEFINED;
-        vk_desc.finalLayout    = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
+        vk_attachment_desc.flags          = 0;
+        vk_attachment_desc.format         = getDepthStencilFormat(depth_attachment_desc.format, stencil_attachment_desc.format);
+        vk_attachment_desc.samples        = VkSampleCountFlagBits(desc.samples);
+        vk_attachment_desc.loadOp         = mapAttachmentLoadOption(depth_attachment_desc.load);
+        vk_attachment_desc.storeOp        = mapAttachmentStoreOption(depth_attachment_desc.store);
+        vk_attachment_desc.stencilLoadOp  = mapAttachmentLoadOption(stencil_attachment_desc.load);
+        vk_attachment_desc.stencilStoreOp = mapAttachmentStoreOption(stencil_attachment_desc.store);
+        vk_attachment_desc.initialLayout  = depth_attachment_desc.load == AttachmentLoadOp::Load || stencil_attachment_desc.load == AttachmentLoadOp::Load ? VK_IMAGE_LAYOUT_PRESENT_SRC_KHR : VK_IMAGE_LAYOUT_UNDEFINED;
+        vk_attachment_desc.finalLayout    = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
     }
     if (desc.samples > 1) {
         for (size_t i = 0; i < num_colors; ++i) {
-            VkAttachmentDescription    &vk_desc  = attachments_desc[num_colors + i];
-            const AttachmentDesc &src_desc = desc.color_attachments[i];
+            const AttachmentDesc    &attachment_desc = desc.color_attachments[i];
+            VkAttachmentDescription    &vk_attachment_desc  = vk_attachments_desc[num_colors + i];
+            
 
-            vk_desc.flags          = 0;
-            vk_desc.format         = mapVkFormat(src_desc.format);
-            vk_desc.samples        = VkSampleCountFlagBits(desc.samples);
-            vk_desc.loadOp         = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
-            vk_desc.storeOp        = mapAttachmentStoreOption(src_desc.store);
-            vk_desc.stencilLoadOp  = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
-            vk_desc.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
-            vk_desc.initialLayout  = src_desc.load == AttachmentLoadOp::Load ? VK_IMAGE_LAYOUT_PRESENT_SRC_KHR :  VK_IMAGE_LAYOUT_UNDEFINED;
-            vk_desc.finalLayout    = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
+            vk_attachment_desc.flags          = 0;
+            vk_attachment_desc.format         = mapVkFormat(attachment_desc.format);
+            vk_attachment_desc.samples        = VkSampleCountFlagBits(desc.samples);
+            vk_attachment_desc.loadOp         = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+            vk_attachment_desc.storeOp        = mapAttachmentStoreOption(attachment_desc.store);
+            vk_attachment_desc.stencilLoadOp  = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+            vk_attachment_desc.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
+            vk_attachment_desc.initialLayout  = attachment_desc.load == AttachmentLoadOp::Load ? VK_IMAGE_LAYOUT_PRESENT_SRC_KHR :  VK_IMAGE_LAYOUT_UNDEFINED;
+            vk_attachment_desc.finalLayout    = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
         }
     }
 
@@ -144,7 +145,7 @@ VulkanRenderPass::VulkanRenderPass(VkDevice *vk_device, const RenderPassDesc &de
     VkRenderPassCreateInfo renderPassInfo {};
     renderPassInfo.sType           = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
     renderPassInfo.attachmentCount = desc.samples > 1 ? num_all + num_colors : num_colors;
-    renderPassInfo.pAttachments    = attachments_desc.data();
+    renderPassInfo.pAttachments    = vk_attachments_desc.data();
     renderPassInfo.subpassCount    = 1;
     renderPassInfo.pSubpasses      = &subpass;
     renderPassInfo.dependencyCount = 1;

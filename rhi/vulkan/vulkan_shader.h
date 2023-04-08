@@ -11,8 +11,8 @@ public:
     VulkanShader(const VulkanContextInfo &context, const ShaderDesc &desc);
     ~VulkanShader();
 
-    bool        hasError() const override { return has_error_; }
-    std::string getReport() const override { return "getReport() is not support in vulkan"; }
+    bool    hasError() const override { return has_error_; }
+    TString getReport() const override { return "getReport() is not support in vulkan"; }
 
     VkShaderModule* getVKShaderModule() { return &vk_shader_; }
 

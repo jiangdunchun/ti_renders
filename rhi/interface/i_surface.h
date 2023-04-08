@@ -8,9 +8,9 @@ class ISurface : public NonCopyable {
 public:
     virtual ~ISurface() = default;
 
-    virtual void setTitle(const std::string &name) = 0;
-    virtual void show()                            = 0;
-    virtual bool processEvents()                   = 0;
+    virtual void setTitle(const TString &name) = 0;
+    virtual void show()                        = 0;
+    virtual bool processEvents()               = 0;
 };
 }} // namespace tigine::rhi
 

@@ -17,8 +17,8 @@ VulkanBufferArray::VulkanBufferArray(const VulkanContextInfo &context, const Buf
         const BindingDesc               &binding_desc    = desc.bindings[i];
         VkVertexInputBindingDescription &vk_binding_desc = vk_bindings_desc_[i];
 
-        vk_binding_desc.binding   = binding_desc.binding;
-        vk_binding_desc.stride    = binding_desc.stride;
+        vk_binding_desc.binding   = static_cast<uint32_t>(binding_desc.binding);
+        vk_binding_desc.stride    = static_cast<uint32_t>(binding_desc.stride);
         vk_binding_desc.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
     }
 
@@ -28,10 +28,10 @@ VulkanBufferArray::VulkanBufferArray(const VulkanContextInfo &context, const Buf
         const AttributeDesc               &attribute_desc    = desc.attributes[i];
         VkVertexInputAttributeDescription &vk_attribute_desc = vk_attributes_desc_[i];
 
-        vk_attribute_desc.binding  = attribute_desc.binding;
-        vk_attribute_desc.location = attribute_desc.location;
+        vk_attribute_desc.binding  = static_cast<uint32_t>(attribute_desc.binding);
+        vk_attribute_desc.location = static_cast<uint32_t>(attribute_desc.location);
         vk_attribute_desc.format   = mapVkFormat(attribute_desc.format);
-        vk_attribute_desc.offset   = attribute_desc.offset;
+        vk_attribute_desc.offset   = static_cast<uint32_t>(attribute_desc.offset);
     }
 
     vk_pipeline_vertex_input_state_create_info_                                 = {};

@@ -7,7 +7,7 @@ VulkanSurface::~VulkanSurface() {
     if (window_) glfwDestroyWindow(window_);
 }
 
-void VulkanSurface::setTitle(const std::string &name) {
+void VulkanSurface::setTitle(const TString &name) {
     glfwSetWindowTitle(window_, name.c_str());
 }
 
