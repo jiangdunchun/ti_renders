@@ -3,10 +3,12 @@
 namespace tigine { namespace rhi {
 VulkanRenderTarget::VulkanRenderTarget(VkDevice *vk_device, const RenderTargetDesc &desc) 
 	: vk_device_(vk_device), resolution_(desc.resolution), samples_(desc.samples) {
-	for (auto &attachment : desc.attachments) {
-        if (attachment.kind == AttachmentKind::Color) color_attachments_nums_++;
-        if (attachment.kind == AttachmentKind::Depth || attachment.kind == AttachmentKind::DepthStencil) has_depth_attachment_ = true;
-        if (attachment.kind == AttachmentKind::Stencil || attachment.kind == AttachmentKind::DepthStencil) has_stencil_attachment_ = true;
+	for (auto &texture : desc.target_textures) {
+        if (texture.kind == RenderTargetTextureKind::Color) color_attachments_nums_++;
+        if (texture.kind == RenderTargetTextureKind::Depth || texture.kind == RenderTargetTextureKind::DepthStencil)
+            has_depth_attachment_ = true;
+        if (texture.kind == RenderTargetTextureKind::Stencil || texture.kind == RenderTargetTextureKind::DepthStencil)
+            has_stencil_attachment_ = true;
 	}
 }
 }} // namespace tigine::rhi

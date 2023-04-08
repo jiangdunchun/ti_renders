@@ -14,7 +14,7 @@ VulkanBufferArray::VulkanBufferArray(const VulkanContextInfo &context, const Buf
     size_t num_bindings = desc.bindings.size();
     vk_bindings_desc_.resize(num_bindings, {});
     for (size_t i = 0; i < num_bindings; ++i) {
-        const BindingInfo &binding_info = desc.bindings[i];
+        const BindingDesc &binding_info = desc.bindings[i];
         VkVertexInputBindingDescription &bindings_desc = vk_bindings_desc_[i];
 
         bindings_desc.binding   = binding_info.binding;
@@ -25,7 +25,7 @@ VulkanBufferArray::VulkanBufferArray(const VulkanContextInfo &context, const Buf
     size_t num_attributes = desc.attributes.size();
     vk_attributes_desc_.resize(num_attributes, {});
     for (size_t i = 0; i < num_attributes; ++i) {
-        const AttributeInfo &attribute_info = desc.attributes[i];
+        const AttributeDesc               &attribute_info  = desc.attributes[i];
         VkVertexInputAttributeDescription &attributes_desc = vk_attributes_desc_[i];
 
         attributes_desc.binding  = attribute_info.binding;

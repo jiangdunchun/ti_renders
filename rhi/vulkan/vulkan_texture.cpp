@@ -102,8 +102,8 @@ VulkanTexture::VulkanTexture(const VulkanContextInfo &context, const TextureDesc
     sampler_info.mipmapMode              = VK_SAMPLER_MIPMAP_MODE_LINEAR;
     RHI_VULKAN_THROW_IF_FAILD(vkCreateSampler(*vk_device_, &sampler_info, nullptr, &vk_sampler_), "failed to create sampler!");
 
-    if (desc.data_desc.data) {
-        updateData(desc.data_desc);
+    for (auto& data : desc.src_data) {
+        updateData(data);
     }
 }
 

@@ -28,8 +28,8 @@ VulkanBuffer::VulkanBuffer(const VulkanContextInfo &context, const BufferDesc &d
                                   vk_buffer_,
                                   vk_device_memory_);
 
-    if (desc.data_desc.data) {
-        updateData(desc.data_desc);
+    if (desc.src_data.data) {
+        updateData(desc.src_data);
     }
 }
 
@@ -40,8 +40,8 @@ VulkanBuffer::~VulkanBuffer() {
 
 void VulkanBuffer::updateData(const BufferDataDesc &desc) {
     void *dst_ptr;
-    vkMapMemory(*vk_device_, vk_device_memory_, 0, desc.buffer_size, 0, &dst_ptr);
-    memcpy(dst_ptr, desc.data, (size_t)desc.buffer_size);
+    vkMapMemory(*vk_device_, vk_device_memory_, 0, buffer_size_, 0, &dst_ptr);
+    memcpy(dst_ptr, desc.data, (size_t)desc.data_size);
     vkUnmapMemory(*vk_device_, vk_device_memory_);
 }
 }} // namespace tigine::rhi

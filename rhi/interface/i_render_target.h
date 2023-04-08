@@ -6,25 +6,30 @@
 #include "interface/i_texture.h"
 
 namespace tigine { namespace rhi {
-enum class AttachmentKind {
+struct Extent2D {
+    TUInt width;
+    TUInt height;
+};
+
+enum class RenderTargetTextureKind {
     Color,
     Depth,
     DepthStencil,
     Stencil,
 };
 
-struct AttachmentDesc {
-    AttachmentKind kind;
-    ITexture      *texture;
-    TUInt          mip_level   = 0;
-    TUInt          array_layer = 0;
+struct RenderTargetTextureDesc {
+    RenderTargetTextureKind kind;
+    ITexture               *texture;
+    TUInt                   mip_level   = 0;
+    TUInt                   array_layer = 0;
 };
 
 struct RenderTargetDesc {
-    Extent2D                    resolution;
-    TUInt                       samples = 1;
-    IRenderPass                *render_pass;
-    std::vector<AttachmentDesc> attachments;
+    Extent2D                         resolution;
+    TUInt                            samples = 1;
+    IRenderPass                     *render_pass;
+    TVector<RenderTargetTextureDesc> target_textures;
 };
 
 class IRenderTarget : public NonCopyable {

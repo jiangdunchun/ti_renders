@@ -26,22 +26,22 @@ int main() {
     BufferDesc vertices_buffer_desc;
     vertices_buffer_desc.kind     = BufferKind::Vertices;
     vertices_buffer_desc.buffer_size = sizeof(vertices);
-    vertices_buffer_desc.data_desc.buffer_size = sizeof(vertices);
-    vertices_buffer_desc.data_desc.data        = vertices;
+    vertices_buffer_desc.src_data.data_size = sizeof(vertices);
+    vertices_buffer_desc.src_data.data      = vertices;
     IBuffer *vertices_buffer = render->createBuffer(vertices_buffer_desc);
 
     BufferDesc indices_buffer_desc;
     indices_buffer_desc.kind      = BufferKind::Indices;
     indices_buffer_desc.buffer_size = sizeof(indices);
-    indices_buffer_desc.data_desc.buffer_size = sizeof(indices);
-    indices_buffer_desc.data_desc.data        = indices;
+    indices_buffer_desc.src_data.data_size = sizeof(indices);
+    indices_buffer_desc.src_data.data      = indices;
     IBuffer *indices_buffer = render->createBuffer(indices_buffer_desc);
 
-    std::vector<BindingInfo> bindings_info(1);
+    std::vector<BindingDesc> bindings_info(1);
     bindings_info[0].binding = 0;
     bindings_info[0].stride  = sizeof(vertices[0]) * 4;
 
-    std::vector<AttributeInfo> attributes_info(2);
+    std::vector<AttributeDesc> attributes_info(2);
     attributes_info[0].binding  = 0;
     attributes_info[0].format   = DataFormat::RG32Float;
     attributes_info[0].location = 0;
@@ -91,9 +91,10 @@ int main() {
     texture_desc.kind                   = TextureKind::Texture2D;
     texture_desc.format                 = DataFormat::RGBA8UNorm_sRGB;
     texture_desc.texture_size           = {static_cast<TUInt>(tex_width), static_cast<TUInt>(tex_height)};
-    texture_desc.data_desc.format       = DataFormat::RGBA8UNorm_sRGB;
-    texture_desc.data_desc.texture_size = {static_cast<TUInt>(tex_width), static_cast<TUInt>(tex_height)};
-    texture_desc.data_desc.data         = pixels;
+    texture_desc.src_data.resize(1);
+    texture_desc.src_data[0].format     = DataFormat::RGBA8UNorm_sRGB;
+    texture_desc.src_data[0].texture_size = {static_cast<TUInt>(tex_width), static_cast<TUInt>(tex_height)};
+    texture_desc.src_data[0].data          = pixels;
     ITexture *texture   = render->createTexture(texture_desc);
     stbi_image_free(pixels);
 
@@ -126,7 +127,7 @@ int main() {
 #endif // !M_PI
     float angle = 0;
     BufferDataDesc uniform_data_desc;
-    uniform_data_desc.buffer_size = sizeof(angle);
+    uniform_data_desc.data_size = sizeof(angle);
     uniform_data_desc.data        = &angle;
 
     while (window->processEvents()) {

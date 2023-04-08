@@ -12,14 +12,14 @@ enum class BufferKind {
 };
 
 struct BufferDataDesc {
-    TULong buffer_size;
+    TULong data_size;
     void  *data;
 };
 
 struct BufferDesc {
     BufferKind     kind;
     TULong         buffer_size;
-    BufferDataDesc data_desc = { 0, nullptr };
+    BufferDataDesc src_data = { 0, nullptr };
 };
 
 class IBuffer : public IResource {

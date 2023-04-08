@@ -49,11 +49,11 @@ struct TextureDataDesc {
 };
 
 struct TextureDesc {
-    TextureKind     kind;
-    DataFormat      format;
-    Extent3D        texture_size;
-    TUInt           mip_levels  = 1;
-    SamplerDesc     sample_desc = {
+    TextureKind              kind;
+    DataFormat               format;
+    Extent3D                 texture_size;
+    TUInt                    mip_levels  = 1;
+    SamplerDesc              sampler = {
         SamplerAddressMode::Repeat,
         SamplerAddressMode::Repeat,
         SamplerAddressMode::Repeat,
@@ -61,7 +61,7 @@ struct TextureDesc {
         SamplerFilter::Linear,
         SamplerFilter::Linear
     };
-    TextureDataDesc data_desc   = { DataFormat::Undefined, { 0, 0, 0 }, nullptr };
+    TVector<TextureDataDesc> src_data;
 };
 
 class ITexture : public IResource {

@@ -16,6 +16,8 @@ typedef std::uint32_t TUInt;
 typedef std::int32_t  TInt;
 typedef std::uint64_t TULong;
 typedef std::int64_t  TLong;
+typedef std::string   TString;
+#define TVector std::vector
 
 class NonCopyable {
 public:
@@ -108,24 +110,6 @@ enum class DataFormat {
     BC4SNorm,
     BC5UNorm,
     BC5SNorm,
-};
-
-enum ClearFlag : TChar { 
-    CF_Color = 1 << 0,
-    CF_Depth = 1 << 1,
-    CF_Stencil = 1 << 2
-};
-
-struct Viewport {
-    TUInt x;
-    TUInt y;
-    TUInt width;
-    TUInt height;
-};
-
-struct Extent2D {
-    TUInt width;
-    TUInt height;
 };
 }} // namespace tigine::rhi
 

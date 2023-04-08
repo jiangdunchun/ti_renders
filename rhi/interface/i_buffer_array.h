@@ -10,12 +10,12 @@ enum class IndexKind {
     UINT32,
 };
 
-struct BindingInfo {
+struct BindingDesc {
     TUInt binding;
     TUInt stride;
 };
 
-struct AttributeInfo {
+struct AttributeDesc {
     TUInt      binding;
     DataFormat format;
     TUInt      location;
@@ -23,11 +23,11 @@ struct AttributeInfo {
 };
 
 struct BufferArrayDesc {
-    IBuffer                   *vertices_buffer;
-    IBuffer                   *indices_buffer = nullptr;
-    IndexKind                  index_kind;
-    std::vector<BindingInfo>   bindings;
-    std::vector<AttributeInfo> attributes;
+    IBuffer               *vertices_buffer;
+    IBuffer               *indices_buffer = nullptr;
+    IndexKind              index_kind;
+    TVector<BindingDesc>   bindings;
+    TVector<AttributeDesc> attributes;
 };
 
 class IBufferArray : public NonCopyable {

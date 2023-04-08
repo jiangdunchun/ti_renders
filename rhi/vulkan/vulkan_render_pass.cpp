@@ -58,7 +58,7 @@ VulkanRenderPass::VulkanRenderPass(VkDevice *vk_device, const RenderPassDesc &de
     std::vector<VkAttachmentDescription> attachments_desc(desc.samples > 1 ? num_all + num_colors : num_all);
     for (rsize_t i = 0; i < num_colors; ++i) {
         VkAttachmentDescription    &vk_desc  = attachments_desc[i];
-        const AttachmentFormat &src_desc = desc.color_attachments[i];
+        const AttachmentDesc &src_desc = desc.color_attachments[i];
 
         vk_desc.flags          = 0;
         vk_desc.format         = mapVkFormat(src_desc.format);
@@ -72,8 +72,8 @@ VulkanRenderPass::VulkanRenderPass(VkDevice *vk_device, const RenderPassDesc &de
     }
     if (has_ds) {
         VkAttachmentDescription    &vk_desc = attachments_desc[num_colors];
-        const AttachmentFormat &src_d_desc = desc.depth_attachment;
-        const AttachmentFormat &src_s_desc = desc.stencil_attachment;
+        const AttachmentDesc &src_d_desc = desc.depth_attachment;
+        const AttachmentDesc &src_s_desc = desc.stencil_attachment;
 
         vk_desc.flags          = 0;
         vk_desc.format         = getDepthStencilFormat(src_d_desc.format, src_s_desc.format);
@@ -88,7 +88,7 @@ VulkanRenderPass::VulkanRenderPass(VkDevice *vk_device, const RenderPassDesc &de
     if (desc.samples > 1) {
         for (size_t i = 0; i < num_colors; ++i) {
             VkAttachmentDescription    &vk_desc  = attachments_desc[num_colors + i];
-            const AttachmentFormat &src_desc = desc.color_attachments[i];
+            const AttachmentDesc &src_desc = desc.color_attachments[i];
 
             vk_desc.flags          = 0;
             vk_desc.format         = mapVkFormat(src_desc.format);

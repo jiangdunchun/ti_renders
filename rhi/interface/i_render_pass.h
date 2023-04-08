@@ -15,17 +15,17 @@ enum class AttachmentStoreOp {
     Store
 };
 
-struct AttachmentFormat {
+struct AttachmentDesc {
     DataFormat        format;
     AttachmentLoadOp  load   = AttachmentLoadOp::DontCare;
     AttachmentStoreOp store  = AttachmentStoreOp::DontCare;
 };
 
 struct RenderPassDesc {
-    std::vector<AttachmentFormat> color_attachments;
-    AttachmentFormat              depth_attachment;
-    AttachmentFormat              stencil_attachment;
-    TUInt                         samples = 1;
+    TVector<AttachmentDesc> color_attachments;
+    AttachmentDesc          depth_attachment;
+    AttachmentDesc          stencil_attachment;
+    TUInt                   samples = 1;
 };
 
 class IRenderPass : public NonCopyable {

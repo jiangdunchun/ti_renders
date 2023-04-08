@@ -7,6 +7,19 @@
 #include "interface/i_render_target.h"
 
 namespace tigine { namespace rhi {
+enum ClearFlag : TChar {
+    CF_Color = 1 << 0,
+    CF_Depth = 1 << 1,
+    CF_Stencil = 1 << 2
+};
+
+struct Viewport {
+    TUInt x;
+    TUInt y;
+    TUInt width;
+    TUInt height;
+};
+
 struct CommandBufferDesc {
 };
 

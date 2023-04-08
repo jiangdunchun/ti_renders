@@ -7,14 +7,14 @@
 #include "interface/i_shader.h"
 
 namespace tigine { namespace rhi {
-struct UniformInfo {
+struct UniformDesc {
     TUInt      binding;
     IResource *resource;
     ShaderKind shader_stage;
 };
 
 struct ResourceHeapDesc {
-    std::vector<UniformInfo> uniforms;
+    TVector<UniformDesc> uniforms;
 };
 
 class IResourceHeap : public NonCopyable {

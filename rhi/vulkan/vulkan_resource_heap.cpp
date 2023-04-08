@@ -43,7 +43,7 @@ VulkanResourceHeap::VulkanResourceHeap(const VulkanContextInfo &context, const R
 
     std::vector<VkDescriptorSetLayoutBinding> bindings(num_uniforms);
     for (size_t i = 0; i < num_uniforms; ++i) {
-        const UniformInfo &uniform            = desc.uniforms[i];
+        const UniformDesc            &uniform = desc.uniforms[i];
         VkDescriptorSetLayoutBinding &binding = bindings[i];
 
         binding.binding            = uniform.binding;
@@ -63,7 +63,7 @@ VulkanResourceHeap::VulkanResourceHeap(const VulkanContextInfo &context, const R
 
     std::vector<VkDescriptorPoolSize> pool_sizes(num_uniforms);
     for (size_t i = 0; i < num_uniforms; ++i) {
-        const UniformInfo &uniform      = desc.uniforms[i];
+        const UniformDesc    &uniform   = desc.uniforms[i];
         VkDescriptorPoolSize &pool_size = pool_sizes[i];
 
         pool_size.type            = mapDescriptorType(uniform.resource);
@@ -90,7 +90,7 @@ VulkanResourceHeap::VulkanResourceHeap(const VulkanContextInfo &context, const R
 
     std::vector<VkWriteDescriptorSet> writes(num_uniforms);
     for (size_t i = 0; i < num_uniforms; ++i) {
-        const UniformInfo &uniform  = desc.uniforms[i];
+        const UniformDesc    &uniform = desc.uniforms[i];
         VkWriteDescriptorSet &write = writes[i];
 
         write.sType           = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
