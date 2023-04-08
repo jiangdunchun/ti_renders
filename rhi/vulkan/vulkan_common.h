@@ -24,15 +24,15 @@ VkFormat mapVkFormat(DataFormat format);
 
 void createVkBufferandDeviceMemory(VkPhysicalDevice     *physical_device,
                                    VkDevice             *device,
-                                   VkDeviceSize          size,
-                                   VkBufferUsageFlags    usage,
-                                   VkMemoryPropertyFlags properties,
+                                   VkDeviceSize          buffer_size,
+                                   VkBufferUsageFlags    buffer_usage,
+                                   VkMemoryPropertyFlags memory_property,
                                    VkBuffer             &o_buffer,
                                    VkDeviceMemory       &o_device_memory);
 
 void createVkCommandPoolandCommandBuffers(VkDevice        *device,
                                           uint32_t         queue_family_index,
-                                          uint32_t         buffer_count,
+                                          uint32_t         num_buffers,
                                           VkCommandPool   &o_command_pool,
                                           VkCommandBuffer *o_command_buffers);
 }}// namespace tigine::rhi

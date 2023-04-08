@@ -7,8 +7,8 @@ VulkanBufferArray::VulkanBufferArray(const VulkanContextInfo &context, const Buf
     vertices_buffer_ = dynamic_cast<VulkanBuffer *>(desc.vertices_buffer);
     if (desc.indices_buffer) {
         indices_buffer_ = dynamic_cast<VulkanBuffer *>(desc.indices_buffer);
-        index_kind_     = desc.index_kind;
         has_indices_    = true;
+        index_kind_     = desc.index_kind;
     }
 
     size_t num_bindings = desc.bindings.size();

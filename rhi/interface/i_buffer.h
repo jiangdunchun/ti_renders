@@ -14,6 +14,7 @@ enum class BufferKind {
 struct BufferDataDesc {
     TULong data_size;
     void  *data;
+    TULong offset = 0;
 };
 
 struct BufferDesc {

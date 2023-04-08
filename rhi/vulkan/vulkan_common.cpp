@@ -197,29 +197,32 @@ VkFormat mapVkFormat(DataFormat format) {
 
 void createVkBufferandDeviceMemory(VkPhysicalDevice     *physical_device,
                                    VkDevice             *device,
-                                   VkDeviceSize          size,
-                                   VkBufferUsageFlags    usage,
-                                   VkMemoryPropertyFlags properties,
+                                   VkDeviceSize          buffer_size,
+                                   VkBufferUsageFlags    buffer_usage,
+                                   VkMemoryPropertyFlags memory_property,
                                    VkBuffer             &o_buffer,
                                    VkDeviceMemory       &o_device_memory) {
-    VkBufferCreateInfo buffer_info {};
-    buffer_info.sType       = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
-    buffer_info.size        = size;
-    buffer_info.usage       = usage;
-    buffer_info.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
-    RHI_VULKAN_THROW_IF_FAILD(vkCreateBuffer(*device, &buffer_info, nullptr, &o_buffer), 
+    VkBufferCreateInfo buffer_create_info {};
+    buffer_create_info.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
+    buffer_create_info.size  = buffer_size;
+    buffer_create_info.usage = buffer_usage;
+    // @HACK
+    // disable the multiple queue families' support
+    // see https://registry.khronos.org/vulkan/specs/1.3-extensions/man/html/VkSharingMode.html
+    buffer_create_info.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
+    RHI_VULKAN_THROW_IF_FAILD(vkCreateBuffer(*device, &buffer_create_info, nullptr, &o_buffer), 
         "failed to create buffer!");
 
 
-    VkMemoryRequirements mem_requirements;
-    vkGetBufferMemoryRequirements(*device, o_buffer, &mem_requirements);
-    uint32_t mem_type_index = findMemoryType(physical_device, mem_requirements.memoryTypeBits, properties);
+    VkMemoryRequirements memory_requirements;
+    vkGetBufferMemoryRequirements(*device, o_buffer, &memory_requirements);
+    uint32_t memory_type_index = findMemoryType(physical_device, memory_requirements.memoryTypeBits, memory_property);
 
-    VkMemoryAllocateInfo alloc_info {};
-    alloc_info.sType           = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
-    alloc_info.allocationSize  = mem_requirements.size;
-    alloc_info.memoryTypeIndex = mem_type_index;
-    RHI_VULKAN_THROW_IF_FAILD(vkAllocateMemory(*device, &alloc_info, nullptr, &o_device_memory),
+    VkMemoryAllocateInfo memory_alloc_info {};
+    memory_alloc_info.sType           = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+    memory_alloc_info.allocationSize  = memory_requirements.size;
+    memory_alloc_info.memoryTypeIndex = memory_type_index;
+    RHI_VULKAN_THROW_IF_FAILD(vkAllocateMemory(*device, &memory_alloc_info, nullptr, &o_device_memory),
         "failed to allocate buffer memory!");
 
 
@@ -227,24 +230,24 @@ void createVkBufferandDeviceMemory(VkPhysicalDevice     *physical_device,
 }
 
 void createVkCommandPoolandCommandBuffers(VkDevice        *device,
-                                         uint32_t         queue_family_index,
-                                         uint32_t         buffers_count,
-                                         VkCommandPool   &o_command_pool,
-                                         VkCommandBuffer *o_command_buffers) {
-    VkCommandPoolCreateInfo pool_info {};
-    pool_info.sType            = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
-    pool_info.pNext            = nullptr;
-    pool_info.flags            = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
-    pool_info.queueFamilyIndex = queue_family_index;
-    RHI_VULKAN_THROW_IF_FAILD(vkCreateCommandPool(*device, &pool_info, nullptr, &o_command_pool),
+                                          uint32_t         queue_family_index,
+                                          uint32_t         num_buffers,
+                                          VkCommandPool   &o_command_pool,
+                                          VkCommandBuffer *o_command_buffers) {
+    VkCommandPoolCreateInfo pool_create_info {};
+    pool_create_info.sType            = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
+    pool_create_info.pNext            = nullptr;
+    pool_create_info.flags            = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
+    pool_create_info.queueFamilyIndex = queue_family_index;
+    RHI_VULKAN_THROW_IF_FAILD(vkCreateCommandPool(*device, &pool_create_info, nullptr, &o_command_pool),
        "failed to create command pool!");
 
-    VkCommandBufferAllocateInfo alloc_info {};
-    alloc_info.sType              = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
-    alloc_info.commandPool        = o_command_pool;
-    alloc_info.level              = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
-    alloc_info.commandBufferCount = buffers_count;
-    RHI_VULKAN_THROW_IF_FAILD(vkAllocateCommandBuffers(*device, &alloc_info, o_command_buffers),
+    VkCommandBufferAllocateInfo buffer_alloc_info {};
+    buffer_alloc_info.sType              = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+    buffer_alloc_info.commandPool        = o_command_pool;
+    buffer_alloc_info.level              = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+    buffer_alloc_info.commandBufferCount = num_buffers;
+    RHI_VULKAN_THROW_IF_FAILD(vkAllocateCommandBuffers(*device, &buffer_alloc_info, o_command_buffers),
         "failed to allocate command buffer!");
 }
 }} // namespace tigine::rhi
