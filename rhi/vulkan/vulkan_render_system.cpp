@@ -10,6 +10,8 @@
 #include "vulkan/vulkan_shader_program.h"
 #include "vulkan/vulkan_resource_heap.h"
 #include "vulkan/vulkan_texture.h"
+#include "vulkan/vulkan_render_pass.h"
+#include "vulkan/vulkan_render_target.h"
 
 namespace tigine { namespace rhi {
 VulkanRenderSystem::VulkanRenderSystem() {}
@@ -30,7 +32,7 @@ IRenderContext *VulkanRenderSystem::createRenderContext(const RenderContextDesc 
 IShader *VulkanRenderSystem::createShader(const ShaderDesc &desc) { 
     return new VulkanShader(context_info_, desc); }
 
-IShaderProgram  *VulkanRenderSystem::createShaderProgram(const ShaderProgramDesc &desc) { 
+IShaderProgram *VulkanRenderSystem::createShaderProgram(const ShaderProgramDesc &desc) { 
 	return new VulkanShaderProgram(context_info_, desc);
 }
 
@@ -42,7 +44,7 @@ IBufferArray *VulkanRenderSystem::createBufferArray(const BufferArrayDesc &desc)
 	return new VulkanBufferArray(context_info_, desc);
 }
 
-ICommandQueue   *VulkanRenderSystem::getCommandQueue() { return command_queue_; }
+ICommandQueue *VulkanRenderSystem::getCommandQueue() { return command_queue_; }
 
 ICommandBuffer *VulkanRenderSystem::createCommandBuffer(const CommandBufferDesc &desc) { 
     return new VulkanCommandBuffer(context_info_, desc);
@@ -55,9 +57,13 @@ IResourceHeap  *VulkanRenderSystem::CreateResourceHeap(const ResourceHeapDesc &d
 	return new VulkanResourceHeap(context_info_, desc);
 }
 
-IRenderPass     *VulkanRenderSystem::CreateRenderPass(const RenderPassDesc &desc) { return nullptr; }
+IRenderPass *VulkanRenderSystem::CreateRenderPass(const RenderPassDesc &desc) { 
+	return new VulkanRenderPass(context_info_, desc);
+}
 
-IRenderTarget   *VulkanRenderSystem::createRenderTarget(const RenderTargetDesc &desc) { return nullptr; }
+IRenderTarget *VulkanRenderSystem::createRenderTarget(const RenderTargetDesc &desc) { 
+	return new VulkanRenderTarget(context_info_, desc);
+}
 
 IPipelineState  *VulkanRenderSystem::createPipelineState(const PipelineStateDesc &desc) { 
 	return new VulkanPipelineState(context_info_, desc);

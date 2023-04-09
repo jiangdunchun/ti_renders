@@ -2,7 +2,7 @@
 
 namespace tigine { namespace rhi {
 namespace {
-VkAttachmentLoadOp mapAttachmentLoadOption(AttachmentLoadOp loadOp) {
+VkAttachmentLoadOp mapVkAttachmentLoadOp(AttachmentLoadOp loadOp) {
     switch (loadOp) {
     case AttachmentLoadOp::DontCare:
         return VK_ATTACHMENT_LOAD_OP_DONT_CARE;
@@ -15,7 +15,7 @@ VkAttachmentLoadOp mapAttachmentLoadOption(AttachmentLoadOp loadOp) {
     }
 }
 
-VkAttachmentStoreOp mapAttachmentStoreOption(AttachmentStoreOp storeOp) {
+VkAttachmentStoreOp mapVkAttachmentStoreOp(AttachmentStoreOp storeOp) {
     switch (storeOp) {
     case AttachmentStoreOp::DontCare:
         return VK_ATTACHMENT_STORE_OP_DONT_CARE;
@@ -26,7 +26,7 @@ VkAttachmentStoreOp mapAttachmentStoreOption(AttachmentStoreOp storeOp) {
     }
 }
 
-VkFormat getDepthStencilFormat(const DataFormat depthFormat, const DataFormat &stencilFormat) {
+VkFormat getDepthStencilVkFormat(const DataFormat depthFormat, const DataFormat &stencilFormat) {
     if (depthFormat != DataFormat::Undefined && stencilFormat != DataFormat::Undefined) {
         if (depthFormat == stencilFormat) {
             return mapVkFormat(depthFormat);
@@ -46,7 +46,7 @@ VkFormat getDepthStencilFormat(const DataFormat depthFormat, const DataFormat &s
 }
 } // namespace
 
-VulkanRenderPass::VulkanRenderPass(VkDevice *vk_device, const RenderPassDesc &desc) : vk_device_(vk_device) {
+VulkanRenderPass::VulkanRenderPass(const VulkanContextInfo &context, const RenderPassDesc &desc) : vk_device_(context.vk_device) {
     std::uint32_t num_colors = static_cast<std::uint32_t>(desc.color_attachments.size());
     std::uint32_t num_all    = num_colors;
     bool has_ds = false;
@@ -57,31 +57,31 @@ VulkanRenderPass::VulkanRenderPass(VkDevice *vk_device, const RenderPassDesc &de
 
     std::vector<VkAttachmentDescription> vk_attachments_desc(desc.samples > 1 ? num_all + num_colors : num_all);
     for (rsize_t i = 0; i < num_colors; ++i) {
-        const AttachmentDesc    &attachment_desc = desc.color_attachments[i];
-        VkAttachmentDescription &vk_attachment_desc  = vk_attachments_desc[i];
+        const AttachmentDesc    &attachment_desc    = desc.color_attachments[i];
+        VkAttachmentDescription &vk_attachment_desc = vk_attachments_desc[i];
         
         vk_attachment_desc.flags          = 0;
         vk_attachment_desc.format         = mapVkFormat(attachment_desc.format);
         vk_attachment_desc.samples        = VK_SAMPLE_COUNT_1_BIT;
-        vk_attachment_desc.loadOp         = mapAttachmentLoadOption(attachment_desc.load);
-        vk_attachment_desc.storeOp        = mapAttachmentStoreOption(attachment_desc.store);
+        vk_attachment_desc.loadOp         = mapVkAttachmentLoadOp(attachment_desc.load);
+        vk_attachment_desc.storeOp        = mapVkAttachmentStoreOp(attachment_desc.store);
         vk_attachment_desc.stencilLoadOp  = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
         vk_attachment_desc.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
         vk_attachment_desc.initialLayout  = (attachment_desc.load == AttachmentLoadOp::Load ? VK_IMAGE_LAYOUT_PRESENT_SRC_KHR : VK_IMAGE_LAYOUT_UNDEFINED);
         vk_attachment_desc.finalLayout    = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
     }
     if (has_ds) {
-        const AttachmentDesc    &depth_attachment_desc = desc.depth_attachment;
+        const AttachmentDesc    &depth_attachment_desc   = desc.depth_attachment;
         const AttachmentDesc    &stencil_attachment_desc = desc.stencil_attachment;
-        VkAttachmentDescription    &vk_attachment_desc = vk_attachments_desc[num_colors];
+        VkAttachmentDescription &vk_attachment_desc      = vk_attachments_desc[num_colors];
 
         vk_attachment_desc.flags          = 0;
-        vk_attachment_desc.format         = getDepthStencilFormat(depth_attachment_desc.format, stencil_attachment_desc.format);
+        vk_attachment_desc.format         = getDepthStencilVkFormat(depth_attachment_desc.format, stencil_attachment_desc.format);
         vk_attachment_desc.samples        = VkSampleCountFlagBits(desc.samples);
-        vk_attachment_desc.loadOp         = mapAttachmentLoadOption(depth_attachment_desc.load);
-        vk_attachment_desc.storeOp        = mapAttachmentStoreOption(depth_attachment_desc.store);
-        vk_attachment_desc.stencilLoadOp  = mapAttachmentLoadOption(stencil_attachment_desc.load);
-        vk_attachment_desc.stencilStoreOp = mapAttachmentStoreOption(stencil_attachment_desc.store);
+        vk_attachment_desc.loadOp         = mapVkAttachmentLoadOp(depth_attachment_desc.load);
+        vk_attachment_desc.storeOp        = mapVkAttachmentStoreOp(depth_attachment_desc.store);
+        vk_attachment_desc.stencilLoadOp  = mapVkAttachmentLoadOp(stencil_attachment_desc.load);
+        vk_attachment_desc.stencilStoreOp = mapVkAttachmentStoreOp(stencil_attachment_desc.store);
         vk_attachment_desc.initialLayout  = depth_attachment_desc.load == AttachmentLoadOp::Load || stencil_attachment_desc.load == AttachmentLoadOp::Load ? VK_IMAGE_LAYOUT_PRESENT_SRC_KHR : VK_IMAGE_LAYOUT_UNDEFINED;
         vk_attachment_desc.finalLayout    = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
     }
@@ -89,13 +89,12 @@ VulkanRenderPass::VulkanRenderPass(VkDevice *vk_device, const RenderPassDesc &de
         for (size_t i = 0; i < num_colors; ++i) {
             const AttachmentDesc    &attachment_desc = desc.color_attachments[i];
             VkAttachmentDescription    &vk_attachment_desc  = vk_attachments_desc[num_colors + i];
-            
 
             vk_attachment_desc.flags          = 0;
             vk_attachment_desc.format         = mapVkFormat(attachment_desc.format);
             vk_attachment_desc.samples        = VkSampleCountFlagBits(desc.samples);
             vk_attachment_desc.loadOp         = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
-            vk_attachment_desc.storeOp        = mapAttachmentStoreOption(attachment_desc.store);
+            vk_attachment_desc.storeOp        = mapVkAttachmentStoreOp(attachment_desc.store);
             vk_attachment_desc.stencilLoadOp  = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
             vk_attachment_desc.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
             vk_attachment_desc.initialLayout  = attachment_desc.load == AttachmentLoadOp::Load ? VK_IMAGE_LAYOUT_PRESENT_SRC_KHR :  VK_IMAGE_LAYOUT_UNDEFINED;
@@ -142,15 +141,15 @@ VulkanRenderPass::VulkanRenderPass(VkDevice *vk_device, const RenderPassDesc &de
     dependency.dstStageMask  = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
     dependency.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_READ_BIT | VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
 
-    VkRenderPassCreateInfo renderPassInfo {};
-    renderPassInfo.sType           = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
-    renderPassInfo.attachmentCount = desc.samples > 1 ? num_all + num_colors : num_colors;
-    renderPassInfo.pAttachments    = vk_attachments_desc.data();
-    renderPassInfo.subpassCount    = 1;
-    renderPassInfo.pSubpasses      = &subpass;
-    renderPassInfo.dependencyCount = 1;
-    renderPassInfo.pDependencies   = &dependency;
-    RHI_VULKAN_THROW_IF_FAILD(vkCreateRenderPass(*vk_device_, &renderPassInfo, nullptr, &vk_render_pass_),
+    VkRenderPassCreateInfo render_pass_info {};
+    render_pass_info.sType           = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
+    render_pass_info.attachmentCount = desc.samples > 1 ? num_all + num_colors : num_colors;
+    render_pass_info.pAttachments    = vk_attachments_desc.data();
+    render_pass_info.subpassCount    = 1;
+    render_pass_info.pSubpasses      = &subpass;
+    render_pass_info.dependencyCount = 1;
+    render_pass_info.pDependencies   = &dependency;
+    RHI_VULKAN_THROW_IF_FAILD(vkCreateRenderPass(*vk_device_, &render_pass_info, nullptr, &vk_render_pass_),
         "failed to create render pass!");
 }
 

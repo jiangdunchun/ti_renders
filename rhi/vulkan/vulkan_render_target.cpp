@@ -1,8 +1,8 @@
 #include "vulkan/vulkan_render_target.h"
 
 namespace tigine { namespace rhi {
-VulkanRenderTarget::VulkanRenderTarget(VkDevice *vk_device, const RenderTargetDesc &desc) 
-	: vk_device_(vk_device), resolution_(desc.resolution), samples_(desc.samples) {
+VulkanRenderTarget::VulkanRenderTarget(const VulkanContextInfo &context, const RenderTargetDesc &desc) 
+	: vk_device_(context.vk_device), resolution_(desc.resolution), samples_(desc.samples) {
 	for (auto &texture : desc.target_textures) {
         if (texture.kind == RenderTargetTextureKind::Color) color_attachments_nums_++;
         if (texture.kind == RenderTargetTextureKind::Depth || texture.kind == RenderTargetTextureKind::DepthStencil)

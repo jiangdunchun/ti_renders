@@ -261,7 +261,7 @@ void createInstance(
     }
 
     RHI_VULKAN_THROW_IF_FAILD(vkCreateInstance(&create_info, nullptr, &o_instance),
-                              "failed to create instance!");
+        "failed to create instance!");
 }
 
 void setupDebugMessenger(
@@ -272,14 +272,14 @@ void setupDebugMessenger(
     VkDebugUtilsMessengerCreateInfoEXT create_info;
     createDebugMessengerCreateInfo(create_info);
     RHI_VULKAN_THROW_IF_FAILD(createDebugUtilsMessengerEXT(instance, &create_info, nullptr, &o_debug_messenger),
-                              "failed to set up debug messenger!");
+        "failed to set up debug messenger!");
 }
 
 void createSurface(
     VkInstance &instance, GLFWwindow *&window, 
     VkSurfaceKHR &o_surface) {
     RHI_VULKAN_THROW_IF_FAILD(glfwCreateWindowSurface(instance, window, nullptr, &o_surface),
-                              "failed to create window surface!");
+        "failed to create window surface!");
 }
 
 void pickPhysicalDevice(
@@ -343,7 +343,7 @@ void createLogicalDevice(
     }
 
     RHI_VULKAN_THROW_IF_FAILD(vkCreateDevice(physical_device, &device_create_info, nullptr, &o_device),
-                              "failed to create logical device!");
+        "failed to create logical device!");
 
     vkGetDeviceQueue(o_device, indices.graphics_family, 0, &o_graphics_queue);
     vkGetDeviceQueue(o_device, indices.present_family, 0, &o_present_queue);
@@ -388,7 +388,7 @@ void createSwapChain(
     swapchain_info.clipped        = VK_TRUE;
 
     RHI_VULKAN_THROW_IF_FAILD(vkCreateSwapchainKHR(device, &swapchain_info, nullptr, &o_swapchain),
-                              "failed to create swap chain!");
+        "failed to create swap chain!");
 
     o_swapchain_image_format = surface_format.format;
     o_swapchain_extent       = extent;
@@ -419,15 +419,17 @@ void createSwapchainImageViews(
         image_view_info.subresourceRange.layerCount     = 1;
 
         RHI_VULKAN_THROW_IF_FAILD(vkCreateImageView(device, &image_view_info, nullptr, &o_swapchain_image_views[i]),
-                                  "failed to create image views!");
+            "failed to create image views!");
     }
 }
 
 void createRenderPass(
-    VkDevice &device, VkFormat &swapchain_image_format, 
+    VkDevice &device, VkFormat &swapchain_image_format, VkSampleCountFlagBits samples,
     VkRenderPass &o_render_pass) {
     VkAttachmentDescription color_attachment {};
     color_attachment.format         = swapchain_image_format;
+    // @FIXME
+    // multi sample is not support now
     color_attachment.samples        = VK_SAMPLE_COUNT_1_BIT;
     color_attachment.loadOp         = VK_ATTACHMENT_LOAD_OP_CLEAR;
     color_attachment.storeOp        = VK_ATTACHMENT_STORE_OP_STORE;
@@ -463,7 +465,7 @@ void createRenderPass(
     render_pass_info.pDependencies   = &dependency;
 
     RHI_VULKAN_THROW_IF_FAILD(vkCreateRenderPass(device, &render_pass_info, nullptr, &o_render_pass),
-                              "failed to create render pass!");
+        "failed to create render pass!");
 }
 
 void createSwapchainFrameBuffers(
@@ -473,17 +475,17 @@ void createSwapchainFrameBuffers(
     for (size_t i = 0; i < swapchain_image_views.size(); i++) {
         VkImageView attachments[] = {swapchain_image_views[i]};
 
-        VkFramebufferCreateInfo framebufferInfo {};
-        framebufferInfo.sType           = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
-        framebufferInfo.renderPass      = render_pass;
-        framebufferInfo.attachmentCount = 1;
-        framebufferInfo.pAttachments    = attachments;
-        framebufferInfo.width           = swapchain_extent.width;
-        framebufferInfo.height          = swapchain_extent.height;
-        framebufferInfo.layers          = 1;
+        VkFramebufferCreateInfo framebuffer_info {};
+        framebuffer_info.sType           = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
+        framebuffer_info.renderPass      = render_pass;
+        framebuffer_info.attachmentCount = 1;
+        framebuffer_info.pAttachments    = attachments;
+        framebuffer_info.width           = swapchain_extent.width;
+        framebuffer_info.height          = swapchain_extent.height;
+        framebuffer_info.layers          = 1;
 
-        RHI_VULKAN_THROW_IF_FAILD(vkCreateFramebuffer(device, &framebufferInfo, nullptr, &o_swapchain_frame_buffers[i]),
-                                  "failed to create frame buffer!");
+        RHI_VULKAN_THROW_IF_FAILD(vkCreateFramebuffer(device, &framebuffer_info, nullptr, &o_swapchain_frame_buffers[i]),
+            "failed to create frame buffer!");
     }
 }
 
@@ -493,9 +495,9 @@ void createSyncObjects(
     VkSemaphoreCreateInfo semaphore_info {};
     semaphore_info.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
     RHI_VULKAN_THROW_IF_FAILD(vkCreateSemaphore(device, &semaphore_info, nullptr, &o_image_available_semaphore),
-                              "failed to create synchronization objects for a frame!");
+        "failed to create synchronization objects for a frame!");
     RHI_VULKAN_THROW_IF_FAILD(vkCreateSemaphore(device, &semaphore_info, nullptr, &o_render_finished_semaphore),
-                              "failed to create synchronization objects for a frame!");
+        "failed to create synchronization objects for a frame!");
 }
 } // namespace
 
@@ -533,6 +535,8 @@ VulkanRenderContext::VulkanRenderContext(const RenderContextDesc &desc, VulkanCo
     createLogicalDevice(
         vk_physicl_device_, vk_surface_KHR_, device_extensions, enable_validation_layers, validation_layers,
         vk_device_, vk_graphics_queue_, vk_present_queue_, vk_graphics_family_);
+
+    o_context = {&vk_physicl_device_, &vk_device_, &vk_graphics_queue_, vk_graphics_family_};
     
     createSwapChain(
         vk_physicl_device_, vk_device_, vulkan_surface->getWindow(), vk_surface_KHR_,
@@ -542,10 +546,16 @@ VulkanRenderContext::VulkanRenderContext(const RenderContextDesc &desc, VulkanCo
         vk_device_, vk_swapchain_image_format_, vk_swapchain_images_, 
         vk_swapchain_image_views_);
 
-    VulkanRenderPass *vulkan_render_pass = new VulkanRenderPass(&vk_device_);
+    // @FIXME
+    //RenderPassDesc render_pass_desc;
+    //render_pass_desc.color_attachments.push_back({DataFormat::BGRA8UNorm_sRGB});
+    //render_pass_desc.samples             = desc.samples;
+    //VulkanRenderPass *vulkan_render_pass = new VulkanRenderPass(&vk_device_, render_pass_desc);
+    //render_pass_                         = vulkan_render_pass;
+    VulkanRenderPass *vulkan_render_pass = new VulkanRenderPass(o_context);
     render_pass_                         = vulkan_render_pass;
     createRenderPass(
-        vk_device_, vk_swapchain_image_format_, 
+        vk_device_, vk_swapchain_image_format_, VkSampleCountFlagBits(desc.samples),
         *vulkan_render_pass->getVkRenderPass());
 
     createSwapchainFrameBuffers(
@@ -556,10 +566,7 @@ VulkanRenderContext::VulkanRenderContext(const RenderContextDesc &desc, VulkanCo
         vk_device_, 
         vk_image_available_semaphore_, vk_render_finished_semaphore_);
 
-
     acquireNextPresentImage();
-
-    o_context = {&vk_physicl_device_, &vk_device_, &vk_graphics_queue_, vk_graphics_family_};
 }
 
 VulkanRenderContext::~VulkanRenderContext() {
