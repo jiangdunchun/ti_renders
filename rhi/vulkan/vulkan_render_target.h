@@ -9,7 +9,7 @@ namespace tigine { namespace rhi {
 class VulkanRenderTarget : public IRenderTarget {
 public:
     VulkanRenderTarget(const VulkanContextInfo &context, const RenderTargetDesc &desc);
-    ~VulkanRenderTarget() {}
+    ~VulkanRenderTarget();
 
     virtual IRenderPass *getRenderPass() override { return nullptr; }
     virtual Extent2D     getResolution() override { return resolution_; }
@@ -21,6 +21,7 @@ public:
 private:
     VkDevice *vk_device_;
 
+    VkFramebuffer vk_frame_buffer_;
     Extent2D resolution_;
     TUInt    samples_;
     TUInt    color_attachments_nums_ = 0;

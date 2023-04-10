@@ -8,8 +8,6 @@
 namespace tigine { namespace rhi {
 class VulkanRenderPass : public IRenderPass {
 public:
-    // only for VulkanRenderContext, the vk_render_pass_ must be created in VulkanRenderContext
-    VulkanRenderPass(const VulkanContextInfo &context) : vk_device_(context.vk_device) {}
     VulkanRenderPass(const VulkanContextInfo &context, const RenderPassDesc &desc);
     ~VulkanRenderPass();
 

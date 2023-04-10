@@ -8,8 +8,6 @@
 namespace tigine { namespace rhi {
 class VulkanSurface : public ISurface {
 public:
-    // only for VulkanRenderContext, the window_ must be created in VulkanRenderContext
-    VulkanSurface() {}
     VulkanSurface(GLFWwindow *window);
     ~VulkanSurface();
 

@@ -20,6 +20,7 @@ struct BufferDataDesc {
 struct BufferDesc {
     BufferKind     kind;
     TULong         buffer_size;
+    // no source data if the .data is nullptr
     BufferDataDesc src_data = { 0, nullptr };
 };
 

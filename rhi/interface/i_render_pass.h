@@ -17,14 +17,16 @@ enum class AttachmentStoreOp {
 
 struct AttachmentDesc {
     DataFormat        format;
-    AttachmentLoadOp  load   = AttachmentLoadOp::DontCare;
-    AttachmentStoreOp store  = AttachmentStoreOp::DontCare;
+    AttachmentLoadOp  load;
+    AttachmentStoreOp store;
 };
 
 struct RenderPassDesc {
     TVector<AttachmentDesc> color_attachments;
-    AttachmentDesc          depth_attachment;
-    AttachmentDesc          stencil_attachment;
+    // no depth attachment if the .format is Undefined
+    AttachmentDesc          depth_attachment   = {DataFormat::Undefined, AttachmentLoadOp::DontCare, AttachmentStoreOp::DontCare};
+    // no stencil attachment if the .format is Undefined
+    AttachmentDesc          stencil_attachment = {DataFormat::Undefined, AttachmentLoadOp::DontCare, AttachmentStoreOp::DontCare};
     TUInt                   samples = 1;
 };
 

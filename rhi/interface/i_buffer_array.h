@@ -25,6 +25,7 @@ struct AttributeDesc {
 struct BufferArrayDesc {
     IBuffer               *vertices_buffer;
     IBuffer               *indices_buffer = nullptr;
+    // make sense if the indices_buffer is not nullptr
     IndexKind              index_kind;
     TVector<BindingDesc>   bindings;
     TVector<AttributeDesc> attributes;
