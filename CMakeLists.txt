@@ -14,8 +14,9 @@ add_subdirectory(rhi)
 
 add_subdirectory(./ti_render)
 
+add_subdirectory(toolkit)
 add_subdirectory(./tests)
 
-add_subdirectory(toolkit)
+
 
 
