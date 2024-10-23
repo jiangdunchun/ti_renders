@@ -2,11 +2,10 @@ import clang.cindex #pip install libclang
 import argparse
 
 # parser = argparse.ArgumentParser()
-# parser.add_argument('-input', required=True, default="", help='input header file')
-# parser.add_argument('-proj_dir', default="./", help='project directory')
+# parser.add_argument('-f', required=True, default="", help='head files')
+# parser.add_argument('-g', required=True, default="", help='generated file')
+# parser.add_argument('-i', required=True, default="", help='include path')
 # args = parser.parse_args()
-# print(args.input)
-# print(args.proj_dir)
 
 def check_meta_properties(node):
     is_meta = False
