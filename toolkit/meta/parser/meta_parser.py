@@ -3,6 +3,7 @@ import argparse
 
 
 
+
 def check_meta_properties(node):
     is_meta = False
     is_white_list = False
@@ -57,7 +58,6 @@ def traverse(node, p_namespace, meta_tree):
             fields, methods = get_fields_and_methods(node, is_white_list)
             if len(fields) != 0 or len(methods) != 0:
                 meta_type = {}
-                meta_type['file'] = node.location.file.name
                 meta_type['namespace'] = p_namespace
                 meta_type['type'] = node.spelling
                 meta_type['fields'] = fields
@@ -69,6 +69,7 @@ def traverse(node, p_namespace, meta_tree):
 
 
 
+
 parser = argparse.ArgumentParser()
 parser.add_argument('-f', required=True, default="", help='head files')
 parser.add_argument('-gh', required=True, default="", help='generated head file')
@@ -77,82 +78,196 @@ parser.add_argument('-i', required=True, default="", help='include path')
 args = parser.parse_args()
 
 
-def create_json_function_definition():
-    return
-
-def create_head_file_content():
-    return
 
 
-json_template = '''
+def create_json_function_def(meta_type):
+    json_function_template = '''template<>
+json meta::Serializer::toJson($[type_name] &instance);
 template<>
+void meta::Serializer::fromJson(const json &json_context, $[type_name] &instance);'''
+    type_name_key = '$[type_name]'
+
+    type_name = ('' if meta_type['namespace'] == '' else (meta_type['namespace'] + '::')) + meta_type['type']
+    return json_function_template.replace(type_name_key, type_name)
+
+def write_head_file(gereted_head_file, meta_tree):
+    include_file_template = '#include "$[include_file]"'
+    include_file_key = '$[include_file]'
+
+    with open(gereted_head_file, 'w') as o_file:
+        o_file.write('#include <meta.h>')
+        o_file.write('\n\n')
+
+        for head_file in meta_tree.keys():
+            o_file.write(include_file_template.replace(include_file_key, head_file))
+            o_file.write('\n')
+        o_file.write('\n')
+
+        for head_file in meta_tree.keys():
+            meta_types = meta_tree[head_file]
+            for meta_type in meta_types:
+                o_file.write(create_json_function_def(meta_type))
+                o_file.write('\n\n')
+
+def create_json_function_impl(meta_type):
+    json_impl_template = '''template<>
 json meta::Serializer::toJson($[type_name] &instance) {
-json::object ret;$[to_json_items]
-return ret;
+json::object ret;
+$[to_json_items]return ret;
 }
 template<>
-void meta::Serializer::fromJson(const json &json_context, $[type_name] &instance) {$[from_json_items]
-}
-'''
-to_json_item_template = '''
-ret["$[field_name]"] = toJson(instance.$[field_name]);'''
-from_json_item_template = '''
-fromJson(json_context["$[field_name]"], instance.$[field_name]);'''
-type_name_key = '$[type_name]'
-to_json_items_key = '$[to_json_items]'
-from_json_items_key = '$[from_json_items]'
-field_name_key = '$[field_name]'
-method_name_key = '$[method_name]'
-reflector_template = '''
-void meta::Reflector::registAll() {$[reflect_entity]
-}'''
-reflect_entity_key = '$[reflect_entity]'
-reflector_type_template = '''
-meta::Reflector::registType<$[type_name]>("$[type_name]")'''
-reflector_field_template = '''
-.addField("$[field_name]", &$[type_name]::$[field_name])'''
-reflector_method_template = '''
-.addMethod("$[method_name]", &$[type_name]::$[method_name])'''
+void meta::Serializer::fromJson(const json &json_context, $[type_name] &instance) {
+$[from_json_items]}'''
+    to_json_item_template = 'ret["$[field_name]"] = toJson(instance.$[field_name]);'
+    from_json_item_template = 'fromJson(json_context["$[field_name]"], instance.$[field_name]);'
+    type_name_key = '$[type_name]'
+    to_json_items_key = '$[to_json_items]'
+    from_json_items_key = '$[from_json_items]'
+    field_name_key = '$[field_name]'
+
+    to_json_items, from_json_items = '', ''
+    for field in meta_type['fields']:
+        to_json_items += to_json_item_template.replace(field_name_key, field)
+        to_json_items += '\n'
+        from_json_items += from_json_item_template.replace(field_name_key, field)
+        from_json_items += '\n'
+
+    json_impl = json_impl_template.replace(to_json_items_key, to_json_items)
+    json_impl = json_impl.replace(from_json_items_key, from_json_items)
+    type_name = ('' if meta_type['namespace'] == '' else (meta_type['namespace'] + '::')) + meta_type['type']
+    return json_impl.replace(type_name_key, type_name)
+
+def create_regist_all_function_impl(meta_tree):
+    regist_all_template = '''void meta::Reflector::registAll() {$[regist_impl]}'''
+    regist_type_template = 'meta::Reflector::registType<$[type_name]>("$[type_name]")'
+    regist_field_template = '.addField("$[field_name]", &$[type_name]::$[field_name])'
+    regist_method_template = '.addMethod("$[method_name]", &$[type_name]::$[method_name])'
+    regist_impl_key = '$[regist_impl]'
+    type_name_key = '$[type_name]'
+    field_name_key = '$[field_name]'
+    method_name_key = '$[method_name]'
+
+    regist_impl = ''
+    for head_file in meta_tree.keys():
+            meta_types = meta_tree[head_file]
+            for meta_type in meta_types:
+                
+                regist_type_impl = '\n'
+                regist_type_impl += regist_type_template
+                for field in meta_type['fields']:
+                    regist_type_impl += '\n'
+                    regist_type_impl += regist_field_template.replace(field_name_key, field)
+                for method in meta_type['methods']:
+                    regist_type_impl += '\n'
+                    regist_type_impl += regist_method_template.replace(method_name_key, method)
+                type_name = ('' if meta_type['namespace'] == '' else (meta_type['namespace'] + '::')) + meta_type['type']
+                regist_impl += regist_type_impl.replace(type_name_key, type_name)
+                regist_impl += ';\n'
+    return regist_all_template.replace(regist_impl_key, regist_impl)
+
+def write_cpp_file(gereted_cpp_file, gereted_head_file, meta_tree):
+    include_file_template = '#include "$[include_file]"'
+    include_file_key = '$[include_file]'
+
+    with open(gereted_cpp_file, 'w') as o_file:
+        o_file.write(include_file_template.replace(include_file_key, gereted_head_file))
+        o_file.write('\n\n')
+
+        for head_file in meta_tree.keys():
+            meta_types = meta_tree[head_file]
+            for meta_type in meta_types:
+                o_file.write(create_json_function_impl(meta_type))
+                o_file.write('\n\n')
+
+        o_file.write(create_regist_all_function_impl(meta_tree))
 
 
-#clang.cindex.Config.set_library_path("./")
+
 index = clang.cindex.Index.create()
 head_files = args.f.split(';')
-meta_tree = []
+meta_tree = {}
 for head_file in head_files:
-    print('meta paser->', head_file)
     parser = index.parse(head_file, ["-ObjC++", "-D__META_PARSER__", '-I'+args.i])
     cursor = parser.cursor
-    traverse(cursor, '', meta_tree)
-    print("meta_tree:" + str(meta_tree))
-with open(args.gc, 'w') as generated_file:
-    generated_file.write('#include <meta.h>\n\n')
-    #generated_file.write(str(meta_tree))
-    for type_ in meta_tree:
-        generated_file.write('#include \"'+ type_['file'] + '\"\n')
-        type_name = ('' if type_['namespace'] == '' else (type_['namespace'] + '::')) + type_['type']
-        json_str = json_template.replace(type_name_key, type_name)
-        to_json_items, from_json_items = '', ''
-        for field in type_['fields']:
-            to_json_items += to_json_item_template.replace(field_name_key, field)
-            from_json_items += from_json_item_template.replace(field_name_key, field)
-        json_str = json_str.replace(to_json_items_key, to_json_items)
-        json_str = json_str.replace(from_json_items_key, from_json_items)
-        generated_file.write(json_str)
-    
-    reflector_str = ''
-    for type_ in meta_tree:
-        type_name = ('' if type_['namespace'] == '' else (type_['namespace'] + '::')) + type_['type']
-        reflector_str += reflector_type_template.replace(type_name_key, type_name)
-        for field in type_['fields']:
-            reflector_field_str = reflector_field_template.replace(type_name_key, type_name)
-            reflector_field_str = reflector_field_str.replace(field_name_key, field)
-            reflector_str += reflector_field_str
-        for method in type_['methods']:
-            reflector_method_str = reflector_method_template.replace(type_name_key, type_name)
-            reflector_method_str = reflector_method_str.replace(method_name_key, method)
-            reflector_str += reflector_method_str
-        reflector_str += ';'
+    file_meta = []
+    traverse(cursor, '', file_meta)
+    meta_tree[head_file] = file_meta
+print("meta_tree:" + str(meta_tree))
 
-    reflector_entity = reflector_template.replace(reflect_entity_key, reflector_str)
-    generated_file.write(reflector_entity)
+write_head_file(args.gh, meta_tree)
+write_cpp_file(args.gc, args.gh, meta_tree)
+
+print('-- ****meta precompile success****')
+
+# json_template = '''
+# template<>
+# json meta::Serializer::toJson($[type_name] &instance) {
+# json::object ret;$[to_json_items]
+# return ret;
+# }
+# template<>
+# void meta::Serializer::fromJson(const json &json_context, $[type_name] &instance) {$[from_json_items]
+# }
+# '''
+# to_json_item_template = '''
+# ret["$[field_name]"] = toJson(instance.$[field_name]);'''
+# from_json_item_template = '''
+# fromJson(json_context["$[field_name]"], instance.$[field_name]);'''
+# type_name_key = '$[type_name]'
+# to_json_items_key = '$[to_json_items]'
+# from_json_items_key = '$[from_json_items]'
+# field_name_key = '$[field_name]'
+# method_name_key = '$[method_name]'
+# reflector_template = '''
+# void meta::Reflector::registAll() {$[reflect_entity]
+# }'''
+# reflect_entity_key = '$[reflect_entity]'
+# reflector_type_template = '''
+# meta::Reflector::registType<$[type_name]>("$[type_name]")'''
+# reflector_field_template = '''
+# .addField("$[field_name]", &$[type_name]::$[field_name])'''
+# reflector_method_template = '''
+# .addMethod("$[method_name]", &$[type_name]::$[method_name])'''
+
+
+# #clang.cindex.Config.set_library_path("./")
+# index = clang.cindex.Index.create()
+# head_files = args.f.split(';')
+# meta_tree = []
+# for head_file in head_files:
+#     print('meta paser->', head_file)
+#     parser = index.parse(head_file, ["-ObjC++", "-D__META_PARSER__", '-I'+args.i])
+#     cursor = parser.cursor
+#     traverse(cursor, '', meta_tree)
+#     print("meta_tree:" + str(meta_tree))
+# with open(args.gc, 'w') as generated_file:
+#     generated_file.write('#include <meta.h>\n\n')
+#     #generated_file.write(str(meta_tree))
+#     for type_ in meta_tree:
+#         generated_file.write('#include \"'+ type_['file'] + '\"\n')
+#         type_name = ('' if type_['namespace'] == '' else (type_['namespace'] + '::')) + type_['type']
+#         json_str = json_template.replace(type_name_key, type_name)
+#         to_json_items, from_json_items = '', ''
+#         for field in type_['fields']:
+#             to_json_items += to_json_item_template.replace(field_name_key, field)
+#             from_json_items += from_json_item_template.replace(field_name_key, field)
+#         json_str = json_str.replace(to_json_items_key, to_json_items)
+#         json_str = json_str.replace(from_json_items_key, from_json_items)
+#         generated_file.write(json_str)
+    
+#     reflector_str = ''
+#     for type_ in meta_tree:
+#         type_name = ('' if type_['namespace'] == '' else (type_['namespace'] + '::')) + type_['type']
+#         reflector_str += reflector_type_template.replace(type_name_key, type_name)
+#         for field in type_['fields']:
+#             reflector_field_str = reflector_field_template.replace(type_name_key, type_name)
+#             reflector_field_str = reflector_field_str.replace(field_name_key, field)
+#             reflector_str += reflector_field_str
+#         for method in type_['methods']:
+#             reflector_method_str = reflector_method_template.replace(type_name_key, type_name)
+#             reflector_method_str = reflector_method_str.replace(method_name_key, method)
+#             reflector_str += reflector_method_str
+#         reflector_str += ';'
+
+#     reflector_entity = reflector_template.replace(reflect_entity_key, reflector_str)
+#     generated_file.write(reflector_entity)
