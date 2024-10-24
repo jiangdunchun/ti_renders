@@ -93,8 +93,28 @@ void meta::Serializer::fromJson(const json &json_context, $[type_name] &instance
 def write_head_file(gereted_head_file, meta_tree):
     include_file_template = '#include "$[include_file]"'
     include_file_key = '$[include_file]'
+    def create_head_file_def(gereted_head_file):
+        words, pre_str = [], ''
+        for c in gereted_head_file:
+            if ord(c) >= ord('a') and ord(c) <= ord('z'):
+                pre_str += chr(ord(c) - ord('a') + ord('A'))
+            elif (ord(c) >= ord('A') and ord(c) <= ord('Z')) or (ord(c) >= ord('0') and ord(c) <= ord('1')):
+                pre_str += c
+            else:
+                if pre_str != '':
+                    words.append(pre_str)
+                    pre_str = ''
+        if pre_str != '':
+            words.append(pre_str)
+        head_file_def = words[0]
+        for word in words[1:]:
+            head_file_def += '_' + word
+        return '__' + head_file_def + '__'
 
     with open(gereted_head_file, 'w') as o_file:
+        head_file_def = create_head_file_def(gereted_head_file)
+        o_file.write('#ifndef ' + head_file_def + '\n') 
+        o_file.write('#define ' + head_file_def + '\n') 
         o_file.write('#include <meta.h>')
         o_file.write('\n\n')
 
@@ -108,6 +128,7 @@ def write_head_file(gereted_head_file, meta_tree):
             for meta_type in meta_types:
                 o_file.write(create_json_function_def(meta_type))
                 o_file.write('\n\n')
+        o_file.write('#endif')
 
 def create_json_function_impl(meta_type):
     json_impl_template = '''template<>
