@@ -3,7 +3,7 @@ add_executable(meta.test ${SRC_FILES})
 target_link_libraries(meta.test meta)
 
 
-file(GLOB_RECURSE HEADER_FILES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/*.h"
+file(GLOB_RECURSE HEAD_FILES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/*.h"
                                             "${CMAKE_CURRENT_SOURCE_DIR}/src/*.hpp"
                                             "${CMAKE_CURRENT_SOURCE_DIR}/src/*.hxx")
 set(GENERATED_HEAD_FILE ${CMAKE_CURRENT_SOURCE_DIR}/meta_generated/meta.generated.h)
